@@ -2,18 +2,19 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Emperor Server • Live Timing</title>
+<title>Assetto Corsa Server Manager</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root {
-  --bg-main: #141414;
-  --bg-panel: #1b1b1b;
-  --bg-row: #202020;
-  --border: #2e2e2e;
-  --text-main: #d0d0d0;
-  --text-muted: #8c8c8c;
-  --accent: #4caf50;
+  --bg-main: #121212;
+  --bg-sidebar: #181818;
+  --bg-panel: #1f1f1f;
+  --bg-row: #252525;
+  --border: #2c2c2c;
+  --text-main: #d6d6d6;
+  --text-muted: #9a9a9a;
+  --accent: #3fa34d;
 }
 
 * {
@@ -22,123 +23,54 @@
 
 body {
   margin: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  font-size: 12px;
   background: var(--bg-main);
   color: var(--text-main);
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  font-size: 13px;
 }
 
-.container {
-  max-width: 1150px;
-  margin: 20px auto;
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-}
-
-/* ===== TOP BAR ===== */
-.topbar {
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--border);
-  color: var(--accent);
-  font-weight: 600;
-}
-
-/* ===== TABS ===== */
-.tabs {
+/* ===== LAYOUT ===== */
+.app {
   display: flex;
-  border-bottom: 1px solid var(--border);
-  background: #171717;
+  height: 100vh;
 }
 
-.tab-btn {
-  background: transparent;
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 210px;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+}
+
+.sidebar h2 {
+  margin: 0;
+  padding: 12px;
+  font-size: 13px;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+}
+
+.menu button {
+  width: 100%;
+  padding: 10px 14px;
+  background: none;
   border: none;
   color: var(--text-muted);
-  padding: 8px 16px;
-  cursor: pointer;
-  border-right: 1px solid var(--border);
-  font-size: 12px;
-}
-
-.tab-btn.active {
-  background: var(--bg-panel);
-  color: var(--accent);
-}
-
-.tab-btn:hover {
-  background: #232323;
-}
-
-/* ===== CONTENT ===== */
-.tab-content {
-  display: none;
-}
-
-.tab-content.active {
-  display: block;
-}
-
-/* ===== TABLE ===== */
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead {
-  background: #161616;
-}
-
-th {
-  color: var(--text-muted);
-  font-weight: 500;
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--border);
   text-align: left;
+  cursor: pointer;
 }
 
-td {
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--border);
+.menu button.active,
+.menu button:hover {
+  background: #242424;
+  color: var(--text-main);
 }
 
-tbody tr {
-  background: var(--bg-panel);
+/* ===== MAIN ===== */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-tbody tr:nth-child(even) {
-  background: var(--bg-row);
-}
-
-tbody tr:hover {
-  background: #262626;
-}
-
-/* ===== POSITION COLORS ===== */
-.p1 { color: #ffd700; }
-.p2 { color: #cfcfcf; }
-.p3 { color: #c48b5a; }
-
-/* ===== FOOTER ===== */
-.footer {
-  padding: 6px 10px;
-  font-size: 11px;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-  <div class="topbar">Emperor Server • Assetto Corsa</div>
-
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('classificacao', this)">CLASSIFICAÇÃO</button>
-    <button class="tab-btn" onclick="showTab('livetiming', this)">LIVE TIMING</button>
-  </div>
-
-  <!-- CLASSIFICAÇÃO -->
-  <div id="classificacao" class="tab-content active">
-    <table id="tabelaClassificacao">
-      <thead>
+/* ===== TOP BAR =====
