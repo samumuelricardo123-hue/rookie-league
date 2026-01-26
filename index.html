@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Classificação - Rookie League</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #000;
+      color: #fff;
+    }.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('fundo.jpg') center/cover no-repeat;
+  filter: brightness(0.45);
+  z-index: -1;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  background: rgba(0,0,0,0.75);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 25px rgba(0,255,120,0.25);
+}
+
+h1 {
+  text-align: center;
+  color: #4cff4c;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  border-bottom: 2px solid #4cff4c;
+  color: #4cff4c;
+}
+
+tr:nth-child(even) {
+  background: rgba(255,255,255,0.05);
+}
+
+.p1 { color: gold; font-weight: bold; }
+.p2 { color: silver; font-weight: bold; }
+.p3 { color: #cd7f32; font-weight: bold; }
+
+footer {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+  </style>
+</head>
+<body><div class="background"></div><div class="container">
+  <h1>CLASSIFICAÇÃO GERAL – ROOKIE LEAGUE</h1>  <table id="tabela">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Piloto</th>
+        <th>Pontos</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>  <footer>
+    Assetto Corsa • Liga Rookie League
+  </footer>
+</div><script>
+const URL_JSON = 'resultados.json'; // ou URL do servidor
+
+fetch(URL_JSON)
+  .then(res => res.json())
+  .then(data => {
+    const tbody = document.querySelector('#tabela tbody');
+    data.forEach(p => {
+      const tr = document.createElement('tr');
+      const classe = p.posicao === 1 ? 'p1' : p.posicao === 2 ? 'p2' : p.posicao === 3 ? 'p3' : '';
+      tr.innerHTML = `
+        <td class="${classe}">${p.posicao}</td>
+        <td>${p.piloto}</td>
+        <td>${p.pontos}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  });
+</script></body>
+</html>
