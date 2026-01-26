@@ -17,86 +17,147 @@ body {
   position: fixed;
   inset: 0;
   background: url('fundo.jpg') center/cover no-repeat;
-  filter: brightness(0.45);
+  filter: brightness(0.4) blur(1px);
   z-index: -1;
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 40px auto;
-  background: rgba(0,0,0,0.75);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 25px rgba(0,255,120,0.25);
+  background: linear-gradient(180deg, rgba(0,0,0,0.9), rgba(0,0,0,0.7));
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow:
+    0 0 25px rgba(0,255,120,0.35),
+    inset 0 0 25px rgba(0,255,120,0.08);
 }
 
 h1 {
   text-align: center;
   color: #4cff4c;
-  margin-bottom: 15px;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 12px rgba(76,255,76,0.8);
 }
 
-/* -------- TABS -------- */
+/* ===== TABS ===== */
 .tabs {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .tab-btn {
-  background: transparent;
+  background: rgba(0,0,0,0.6);
   border: 1px solid #4cff4c;
   color: #4cff4c;
-  padding: 10px 20px;
+  padding: 12px 28px;
   cursor: pointer;
-  margin: 0 5px;
-  border-radius: 6px;
-  transition: 0.3s;
+  margin: 0 6px;
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all .3s ease;
 }
 
-.tab-btn.active,
 .tab-btn:hover {
+  box-shadow: 0 0 15px rgba(76,255,76,0.6);
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
   background: #4cff4c;
   color: #000;
+  box-shadow: 0 0 25px rgba(76,255,76,0.9);
 }
 
 .tab-content {
   display: none;
+  animation: fade .4s ease;
 }
 
 .tab-content.active {
   display: block;
 }
 
-/* -------- TABLE -------- */
+@keyframes fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== TABLE ===== */
 table {
   width: 100%;
   border-collapse: collapse;
-}
-
-th, td {
-  padding: 12px;
-  text-align: left;
+  overflow: hidden;
 }
 
 th {
-  border-bottom: 2px solid #4cff4c;
   color: #4cff4c;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 1px;
+  border-bottom: 2px solid rgba(76,255,76,0.6);
+}
+
+th, td {
+  padding: 14px;
+}
+
+tr {
+  transition: all .25s ease;
+}
+
+tr:hover {
+  background: rgba(76,255,76,0.12);
 }
 
 tr:nth-child(even) {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.04);
 }
 
-/* -------- PODIUM COLORS -------- */
-.p1 { color: gold; font-weight: bold; }
-.p2 { color: silver; font-weight: bold; }
-.p3 { color: #cd7f32; font-weight: bold; }
+/* ===== PODIUM ===== */
+.p1, .p2, .p3 {
+  position: relative;
+  font-weight: bold;
+}
+
+.p1 { color: gold; }
+.p2 { color: silver; }
+.p3 { color: #cd7f32; }
+
+.p1::before,
+.p2::before,
+.p3::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+}
+
+.p1::before { background: gold; }
+.p2::before { background: silver; }
+.p3::before { background: #cd7f32; }
+
+/* ===== LIVE EFFECT ===== */
+#livetiming table {
+  box-shadow: 0 0 20px rgba(76,255,76,0.25);
+}
+
+.flash {
+  animation: pulse 0.6s ease;
+}
+
+@keyframes pulse {
+  0% { background: rgba(76,255,76,0.4); }
+  100% { background: transparent; }
+}
 
 footer {
   text-align: center;
-  margin-top: 15px;
+  margin-top: 20px;
   font-size: 12px;
   color: #aaa;
 }
@@ -107,14 +168,13 @@ footer {
 <div class="background"></div>
 
 <div class="container">
-  <h1>ROOKIE LEAGUE</h1>
+  <h1>ROOKIE LEAGUE • LIVE</h1>
 
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab('classificacao', this)">Classificação</button>
-    <button class="tab-btn" onclick="showTab('livetiming', this)">Treino / Live Time</button>
+    <button class="tab-btn" onclick="showTab('livetiming', this)">Treino / Live Timing</button>
   </div>
 
-  <!-- CLASSIFICAÇÃO -->
   <div id="classificacao" class="tab-content active">
     <table id="tabelaClassificacao">
       <thead>
@@ -128,7 +188,6 @@ footer {
     </table>
   </div>
 
-  <!-- LIVE TIMING -->
   <div id="livetiming" class="tab-content">
     <table id="tabelaLive">
       <thead>
@@ -143,76 +202,59 @@ footer {
     </table>
   </div>
 
-  <footer>
-    Assetto Corsa • Rookie League
-  </footer>
+  <footer>Assetto Corsa • Rookie League</footer>
 </div>
 
 <script>
-/* ===== CONFIG ===== */
 const URL_CLASSIFICACAO = 'resultados.json';
 const URL_LIVE = 'livetiming.json';
 
-/* ===== TABS ===== */
 function showTab(id, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
 }
 
-/* ===== CLASSIFICAÇÃO ===== */
 function carregarClassificacao() {
   fetch(URL_CLASSIFICACAO)
     .then(r => r.json())
     .then(data => {
       const tbody = document.querySelector('#tabelaClassificacao tbody');
       tbody.innerHTML = '';
-
       data.forEach(p => {
-        const classe =
-          p.posicao === 1 ? 'p1' :
-          p.posicao === 2 ? 'p2' :
-          p.posicao === 3 ? 'p3' : '';
-
+        const c = p.posicao === 1 ? 'p1' : p.posicao === 2 ? 'p2' : p.posicao === 3 ? 'p3' : '';
         tbody.innerHTML += `
           <tr>
-            <td class="${classe}">${p.posicao}</td>
+            <td class="${c}">${p.posicao}</td>
             <td>${p.piloto}</td>
             <td>${p.pontos}</td>
-          </tr>
-        `;
+          </tr>`;
       });
     });
 }
 
-/* ===== LIVE TIMING ===== */
 function carregarLiveTiming() {
   fetch(URL_LIVE)
     .then(r => r.json())
     .then(data => {
       const tbody = document.querySelector('#tabelaLive tbody');
       tbody.innerHTML = '';
-
       data.forEach((p, i) => {
         tbody.innerHTML += `
-          <tr>
+          <tr class="flash">
             <td>${i + 1}</td>
             <td>${p.piloto}</td>
             <td>${p.melhor_volta}</td>
             <td>${p.ultima_volta}</td>
-          </tr>
-        `;
+          </tr>`;
       });
     });
 }
 
-/* ===== INIT ===== */
 carregarClassificacao();
 carregarLiveTiming();
 setInterval(carregarLiveTiming, 3000);
 </script>
-
 </body>
 </html>
