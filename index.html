@@ -1,54 +1,86 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Assetto Corsa Server Manager</title>
-
-<style>
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #121212;
-  color: #d6d6d6;
-  font-family: Segoe UI, Tahoma, sans-serif;
-  font-size: 12px;
-}
-
-.header {
-  padding: 8px 12px;
-  background: #1b1b1b;
-  border-bottom: 1px solid #2c2c2c;
-  color: #4caf50;
-}
-
-.tabs {
-  display: flex;
-  background: #181818;
-  border-bottom: 1px solid #2c2c2c;
-}
-
-.tabs button {
-  background: none;
-  border: none;
-  color: #9a9a9a;
-  padding: 8px 14px;
-  cursor: pointer;
-}
-
-.tabs button.active {
-  background: #1f1f1f;
-  color: #4caf50;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 6px 10px;
-  border-bottom: 1px solid #2c2c2c;
-}
-
-th {
-  background
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meu Site no GitHub</title>
+  <meta name="description" content="Site completo publicado no GitHub Pages" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #111827;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #38bdf8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #020617, #0f172a);
+      color: var(--text);
+    }
+    header {
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: .5rem;
+    }
+    header p {
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    nav a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    section {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: var(--card);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    }
+    .card h3 { margin-top: 0; }
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--muted);
+      border-top: 1px solid #1f2933;
+    }
+    button {
+      background: var(--accent);
+      color: #020617;
+      border: none;
+      padding: .75rem 1.25rem;
+      border-radius: .75rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    button:hover { opacity: .9; }
+  </style>
+</head>
+<body>  <header>
+    <h1>🚀 Meu Site no GitHub</h1>
+    <p>Um site completo, moderno e pronto para publicar usando GitHub Pages.</p>
+    <nav>
+      <a href="#sobre
