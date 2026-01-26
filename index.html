@@ -1,20 +1,21 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Classificação - Rookie League</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #000;
-      color: #fff;
-    }.background {
+<meta charset="UTF-8">
+<title>Rookie League</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #000;
+  color: #fff;
+}
+
+.background {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: url('fundo.jpg') center/cover no-repeat;
   filter: brightness(0.45);
   z-index: -1;
@@ -32,10 +33,43 @@
 h1 {
   text-align: center;
   color: #4cff4c;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   letter-spacing: 2px;
 }
 
+/* -------- TABS -------- */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 1px solid #4cff4c;
+  color: #4cff4c;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin: 0 5px;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+  background: #4cff4c;
+  color: #000;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* -------- TABLE -------- */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -55,6 +89,7 @@ tr:nth-child(even) {
   background: rgba(255,255,255,0.05);
 }
 
+/* -------- PODIUM COLORS -------- */
 .p1 { color: gold; font-weight: bold; }
 .p2 { color: silver; font-weight: bold; }
 .p3 { color: #cd7f32; font-weight: bold; }
@@ -65,39 +100,119 @@ footer {
   font-size: 12px;
   color: #aaa;
 }
-
-  </style>
+</style>
 </head>
-<body><div class="background"></div><div class="container">
-  <h1>CLASSIFICAÇÃO GERAL – ROOKIE LEAGUE</h1>  <table id="tabela">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Piloto</th>
-        <th>Pontos</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>  <footer>
-    Assetto Corsa • Liga Rookie League
-  </footer>
-</div><script>
-const URL_JSON = 'resultados.json'; // ou URL do servidor
 
-fetch(URL_JSON)
-  .then(res => res.json())
-  .then(data => {
-    const tbody = document.querySelector('#tabela tbody');
-    data.forEach(p => {
-      const tr = document.createElement('tr');
-      const classe = p.posicao === 1 ? 'p1' : p.posicao === 2 ? 'p2' : p.posicao === 3 ? 'p3' : '';
-      tr.innerHTML = `
-        <td class="${classe}">${p.posicao}</td>
-        <td>${p.piloto}</td>
-        <td>${p.pontos}</td>
-      `;
-      tbody.appendChild(tr);
+<body>
+<div class="background"></div>
+
+<div class="container">
+  <h1>ROOKIE LEAGUE</h1>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('classificacao', this)">Classificação</button>
+    <button class="tab-btn" onclick="showTab('livetiming', this)">Treino / Live Time</button>
+  </div>
+
+  <!-- CLASSIFICAÇÃO -->
+  <div id="classificacao" class="tab-content active">
+    <table id="tabelaClassificacao">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Piloto</th>
+          <th>Pontos</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- LIVE TIMING -->
+  <div id="livetiming" class="tab-content">
+    <table id="tabelaLive">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Piloto</th>
+          <th>Melhor Volta</th>
+          <th>Última Volta</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <footer>
+    Assetto Corsa • Rookie League
+  </footer>
+</div>
+
+<script>
+/* ===== CONFIG ===== */
+const URL_CLASSIFICACAO = 'resultados.json';
+const URL_LIVE = 'livetiming.json';
+
+/* ===== TABS ===== */
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ===== CLASSIFICAÇÃO ===== */
+function carregarClassificacao() {
+  fetch(URL_CLASSIFICACAO)
+    .then(r => r.json())
+    .then(data => {
+      const tbody = document.querySelector('#tabelaClassificacao tbody');
+      tbody.innerHTML = '';
+
+      data.forEach(p => {
+        const classe =
+          p.posicao === 1 ? 'p1' :
+          p.posicao === 2 ? 'p2' :
+          p.posicao === 3 ? 'p3' : '';
+
+        tbody.innerHTML += `
+          <tr>
+            <td class="${classe}">${p.posicao}</td>
+            <td>${p.piloto}</td>
+            <td>${p.pontos}</td>
+          </tr>
+        `;
+      });
     });
-  });
-</script></body>
+}
+
+/* ===== LIVE TIMING ===== */
+function carregarLiveTiming() {
+  fetch(URL_LIVE)
+    .then(r => r.json())
+    .then(data => {
+      const tbody = document.querySelector('#tabelaLive tbody');
+      tbody.innerHTML = '';
+
+      data.forEach((p, i) => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${p.piloto}</td>
+            <td>${p.melhor_volta}</td>
+            <td>${p.ultima_volta}</td>
+          </tr>
+        `;
+      });
+    });
+}
+
+/* ===== INIT ===== */
+carregarClassificacao();
+carregarLiveTiming();
+setInterval(carregarLiveTiming, 3000);
+</script>
+
+</body>
 </html>
