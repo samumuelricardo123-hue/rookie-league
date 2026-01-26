@@ -2,75 +2,97 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Assetto Corsa Server Manager</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>AC Server Manager - Timing</title>
 <style>
-:root {
-  --bg-main: #121212;
-  --bg-sidebar: #181818;
-  --bg-panel: #1f1f1f;
-  --bg-row: #252525;
-  --border: #2c2c2c;
-  --text-main: #d6d6d6;
-  --text-muted: #9a9a9a;
-  --accent: #3fa34d;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
-  font-family: "Segoe UI", Tahoma, sans-serif;
+  font-family: Segoe UI, Tahoma, sans-serif;
   font-size: 12px;
-  background: var(--bg-main);
-  color: var(--text-main);
+  background: #121212;
+  color: #d6d6d6;
 }
 
-/* ===== LAYOUT ===== */
-.app {
+.header {
+  padding: 8px 12px;
+  background: #1b1b1b;
+  border-bottom: 1px solid #2c2c2c;
+  color: #4caf50;
+}
+
+.tabs {
   display: flex;
-  height: 100vh;
+  background: #181818;
+  border-bottom: 1px solid #2c2c2c;
 }
 
-/* ===== SIDEBAR ===== */
-.sidebar {
-  width: 210px;
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border);
-}
-
-.sidebar h2 {
-  margin: 0;
-  padding: 12px;
-  font-size: 13px;
-  color: var(--accent);
-  border-bottom: 1px solid var(--border);
-}
-
-.menu button {
-  width: 100%;
-  padding: 10px 14px;
+.tabs button {
+  padding: 8px 14px;
   background: none;
   border: none;
-  color: var(--text-muted);
-  text-align: left;
+  color: #9a9a9a;
   cursor: pointer;
 }
 
-.menu button.active,
-.menu button:hover {
-  background: #242424;
-  color: var(--text-main);
+.tabs button.active {
+  background: #1f1f1f;
+  color: #4caf50;
 }
 
-/* ===== MAIN ===== */
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-/* ===== TOP BAR =====
+th, td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #2c2c2c;
+}
+
+th {
+  color: #9a9a9a;
+  font-weight: 500;
+  background: #191919;
+}
+
+tr:nth-child(even) {
+  background: #202020;
+}
+
+.p1 { color: gold; }
+.p2 { color: silver; }
+.p3 { color: #cd7f32; }
+</style>
+</head>
+
+<body>
+
+<div class="header">Assetto Corsa Server Manager</div>
+
+<div class="tabs">
+  <button class="active" onclick="showTab('classificacao', this)">Timing</button>
+  <button onclick="showTab('live', this)">Live</button>
+</div>
+
+<div id="classificacao">
+  <table>
+    <thead>
+      <tr><th>#</th><th>Driver</th><th>Points</th></tr>
+    </thead>
+    <tbody id="classBody"></tbody>
+  </table>
+</div>
+
+<div id="live" style="display:none">
+  <table>
+    <thead>
+      <tr><th>#</th><th>Driver</th><th>Best</th><th>Last</th></tr>
+    </thead>
+    <tbody id="liveBody"></tbody>
+  </table>
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.getElementById('classificacao').style.display = 'none';
+  document.getElementById('live').style.display = 'none';
+  document.querySelectorAll('.tabs button').forEach(b => b
