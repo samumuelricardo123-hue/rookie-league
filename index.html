@@ -1,198 +1,172 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campeonato Assetto Corsa</title>
-    <style>
-        /* Estilo geral */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #0a0a0a; /* fundo escuro estilo F1 */
-            color: #e0e0e0;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACSM 2.4 - Gerenciador de Servidores</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212 url('https://i.imgur.com/Z6Pq1tU.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
 
-        /* Cabeçalho com logotipo */
-        header {
-            background: linear-gradient(90deg, #0f9d58, #34a853); /* gradiente verde */
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.5);
-        }
+    header {
+      background-color: rgba(0,0,0,0.8);
+      padding: 20px;
+      text-align: center;
+    }
 
-        /* Logotipo RL com gradiente verde moderno */
-        .logo-rl {
-            font-family: 'Arial Black', sans-serif;
-            font-size: 3rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #00ff6a, #00b33c, #007a1f); /* gradiente verde */
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 3px 3px 8px rgba(0,0,0,0.7);
-            display: inline-block;
-            margin-bottom: 0.5rem;
-        }
+    header img.logo {
+      height: 60px;
+    }
 
-        .logo-rl span {
-            display: inline-block;
-            transform: skew(-15deg); /* inclinação para velocidade estilo F1 */
-        }
+    h1, h2 {
+      margin: 10px 0;
+    }
 
-        h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            color: #fff;
-            letter-spacing: 1px;
-        }
+    main {
+      padding: 20px;
+    }
 
-        main {
-            padding: 2rem;
-            max-width: 900px;
-            margin: auto;
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
 
-        /* Tabela estilo F1 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-        }
+    table, th, td {
+      border: 1px solid #fff;
+    }
 
-        th {
-            padding: 0.8rem;
-            border: 1px solid #444;
-            text-align: center;
-            background-color: #1b5e20; /* verde escuro */
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
 
-        td {
-            padding: 0.7rem;
-            border: 1px solid #333;
-            text-align: center;
-            background-color: #121212; /* fundo escuro das células */
-        }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: none;
+    }
 
-        tr:nth-child(even) td {
-            background-color: #1a1a1a; /* linha alternada mais escura */
-        }
+    button {
+      background-color: #1e90ff;
+      color: white;
+      cursor: pointer;
+    }
 
-        /* Botões estilo F1 */
-        button {
-            background-color: #34a853; /* verde */
-            color: #fff;
-            border: none;
-            padding: 0.4rem 0.8rem;
-            margin: 0.1rem;
-            cursor: pointer;
-            border-radius: 4px;
-            font-weight: bold;
-            transition: all 0.2s ease-in-out;
-        }
+    button:hover {
+      background-color: #0d6efd;
+    }
 
-        button:hover {
-            background-color: #0f9d58; /* verde mais escuro */
-            transform: scale(1.05);
-        }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background-color: rgba(0,0,0,0.8);
+    }
 
-        #addDriverBtn {
-            background-color: #1b5e20;
-            padding: 0.6rem 1rem;
-            font-size: 1rem;
-        }
-
-        #addDriverBtn:hover {
-            background-color: #145214;
-            transform: scale(1.05);
-        }
-    </style>
+    /* Extras: cores para status */
+    .status-online {
+      color: #00ff00;
+      font-weight: bold;
+    }
+    .status-offline {
+      color: #ff0000;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="logo-rl">
-            <span>R</span><span>L</span>
-        </div>
-        <h1>Campeonato Assetto Corsa</h1>
-    </header>
+  <header>
+    <img src="https://i.imgur.com/7Xj6A2Q.png" alt="ACSM Logo" class="logo">
+    <h1>Assetto Corsa Server Manager 2.4</h1>
+  </header>
 
-    <main>
-        <table id="pontosTable">
-            <thead>
-                <tr>
-                    <th>Posição</th>
-                    <th>Piloto</th>
-                    <th>Pontos</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Exemplo Piloto</td>
-                    <td>25</td>
-                    <td>
-                        <button onclick="addPoints(this, 25)">+25</button>
-                        <button onclick="addPoints(this, 18)">+18</button>
-                        <button onclick="addPoints(this, 15)">+15</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+  <main>
+    <section class="server-list">
+      <h2>Servidores Ativos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Servidor</th>
+            <th>IP</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="servers">
+          <!-- Servidores serão carregados via JS -->
+        </tbody>
+      </table>
+    </section>
 
-        <button id="addDriverBtn">Adicionar Piloto</button>
-    </main>
+    <section class="add-server">
+      <h2>Adicionar Novo Servidor</h2>
+      <form id="server-form">
+        <input type="text" id="name" placeholder="Nome do servidor" required>
+        <input type="text" id="ip" placeholder="IP do servidor" required>
+        <button type="submit">Adicionar</button>
+      </form>
+    </section>
+  </main>
 
-    <script>
-        // Função para adicionar pontos
-        function addPoints(button, points) {
-            const row = button.closest("tr");
-            const cell = row.querySelector("td:nth-child(3)");
-            let currentPoints = parseInt(cell.textContent);
-            cell.textContent = currentPoints + points;
-            sortTable();
-        }
+  <footer>
+    <p>© 2026 ACSM 2.4</p>
+  </footer>
 
-        // Função para adicionar piloto
-        document.getElementById("addDriverBtn").addEventListener("click", () => {
-            const name = prompt("Nome do piloto:");
-            if (!name) return;
+  <script>
+    const serverForm = document.getElementById('server-form');
+    const serversTbody = document.getElementById('servers');
 
-            const table = document.getElementById("pontosTable").querySelector("tbody");
-            const newRow = document.createElement("tr");
+    let servers = [];
 
-            newRow.innerHTML = `
-                <td></td>
-                <td>${name}</td>
-                <td>0</td>
-                <td>
-                    <button onclick="addPoints(this, 25)">+25</button>
-                    <button onclick="addPoints(this, 18)">+18</button>
-                    <button onclick="addPoints(this, 15)">+15</button>
-                </td>
-            `;
-            table.appendChild(newRow);
-            sortTable();
-        });
+    serverForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const ip = document.getElementById('ip').value;
+      
+      const server = {
+        name,
+        ip,
+        status: 'Offline'
+      };
 
-        // Função para ordenar tabela por pontos
-        function sortTable() {
-            const tbody = document.querySelector("#pontosTable tbody");
-            const rows = Array.from(tbody.querySelectorAll("tr"));
+      servers.push(server);
+      renderServers();
+      serverForm.reset();
+    });
 
-            rows.sort((a, b) => {
-                return parseInt(b.cells[2].textContent) - parseInt(a.cells[2].textContent);
-            });
+    function renderServers() {
+      serversTbody.innerHTML = '';
+      servers.forEach((server, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${server.name}</td>
+          <td>${server.ip}</td>
+          <td class="${server.status === 'Online' ? 'status-online' : 'status-offline'}">${server.status}</td>
+          <td>
+            <button onclick="startServer(${index})">Iniciar</button>
+            <button onclick="stopServer(${index})">Parar</button>
+          </td>
+        `;
+        serversTbody.appendChild(tr);
+      });
+    }
 
-            rows.forEach((row, index) => {
-                row.cells[0].textContent = index + 1;
-                tbody.appendChild(row);
-            });
-        }
-    </script>
+    function startServer(index) {
+      servers[index].status = 'Online';
+      renderServers();
+    }
+
+    function stopServer(index) {
+      servers[index].status = 'Offline';
+      renderServers();
+    }
+  </script>
 </body>
 </html>
