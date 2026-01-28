@@ -2,281 +2,130 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Rookie League • TV Broadcast</title>
+<title>Rookie League • Management</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
   --bg:#02040a;
-  --glass:rgba(18,22,40,.72);
-  --glass-strong:rgba(22,28,55,.85);
+  --glass:rgba(18,22,40,.75);
   --line:rgba(255,255,255,.08);
-
   --accent:#00f0ff;
-  --accent-soft:rgba(0,240,255,.25);
   --gold:#ffd166;
-
   --green:#4dff88;
   --red:#ff4d4d;
-  --purple:#b88cff;
-
   --text:#edf1ff;
   --muted:#8a94c7;
 }
 
-*{
-  box-sizing:border-box;
-  font-family: "Segoe UI", Inter, system-ui, sans-serif;
-}
+*{box-sizing:border-box;font-family:Inter,Segoe UI,Arial,sans-serif}
 
 body{
   margin:0;
-  background:
-    radial-gradient(circle at 20% -10%, #12206a, transparent 40%),
-    radial-gradient(circle at 80% 120%, #08143a, transparent 40%),
-    linear-gradient(180deg,#02040a,#040716);
+  background:linear-gradient(180deg,#02040a,#05091a);
   color:var(--text);
-  overflow:hidden;
 }
 
-/* ================= TOP BAR ================= */
+/* ===== TOP ===== */
 .topbar{
-  height:78px;
+  height:72px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 34px;
-  background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,.35));
+  padding:0 28px;
+  background:rgba(0,0,0,.6);
   backdrop-filter:blur(14px);
   border-bottom:1px solid var(--line);
 }
 
 .logo{
-  font-size:22px;
   font-weight:900;
-  letter-spacing:5px;
+  letter-spacing:4px;
 }
 .logo span{color:var(--accent)}
 
-.session{
-  font-size:13px;
+nav{
+  display:flex;
+  gap:18px;
+}
+
+nav button{
+  background:none;
+  border:none;
   color:var(--muted);
-  letter-spacing:1px;
+  font-size:13px;
+  cursor:pointer;
 }
 
-/* ================= LAYOUT ================= */
-.main{
-  display:grid;
-  grid-template-columns: 1fr 500px;
-  height:calc(100vh - 78px);
+nav button.active{color:var(--accent)}
+
+.admin-status{
+  font-size:12px;
+  color:var(--muted);
 }
 
-/* ================= LEFT ================= */
-.left{
+/* ===== SECTIONS ===== */
+.section{
+  display:none;
   padding:26px;
-  display:flex;
-  flex-direction:column;
-  gap:22px;
 }
 
-/* ================= LEADER ================= */
-.leader{
-  position:relative;
-  display:flex;
-  align-items:center;
-  gap:26px;
-  padding:26px 30px;
-  border-radius:26px;
-  background:var(--glass-strong);
-  border:1px solid var(--line);
-  box-shadow:
-    0 40px 80px rgba(0,0,0,.65),
-    inset 0 0 0 1px rgba(255,255,255,.03);
-  overflow:hidden;
-}
+.section.active{display:block}
 
-.leader::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.12),transparent 65%);
-  animation:shine 7s infinite;
-}
-
-@keyframes shine{
-  from{transform:translateX(-120%)}
-  to{transform:translateX(120%)}
-}
-
-.pos{
-  font-size:70px;
-  font-weight:900;
-  color:var(--gold);
-  line-height:1;
-}
-
-.driver h2{
-  margin:0;
-  font-size:26px;
-  letter-spacing:.5px;
-}
-.driver small{
-  color:var(--muted);
-  font-size:13px;
-}
-
-.meta{
-  display:flex;
-  gap:10px;
-  margin-top:8px;
-}
-
-.meta span{
-  padding:5px 12px;
-  border-radius:14px;
-  font-size:11px;
-  background:#1b2350;
-}
-
-.soft{background:#ff4d4d}
-.medium{background:#ffd166;color:#000}
-.hard{background:#bcd6ff;color:#000}
-
-.delta{
-  margin-left:auto;
-  text-align:right;
-}
-
-.delta small{
-  display:block;
-  color:var(--muted);
-  font-size:11px;
-}
-
-.delta strong{
-  font-size:26px;
-  color:var(--green);
-}
-
-/* ================= RPM ================= */
-.rpm{
-  margin-top:10px;
-  height:8px;
-  border-radius:6px;
-  background:#141c3f;
-  overflow:hidden;
-}
-
-.rpm div{
-  width:82%;
-  height:100%;
-  background:linear-gradient(90deg,#4dff88,#ffd166,#ff4d4d);
-}
-
-/* ================= TABLE ================= */
-.table{
+/* ===== BOX ===== */
+.box{
   background:var(--glass);
-  border-radius:26px;
   border:1px solid var(--line);
-  overflow:hidden;
+  border-radius:22px;
+  padding:22px;
+  max-width:900px;
 }
 
-thead{
-  background:linear-gradient(180deg,#121a3b,#0c1230);
+/* ===== TABLE ===== */
+table{
+  width:100%;
+  border-collapse:collapse;
 }
 
 th,td{
-  padding:14px 18px;
-  font-size:14px;
-}
-
-th{
-  color:var(--muted);
-  font-weight:500;
-}
-
-tbody tr{
+  padding:12px;
   border-bottom:1px solid var(--line);
-}
-
-tbody tr.lead{
-  background:linear-gradient(90deg,rgba(255,209,102,.25),transparent);
-}
-
-/* ================= RIGHT ================= */
-.right{
-  padding:26px;
-  display:flex;
-  flex-direction:column;
-  gap:22px;
-}
-
-/* ================= BOX ================= */
-.box{
-  background:var(--glass);
-  border-radius:26px;
-  padding:22px;
-  border:1px solid var(--line);
-}
-
-/* ================= TRACK ================= */
-.track svg{
-  width:100%;
-  height:300px;
-}
-
-.track path{
-  fill:none;
-  stroke:#3a4675;
-  stroke-width:22;
-  stroke-linecap:round;
-}
-
-.track .ideal{
-  stroke:var(--accent);
-  stroke-width:7;
-  stroke-dasharray:12 18;
-  animation:dash 6s linear infinite;
-}
-
-@keyframes dash{
-  to{stroke-dashoffset:-420}
-}
-
-.car{
-  fill:#fff;
-  filter:drop-shadow(0 0 10px var(--accent));
-}
-
-/* ================= INFO ================= */
-.info p{
-  margin:10px 0;
   font-size:14px;
 }
 
-.flag{
-  width:12px;
-  height:12px;
-  border-radius:50%;
-  display:inline-block;
-  margin-right:8px;
-}
+th{color:var(--muted)}
 
-.green{background:var(--green)}
-.yellow{background:#ffd166}
-.red{background:var(--red)}
-
-/* ================= FOOTER ================= */
-footer{
-  position:absolute;
-  bottom:0;
+/* ===== FORM ===== */
+input,select{
   width:100%;
-  padding:8px;
-  font-size:11px;
-  text-align:center;
-  color:var(--muted);
-  background:linear-gradient(180deg,transparent,rgba(0,0,0,.4));
+  padding:10px;
+  border-radius:12px;
+  border:none;
+  background:#101634;
+  color:white;
+  margin-bottom:12px;
 }
+
+button.primary{
+  background:var(--accent);
+  border:none;
+  padding:10px 18px;
+  border-radius:14px;
+  font-weight:700;
+  cursor:pointer;
+  color:#000;
+}
+
+button.danger{
+  background:var(--red);
+  border:none;
+  padding:6px 12px;
+  border-radius:10px;
+  color:white;
+  cursor:pointer;
+}
+
+.hidden{display:none}
 </style>
 </head>
 
@@ -284,86 +133,137 @@ footer{
 
 <div class="topbar">
   <div class="logo">ROOKIE <span>LEAGUE</span></div>
-  <div class="session">RACE • LAP 8 / 15 • GREEN FLAG</div>
+
+  <nav>
+    <button onclick="show('live')" class="active">Live</button>
+    <button onclick="show('champ')">Campeonato</button>
+    <button onclick="show('signup')">Inscrição</button>
+    <button onclick="show('login')">ADM</button>
+  </nav>
+
+  <div class="admin-status" id="adminStatus">Visitante</div>
 </div>
 
-<div class="main">
-
-<div class="left">
-
-  <div class="leader">
-    <div class="pos">P1</div>
-    <div class="driver">
-      <h2>#27 João Silva</h2>
-      <small>BMW M4 GT3 • Best 1:32.451</small>
-
-      <div class="meta">
-        <span class="medium">MED</span>
-        <span>Fuel 42%</span>
-        <span>ERS 78%</span>
-      </div>
-
-      <div class="rpm"><div></div></div>
-    </div>
-
-    <div class="delta">
-      <small>GAP</small>
-      <strong>+0.000</strong>
-    </div>
+<!-- LIVE -->
+<div id="live" class="section active">
+  <div class="box">
+    <h2>Live Timing</h2>
+    <p>Modo TV / dados ao vivo (em breve)</p>
   </div>
+</div>
 
-  <div class="table">
+<!-- CHAMPIONSHIP -->
+<div id="champ" class="section">
+  <div class="box">
+    <h2>Campeonato</h2>
+
     <table>
       <thead>
         <tr>
           <th>POS</th>
           <th>PILOTO</th>
-          <th>SET</th>
-          <th>VOLTA</th>
-          <th>Δ</th>
+          <th>PONTOS</th>
+          <th class="admin-only hidden">AÇÕES</th>
         </tr>
       </thead>
-      <tbody>
-        <tr class="lead"><td>P1</td><td>#27 João Silva</td><td style="color:#b88cff">S1</td><td>1:32.451</td><td>—</td></tr>
-        <tr><td>P2</td><td>#11 Lucas Rocha</td><td style="color:#4dff88">S2</td><td>1:32.980</td><td>+0.529</td></tr>
-        <tr><td>P3</td><td>#44 Pedro Lima</td><td style="color:#ffd166">S3</td><td>1:33.102</td><td>+0.651</td></tr>
-      </tbody>
+      <tbody id="champTable"></tbody>
     </table>
-  </div>
 
+    <div class="admin-only hidden">
+      <h3>Adicionar / Editar</h3>
+      <input id="champName" placeholder="Nome do piloto">
+      <input id="champPts" placeholder="Pontos">
+      <button class="primary" onclick="addChamp()">Salvar</button>
+    </div>
+  </div>
 </div>
 
-<div class="right">
+<!-- SIGNUP -->
+<div id="signup" class="section">
+  <div class="box">
+    <h2>Inscrição de Pilotos</h2>
 
-  <div class="box track">
-    <svg viewBox="0 0 600 320">
-      <path d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
-      <path class="ideal" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
-      <circle class="car" id="car" cx="80" cy="160" r="8"/>
-    </svg>
+    <input id="sName" placeholder="Nome do piloto">
+    <input id="sCar" placeholder="Carro">
+    <button class="primary" onclick="signup()">Enviar inscrição</button>
+
+    <p style="color:var(--muted);font-size:13px">
+      Sua inscrição será avaliada pelo administrador.
+    </p>
   </div>
-
-  <div class="box info">
-    <p><span class="flag green"></span>Status: <strong>Green Flag</strong></p>
-    <p>Clima: <strong>Clear</strong></p>
-    <p>Servidor: <strong>Rookie League</strong></p>
-    <p>Track Map: <strong>Generated</strong></p>
-  </div>
-
 </div>
 
-</div>
+<!-- LOGIN -->
+<div id="login" class="section">
+  <div class="box">
+    <h2>Login ADM</h2>
 
-<footer>TV Broadcast Overlay • Premium Visual • Ready for Live Data</footer>
+    <input id="user" placeholder="Usuário">
+    <input id="pass" type="password" placeholder="Senha">
+    <button class="primary" onclick="login()">Entrar</button>
+  </div>
+</div>
 
 <script>
-let t=0;
-setInterval(()=>{
-  t+=0.02;
-  const car=document.getElementById("car");
-  car.setAttribute("cx",80+420*Math.abs(Math.sin(t)));
-  car.setAttribute("cy",160+110*Math.sin(t*1.1));
-},50);
+let isAdmin=false;
+let champData=[
+ {name:"João Silva",pts:52},
+ {name:"Lucas Rocha",pts:44}
+];
+
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function renderChamp(){
+  const tb=document.getElementById("champTable");
+  tb.innerHTML="";
+  champData
+    .sort((a,b)=>b.pts-a.pts)
+    .forEach((d,i)=>{
+      tb.innerHTML+=`
+        <tr>
+          <td>P${i+1}</td>
+          <td>${d.name}</td>
+          <td>${d.pts}</td>
+          ${isAdmin?`<td><button class="danger" onclick="delChamp(${i})">X</button></td>`:""}
+        </tr>`;
+    });
+}
+
+function addChamp(){
+  champData.push({
+    name:champName.value,
+    pts:Number(champPts.value)
+  });
+  renderChamp();
+}
+
+function delChamp(i){
+  champData.splice(i,1);
+  renderChamp();
+}
+
+function signup(){
+  alert("Inscrição enviada para o ADM!");
+}
+
+function login(){
+  if(user.value==="ADM" && pass.value==="3636"){
+    isAdmin=true;
+    document.getElementById("adminStatus").innerText="Administrador";
+    document.querySelectorAll(".admin-only").forEach(e=>e.classList.remove("hidden"));
+    alert("Login realizado");
+    renderChamp();
+  }else{
+    alert("Login inválido");
+  }
+}
+
+renderChamp();
 </script>
 
 </body>
