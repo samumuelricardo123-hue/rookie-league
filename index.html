@@ -9,19 +9,14 @@
 :root{
   --bg:#0b0b0d;
   --panel:#15151e;
-  --panel2:#1d1d27;
   --line:#2a2a38;
   --red:#e10600;
   --green:#00ff9c;
-  --yellow:#ffd166;
   --text:#ffffff;
   --muted:#9a9aa5;
 }
 
-*{
-  box-sizing:border-box;
-  font-family:Arial,Helvetica,sans-serif;
-}
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 
 body{
   margin:0;
@@ -31,9 +26,7 @@ body{
 
 /* OVERLAY */
 body.overlay header,
-body.overlay footer{
-  display:none;
-}
+body.overlay footer{display:none}
 
 /* HEADER */
 header{
@@ -46,19 +39,12 @@ header{
   border-bottom:2px solid var(--red);
 }
 
-.brand{
-  font-weight:900;
-  letter-spacing:3px;
-}
+.brand{font-weight:900;letter-spacing:3px}
 .brand span{color:var(--red)}
 
-nav{
-  display:flex;
-  gap:16px;
-}
+nav{display:flex;gap:16px}
 nav button{
-  background:none;
-  border:none;
+  background:none;border:none;
   color:#ccc;
   font-weight:700;
   cursor:pointer;
@@ -68,21 +54,13 @@ nav button.active{
   border-bottom:3px solid var(--red);
 }
 
-.admin{
-  font-size:11px;
-  color:var(--muted);
-}
+.admin{font-size:11px;color:var(--muted)}
 
 /* SECTIONS */
-.section{
-  display:none;
-  padding:20px;
-}
-.section.active{
-  display:block;
-}
+.section{display:none;padding:20px}
+.section.active{display:block}
 
-/* LEADER BAR */
+/* LEADER */
 .leader{
   display:grid;
   grid-template-columns:80px 1fr 160px;
@@ -90,50 +68,21 @@ nav button.active{
   background:linear-gradient(90deg,#000,#14141c);
   border-left:6px solid var(--red);
   padding:18px;
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
-
-.pos{
-  font-size:48px;
-  font-weight:900;
-  text-align:center;
-}
-
-.driver h1{
-  margin:0;
-  font-size:22px;
-}
-.driver small{
-  color:var(--muted);
-}
-
-.stats{
-  display:flex;
-  gap:10px;
-  margin-top:6px;
-}
-.stats span{
-  background:#1e1e28;
-  padding:4px 8px;
-  font-size:11px;
-}
-
-.delta{
-  text-align:right;
-}
-.delta small{
-  color:var(--muted);
-}
-.delta strong{
-  font-size:22px;
-  color:var(--green);
-}
+.pos{font-size:48px;font-weight:900;text-align:center}
+.driver h1{margin:0;font-size:22px}
+.driver small{color:var(--muted)}
+.stats{display:flex;gap:8px;margin-top:6px}
+.stats span{background:#1e1e28;padding:4px 8px;font-size:11px}
+.delta{text-align:right}
+.delta strong{font-size:22px;color:var(--green)}
 
 /* GRID */
 .grid{
   display:grid;
   grid-template-columns:1fr 360px;
-  gap:20px;
+  gap:18px;
 }
 
 /* TABLE */
@@ -141,38 +90,58 @@ nav button.active{
   background:var(--panel);
   border:1px solid var(--line);
 }
-table{
-  width:100%;
-  border-collapse:collapse;
-}
+table{width:100%;border-collapse:collapse}
 th,td{
   padding:10px;
   border-bottom:1px solid var(--line);
   font-size:14px;
 }
-th{
-  color:var(--muted);
-  font-size:12px;
-}
-.lead{
-  background:#1a1a24;
-}
+th{color:var(--muted);font-size:12px}
+.lead{background:#1a1a24}
 
-/* TRACK MAP */
-.track{
+/* WEATHER */
+.weather{
   background:var(--panel);
   border:1px solid var(--line);
-  padding:14px;
+  padding:12px;
+  margin-bottom:12px;
 }
-.track-title{
-  font-size:12px;
+.weather-title{
+  font-size:11px;
   color:var(--muted);
   margin-bottom:8px;
 }
-.track svg{
-  width:100%;
-  height:260px;
+.weather-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  text-align:center;
 }
+.weather-box{
+  background:#1a1a24;
+  padding:10px;
+}
+.weather-box strong{
+  display:block;
+  font-size:18px;
+}
+.weather-box small{
+  font-size:11px;
+  color:var(--muted);
+}
+
+/* TRACK */
+.track{
+  background:var(--panel);
+  border:1px solid var(--line);
+  padding:12px;
+}
+.track-title{
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+.track svg{width:100%;height:240px}
 .track path{
   fill:none;
   stroke:#3a3a4d;
@@ -185,12 +154,8 @@ th{
   stroke-dasharray:14 18;
   animation:dash 6s linear infinite;
 }
-@keyframes dash{
-  to{stroke-dashoffset:-420}
-}
-.car{
-  fill:white;
-}
+@keyframes dash{to{stroke-dashoffset:-420}}
+.car{fill:white}
 
 /* FORMS */
 input{
@@ -217,9 +182,7 @@ button.danger{
   color:white;
   cursor:pointer;
 }
-.hidden{
-  display:none;
-}
+.hidden{display:none}
 
 footer{
   text-align:center;
@@ -252,15 +215,10 @@ footer{
       <h1>#27 João Silva</h1>
       <small>BMW M4 GT3 • 1:32.451</small>
       <div class="stats">
-        <span>MED</span>
-        <span>Fuel 42%</span>
-        <span>ERS 78%</span>
+        <span>MED</span><span>Fuel 42%</span><span>ERS 78%</span>
       </div>
     </div>
-    <div class="delta">
-      <small>GAP</small>
-      <strong>+0.000</strong>
-    </div>
+    <div class="delta"><small>GAP</small><strong>+0.000</strong></div>
   </div>
 
   <div class="grid">
@@ -268,9 +226,7 @@ footer{
     <div class="panel">
       <table>
         <thead>
-          <tr>
-            <th>POS</th><th>PILOTO</th><th>VOLTA</th><th>Δ</th>
-          </tr>
+          <tr><th>POS</th><th>PILOTO</th><th>VOLTA</th><th>Δ</th></tr>
         </thead>
         <tbody>
           <tr class="lead"><td>P1</td><td>#27 João Silva</td><td>1:32.451</td><td>—</td></tr>
@@ -280,51 +236,38 @@ footer{
       </table>
     </div>
 
-    <div class="track">
-      <div class="track-title">TRACK MAP</div>
-      <svg viewBox="0 0 600 320">
-        <path d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
-        <path class="ideal" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
-        <circle id="car" class="car" cx="80" cy="160" r="7"/>
-      </svg>
+    <div>
+      <!-- WEATHER -->
+      <div class="weather">
+        <div class="weather-title">WEATHER</div>
+        <div class="weather-grid">
+          <div class="weather-box">
+            ☀️
+            <strong>Sunny</strong>
+            <small>Clima</small>
+          </div>
+          <div class="weather-box">
+            <strong>26°C</strong>
+            <small>Ar</small>
+          </div>
+          <div class="weather-box">
+            <strong>38°C</strong>
+            <small>Pista</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRACK -->
+      <div class="track">
+        <div class="track-title">TRACK MAP</div>
+        <svg viewBox="0 0 600 320">
+          <path d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
+          <path class="ideal" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
+          <circle id="car" class="car" cx="80" cy="160" r="7"/>
+        </svg>
+      </div>
     </div>
 
-  </div>
-</div>
-
-<!-- CAMPEONATO -->
-<div id="champ" class="section">
-  <div class="panel">
-    <table>
-      <thead>
-        <tr><th>POS</th><th>PILOTO</th><th>PTS</th><th class="admin-only hidden">AÇÕES</th></tr>
-      </thead>
-      <tbody id="champTable"></tbody>
-    </table>
-
-    <div class="admin-only hidden" style="padding:12px">
-      <input id="cName" placeholder="Piloto">
-      <input id="cPts" placeholder="Pontos">
-      <button class="primary" onclick="addChamp()">Adicionar</button>
-    </div>
-  </div>
-</div>
-
-<!-- INSCRIÇÃO -->
-<div id="signup" class="section">
-  <div class="panel" style="padding:16px">
-    <input placeholder="Nome do Piloto">
-    <input placeholder="Carro">
-    <button class="primary">Enviar</button>
-  </div>
-</div>
-
-<!-- LOGIN -->
-<div id="login" class="section">
-  <div class="panel" style="padding:16px">
-    <input id="user" placeholder="Usuário">
-    <input id="pass" type="password" placeholder="Senha">
-    <button class="primary" onclick="login()">Entrar</button>
   </div>
 </div>
 
@@ -341,53 +284,6 @@ function show(id,btn){
   document.getElementById(id).classList.add("active");
   btn.classList.add("active");
 }
-
-/* CAMPEONATO */
-let isAdmin=false;
-let champ=[
-  {name:"João Silva",pts:52},
-  {name:"Lucas Rocha",pts:44}
-];
-
-function renderChamp(){
-  const tb=document.getElementById("champTable");
-  tb.innerHTML="";
-  champ.sort((a,b)=>b.pts-a.pts).forEach((d,i)=>{
-    tb.innerHTML+=`
-      <tr>
-        <td>P${i+1}</td>
-        <td>${d.name}</td>
-        <td>${d.pts}</td>
-        ${isAdmin?`<td><button class="danger" onclick="delChamp(${i})">X</button></td>`:""}
-      </tr>`;
-  });
-}
-
-function addChamp(){
-  champ.push({name:cName.value,pts:Number(cPts.value)});
-  cName.value="";cPts.value="";
-  renderChamp();
-}
-
-function delChamp(i){
-  champ.splice(i,1);
-  renderChamp();
-}
-
-/* LOGIN */
-function login(){
-  if(user.value==="ADM" && pass.value==="3636"){
-    isAdmin=true;
-    adminStatus.innerText="Administrador";
-    document.querySelectorAll(".admin-only").forEach(e=>e.classList.remove("hidden"));
-    alert("Login ADM realizado");
-    renderChamp();
-  }else{
-    alert("Login inválido");
-  }
-}
-
-renderChamp();
 
 /* TRACK ANIMATION */
 let t=0;
