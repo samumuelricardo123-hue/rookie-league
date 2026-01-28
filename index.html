@@ -2,18 +2,20 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Rookie League • Management</title>
+<title>Rookie League • Broadcast</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
   --bg:#02040a;
   --glass:rgba(18,22,40,.75);
+  --glass-strong:rgba(22,28,55,.88);
   --line:rgba(255,255,255,.08);
   --accent:#00f0ff;
   --gold:#ffd166;
   --green:#4dff88;
   --red:#ff4d4d;
+  --purple:#b88cff;
   --text:#edf1ff;
   --muted:#8a94c7;
 }
@@ -26,7 +28,12 @@ body{
   color:var(--text);
 }
 
-/* ===== TOP ===== */
+/* OVERLAY */
+body.overlay{background:transparent}
+body.overlay .topbar,
+body.overlay footer{display:none}
+
+/* TOPBAR */
 .topbar{
   height:72px;
   display:flex;
@@ -44,59 +51,111 @@ body{
 }
 .logo span{color:var(--accent)}
 
-nav{
-  display:flex;
-  gap:18px;
-}
-
+nav{display:flex;gap:16px}
 nav button{
   background:none;
   border:none;
   color:var(--muted);
-  font-size:13px;
   cursor:pointer;
 }
-
 nav button.active{color:var(--accent)}
 
-.admin-status{
-  font-size:12px;
-  color:var(--muted);
-}
+.admin-status{font-size:12px;color:var(--muted)}
 
-/* ===== SECTIONS ===== */
-.section{
-  display:none;
-  padding:26px;
-}
-
+/* SECTIONS */
+.section{display:none;padding:26px}
 .section.active{display:block}
 
-/* ===== BOX ===== */
+/* BOX */
 .box{
   background:var(--glass);
+  border-radius:26px;
   border:1px solid var(--line);
-  border-radius:22px;
   padding:22px;
-  max-width:900px;
 }
 
-/* ===== TABLE ===== */
-table{
-  width:100%;
-  border-collapse:collapse;
+/* LIVE */
+.leader{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  padding:26px;
+  border-radius:26px;
+  background:var(--glass-strong);
+  border:1px solid var(--line);
+  margin-bottom:24px;
 }
 
+.pos{
+  font-size:64px;
+  font-weight:900;
+  color:var(--gold);
+}
+
+.driver h2{margin:0}
+.driver small{color:var(--muted)}
+
+.meta{display:flex;gap:10px;margin-top:8px}
+.meta span{
+  padding:4px 10px;
+  border-radius:12px;
+  font-size:11px;
+  background:#1b2350;
+}
+.medium{background:#ffd166;color:#000}
+
+.delta{margin-left:auto;text-align:right}
+.delta strong{font-size:26px;color:var(--green)}
+
+.rpm{
+  margin-top:8px;
+  height:8px;
+  background:#141c3f;
+  border-radius:6px;
+  overflow:hidden;
+}
+.rpm div{
+  width:80%;
+  height:100%;
+  background:linear-gradient(90deg,#4dff88,#ffd166,#ff4d4d);
+}
+
+/* TABLE */
+.table{
+  background:var(--glass);
+  border-radius:26px;
+  border:1px solid var(--line);
+  overflow:hidden;
+}
+
+table{width:100%;border-collapse:collapse}
 th,td{
-  padding:12px;
+  padding:14px;
   border-bottom:1px solid var(--line);
-  font-size:14px;
 }
-
 th{color:var(--muted)}
 
-/* ===== FORM ===== */
-input,select{
+.lead{background:linear-gradient(90deg,rgba(255,209,102,.25),transparent)}
+
+/* TRACK */
+.track svg{width:100%;height:300px}
+.track path{
+  fill:none;
+  stroke:#3a4675;
+  stroke-width:22;
+  stroke-linecap:round;
+}
+.ideal{
+  stroke:var(--accent);
+  stroke-width:7;
+  stroke-dasharray:12 18;
+  animation:dash 6s linear infinite;
+}
+@keyframes dash{to{stroke-dashoffset:-420}}
+.car{fill:#fff;filter:drop-shadow(0 0 10px var(--accent))}
+
+/* FORM */
+input{
   width:100%;
   padding:10px;
   border-radius:12px;
@@ -119,13 +178,20 @@ button.primary{
 button.danger{
   background:var(--red);
   border:none;
-  padding:6px 12px;
+  padding:6px 10px;
   border-radius:10px;
   color:white;
   cursor:pointer;
 }
 
 .hidden{display:none}
+
+footer{
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+  padding:6px;
+}
 </style>
 </head>
 
@@ -133,63 +199,83 @@ button.danger{
 
 <div class="topbar">
   <div class="logo">ROOKIE <span>LEAGUE</span></div>
-
   <nav>
-    <button onclick="show('live')" class="active">Live</button>
+    <button class="active" onclick="show('live')">Live</button>
     <button onclick="show('champ')">Campeonato</button>
     <button onclick="show('signup')">Inscrição</button>
     <button onclick="show('login')">ADM</button>
   </nav>
-
   <div class="admin-status" id="adminStatus">Visitante</div>
 </div>
 
 <!-- LIVE -->
 <div id="live" class="section active">
-  <div class="box">
-    <h2>Live Timing</h2>
-    <p>Modo TV / dados ao vivo (em breve)</p>
+  <div class="leader">
+    <div class="pos">P1</div>
+    <div class="driver">
+      <h2>#27 João Silva</h2>
+      <small>BMW M4 GT3 • Best 1:32.451</small>
+      <div class="meta">
+        <span class="medium">MED</span>
+        <span>Fuel 42%</span>
+        <span>ERS 78%</span>
+      </div>
+      <div class="rpm"><div></div></div>
+    </div>
+    <div class="delta">
+      <small>GAP</small>
+      <strong>+0.000</strong>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 420px;gap:22px">
+    <div class="table">
+      <table>
+        <thead>
+          <tr><th>POS</th><th>PILOTO</th><th>SET</th><th>VOLTA</th><th>Δ</th></tr>
+        </thead>
+        <tbody>
+          <tr class="lead"><td>P1</td><td>#27 João Silva</td><td style="color:#b88cff">S1</td><td>1:32.451</td><td>—</td></tr>
+          <tr><td>P2</td><td>#11 Lucas Rocha</td><td style="color:#4dff88">S2</td><td>1:32.980</td><td>+0.529</td></tr>
+          <tr><td>P3</td><td>#44 Pedro Lima</td><td style="color:#ffd166">S3</td><td>1:33.102</td><td>+0.651</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box track">
+      <svg viewBox="0 0 600 320">
+        <path d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
+        <path class="ideal" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
+        <circle class="car" id="car" cx="80" cy="160" r="8"/>
+      </svg>
+    </div>
   </div>
 </div>
 
-<!-- CHAMPIONSHIP -->
+<!-- CAMPEONATO -->
 <div id="champ" class="section">
   <div class="box">
     <h2>Campeonato</h2>
-
     <table>
-      <thead>
-        <tr>
-          <th>POS</th>
-          <th>PILOTO</th>
-          <th>PONTOS</th>
-          <th class="admin-only hidden">AÇÕES</th>
-        </tr>
-      </thead>
+      <thead><tr><th>POS</th><th>PILOTO</th><th>PTS</th><th class="admin-only hidden">AÇÕES</th></tr></thead>
       <tbody id="champTable"></tbody>
     </table>
 
     <div class="admin-only hidden">
-      <h3>Adicionar / Editar</h3>
-      <input id="champName" placeholder="Nome do piloto">
+      <input id="champName" placeholder="Piloto">
       <input id="champPts" placeholder="Pontos">
       <button class="primary" onclick="addChamp()">Salvar</button>
     </div>
   </div>
 </div>
 
-<!-- SIGNUP -->
+<!-- INSCRIÇÃO -->
 <div id="signup" class="section">
   <div class="box">
-    <h2>Inscrição de Pilotos</h2>
-
-    <input id="sName" placeholder="Nome do piloto">
-    <input id="sCar" placeholder="Carro">
-    <button class="primary" onclick="signup()">Enviar inscrição</button>
-
-    <p style="color:var(--muted);font-size:13px">
-      Sua inscrição será avaliada pelo administrador.
-    </p>
+    <h2>Inscrição</h2>
+    <input placeholder="Nome do piloto">
+    <input placeholder="Carro">
+    <button class="primary" onclick="alert('Inscrição enviada!')">Enviar</button>
   </div>
 </div>
 
@@ -197,20 +283,21 @@ button.danger{
 <div id="login" class="section">
   <div class="box">
     <h2>Login ADM</h2>
-
     <input id="user" placeholder="Usuário">
     <input id="pass" type="password" placeholder="Senha">
     <button class="primary" onclick="login()">Entrar</button>
   </div>
 </div>
 
-<script>
-let isAdmin=false;
-let champData=[
- {name:"João Silva",pts:52},
- {name:"Lucas Rocha",pts:44}
-];
+<footer>Rookie League • Broadcast Mode</footer>
 
+<script>
+/* OVERLAY */
+if(location.search.includes("overlay")){
+  document.body.classList.add("overlay");
+}
+
+/* NAV */
 function show(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
@@ -218,27 +305,29 @@ function show(id){
   event.target.classList.add('active');
 }
 
+/* ADMIN */
+let isAdmin=false;
+let champData=[
+ {name:"João Silva",pts:52},
+ {name:"Lucas Rocha",pts:44}
+];
+
 function renderChamp(){
   const tb=document.getElementById("champTable");
   tb.innerHTML="";
-  champData
-    .sort((a,b)=>b.pts-a.pts)
-    .forEach((d,i)=>{
-      tb.innerHTML+=`
-        <tr>
-          <td>P${i+1}</td>
-          <td>${d.name}</td>
-          <td>${d.pts}</td>
-          ${isAdmin?`<td><button class="danger" onclick="delChamp(${i})">X</button></td>`:""}
-        </tr>`;
-    });
+  champData.sort((a,b)=>b.pts-a.pts).forEach((d,i)=>{
+    tb.innerHTML+=`
+      <tr>
+        <td>P${i+1}</td>
+        <td>${d.name}</td>
+        <td>${d.pts}</td>
+        ${isAdmin?`<td><button class="danger" onclick="delChamp(${i})">X</button></td>`:""}
+      </tr>`;
+  });
 }
 
 function addChamp(){
-  champData.push({
-    name:champName.value,
-    pts:Number(champPts.value)
-  });
+  champData.push({name:champName.value,pts:Number(champPts.value)});
   renderChamp();
 }
 
@@ -247,14 +336,10 @@ function delChamp(i){
   renderChamp();
 }
 
-function signup(){
-  alert("Inscrição enviada para o ADM!");
-}
-
 function login(){
   if(user.value==="ADM" && pass.value==="3636"){
     isAdmin=true;
-    document.getElementById("adminStatus").innerText="Administrador";
+    adminStatus.innerText="Administrador";
     document.querySelectorAll(".admin-only").forEach(e=>e.classList.remove("hidden"));
     alert("Login realizado");
     renderChamp();
@@ -264,6 +349,14 @@ function login(){
 }
 
 renderChamp();
+
+/* CAR ANIMATION */
+let t=0;
+setInterval(()=>{
+  t+=0.02;
+  car.setAttribute("cx",80+420*Math.abs(Math.sin(t)));
+  car.setAttribute("cy",160+110*Math.sin(t*1.1));
+},50);
 </script>
 
 </body>
