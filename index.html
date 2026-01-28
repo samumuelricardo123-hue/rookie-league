@@ -2,126 +2,231 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Rookie League | Broadcast</title>
+<title>Rookie League | Live Timing</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
-  --bg:#05070f;
-  --panel:rgba(15,20,40,.85);
-  --panel-strong:rgba(20,26,55,.95);
-  --line:rgba(255,255,255,.08);
-  --accent:#00e5ff;
-  --gold:#ffcf5c;
-  --green:#3dff9a;
-  --red:#ff4d4d;
-  --text:#f2f5ff;
-  --muted:#9aa4d6;
+  --bg:#0b0b0d;
+  --panel:#15151e;
+  --panel2:#1d1d27;
+  --line:#2a2a38;
+  --red:#e10600;
+  --green:#00ff9c;
+  --yellow:#ffd166;
+  --text:#ffffff;
+  --muted:#9a9aa5;
 }
-*{box-sizing:border-box;font-family:Inter,Segoe UI,Arial,sans-serif}
+
+*{
+  box-sizing:border-box;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
 body{
   margin:0;
-  background:radial-gradient(1200px 600px at top,#0a0f2a,var(--bg));
+  background:var(--bg);
   color:var(--text);
 }
 
 /* OVERLAY */
-body.overlay{background:transparent}
-body.overlay header,body.overlay footer{display:none}
+body.overlay header,
+body.overlay footer{
+  display:none;
+}
 
 /* HEADER */
 header{
-  height:72px;
+  height:64px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 30px;
-  background:rgba(0,0,0,.55);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--line);
+  padding:0 24px;
+  background:#000;
+  border-bottom:2px solid var(--red);
 }
-.brand{font-weight:900;letter-spacing:5px}
-.brand span{color:var(--accent)}
-nav{display:flex;gap:18px}
+
+.brand{
+  font-weight:900;
+  letter-spacing:3px;
+}
+.brand span{color:var(--red)}
+
+nav{
+  display:flex;
+  gap:16px;
+}
 nav button{
-  background:none;border:none;
-  color:var(--muted);
-  font-weight:600;
+  background:none;
+  border:none;
+  color:#ccc;
+  font-weight:700;
   cursor:pointer;
 }
-nav button.active{color:var(--accent)}
-.admin{font-size:12px;color:var(--muted)}
+nav button.active{
+  color:white;
+  border-bottom:3px solid var(--red);
+}
+
+.admin{
+  font-size:11px;
+  color:var(--muted);
+}
 
 /* SECTIONS */
-.section{display:none;padding:28px}
-.section.active{display:block}
+.section{
+  display:none;
+  padding:20px;
+}
+.section.active{
+  display:block;
+}
 
-/* LIVE */
+/* LEADER BAR */
 .leader{
   display:grid;
-  grid-template-columns:90px 1fr 180px;
-  gap:26px;
-  padding:28px;
-  border-radius:30px;
-  background:var(--panel-strong);
-  border:1px solid var(--line);
-  margin-bottom:26px;
+  grid-template-columns:80px 1fr 160px;
+  align-items:center;
+  background:linear-gradient(90deg,#000,#14141c);
+  border-left:6px solid var(--red);
+  padding:18px;
+  margin-bottom:20px;
 }
-.pos{font-size:64px;font-weight:900;color:var(--gold);display:flex;align-items:center;justify-content:center}
-.driver h1{margin:0;font-size:26px}
-.driver small{color:var(--muted)}
-.tags{display:flex;gap:8px;margin-top:8px}
-.tags span{font-size:11px;padding:5px 10px;border-radius:14px;background:#1c234b}
-.delta{text-align:right;display:flex;flex-direction:column;justify-content:center}
-.delta strong{font-size:28px;color:var(--green)}
-.rpm{margin-top:12px;height:6px;background:#10163b;border-radius:6px;overflow:hidden}
-.rpm div{width:80%;height:100%;background:linear-gradient(90deg,#3dff9a,#ffcf5c,#ff4d4d)}
+
+.pos{
+  font-size:48px;
+  font-weight:900;
+  text-align:center;
+}
+
+.driver h1{
+  margin:0;
+  font-size:22px;
+}
+.driver small{
+  color:var(--muted);
+}
+
+.stats{
+  display:flex;
+  gap:10px;
+  margin-top:6px;
+}
+.stats span{
+  background:#1e1e28;
+  padding:4px 8px;
+  font-size:11px;
+}
+
+.delta{
+  text-align:right;
+}
+.delta small{
+  color:var(--muted);
+}
+.delta strong{
+  font-size:22px;
+  color:var(--green);
+}
 
 /* GRID */
-.grid{display:grid;grid-template-columns:1fr 420px;gap:26px}
+.grid{
+  display:grid;
+  grid-template-columns:1fr 360px;
+  gap:20px;
+}
 
 /* TABLE */
 .panel{
   background:var(--panel);
-  border-radius:26px;
   border:1px solid var(--line);
-  padding:22px;
 }
-table{width:100%;border-collapse:collapse}
-th,td{padding:12px;border-bottom:1px solid var(--line)}
-th{color:var(--muted);font-size:12px}
-.lead{background:linear-gradient(90deg,rgba(255,207,92,.25),transparent)}
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+th,td{
+  padding:10px;
+  border-bottom:1px solid var(--line);
+  font-size:14px;
+}
+th{
+  color:var(--muted);
+  font-size:12px;
+}
+.lead{
+  background:#1a1a24;
+}
+
+/* TRACK MAP */
+.track{
+  background:var(--panel);
+  border:1px solid var(--line);
+  padding:14px;
+}
+.track-title{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+.track svg{
+  width:100%;
+  height:260px;
+}
+.track path{
+  fill:none;
+  stroke:#3a3a4d;
+  stroke-width:20;
+  stroke-linecap:round;
+}
+.ideal{
+  stroke:var(--red);
+  stroke-width:6;
+  stroke-dasharray:14 18;
+  animation:dash 6s linear infinite;
+}
+@keyframes dash{
+  to{stroke-dashoffset:-420}
+}
+.car{
+  fill:white;
+}
 
 /* FORMS */
 input{
   width:100%;
-  padding:12px;
-  border-radius:14px;
-  border:none;
-  background:#10163b;
+  padding:10px;
+  margin-bottom:10px;
+  background:#101018;
+  border:1px solid var(--line);
   color:white;
-  margin-bottom:12px;
 }
 button.primary{
-  background:var(--accent);
-  border:none;
-  padding:12px 20px;
-  border-radius:18px;
-  font-weight:800;
-  cursor:pointer;
-  color:#000;
-}
-button.danger{
   background:var(--red);
   border:none;
-  padding:6px 10px;
-  border-radius:12px;
+  padding:10px;
+  width:100%;
+  font-weight:800;
   color:white;
   cursor:pointer;
 }
-.hidden{display:none}
+button.danger{
+  background:#a00000;
+  border:none;
+  padding:4px 8px;
+  color:white;
+  cursor:pointer;
+}
+.hidden{
+  display:none;
+}
 
-footer{text-align:center;font-size:11px;color:var(--muted);padding:6px}
+footer{
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+  padding:6px;
+}
 </style>
 </head>
 
@@ -140,29 +245,64 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:6px}
 
 <!-- LIVE -->
 <div id="live" class="section active">
+
   <div class="leader">
     <div class="pos">P1</div>
     <div class="driver">
       <h1>#27 João Silva</h1>
-      <small>BMW M4 GT3 • Best 1:32.451</small>
-      <div class="tags"><span>MED</span><span>Fuel 42%</span><span>ERS 78%</span></div>
-      <div class="rpm"><div></div></div>
+      <small>BMW M4 GT3 • 1:32.451</small>
+      <div class="stats">
+        <span>MED</span>
+        <span>Fuel 42%</span>
+        <span>ERS 78%</span>
+      </div>
     </div>
-    <div class="delta"><small>GAP</small><strong>+0.000</strong></div>
+    <div class="delta">
+      <small>GAP</small>
+      <strong>+0.000</strong>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="panel">
+      <table>
+        <thead>
+          <tr>
+            <th>POS</th><th>PILOTO</th><th>VOLTA</th><th>Δ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="lead"><td>P1</td><td>#27 João Silva</td><td>1:32.451</td><td>—</td></tr>
+          <tr><td>P2</td><td>#11 Lucas Rocha</td><td>1:32.980</td><td>+0.529</td></tr>
+          <tr><td>P3</td><td>#44 Pedro Lima</td><td>1:33.102</td><td>+0.651</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="track">
+      <div class="track-title">TRACK MAP</div>
+      <svg viewBox="0 0 600 320">
+        <path d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
+        <path class="ideal" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
+        <circle id="car" class="car" cx="80" cy="160" r="7"/>
+      </svg>
+    </div>
+
   </div>
 </div>
 
 <!-- CAMPEONATO -->
 <div id="champ" class="section">
   <div class="panel">
-    <h2>Classificação</h2>
     <table>
-      <thead><tr><th>POS</th><th>PILOTO</th><th>PTS</th><th class="admin-only hidden">AÇÕES</th></tr></thead>
+      <thead>
+        <tr><th>POS</th><th>PILOTO</th><th>PTS</th><th class="admin-only hidden">AÇÕES</th></tr>
+      </thead>
       <tbody id="champTable"></tbody>
     </table>
 
-    <div class="admin-only hidden">
-      <h3>Editar</h3>
+    <div class="admin-only hidden" style="padding:12px">
       <input id="cName" placeholder="Piloto">
       <input id="cPts" placeholder="Pontos">
       <button class="primary" onclick="addChamp()">Adicionar</button>
@@ -172,32 +312,29 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:6px}
 
 <!-- INSCRIÇÃO -->
 <div id="signup" class="section">
-  <div class="panel">
-    <h2>Inscrição</h2>
+  <div class="panel" style="padding:16px">
     <input placeholder="Nome do Piloto">
     <input placeholder="Carro">
-    <button class="primary" onclick="alert('Inscrição enviada!')">Enviar</button>
+    <button class="primary">Enviar</button>
   </div>
 </div>
 
 <!-- LOGIN -->
 <div id="login" class="section">
-  <div class="panel">
-    <h2>Login ADM</h2>
+  <div class="panel" style="padding:16px">
     <input id="user" placeholder="Usuário">
     <input id="pass" type="password" placeholder="Senha">
     <button class="primary" onclick="login()">Entrar</button>
   </div>
 </div>
 
-<footer>Rookie League • Broadcast System</footer>
+<footer>Rookie League • Live Timing</footer>
 
 <script>
 if(location.search.includes("overlay")){
   document.body.classList.add("overlay");
 }
 
-/* NAV */
 function show(id,btn){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
@@ -243,7 +380,7 @@ function login(){
     isAdmin=true;
     adminStatus.innerText="Administrador";
     document.querySelectorAll(".admin-only").forEach(e=>e.classList.remove("hidden"));
-    alert("Login realizado");
+    alert("Login ADM realizado");
     renderChamp();
   }else{
     alert("Login inválido");
@@ -251,6 +388,14 @@ function login(){
 }
 
 renderChamp();
+
+/* TRACK ANIMATION */
+let t=0;
+setInterval(()=>{
+  t+=0.02;
+  car.setAttribute("cx",80+420*Math.abs(Math.sin(t)));
+  car.setAttribute("cy",160+110*Math.sin(t*1.1));
+},50);
 </script>
 
 </body>
