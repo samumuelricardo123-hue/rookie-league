@@ -2,202 +2,113 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ACSM 2.4 - Live Lap Dashboard</title>
+<title>Rookie League • Live Timing</title>
+
 <style>
-body, h1, h2, h3, p { margin:0; padding:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { background: #121212; color: #fff; min-height:100vh; }
-header { background: #1f1f1f; padding: 20px; display:flex; align-items:center; gap:15px; border-bottom:2px solid #1e90ff;}
-header img.logo { height:50px; }
-header h1 { font-size:1.8rem; color:#1e90ff; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #0b0b0b;
+  color: #eaeaea;
+}
+header {
+  background: #111;
+  padding: 20px;
+  border-bottom: 2px solid #1e90ff;
+}
+header h1 {
+  margin: 0;
+  color: #1e90ff;
+}
+header span {
+  font-size: 14px;
+  color: #888;
+}
 
-/* Layout */
-main { display:flex; flex-direction:column; padding:20px; gap:30px; }
-
-/* Dashboard cards */
-.dashboard { display:flex; flex-wrap:wrap; gap:20px; }
-.card { background:#1f1f1f; padding:15px; border-radius:10px; width:240px; box-shadow:0 0 10px rgba(0,0,0,0.5); display:flex; flex-direction:column; gap:10px; transition: transform 0.2s;}
-.card:hover { transform:translateY(-5px);}
-.card h3 { font-size:1.2rem; color:#1e90ff; }
-.status { font-weight:bold; padding:5px 10px; border-radius:5px; text-align:center;}
-.status.online { background:#00c853; color:#000; }
-.status.offline { background:#d50000; color:#fff; }
-
-/* Lap time display */
-.lap-time { font-size:1.4rem; color:#1e90ff; text-align:center; font-weight:bold; }
-
-/* Table servers */
-table { width:100%; border-collapse:collapse; background:#1f1f1f; border-radius:10px; overflow:hidden; }
-th, td { padding:12px 15px; text-align:center; }
-th { background:#1e90ff; color:#fff; }
-td { border-bottom:1px solid #333; }
-button { padding:6px 12px; border-radius:5px; border:none; cursor:pointer; font-weight:bold; }
-button.start { background:#00c853; color:#000; }
-button.stop { background:#d50000; color:#fff; }
-button:hover { opacity:0.8; }
-
-/* Form */
-.add-server { background:#1f1f1f; padding:20px; border-radius:10px; display:flex; flex-direction:column; gap:10px; }
-.add-server input { padding:10px; border-radius:5px; border:none; }
-.add-server button { width:150px; background:#1e90ff; color:#fff; }
-
-/* Filters */
-.filters { display:flex; gap:10px; margin-bottom:10px; }
-.filters button { background:#333; color:#fff; padding:6px 12px; border-radius:5px; border:none; }
-.filters button.active { background:#1e90ff; }
-
-/* Footer */
-footer { text-align:center; padding:15px; background:#1f1f1f; margin-top:20px; border-top:2px solid #1e90ff; }
-
-/* Responsivo */
-@media(max-width:768px){ .dashboard { justify-content:center; } table, .add-server { overflow-x:auto; } }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th {
+  background: #1e90ff;
+  color: #000;
+  padding: 10px;
+  font-size: 14px;
+}
+td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #222;
+}
+tr:nth-child(even) {
+  background: #101010;
+}
+.best {
+  color: #00e676;
+  font-weight: bold;
+}
+footer {
+  padding: 10px;
+  text-align: center;
+  font-size: 12px;
+  color: #555;
+}
 </style>
 </head>
+
 <body>
 
 <header>
-  <img src="https://i.imgur.com/7Xj6A2Q.png" alt="ACSM Logo" class="logo">
-  <h1>ACSM 2.4 - Live Lap Dashboard</h1>
+  <h1>Rookie League</h1>
+  <span>Live Timing • sTracker • Tempo real</span>
 </header>
 
-<main>
-  <!-- Dashboard Cards -->
-  <section class="dashboard" id="dashboard-cards"></section>
-
-  <!-- Filters -->
-  <div class="filters">
-    <button class="active" onclick="filterServers('all')">Todos</button>
-    <button onclick="filterServers('Online')">Online</button>
-    <button onclick="filterServers('Offline')">Offline</button>
-  </div>
-
-  <!-- Table -->
-  <section class="server-list">
-    <table>
-      <thead>
-        <tr>
-          <th>Servidor</th>
-          <th>IP</th>
-          <th>Status</th>
-          <th>Última Volta</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody id="servers-table"></tbody>
-    </table>
-  </section>
-
-  <!-- Add Server Form -->
-  <section class="add-server">
-    <h2>Adicionar Novo Servidor</h2>
-    <form id="server-form">
-      <input type="text" id="name" placeholder="Nome do servidor" required>
-      <input type="text" id="ip" placeholder="IP do servidor" required>
-      <button type="submit">Adicionar Servidor</button>
-    </form>
-  </section>
-</main>
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>Piloto</th>
+  <th>Carro</th>
+  <th>Última Volta</th>
+  <th>Melhor Volta</th>
+</tr>
+</thead>
+<tbody id="grid">
+<tr><td colspan="5">Carregando dados do servidor…</td></tr>
+</tbody>
+</table>
 
 <footer>
-  <p>© 2026 ACSM 2.4 Live Dashboard</p>
+  Assetto Corsa • Emperor Servers • sTracker
 </footer>
 
 <script>
-let servers = [];
+const API_URL = "http://plugins.rookieleague.emperorservers.com:9605/lapstat";
 
-const serverForm = document.getElementById('server-form');
-const serversTable = document.getElementById('servers-table');
-const dashboardCards = document.getElementById('dashboard-cards');
+function msToTime(ms) {
+  if (!ms || ms <= 0) return "-";
+  let minutes = Math.floor(ms / 60000);
+  let seconds = ((ms % 60000) / 1000).toFixed(3);
+  return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+}
 
-serverForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const name = document.getElementById('name').value;
-  const ip = document.getElementById('ip').value;
+async function loadLiveTiming() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
 
-  servers.push({ name, ip, status: 'Offline', lapTime: '--:--:---' });
-  renderAll();
-  serverForm.reset();
-});
+    const drivers = data.lapStat || data;
+    const tbody = document.getElementById("grid");
+    tbody.innerHTML = "";
 
-// Live lap simulator
-function simulateLapTime() {
-  servers.forEach(s => {
-    if(s.status === 'Online'){
-      // gera tempo aleatório entre 1:20.000 e 2:00.000
-      const minutes = Math.floor(Math.random()*0.7*60 + 1.2*60); // 80s a 120s
-      const seconds = minutes % 60;
-      const ms = Math.floor(Math.random()*1000);
-      s.lapTime = `${Math.floor(minutes/60)}:${seconds.toString().padStart(2,'0')}:${ms.toString().padStart(3,'0')}`;
+    if (!drivers || drivers.length === 0) {
+      tbody.innerHTML = "<tr><td colspan='5'>Servidor vazio</td></tr>";
+      return;
     }
-  });
-  renderAll(currentFilter);
-}
 
-// Render cards e tabela
-function renderAll(filter='all'){
-  // Dashboard cards
-  dashboardCards.innerHTML = '';
-  servers.forEach((s,i) => {
-    if(filter !== 'all' && s.status !== filter) return;
-    const card = document.createElement('div');
-    card.classList.add('card');
-    card.innerHTML = `
-      <h3>${s.name}</h3>
-      <p>${s.ip}</p>
-      <p class="status ${s.status.toLowerCase()}">${s.status}</p>
-      <p class="lap-time">${s.lapTime}</p>
-      <div style="display:flex;gap:10px;">
-        <button class="start" onclick="startServer(${i})">Iniciar</button>
-        <button class="stop" onclick="stopServer(${i})">Parar</button>
-      </div>
-    `;
-    dashboardCards.appendChild(card);
-  });
-
-  // Table
-  serversTable.innerHTML = '';
-  servers.forEach((s,i) => {
-    if(filter !== 'all' && s.status !== filter) return;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${s.name}</td>
-      <td>${s.ip}</td>
-      <td class="${s.status.toLowerCase()}">${s.status}</td>
-      <td class="lap-time">${s.lapTime}</td>
-      <td>
-        <button class="start" onclick="startServer(${i})">Iniciar</button>
-        <button class="stop" onclick="stopServer(${i})">Parar</button>
-      </td>
-    `;
-    serversTable.appendChild(tr);
-  });
-}
-
-// Start / Stop
-function startServer(index){
-  servers[index].status = 'Online';
-  renderAll(currentFilter);
-}
-function stopServer(index){
-  servers[index].status = 'Offline';
-  servers[index].lapTime = '--:--:---';
-  renderAll(currentFilter);
-}
-
-// Filter
-let currentFilter = 'all';
-function filterServers(status){
-  currentFilter = status;
-  document.querySelectorAll('.filters button').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-  renderAll(status);
-}
-
-renderAll();
-
-// Atualiza live time a cada segundo
-setInterval(simulateLapTime, 1000);
-</script>
-
-</body>
-</html>
+    drivers.forEach((d, i) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${d.driverName || d.name}</td>
+          <td>${d.car ||
