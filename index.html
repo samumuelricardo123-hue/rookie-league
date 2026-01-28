@@ -10,58 +10,71 @@ body {
   background:#050505;
   color:#fff;
   font-family:Segoe UI, Arial;
+  display:flex;
+}
+
+#left {
+  width:70%;
+  padding:20px;
+}
+
+#right {
+  width:30%;
+  background:#0b0b0b;
+  padding:20px;
 }
 
 #title {
-  background:#111;
-  padding:10px 20px;
   font-size:22px;
   color:#1e90ff;
   border-bottom:2px solid #1e90ff;
-}
-
-#board {
-  padding:10px 20px;
+  margin-bottom:10px;
 }
 
 .row {
   display:flex;
-  align-items:center;
   padding:6px 0;
   border-bottom:1px solid #111;
 }
+.pos { width:30px; color:#1e90ff; font-weight:bold; }
+.name { flex:1; }
+.time { width:110px; text-align:right; font-family:monospace; }
+.leader { background:#0d1b2a; }
 
-.pos {
-  width:30px;
-  font-weight:bold;
-  color:#1e90ff;
+#track {
+  margin-top:20px;
+  background:#000;
+  border:2px solid #1e90ff;
 }
-
-.name {
-  flex:1;
-  font-size:16px;
+.car {
+  fill:#fff;
 }
-
-.time {
-  width:110px;
-  text-align:right;
-  font-family:monospace;
-}
-
-.best {
-  color:#00e676;
-}
-
-.leader {
-  background:#0d1b2a;
+.car.leader {
+  fill:#1e90ff;
 }
 </style>
 </head>
 
 <body>
 
-<div id="title">LIVE TIMING</div>
-<div id="board">Carregando…</div>
+<div id="left">
+  <div id="title">LIVE TIMING</div>
+  <div id="board"></div>
+</div>
+
+<div id="right">
+  <div id="title">TRACK MAP</div>
+
+  <!-- DESENHO DA PISTA (SVG) -->
+  <svg id="track" viewBox="0 0 300 300" width="100%" height="300">
+    <!-- pista (exemplo simples, você pode trocar) -->
+    <path d="M50 150 Q150 20 250 150 Q150 280 50 150"
+          fill="none"
+          stroke="#555"
+          stroke-width="20"
+          stroke-linecap="round"/>
+  </svg>
+</div>
 
 <script>
 const LIVE_API = "https://rookie-live.yourname.workers.dev"; // PROXY
@@ -73,23 +86,51 @@ function msToTime(ms) {
   return m + ":" + (s < 10 ? "0" : "") + s;
 }
 
+// gera posições fake ao longo da pista (percentual da volta)
+function getPointOnTrack(progress) {
+  // curva simples só para visual
+  const angle = progress * 2 * Math.PI;
+  const cx = 150 + Math.cos(angle) * 90;
+  const cy = 150 + Math.sin(angle) * 90;
+  return { x: cx, y: cy };
+}
+
 async function updateTV() {
   try {
     const r = await fetch(LIVE_API);
     const d = await r.json();
     const list = d.lapStat || [];
-    const board = document.getElementById("board");
 
+    // BOARD
+    const board = document.getElementById("board");
     board.innerHTML = "";
 
     list.slice(0,10).forEach((p,i) => {
       board.innerHTML += `
-        <div class="row ${i===0 ? 'leader':''}">
+        <div class="row ${i===0?'leader':''}">
           <div class="pos">${i+1}</div>
           <div class="name">${p.driverName}</div>
-          <div class="time best">${msToTime(p.bestLap)}</div>
-        </div>
-      `;
+          <div class="time">${msToTime(p.bestLap)}</div>
+        </div>`;
+    });
+
+    // TRACK MAP
+    const svg = document.getElementById("track");
+
+    // remove carros antigos
+    svg.querySelectorAll(".car").forEach(c => c.remove());
+
+    list.slice(0,10).forEach((p,i) => {
+      const progress = (p.lapsCompleted || Math.random()) % 1;
+      const pos = getPointOnTrack(progress);
+
+      const dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
+      dot.setAttribute("cx", pos.x);
+      dot.setAttribute("cy", pos.y);
+      dot.setAttribute("r", i===0 ? 6 : 4);
+      dot.setAttribute("class", "car" + (i===0?" leader":""));
+
+      svg.appendChild(dot);
     });
 
   } catch {
