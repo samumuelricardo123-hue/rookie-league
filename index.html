@@ -2,193 +2,210 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Rookie League • Live Timing</title>
+<title>Rookie League • Broadcast</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root {
-  --bg:#05070a;
-  --panel:#0e1422;
-  --panel2:#141b2d;
-  --accent:#00e0ff;
-  --text:#e8ecf3;
-  --muted:#7f8aa3;
-  --leader:#ffd166;
-  --danger:#ff5c5c;
+:root{
+  --bg:#05070b;
+  --panel:#0e1424;
+  --panel2:#141c33;
+  --accent:#00e6ff;
+  --accent2:#ffd166;
+  --text:#eef2ff;
+  --muted:#7b88a8;
+  --red:#ff4d4d;
+  --green:#4dff88;
 }
 
-* {
-  box-sizing:border-box;
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
-}
+*{box-sizing:border-box;font-family:Inter,Segoe UI,Arial,sans-serif}
 
-body {
+body{
   margin:0;
-  background: radial-gradient(circle at top, #0c1220, #05070a);
+  background:radial-gradient(circle at top,#0e1730,#05070b);
   color:var(--text);
   overflow:hidden;
 }
 
-/* ===== HEADER ===== */
-header {
-  height:64px;
-  padding:0 24px;
+/* ===== TOP BAR ===== */
+.topbar{
+  height:70px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:linear-gradient(180deg,#06090f,#04060a);
-  border-bottom:1px solid #1a2136;
+  padding:0 26px;
+  background:linear-gradient(180deg,#060912,#04060a);
+  border-bottom:1px solid #1b2340;
 }
 
-header h1 {
-  margin:0;
+.logo{
   font-size:20px;
-  letter-spacing:2px;
+  letter-spacing:3px;
+  font-weight:700;
 }
 
-header span {
-  color:var(--accent);
+.logo span{color:var(--accent)}
+
+.session{
+  font-size:14px;
+  color:var(--muted);
 }
 
 /* ===== LAYOUT ===== */
-.main {
+.main{
   display:grid;
-  grid-template-columns: 1fr 420px;
-  height:calc(100vh - 64px);
+  grid-template-columns: 1fr 460px;
+  height:calc(100vh - 70px);
 }
 
 /* ===== LEFT ===== */
-.left {
-  padding:16px;
-}
-
-/* LEADER */
-.leader {
-  background:linear-gradient(135deg,#1d2740,#0f1526);
-  border:1px solid #2a3558;
-  border-radius:14px;
-  padding:16px;
-  display:flex;
-  align-items:center;
-  gap:20px;
-  margin-bottom:16px;
-}
-
-.leader .pos {
-  font-size:48px;
-  font-weight:900;
-  color:var(--leader);
-}
-
-.leader h2 {
-  margin:0;
-}
-
-.leader small {
-  color:var(--muted);
-}
-
-/* TABLE */
-.table-wrap {
-  background:var(--panel);
-  border-radius:14px;
-  overflow:hidden;
-}
-
-table {
-  width:100%;
-  border-collapse:collapse;
-}
-
-thead {
-  background:var(--panel2);
-}
-
-th, td {
-  padding:10px 12px;
-  font-size:14px;
-}
-
-th {
-  color:var(--muted);
-  font-weight:500;
-}
-
-tbody tr {
-  border-bottom:1px solid #1f2842;
-  transition:background 0.3s, transform 0.3s;
-}
-
-tbody tr:hover {
-  background:#1a2340;
-}
-
-tbody tr.lead {
-  background:rgba(255,209,102,0.12);
-}
-
-/* ===== RIGHT ===== */
-.right {
-  padding:16px;
+.left{
+  padding:18px;
   display:flex;
   flex-direction:column;
   gap:16px;
 }
 
-/* BOX */
-.box {
+/* ===== LEADER HUD ===== */
+.leader{
+  display:flex;
+  align-items:center;
+  gap:22px;
+  padding:18px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#1c2647,#0e1426);
+  border:1px solid #2c3964;
+  box-shadow:0 0 25px rgba(0,230,255,.15);
+  animation:slide 0.8s ease;
+}
+
+@keyframes slide{
+  from{transform:translateX(-40px);opacity:0}
+  to{transform:none;opacity:1}
+}
+
+.leader .pos{
+  font-size:54px;
+  font-weight:900;
+  color:var(--accent2);
+}
+
+.leader h2{margin:0;font-size:22px}
+.leader small{color:var(--muted)}
+
+.delta{
+  margin-left:auto;
+  text-align:right;
+}
+
+.delta span{
+  font-size:22px;
+  font-weight:700;
+  color:var(--green);
+}
+
+/* ===== GRID TABLE ===== */
+.table{
   background:var(--panel);
-  border-radius:14px;
+  border-radius:18px;
+  overflow:hidden;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+thead{
+  background:var(--panel2);
+}
+
+th,td{
+  padding:12px 14px;
+  font-size:14px;
+}
+
+th{
+  color:var(--muted);
+  font-weight:500;
+}
+
+tbody tr{
+  border-bottom:1px solid #202a4a;
+  transition:.3s;
+}
+
+tbody tr:hover{
+  background:#1b2546;
+}
+
+tbody tr.lead{
+  background:rgba(255,209,102,.12);
+}
+
+/* ===== RIGHT ===== */
+.right{
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+/* ===== BOX ===== */
+.box{
+  background:var(--panel);
+  border-radius:18px;
   padding:16px;
 }
 
-.box h3 {
-  margin:0 0 12px 0;
+.box h3{
+  margin:0 0 12px;
   color:var(--accent);
   font-size:15px;
 }
 
-/* TRACK MAP */
-.track {
-  background:#070b14;
-  border-radius:12px;
+/* ===== TRACK MAP ===== */
+.track{
+  background:#070b16;
+  border-radius:14px;
   padding:10px;
 }
 
-svg {
-  width:100%;
-  height:240px;
-}
+svg{width:100%;height:260px}
 
-.track path {
+.track path{
   fill:none;
   stroke:#2f3a5c;
-  stroke-width:6;
+  stroke-width:18;
+  stroke-linecap:round;
 }
 
-.track .line {
+.track .ideal{
   stroke:var(--accent);
-  stroke-width:4;
-  stroke-dasharray:6 10;
-  animation:dash 4s linear infinite;
+  stroke-width:6;
+  stroke-dasharray:8 14;
+  animation:dash 5s linear infinite;
 }
 
-@keyframes dash {
-  to { stroke-dashoffset:-200; }
+@keyframes dash{
+  to{stroke-dashoffset:-300}
 }
 
-/* SESSION INFO */
-.info p {
+.car{
+  fill:#fff;
+  filter:drop-shadow(0 0 6px var(--accent));
+}
+
+/* ===== INFO ===== */
+.info p{
   margin:6px 0;
   font-size:14px;
 }
 
-.info strong {
-  color:var(--leader);
-}
+.info strong{color:var(--accent2)}
 
-/* FOOTER */
-footer {
+/* ===== FOOTER ===== */
+footer{
   position:absolute;
   bottom:0;
   width:100%;
@@ -196,80 +213,81 @@ footer {
   font-size:11px;
   color:var(--muted);
   padding:6px;
-  background:rgba(0,0,0,0.35);
+  background:rgba(0,0,0,.35);
 }
 </style>
 </head>
 
 <body>
 
-<header>
-  <h1>ROOKIE LEAGUE <span>LIVE</span></h1>
-  <div>RACE • 15 LAPS</div>
-</header>
+<div class="topbar">
+  <div class="logo">ROOKIE <span>LEAGUE</span></div>
+  <div class="session">RACE • LAP 8 / 15</div>
+</div>
 
 <div class="main">
 
-  <!-- LEFT -->
-  <div class="left">
+<!-- LEFT -->
+<div class="left">
 
-    <div class="leader">
-      <div class="pos">P1</div>
-      <div>
-        <h2>#27 João Silva</h2>
-        <small>Best Lap: 1:32.451</small>
-      </div>
+  <div class="leader">
+    <div class="pos">P1</div>
+    <div>
+      <h2>#27 João Silva</h2>
+      <small>BMW M4 • Best 1:32.451</small>
     </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Pos</th>
-            <th>Piloto</th>
-            <th>Carro</th>
-            <th>Volta</th>
-            <th>Gap</th>
-          </tr>
-        </thead>
-        <tbody id="drivers"></tbody>
-      </table>
+    <div class="delta">
+      <small>GAP</small>
+      <span>+0.000</span>
     </div>
-
   </div>
 
-  <!-- RIGHT -->
-  <div class="right">
-
-    <div class="box">
-      <h3>Pista</h3>
-      <div class="track">
-        <!-- SVG MAP PLACEHOLDER -->
-        <svg viewBox="0 0 500 300">
-          <path d="M60 150 Q120 40 250 60 T440 140 Q380 260 250 240 T60 150"/>
-          <path class="line" d="M60 150 Q120 40 250 60 T440 140 Q380 260 250 240 T60 150"/>
-        </svg>
-      </div>
-    </div>
-
-    <div class="box info">
-      <h3>Sessão</h3>
-      <p>Status: <strong>Corrida</strong></p>
-      <p>Tempo: <strong>12:34</strong></p>
-      <p>Clima: <strong>Clear</strong></p>
-    </div>
-
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>POS</th>
+          <th>PILOTO</th>
+          <th>CARRO</th>
+          <th>VOLTA</th>
+          <th>GAP</th>
+        </tr>
+      </thead>
+      <tbody id="grid"></tbody>
+    </table>
   </div>
 
 </div>
 
-<footer>
-  Live Timing • Modo TV • Estilo ACSM 2.4
-</footer>
+<!-- RIGHT -->
+<div class="right">
+
+  <div class="box">
+    <h3>Mapa da pista</h3>
+    <div class="track">
+      <svg viewBox="0 0 600 320">
+        <path d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
+        <path class="ideal" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
+        <circle class="car" id="car" cx="80" cy="160" r="7"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="box info">
+    <h3>Sessão</h3>
+    <p>Status: <strong>Corrida</strong></p>
+    <p>Clima: <strong>Clear</strong></p>
+    <p>Servidor: <strong>Rookie League</strong></p>
+  </div>
+
+</div>
+
+</div>
+
+<footer>Broadcast Mode • Estilo ACSM 2.4 • Dados reais em breve</footer>
 
 <script>
-/* MOCK DATA (plugável depois) */
-const data = [
+const data=[
  {p:1,n:"#27 João Silva",c:"BMW M4",l:"1:32.451",g:"—"},
  {p:2,n:"#11 Lucas Rocha",c:"Audi R8",l:"1:32.980",g:"+0.529"},
  {p:3,n:"#44 Pedro Lima",c:"Ferrari 488",l:"1:33.102",g:"+0.651"},
@@ -277,10 +295,10 @@ const data = [
  {p:5,n:"#99 Rafael Costa",c:"Porsche 911",l:"1:33.701",g:"+1.250"}
 ];
 
-const tbody = document.getElementById("drivers");
+const grid=document.getElementById("grid");
 
-function render() {
-  tbody.innerHTML="";
+function render(){
+  grid.innerHTML="";
   data.forEach(d=>{
     const tr=document.createElement("tr");
     if(d.p===1) tr.classList.add("lead");
@@ -289,12 +307,20 @@ function render() {
       <td>${d.n}</td>
       <td>${d.c}</td>
       <td>${d.l}</td>
-      <td>${d.g}</td>
-    `;
-    tbody.appendChild(tr);
+      <td>${d.g}</td>`;
+    grid.appendChild(tr);
   });
 }
 render();
+
+/* animação carro */
+let t=0;
+setInterval(()=>{
+  t+=0.015;
+  const car=document.getElementById("car");
+  car.setAttribute("cx",80+420*Math.abs(Math.sin(t)));
+  car.setAttribute("cy",160+110*Math.sin(t*1.2));
+},50);
 </script>
 
 </body>
