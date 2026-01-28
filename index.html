@@ -2,96 +2,128 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Rookie League • Broadcast</title>
+<title>Rookie League • TV Broadcast</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root{
-  --bg:#05070b;
-  --panel:#0e1424;
-  --panel2:#141c33;
+  --bg:#03050a;
+  --glass:rgba(18,24,44,.65);
+  --panel:#0d1428;
+  --panel2:#141d38;
   --accent:#00e6ff;
   --accent2:#ffd166;
-  --text:#eef2ff;
-  --muted:#7b88a8;
-  --red:#ff4d4d;
   --green:#4dff88;
+  --red:#ff4d4d;
+  --purple:#b88cff;
+  --text:#e8edff;
+  --muted:#7d88b6;
 }
 
 *{box-sizing:border-box;font-family:Inter,Segoe UI,Arial,sans-serif}
 
 body{
   margin:0;
-  background:radial-gradient(circle at top,#0e1730,#05070b);
+  background:
+    radial-gradient(circle at 30% 0,#0f1c44,#03050a 60%),
+    radial-gradient(circle at 80% 100%,#0b1433,#03050a 60%);
   color:var(--text);
   overflow:hidden;
 }
 
 /* ===== TOP BAR ===== */
 .topbar{
-  height:70px;
+  height:74px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 26px;
-  background:linear-gradient(180deg,#060912,#04060a);
-  border-bottom:1px solid #1b2340;
+  padding:0 28px;
+  backdrop-filter:blur(12px);
+  background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,.35));
+  border-bottom:1px solid #1f2a52;
 }
 
 .logo{
-  font-size:20px;
-  letter-spacing:3px;
-  font-weight:700;
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:4px;
 }
-
 .logo span{color:var(--accent)}
 
 .session{
-  font-size:14px;
+  font-size:13px;
   color:var(--muted);
 }
 
-/* ===== LAYOUT ===== */
+/* ===== MAIN ===== */
 .main{
   display:grid;
-  grid-template-columns: 1fr 460px;
-  height:calc(100vh - 70px);
+  grid-template-columns: 1fr 480px;
+  height:calc(100vh - 74px);
 }
 
 /* ===== LEFT ===== */
 .left{
-  padding:18px;
+  padding:20px;
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:18px;
 }
 
-/* ===== LEADER HUD ===== */
+/* ===== LEADER CARD ===== */
 .leader{
+  position:relative;
   display:flex;
   align-items:center;
   gap:22px;
-  padding:18px;
-  border-radius:18px;
-  background:linear-gradient(135deg,#1c2647,#0e1426);
-  border:1px solid #2c3964;
-  box-shadow:0 0 25px rgba(0,230,255,.15);
-  animation:slide 0.8s ease;
+  padding:22px;
+  border-radius:22px;
+  background:var(--glass);
+  border:1px solid rgba(255,255,255,.06);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.02),
+    0 30px 60px rgba(0,0,0,.6);
+  overflow:hidden;
 }
 
-@keyframes slide{
-  from{transform:translateX(-40px);opacity:0}
-  to{transform:none;opacity:1}
+.leader::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.08),transparent 70%);
+  animation:sweep 6s infinite;
 }
 
-.leader .pos{
-  font-size:54px;
+@keyframes sweep{
+  from{transform:translateX(-100%)}
+  to{transform:translateX(100%)}
+}
+
+.pos{
+  font-size:62px;
   font-weight:900;
   color:var(--accent2);
 }
 
-.leader h2{margin:0;font-size:22px}
-.leader small{color:var(--muted)}
+.driver h2{margin:0;font-size:24px}
+.driver small{color:var(--muted)}
+
+.tyres{
+  display:flex;
+  gap:6px;
+  margin-top:6px;
+}
+
+.tyres span{
+  padding:3px 8px;
+  font-size:11px;
+  border-radius:10px;
+  background:#1f2b55;
+}
+
+.tyres .soft{background:#ff4d4d}
+.tyres .medium{background:#ffd166;color:#000}
+.tyres .hard{background:#bcd6ff;color:#000}
 
 .delta{
   margin-left:auto;
@@ -99,15 +131,30 @@ body{
 }
 
 .delta span{
-  font-size:22px;
-  font-weight:700;
+  font-size:24px;
+  font-weight:800;
   color:var(--green);
 }
 
-/* ===== GRID TABLE ===== */
+/* ===== RPM ===== */
+.rpm{
+  height:6px;
+  background:#1a2348;
+  border-radius:6px;
+  overflow:hidden;
+  margin-top:8px;
+}
+
+.rpm div{
+  width:78%;
+  height:100%;
+  background:linear-gradient(90deg,#4dff88,#ffd166,#ff4d4d);
+}
+
+/* ===== GRID ===== */
 .table{
-  background:var(--panel);
-  border-radius:18px;
+  background:var(--glass);
+  border-radius:22px;
   overflow:hidden;
 }
 
@@ -116,12 +163,10 @@ table{
   border-collapse:collapse;
 }
 
-thead{
-  background:var(--panel2);
-}
+thead{background:var(--panel2)}
 
 th,td{
-  padding:12px 14px;
+  padding:13px 16px;
   font-size:14px;
 }
 
@@ -131,88 +176,82 @@ th{
 }
 
 tbody tr{
-  border-bottom:1px solid #202a4a;
-  transition:.3s;
-}
-
-tbody tr:hover{
-  background:#1b2546;
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
 tbody tr.lead{
-  background:rgba(255,209,102,.12);
+  background:linear-gradient(90deg,rgba(255,209,102,.18),transparent);
 }
 
 /* ===== RIGHT ===== */
 .right{
-  padding:18px;
+  padding:20px;
   display:flex;
   flex-direction:column;
-  gap:16px;
+  gap:18px;
 }
 
 /* ===== BOX ===== */
 .box{
-  background:var(--panel);
-  border-radius:18px;
-  padding:16px;
+  background:var(--glass);
+  border-radius:22px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,.06);
 }
 
-.box h3{
-  margin:0 0 12px;
-  color:var(--accent);
-  font-size:15px;
-}
-
-/* ===== TRACK MAP ===== */
-.track{
-  background:#070b16;
-  border-radius:14px;
-  padding:10px;
-}
-
-svg{width:100%;height:260px}
+/* ===== TRACK ===== */
+.track svg{width:100%;height:280px}
 
 .track path{
   fill:none;
-  stroke:#2f3a5c;
-  stroke-width:18;
+  stroke:#3a4675;
+  stroke-width:20;
   stroke-linecap:round;
 }
 
 .track .ideal{
   stroke:var(--accent);
   stroke-width:6;
-  stroke-dasharray:8 14;
-  animation:dash 5s linear infinite;
+  stroke-dasharray:10 16;
+  animation:dash 6s linear infinite;
 }
 
 @keyframes dash{
-  to{stroke-dashoffset:-300}
+  to{stroke-dashoffset:-400}
 }
 
 .car{
   fill:#fff;
-  filter:drop-shadow(0 0 6px var(--accent));
+  filter:drop-shadow(0 0 8px var(--accent));
 }
 
 /* ===== INFO ===== */
 .info p{
-  margin:6px 0;
+  margin:8px 0;
   font-size:14px;
 }
 
-.info strong{color:var(--accent2)}
+.flag{
+  display:inline-block;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  margin-right:6px;
+}
+
+.green{background:var(--green)}
+.yellow{background:#ffd166}
+.red{background:var(--red)}
 
 /* ===== FOOTER ===== */
 footer{
   position:absolute;
   bottom:0;
   width:100%;
-  text-align:center;
   font-size:11px;
-  color:var(--muted);
+  text-align:center;
   padding:6px;
+  color:var(--muted);
   background:rgba(0,0,0,.35);
 }
 </style>
@@ -222,20 +261,28 @@ footer{
 
 <div class="topbar">
   <div class="logo">ROOKIE <span>LEAGUE</span></div>
-  <div class="session">RACE • LAP 8 / 15</div>
+  <div class="session">RACE • LAP 8 / 15 • GREEN FLAG</div>
 </div>
 
 <div class="main">
 
-<!-- LEFT -->
 <div class="left">
 
   <div class="leader">
     <div class="pos">P1</div>
-    <div>
+    <div class="driver">
       <h2>#27 João Silva</h2>
-      <small>BMW M4 • Best 1:32.451</small>
+      <small>BMW M4 GT3 • Best 1:32.451</small>
+
+      <div class="tyres">
+        <span class="medium">MED</span>
+        <span>Fuel 42%</span>
+        <span>ERS 78%</span>
+      </div>
+
+      <div class="rpm"><div></div></div>
     </div>
+
     <div class="delta">
       <small>GAP</small>
       <span>+0.000</span>
@@ -248,9 +295,9 @@ footer{
         <tr>
           <th>POS</th>
           <th>PILOTO</th>
-          <th>CARRO</th>
+          <th>SET</th>
           <th>VOLTA</th>
-          <th>GAP</th>
+          <th>Δ</th>
         </tr>
       </thead>
       <tbody id="grid"></tbody>
@@ -259,67 +306,59 @@ footer{
 
 </div>
 
-<!-- RIGHT -->
 <div class="right">
 
-  <div class="box">
-    <h3>Mapa da pista</h3>
-    <div class="track">
-      <svg viewBox="0 0 600 320">
-        <path d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
-        <path class="ideal" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
-        <circle class="car" id="car" cx="80" cy="160" r="7"/>
-      </svg>
-    </div>
+  <div class="box track">
+    <svg viewBox="0 0 600 320">
+      <path d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
+      <path class="ideal" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
+      <circle class="car" id="car" cx="80" cy="160" r="7"/>
+    </svg>
   </div>
 
   <div class="box info">
-    <h3>Sessão</h3>
-    <p>Status: <strong>Corrida</strong></p>
+    <p><span class="flag green"></span>Status: <strong>Green Flag</strong></p>
     <p>Clima: <strong>Clear</strong></p>
     <p>Servidor: <strong>Rookie League</strong></p>
+    <p>Track: <strong>Auto-Generated</strong></p>
   </div>
 
 </div>
 
 </div>
 
-<footer>Broadcast Mode • Estilo ACSM 2.4 • Dados reais em breve</footer>
+<footer>TV Broadcast Mode • ACSM Style • Ready for Live Data</footer>
 
 <script>
 const data=[
- {p:1,n:"#27 João Silva",c:"BMW M4",l:"1:32.451",g:"—"},
- {p:2,n:"#11 Lucas Rocha",c:"Audi R8",l:"1:32.980",g:"+0.529"},
- {p:3,n:"#44 Pedro Lima",c:"Ferrari 488",l:"1:33.102",g:"+0.651"},
- {p:4,n:"#08 Matheus Alves",c:"Lambo Huracán",l:"1:33.420",g:"+0.969"},
- {p:5,n:"#99 Rafael Costa",c:"Porsche 911",l:"1:33.701",g:"+1.250"}
+ {p:1,n:"#27 João Silva",s:"S1",l:"1:32.451",d:"—"},
+ {p:2,n:"#11 Lucas Rocha",s:"S2",l:"1:32.980",d:"+0.529"},
+ {p:3,n:"#44 Pedro Lima",s:"S1",l:"1:33.102",d:"+0.651"},
+ {p:4,n:"#08 Matheus Alves",s:"S3",l:"1:33.420",d:"+0.969"},
+ {p:5,n:"#99 Rafael Costa",s:"S2",l:"1:33.701",d:"+1.250"}
 ];
 
 const grid=document.getElementById("grid");
 
-function render(){
-  grid.innerHTML="";
-  data.forEach(d=>{
-    const tr=document.createElement("tr");
-    if(d.p===1) tr.classList.add("lead");
-    tr.innerHTML=`
-      <td>P${d.p}</td>
-      <td>${d.n}</td>
-      <td>${d.c}</td>
-      <td>${d.l}</td>
-      <td>${d.g}</td>`;
-    grid.appendChild(tr);
-  });
-}
-render();
+data.forEach(d=>{
+  const tr=document.createElement("tr");
+  if(d.p===1) tr.classList.add("lead");
+  tr.innerHTML=`
+    <td>P${d.p}</td>
+    <td>${d.n}</td>
+    <td style="color:${d.s==='S1'?'#b88cff':d.s==='S2'?'#4dff88':'#ffd166'}">${d.s}</td>
+    <td>${d.l}</td>
+    <td>${d.d}</td>`;
+  grid.appendChild(tr);
+});
 
 /* animação carro */
 let t=0;
 setInterval(()=>{
-  t+=0.015;
+  t+=0.02;
   const car=document.getElementById("car");
   car.setAttribute("cx",80+420*Math.abs(Math.sin(t)));
-  car.setAttribute("cy",160+110*Math.sin(t*1.2));
+  car.setAttribute("cy",160+110*Math.sin(t*1.1));
 },50);
 </script>
 
