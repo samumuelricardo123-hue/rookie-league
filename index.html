@@ -1,172 +1,203 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ACSM 2.4 - Gerenciador de Servidores</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #121212 url('https://i.imgur.com/Z6Pq1tU.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACSM 2.4 - Live Lap Dashboard</title>
+<style>
+body, h1, h2, h3, p { margin:0; padding:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background: #121212; color: #fff; min-height:100vh; }
+header { background: #1f1f1f; padding: 20px; display:flex; align-items:center; gap:15px; border-bottom:2px solid #1e90ff;}
+header img.logo { height:50px; }
+header h1 { font-size:1.8rem; color:#1e90ff; }
 
-    header {
-      background-color: rgba(0,0,0,0.8);
-      padding: 20px;
-      text-align: center;
-    }
+/* Layout */
+main { display:flex; flex-direction:column; padding:20px; gap:30px; }
 
-    header img.logo {
-      height: 60px;
-    }
+/* Dashboard cards */
+.dashboard { display:flex; flex-wrap:wrap; gap:20px; }
+.card { background:#1f1f1f; padding:15px; border-radius:10px; width:240px; box-shadow:0 0 10px rgba(0,0,0,0.5); display:flex; flex-direction:column; gap:10px; transition: transform 0.2s;}
+.card:hover { transform:translateY(-5px);}
+.card h3 { font-size:1.2rem; color:#1e90ff; }
+.status { font-weight:bold; padding:5px 10px; border-radius:5px; text-align:center;}
+.status.online { background:#00c853; color:#000; }
+.status.offline { background:#d50000; color:#fff; }
 
-    h1, h2 {
-      margin: 10px 0;
-    }
+/* Lap time display */
+.lap-time { font-size:1.4rem; color:#1e90ff; text-align:center; font-weight:bold; }
 
-    main {
-      padding: 20px;
-    }
+/* Table servers */
+table { width:100%; border-collapse:collapse; background:#1f1f1f; border-radius:10px; overflow:hidden; }
+th, td { padding:12px 15px; text-align:center; }
+th { background:#1e90ff; color:#fff; }
+td { border-bottom:1px solid #333; }
+button { padding:6px 12px; border-radius:5px; border:none; cursor:pointer; font-weight:bold; }
+button.start { background:#00c853; color:#000; }
+button.stop { background:#d50000; color:#fff; }
+button:hover { opacity:0.8; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
+/* Form */
+.add-server { background:#1f1f1f; padding:20px; border-radius:10px; display:flex; flex-direction:column; gap:10px; }
+.add-server input { padding:10px; border-radius:5px; border:none; }
+.add-server button { width:150px; background:#1e90ff; color:#fff; }
 
-    table, th, td {
-      border: 1px solid #fff;
-    }
+/* Filters */
+.filters { display:flex; gap:10px; margin-bottom:10px; }
+.filters button { background:#333; color:#fff; padding:6px 12px; border-radius:5px; border:none; }
+.filters button.active { background:#1e90ff; }
 
-    th, td {
-      padding: 10px;
-      text-align: center;
-    }
+/* Footer */
+footer { text-align:center; padding:15px; background:#1f1f1f; margin-top:20px; border-top:2px solid #1e90ff; }
 
-    input, button {
-      padding: 10px;
-      margin: 5px;
-      border-radius: 5px;
-      border: none;
-    }
-
-    button {
-      background-color: #1e90ff;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0d6efd;
-    }
-
-    footer {
-      text-align: center;
-      padding: 10px;
-      background-color: rgba(0,0,0,0.8);
-    }
-
-    /* Extras: cores para status */
-    .status-online {
-      color: #00ff00;
-      font-weight: bold;
-    }
-    .status-offline {
-      color: #ff0000;
-      font-weight: bold;
-    }
-  </style>
+/* Responsivo */
+@media(max-width:768px){ .dashboard { justify-content:center; } table, .add-server { overflow-x:auto; } }
+</style>
 </head>
 <body>
-  <header>
-    <img src="https://i.imgur.com/7Xj6A2Q.png" alt="ACSM Logo" class="logo">
-    <h1>Assetto Corsa Server Manager 2.4</h1>
-  </header>
 
-  <main>
-    <section class="server-list">
-      <h2>Servidores Ativos</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Servidor</th>
-            <th>IP</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody id="servers">
-          <!-- Servidores serão carregados via JS -->
-        </tbody>
-      </table>
-    </section>
+<header>
+  <img src="https://i.imgur.com/7Xj6A2Q.png" alt="ACSM Logo" class="logo">
+  <h1>ACSM 2.4 - Live Lap Dashboard</h1>
+</header>
 
-    <section class="add-server">
-      <h2>Adicionar Novo Servidor</h2>
-      <form id="server-form">
-        <input type="text" id="name" placeholder="Nome do servidor" required>
-        <input type="text" id="ip" placeholder="IP do servidor" required>
-        <button type="submit">Adicionar</button>
-      </form>
-    </section>
-  </main>
+<main>
+  <!-- Dashboard Cards -->
+  <section class="dashboard" id="dashboard-cards"></section>
 
-  <footer>
-    <p>© 2026 ACSM 2.4</p>
-  </footer>
+  <!-- Filters -->
+  <div class="filters">
+    <button class="active" onclick="filterServers('all')">Todos</button>
+    <button onclick="filterServers('Online')">Online</button>
+    <button onclick="filterServers('Offline')">Offline</button>
+  </div>
 
-  <script>
-    const serverForm = document.getElementById('server-form');
-    const serversTbody = document.getElementById('servers');
+  <!-- Table -->
+  <section class="server-list">
+    <table>
+      <thead>
+        <tr>
+          <th>Servidor</th>
+          <th>IP</th>
+          <th>Status</th>
+          <th>Última Volta</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody id="servers-table"></tbody>
+    </table>
+  </section>
 
-    let servers = [];
+  <!-- Add Server Form -->
+  <section class="add-server">
+    <h2>Adicionar Novo Servidor</h2>
+    <form id="server-form">
+      <input type="text" id="name" placeholder="Nome do servidor" required>
+      <input type="text" id="ip" placeholder="IP do servidor" required>
+      <button type="submit">Adicionar Servidor</button>
+    </form>
+  </section>
+</main>
 
-    serverForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const ip = document.getElementById('ip').value;
-      
-      const server = {
-        name,
-        ip,
-        status: 'Offline'
-      };
+<footer>
+  <p>© 2026 ACSM 2.4 Live Dashboard</p>
+</footer>
 
-      servers.push(server);
-      renderServers();
-      serverForm.reset();
-    });
+<script>
+let servers = [];
 
-    function renderServers() {
-      serversTbody.innerHTML = '';
-      servers.forEach((server, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${server.name}</td>
-          <td>${server.ip}</td>
-          <td class="${server.status === 'Online' ? 'status-online' : 'status-offline'}">${server.status}</td>
-          <td>
-            <button onclick="startServer(${index})">Iniciar</button>
-            <button onclick="stopServer(${index})">Parar</button>
-          </td>
-        `;
-        serversTbody.appendChild(tr);
-      });
+const serverForm = document.getElementById('server-form');
+const serversTable = document.getElementById('servers-table');
+const dashboardCards = document.getElementById('dashboard-cards');
+
+serverForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('name').value;
+  const ip = document.getElementById('ip').value;
+
+  servers.push({ name, ip, status: 'Offline', lapTime: '--:--:---' });
+  renderAll();
+  serverForm.reset();
+});
+
+// Live lap simulator
+function simulateLapTime() {
+  servers.forEach(s => {
+    if(s.status === 'Online'){
+      // gera tempo aleatório entre 1:20.000 e 2:00.000
+      const minutes = Math.floor(Math.random()*0.7*60 + 1.2*60); // 80s a 120s
+      const seconds = minutes % 60;
+      const ms = Math.floor(Math.random()*1000);
+      s.lapTime = `${Math.floor(minutes/60)}:${seconds.toString().padStart(2,'0')}:${ms.toString().padStart(3,'0')}`;
     }
+  });
+  renderAll(currentFilter);
+}
 
-    function startServer(index) {
-      servers[index].status = 'Online';
-      renderServers();
-    }
+// Render cards e tabela
+function renderAll(filter='all'){
+  // Dashboard cards
+  dashboardCards.innerHTML = '';
+  servers.forEach((s,i) => {
+    if(filter !== 'all' && s.status !== filter) return;
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.innerHTML = `
+      <h3>${s.name}</h3>
+      <p>${s.ip}</p>
+      <p class="status ${s.status.toLowerCase()}">${s.status}</p>
+      <p class="lap-time">${s.lapTime}</p>
+      <div style="display:flex;gap:10px;">
+        <button class="start" onclick="startServer(${i})">Iniciar</button>
+        <button class="stop" onclick="stopServer(${i})">Parar</button>
+      </div>
+    `;
+    dashboardCards.appendChild(card);
+  });
 
-    function stopServer(index) {
-      servers[index].status = 'Offline';
-      renderServers();
-    }
-  </script>
+  // Table
+  serversTable.innerHTML = '';
+  servers.forEach((s,i) => {
+    if(filter !== 'all' && s.status !== filter) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${s.name}</td>
+      <td>${s.ip}</td>
+      <td class="${s.status.toLowerCase()}">${s.status}</td>
+      <td class="lap-time">${s.lapTime}</td>
+      <td>
+        <button class="start" onclick="startServer(${i})">Iniciar</button>
+        <button class="stop" onclick="stopServer(${i})">Parar</button>
+      </td>
+    `;
+    serversTable.appendChild(tr);
+  });
+}
+
+// Start / Stop
+function startServer(index){
+  servers[index].status = 'Online';
+  renderAll(currentFilter);
+}
+function stopServer(index){
+  servers[index].status = 'Offline';
+  servers[index].lapTime = '--:--:---';
+  renderAll(currentFilter);
+}
+
+// Filter
+let currentFilter = 'all';
+function filterServers(status){
+  currentFilter = status;
+  document.querySelectorAll('.filters button').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  renderAll(status);
+}
+
+renderAll();
+
+// Atualiza live time a cada segundo
+setInterval(simulateLapTime, 1000);
+</script>
+
 </body>
 </html>
