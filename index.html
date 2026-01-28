@@ -2,144 +2,299 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Live Timing • TV Mode</title>
+<title>Rookie League • Live Timing</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root {
+  --bg:#05070a;
+  --panel:#0e1422;
+  --panel2:#141b2d;
+  --accent:#00e0ff;
+  --text:#e8ecf3;
+  --muted:#7f8aa3;
+  --leader:#ffd166;
+  --danger:#ff5c5c;
+}
+
+* {
+  box-sizing:border-box;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
 body {
   margin:0;
-  background:#050505;
-  color:#fff;
-  font-family:Segoe UI, Arial;
+  background: radial-gradient(circle at top, #0c1220, #05070a);
+  color:var(--text);
+  overflow:hidden;
+}
+
+/* ===== HEADER ===== */
+header {
+  height:64px;
+  padding:0 24px;
   display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:linear-gradient(180deg,#06090f,#04060a);
+  border-bottom:1px solid #1a2136;
 }
 
-#left {
-  width:70%;
-  padding:20px;
+header h1 {
+  margin:0;
+  font-size:20px;
+  letter-spacing:2px;
 }
 
-#right {
-  width:30%;
-  background:#0b0b0b;
-  padding:20px;
+header span {
+  color:var(--accent);
 }
 
-#title {
-  font-size:22px;
-  color:#1e90ff;
-  border-bottom:2px solid #1e90ff;
-  margin-bottom:10px;
+/* ===== LAYOUT ===== */
+.main {
+  display:grid;
+  grid-template-columns: 1fr 420px;
+  height:calc(100vh - 64px);
 }
 
-.row {
+/* ===== LEFT ===== */
+.left {
+  padding:16px;
+}
+
+/* LEADER */
+.leader {
+  background:linear-gradient(135deg,#1d2740,#0f1526);
+  border:1px solid #2a3558;
+  border-radius:14px;
+  padding:16px;
   display:flex;
-  padding:6px 0;
-  border-bottom:1px solid #111;
+  align-items:center;
+  gap:20px;
+  margin-bottom:16px;
 }
-.pos { width:30px; color:#1e90ff; font-weight:bold; }
-.name { flex:1; }
-.time { width:110px; text-align:right; font-family:monospace; }
-.leader { background:#0d1b2a; }
 
-#track {
-  margin-top:20px;
-  background:#000;
-  border:2px solid #1e90ff;
+.leader .pos {
+  font-size:48px;
+  font-weight:900;
+  color:var(--leader);
 }
-.car {
-  fill:#fff;
+
+.leader h2 {
+  margin:0;
 }
-.car.leader {
-  fill:#1e90ff;
+
+.leader small {
+  color:var(--muted);
+}
+
+/* TABLE */
+.table-wrap {
+  background:var(--panel);
+  border-radius:14px;
+  overflow:hidden;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+
+thead {
+  background:var(--panel2);
+}
+
+th, td {
+  padding:10px 12px;
+  font-size:14px;
+}
+
+th {
+  color:var(--muted);
+  font-weight:500;
+}
+
+tbody tr {
+  border-bottom:1px solid #1f2842;
+  transition:background 0.3s, transform 0.3s;
+}
+
+tbody tr:hover {
+  background:#1a2340;
+}
+
+tbody tr.lead {
+  background:rgba(255,209,102,0.12);
+}
+
+/* ===== RIGHT ===== */
+.right {
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+/* BOX */
+.box {
+  background:var(--panel);
+  border-radius:14px;
+  padding:16px;
+}
+
+.box h3 {
+  margin:0 0 12px 0;
+  color:var(--accent);
+  font-size:15px;
+}
+
+/* TRACK MAP */
+.track {
+  background:#070b14;
+  border-radius:12px;
+  padding:10px;
+}
+
+svg {
+  width:100%;
+  height:240px;
+}
+
+.track path {
+  fill:none;
+  stroke:#2f3a5c;
+  stroke-width:6;
+}
+
+.track .line {
+  stroke:var(--accent);
+  stroke-width:4;
+  stroke-dasharray:6 10;
+  animation:dash 4s linear infinite;
+}
+
+@keyframes dash {
+  to { stroke-dashoffset:-200; }
+}
+
+/* SESSION INFO */
+.info p {
+  margin:6px 0;
+  font-size:14px;
+}
+
+.info strong {
+  color:var(--leader);
+}
+
+/* FOOTER */
+footer {
+  position:absolute;
+  bottom:0;
+  width:100%;
+  text-align:center;
+  font-size:11px;
+  color:var(--muted);
+  padding:6px;
+  background:rgba(0,0,0,0.35);
 }
 </style>
 </head>
 
 <body>
 
-<div id="left">
-  <div id="title">LIVE TIMING</div>
-  <div id="board"></div>
+<header>
+  <h1>ROOKIE LEAGUE <span>LIVE</span></h1>
+  <div>RACE • 15 LAPS</div>
+</header>
+
+<div class="main">
+
+  <!-- LEFT -->
+  <div class="left">
+
+    <div class="leader">
+      <div class="pos">P1</div>
+      <div>
+        <h2>#27 João Silva</h2>
+        <small>Best Lap: 1:32.451</small>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Pos</th>
+            <th>Piloto</th>
+            <th>Carro</th>
+            <th>Volta</th>
+            <th>Gap</th>
+          </tr>
+        </thead>
+        <tbody id="drivers"></tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+
+    <div class="box">
+      <h3>Pista</h3>
+      <div class="track">
+        <!-- SVG MAP PLACEHOLDER -->
+        <svg viewBox="0 0 500 300">
+          <path d="M60 150 Q120 40 250 60 T440 140 Q380 260 250 240 T60 150"/>
+          <path class="line" d="M60 150 Q120 40 250 60 T440 140 Q380 260 250 240 T60 150"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="box info">
+      <h3>Sessão</h3>
+      <p>Status: <strong>Corrida</strong></p>
+      <p>Tempo: <strong>12:34</strong></p>
+      <p>Clima: <strong>Clear</strong></p>
+    </div>
+
+  </div>
+
 </div>
 
-<div id="right">
-  <div id="title">TRACK MAP</div>
-
-  <!-- DESENHO DA PISTA (SVG) -->
-  <svg id="track" viewBox="0 0 300 300" width="100%" height="300">
-    <!-- pista (exemplo simples, você pode trocar) -->
-    <path d="M50 150 Q150 20 250 150 Q150 280 50 150"
-          fill="none"
-          stroke="#555"
-          stroke-width="20"
-          stroke-linecap="round"/>
-  </svg>
-</div>
+<footer>
+  Live Timing • Modo TV • Estilo ACSM 2.4
+</footer>
 
 <script>
-const LIVE_API = "https://rookie-live.yourname.workers.dev"; // PROXY
+/* MOCK DATA (plugável depois) */
+const data = [
+ {p:1,n:"#27 João Silva",c:"BMW M4",l:"1:32.451",g:"—"},
+ {p:2,n:"#11 Lucas Rocha",c:"Audi R8",l:"1:32.980",g:"+0.529"},
+ {p:3,n:"#44 Pedro Lima",c:"Ferrari 488",l:"1:33.102",g:"+0.651"},
+ {p:4,n:"#08 Matheus Alves",c:"Lambo Huracán",l:"1:33.420",g:"+0.969"},
+ {p:5,n:"#99 Rafael Costa",c:"Porsche 911",l:"1:33.701",g:"+1.250"}
+];
 
-function msToTime(ms) {
-  if (!ms || ms <= 0) return "--:--.---";
-  let m = Math.floor(ms / 60000);
-  let s = ((ms % 60000) / 1000).toFixed(3);
-  return m + ":" + (s < 10 ? "0" : "") + s;
+const tbody = document.getElementById("drivers");
+
+function render() {
+  tbody.innerHTML="";
+  data.forEach(d=>{
+    const tr=document.createElement("tr");
+    if(d.p===1) tr.classList.add("lead");
+    tr.innerHTML=`
+      <td>P${d.p}</td>
+      <td>${d.n}</td>
+      <td>${d.c}</td>
+      <td>${d.l}</td>
+      <td>${d.g}</td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
-
-// gera posições fake ao longo da pista (percentual da volta)
-function getPointOnTrack(progress) {
-  // curva simples só para visual
-  const angle = progress * 2 * Math.PI;
-  const cx = 150 + Math.cos(angle) * 90;
-  const cy = 150 + Math.sin(angle) * 90;
-  return { x: cx, y: cy };
-}
-
-async function updateTV() {
-  try {
-    const r = await fetch(LIVE_API);
-    const d = await r.json();
-    const list = d.lapStat || [];
-
-    // BOARD
-    const board = document.getElementById("board");
-    board.innerHTML = "";
-
-    list.slice(0,10).forEach((p,i) => {
-      board.innerHTML += `
-        <div class="row ${i===0?'leader':''}">
-          <div class="pos">${i+1}</div>
-          <div class="name">${p.driverName}</div>
-          <div class="time">${msToTime(p.bestLap)}</div>
-        </div>`;
-    });
-
-    // TRACK MAP
-    const svg = document.getElementById("track");
-
-    // remove carros antigos
-    svg.querySelectorAll(".car").forEach(c => c.remove());
-
-    list.slice(0,10).forEach((p,i) => {
-      const progress = (p.lapsCompleted || Math.random()) % 1;
-      const pos = getPointOnTrack(progress);
-
-      const dot = document.createElementNS("http://www.w3.org/2000/svg","circle");
-      dot.setAttribute("cx", pos.x);
-      dot.setAttribute("cy", pos.y);
-      dot.setAttribute("r", i===0 ? 6 : 4);
-      dot.setAttribute("class", "car" + (i===0?" leader":""));
-
-      svg.appendChild(dot);
-    });
-
-  } catch {
-    document.getElementById("board").innerHTML = "Sem sinal";
-  }
-}
-
-setInterval(updateTV, 1000);
-updateTV();
+render();
 </script>
 
 </body>
