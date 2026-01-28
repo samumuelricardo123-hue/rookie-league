@@ -7,166 +7,186 @@
 
 <style>
 :root{
-  --bg:#03050a;
-  --glass:rgba(18,24,44,.65);
-  --panel:#0d1428;
-  --panel2:#141d38;
-  --accent:#00e6ff;
-  --accent2:#ffd166;
+  --bg:#02040a;
+  --glass:rgba(18,22,40,.72);
+  --glass-strong:rgba(22,28,55,.85);
+  --line:rgba(255,255,255,.08);
+
+  --accent:#00f0ff;
+  --accent-soft:rgba(0,240,255,.25);
+  --gold:#ffd166;
+
   --green:#4dff88;
   --red:#ff4d4d;
   --purple:#b88cff;
-  --text:#e8edff;
-  --muted:#7d88b6;
+
+  --text:#edf1ff;
+  --muted:#8a94c7;
 }
 
-*{box-sizing:border-box;font-family:Inter,Segoe UI,Arial,sans-serif}
+*{
+  box-sizing:border-box;
+  font-family: "Segoe UI", Inter, system-ui, sans-serif;
+}
 
 body{
   margin:0;
   background:
-    radial-gradient(circle at 30% 0,#0f1c44,#03050a 60%),
-    radial-gradient(circle at 80% 100%,#0b1433,#03050a 60%);
+    radial-gradient(circle at 20% -10%, #12206a, transparent 40%),
+    radial-gradient(circle at 80% 120%, #08143a, transparent 40%),
+    linear-gradient(180deg,#02040a,#040716);
   color:var(--text);
   overflow:hidden;
 }
 
-/* ===== TOP BAR ===== */
+/* ================= TOP BAR ================= */
 .topbar{
-  height:74px;
+  height:78px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 28px;
-  backdrop-filter:blur(12px);
-  background:linear-gradient(180deg,rgba(0,0,0,.7),rgba(0,0,0,.35));
-  border-bottom:1px solid #1f2a52;
+  padding:0 34px;
+  background:linear-gradient(180deg,rgba(0,0,0,.75),rgba(0,0,0,.35));
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
 }
 
 .logo{
   font-size:22px;
-  font-weight:800;
-  letter-spacing:4px;
+  font-weight:900;
+  letter-spacing:5px;
 }
 .logo span{color:var(--accent)}
 
 .session{
   font-size:13px;
   color:var(--muted);
+  letter-spacing:1px;
 }
 
-/* ===== MAIN ===== */
+/* ================= LAYOUT ================= */
 .main{
   display:grid;
-  grid-template-columns: 1fr 480px;
-  height:calc(100vh - 74px);
+  grid-template-columns: 1fr 500px;
+  height:calc(100vh - 78px);
 }
 
-/* ===== LEFT ===== */
+/* ================= LEFT ================= */
 .left{
-  padding:20px;
+  padding:26px;
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:22px;
 }
 
-/* ===== LEADER CARD ===== */
+/* ================= LEADER ================= */
 .leader{
   position:relative;
   display:flex;
   align-items:center;
-  gap:22px;
-  padding:22px;
-  border-radius:22px;
-  background:var(--glass);
-  border:1px solid rgba(255,255,255,.06);
+  gap:26px;
+  padding:26px 30px;
+  border-radius:26px;
+  background:var(--glass-strong);
+  border:1px solid var(--line);
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,.02),
-    0 30px 60px rgba(0,0,0,.6);
+    0 40px 80px rgba(0,0,0,.65),
+    inset 0 0 0 1px rgba(255,255,255,.03);
   overflow:hidden;
 }
 
-.leader::before{
+.leader::after{
   content:"";
   position:absolute;
   inset:0;
-  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.08),transparent 70%);
-  animation:sweep 6s infinite;
+  background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.12),transparent 65%);
+  animation:shine 7s infinite;
 }
 
-@keyframes sweep{
-  from{transform:translateX(-100%)}
-  to{transform:translateX(100%)}
+@keyframes shine{
+  from{transform:translateX(-120%)}
+  to{transform:translateX(120%)}
 }
 
 .pos{
-  font-size:62px;
+  font-size:70px;
   font-weight:900;
-  color:var(--accent2);
+  color:var(--gold);
+  line-height:1;
 }
 
-.driver h2{margin:0;font-size:24px}
-.driver small{color:var(--muted)}
+.driver h2{
+  margin:0;
+  font-size:26px;
+  letter-spacing:.5px;
+}
+.driver small{
+  color:var(--muted);
+  font-size:13px;
+}
 
-.tyres{
+.meta{
   display:flex;
-  gap:6px;
-  margin-top:6px;
+  gap:10px;
+  margin-top:8px;
 }
 
-.tyres span{
-  padding:3px 8px;
+.meta span{
+  padding:5px 12px;
+  border-radius:14px;
   font-size:11px;
-  border-radius:10px;
-  background:#1f2b55;
+  background:#1b2350;
 }
 
-.tyres .soft{background:#ff4d4d}
-.tyres .medium{background:#ffd166;color:#000}
-.tyres .hard{background:#bcd6ff;color:#000}
+.soft{background:#ff4d4d}
+.medium{background:#ffd166;color:#000}
+.hard{background:#bcd6ff;color:#000}
 
 .delta{
   margin-left:auto;
   text-align:right;
 }
 
-.delta span{
-  font-size:24px;
-  font-weight:800;
+.delta small{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.delta strong{
+  font-size:26px;
   color:var(--green);
 }
 
-/* ===== RPM ===== */
+/* ================= RPM ================= */
 .rpm{
-  height:6px;
-  background:#1a2348;
+  margin-top:10px;
+  height:8px;
   border-radius:6px;
+  background:#141c3f;
   overflow:hidden;
-  margin-top:8px;
 }
 
 .rpm div{
-  width:78%;
+  width:82%;
   height:100%;
   background:linear-gradient(90deg,#4dff88,#ffd166,#ff4d4d);
 }
 
-/* ===== GRID ===== */
+/* ================= TABLE ================= */
 .table{
   background:var(--glass);
-  border-radius:22px;
+  border-radius:26px;
+  border:1px solid var(--line);
   overflow:hidden;
 }
 
-table{
-  width:100%;
-  border-collapse:collapse;
+thead{
+  background:linear-gradient(180deg,#121a3b,#0c1230);
 }
 
-thead{background:var(--panel2)}
-
 th,td{
-  padding:13px 16px;
+  padding:14px 18px;
   font-size:14px;
 }
 
@@ -176,83 +196,86 @@ th{
 }
 
 tbody tr{
-  border-bottom:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid var(--line);
 }
 
 tbody tr.lead{
-  background:linear-gradient(90deg,rgba(255,209,102,.18),transparent);
+  background:linear-gradient(90deg,rgba(255,209,102,.25),transparent);
 }
 
-/* ===== RIGHT ===== */
+/* ================= RIGHT ================= */
 .right{
-  padding:20px;
+  padding:26px;
   display:flex;
   flex-direction:column;
-  gap:18px;
+  gap:22px;
 }
 
-/* ===== BOX ===== */
+/* ================= BOX ================= */
 .box{
   background:var(--glass);
-  border-radius:22px;
-  padding:18px;
-  border:1px solid rgba(255,255,255,.06);
+  border-radius:26px;
+  padding:22px;
+  border:1px solid var(--line);
 }
 
-/* ===== TRACK ===== */
-.track svg{width:100%;height:280px}
+/* ================= TRACK ================= */
+.track svg{
+  width:100%;
+  height:300px;
+}
 
 .track path{
   fill:none;
   stroke:#3a4675;
-  stroke-width:20;
+  stroke-width:22;
   stroke-linecap:round;
 }
 
 .track .ideal{
   stroke:var(--accent);
-  stroke-width:6;
-  stroke-dasharray:10 16;
+  stroke-width:7;
+  stroke-dasharray:12 18;
   animation:dash 6s linear infinite;
 }
 
 @keyframes dash{
-  to{stroke-dashoffset:-400}
+  to{stroke-dashoffset:-420}
 }
 
 .car{
   fill:#fff;
-  filter:drop-shadow(0 0 8px var(--accent));
+  filter:drop-shadow(0 0 10px var(--accent));
 }
 
-/* ===== INFO ===== */
+/* ================= INFO ================= */
 .info p{
-  margin:8px 0;
+  margin:10px 0;
   font-size:14px;
 }
 
 .flag{
-  display:inline-block;
   width:12px;
   height:12px;
   border-radius:50%;
-  margin-right:6px;
+  display:inline-block;
+  margin-right:8px;
 }
 
 .green{background:var(--green)}
 .yellow{background:#ffd166}
 .red{background:var(--red)}
 
-/* ===== FOOTER ===== */
+/* ================= FOOTER ================= */
 footer{
   position:absolute;
   bottom:0;
   width:100%;
+  padding:8px;
   font-size:11px;
   text-align:center;
-  padding:6px;
   color:var(--muted);
-  background:rgba(0,0,0,.35);
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.4));
 }
 </style>
 </head>
@@ -274,7 +297,7 @@ footer{
       <h2>#27 João Silva</h2>
       <small>BMW M4 GT3 • Best 1:32.451</small>
 
-      <div class="tyres">
+      <div class="meta">
         <span class="medium">MED</span>
         <span>Fuel 42%</span>
         <span>ERS 78%</span>
@@ -285,7 +308,7 @@ footer{
 
     <div class="delta">
       <small>GAP</small>
-      <span>+0.000</span>
+      <strong>+0.000</strong>
     </div>
   </div>
 
@@ -300,7 +323,11 @@ footer{
           <th>Δ</th>
         </tr>
       </thead>
-      <tbody id="grid"></tbody>
+      <tbody>
+        <tr class="lead"><td>P1</td><td>#27 João Silva</td><td style="color:#b88cff">S1</td><td>1:32.451</td><td>—</td></tr>
+        <tr><td>P2</td><td>#11 Lucas Rocha</td><td style="color:#4dff88">S2</td><td>1:32.980</td><td>+0.529</td></tr>
+        <tr><td>P3</td><td>#44 Pedro Lima</td><td style="color:#ffd166">S3</td><td>1:33.102</td><td>+0.651</td></tr>
+      </tbody>
     </table>
   </div>
 
@@ -312,7 +339,7 @@ footer{
     <svg viewBox="0 0 600 320">
       <path d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
       <path class="ideal" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
-      <circle class="car" id="car" cx="80" cy="160" r="7"/>
+      <circle class="car" id="car" cx="80" cy="160" r="8"/>
     </svg>
   </div>
 
@@ -320,39 +347,16 @@ footer{
     <p><span class="flag green"></span>Status: <strong>Green Flag</strong></p>
     <p>Clima: <strong>Clear</strong></p>
     <p>Servidor: <strong>Rookie League</strong></p>
-    <p>Track: <strong>Auto-Generated</strong></p>
+    <p>Track Map: <strong>Generated</strong></p>
   </div>
 
 </div>
 
 </div>
 
-<footer>TV Broadcast Mode • ACSM Style • Ready for Live Data</footer>
+<footer>TV Broadcast Overlay • Premium Visual • Ready for Live Data</footer>
 
 <script>
-const data=[
- {p:1,n:"#27 João Silva",s:"S1",l:"1:32.451",d:"—"},
- {p:2,n:"#11 Lucas Rocha",s:"S2",l:"1:32.980",d:"+0.529"},
- {p:3,n:"#44 Pedro Lima",s:"S1",l:"1:33.102",d:"+0.651"},
- {p:4,n:"#08 Matheus Alves",s:"S3",l:"1:33.420",d:"+0.969"},
- {p:5,n:"#99 Rafael Costa",s:"S2",l:"1:33.701",d:"+1.250"}
-];
-
-const grid=document.getElementById("grid");
-
-data.forEach(d=>{
-  const tr=document.createElement("tr");
-  if(d.p===1) tr.classList.add("lead");
-  tr.innerHTML=`
-    <td>P${d.p}</td>
-    <td>${d.n}</td>
-    <td style="color:${d.s==='S1'?'#b88cff':d.s==='S2'?'#4dff88':'#ffd166'}">${d.s}</td>
-    <td>${d.l}</td>
-    <td>${d.d}</td>`;
-  grid.appendChild(tr);
-});
-
-/* animação carro */
 let t=0;
 setInterval(()=>{
   t+=0.02;
