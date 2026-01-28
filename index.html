@@ -2,56 +2,62 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Rookie League • Live Timing</title>
+<title>Rookie League • Dashboard</title>
 
 <style>
 body {
-  margin: 0;
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: #0b0b0b;
-  color: #eaeaea;
+  margin:0;
+  font-family:Segoe UI, Arial;
+  background:#0b0b0b;
+  color:#eaeaea;
 }
 header {
-  background: #111;
-  padding: 20px;
-  border-bottom: 2px solid #1e90ff;
+  background:#111;
+  padding:20px;
+  border-bottom:2px solid #1e90ff;
 }
-header h1 {
-  margin: 0;
-  color: #1e90ff;
+header h1 { margin:0; color:#1e90ff; }
+nav {
+  display:flex;
+  background:#0f0f0f;
 }
-header span {
-  font-size: 14px;
-  color: #888;
+nav button {
+  flex:1;
+  padding:15px;
+  background:none;
+  border:none;
+  color:#aaa;
+  font-size:14px;
+  cursor:pointer;
 }
+nav button.active {
+  color:#1e90ff;
+  border-bottom:2px solid #1e90ff;
+}
+section { display:none; padding:10px; }
+section.active { display:block; }
 
 table {
-  width: 100%;
-  border-collapse: collapse;
+  width:100%;
+  border-collapse:collapse;
 }
 th {
-  background: #1e90ff;
-  color: #000;
-  padding: 10px;
-  font-size: 14px;
+  background:#1e90ff;
+  color:#000;
+  padding:8px;
 }
 td {
-  padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #222;
+  padding:8px;
+  text-align:center;
+  border-bottom:1px solid #222;
 }
-tr:nth-child(even) {
-  background: #101010;
-}
-.best {
-  color: #00e676;
-  font-weight: bold;
-}
+tr:nth-child(even) { background:#101010; }
+.best { color:#00e676; font-weight:bold; }
 footer {
-  padding: 10px;
-  text-align: center;
-  font-size: 12px;
-  color: #555;
+  text-align:center;
+  padding:10px;
+  font-size:12px;
+  color:#555;
 }
 </style>
 </head>
@@ -60,9 +66,17 @@ footer {
 
 <header>
   <h1>Rookie League</h1>
-  <span>Live Timing • sTracker • Tempo real</span>
+  <small>Live Timing • Resultados • Ranking</small>
 </header>
 
+<nav>
+  <button class="active" onclick="showTab('live')">Live Timing</button>
+  <button onclick="showTab('results')">Resultados</button>
+  <button onclick="showTab('ranking')">Ranking</button>
+</nav>
+
+<!-- LIVE -->
+<section id="live" class="active">
 <table>
 <thead>
 <tr>
@@ -73,42 +87,142 @@ footer {
   <th>Melhor Volta</th>
 </tr>
 </thead>
-<tbody id="grid">
-<tr><td colspan="5">Carregando dados do servidor…</td></tr>
+<tbody id="liveBody">
+<tr><td colspan="5">Carregando…</td></tr>
 </tbody>
 </table>
+</section>
+
+<!-- RESULTADOS -->
+<section id="results">
+<table>
+<thead>
+<tr>
+  <th>Corrida</th>
+  <th>Pista</th>
+  <th>Vencedor</th>
+  <th>Data</th>
+</tr>
+</thead>
+<tbody id="resultsBody">
+<tr><td colspan="4">Carregando…</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- RANKING -->
+<section id="ranking">
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>Piloto</th>
+  <th>Pontos</th>
+  <th>Vitórias</th>
+</tr>
+</thead>
+<tbody id="rankingBody">
+<tr><td colspan="4">Carregando…</td></tr>
+</tbody>
+</table>
+</section>
 
 <footer>
-  Assetto Corsa • Emperor Servers • sTracker
+  Assetto Corsa • sTracker • ACSR • Emperor Servers
 </footer>
 
 <script>
-const API_URL = "http://plugins.rookieleague.emperorservers.com:9605/lapstat";
+const LIVE_API = "http://plugins.rookieleague.emperorservers.com:9605/lapstat";
+const RESULTS_API = "https://acsr.seuservidor.com/api/results";
+const RANKING_API = "https://acsr.seuservidor.com/api/drivers";
+
+function showTab(id) {
+  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  event.target.classList.add("active");
+}
 
 function msToTime(ms) {
   if (!ms || ms <= 0) return "-";
-  let minutes = Math.floor(ms / 60000);
-  let seconds = ((ms % 60000) / 1000).toFixed(3);
-  return minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+  let m = Math.floor(ms / 60000);
+  let s = ((ms % 60000) / 1000).toFixed(3);
+  return m + ":" + (s < 10 ? "0" : "") + s;
 }
 
-async function loadLiveTiming() {
+// LIVE TIMING
+async function loadLive() {
   try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    const drivers = data.lapStat || data;
-    const tbody = document.getElementById("grid");
+    const r = await fetch(LIVE_API);
+    const d = await r.json();
+    const list = d.lapStat || [];
+    const tbody = document.getElementById("liveBody");
     tbody.innerHTML = "";
-
-    if (!drivers || drivers.length === 0) {
-      tbody.innerHTML = "<tr><td colspan='5'>Servidor vazio</td></tr>";
-      return;
-    }
-
-    drivers.forEach((d, i) => {
+    list.forEach((p, i) => {
       tbody.innerHTML += `
         <tr>
-          <td>${i + 1}</td>
-          <td>${d.driverName || d.name}</td>
-          <td>${d.car ||
+          <td>${i+1}</td>
+          <td>${p.driverName}</td>
+          <td>${p.car || "-"}</td>
+          <td>${msToTime(p.lastLap)}</td>
+          <td class="best">${msToTime(p.bestLap)}</td>
+        </tr>`;
+    });
+  } catch {
+    document.getElementById("liveBody").innerHTML =
+      "<tr><td colspan='5'>Erro no Live Timing</td></tr>";
+  }
+}
+
+// RESULTADOS
+async function loadResults() {
+  try {
+    const r = await fetch(RESULTS_API);
+    const d = await r.json();
+    const tbody = document.getElementById("resultsBody");
+    tbody.innerHTML = "";
+    d.forEach(race => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${race.name}</td>
+          <td>${race.track}</td>
+          <td>${race.winner}</td>
+          <td>${race.date}</td>
+        </tr>`;
+    });
+  } catch {
+    document.getElementById("resultsBody").innerHTML =
+      "<tr><td colspan='4'>Resultados indisponíveis</td></tr>";
+  }
+}
+
+// RANKING
+async function loadRanking() {
+  try {
+    const r = await fetch(RANKING_API);
+    const d = await r.json();
+    const tbody = document.getElementById("rankingBody");
+    tbody.innerHTML = "";
+    d.forEach((p, i) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${i+1}</td>
+          <td>${p.name}</td>
+          <td>${p.points}</td>
+          <td>${p.wins}</td>
+        </tr>`;
+    });
+  } catch {
+    document.getElementById("rankingBody").innerHTML =
+      "<tr><td colspan='4'>Ranking indisponível</td></tr>";
+  }
+}
+
+setInterval(loadLive, 1000);
+loadLive();
+loadResults();
+loadRanking();
+</script>
+
+</body>
+</html>
