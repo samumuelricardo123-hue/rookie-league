@@ -6,10 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 :root{
-  --bg:#0b0b0d; --panel:#15151e; --line:#2a2a38; --red:#e10600; --green:#00ff9c; --text:#ffffff; --muted:#9a9aa5;
+  --bg:#0b0b0d;
+  --panel:#15151e;
+  --line:#2a2a38;
+  --red:#e10600;
+  --green:#00ff9c;
+  --text:#ffffff;
+  --muted:#9a9aa5;
 }
 *{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 body{margin:0;background:var(--bg);color:var(--text);}
+body.overlay header, body.overlay footer{display:none}
 header{height:64px; display:flex; align-items:center; justify-content:space-between; padding:0 24px; background:#000; border-bottom:2px solid var(--red);}
 .brand{font-weight:900; letter-spacing:3px;}
 .brand span{color:var(--red);}
@@ -47,6 +54,7 @@ th{color:var(--muted);font-size:12px;}
 .track svg{width:100%;height:240px;}
 .track path{fill:none;stroke:#3a3a4d;stroke-width:20;stroke-linecap:round;}
 .ideal{stroke:var(--red);stroke-width:6;stroke-dasharray:14 18;animation:dash 6s linear infinite;}
+@keyframes dash{to{stroke-dashoffset:-420;}}
 .car{fill:white;}
 input{width:100%;padding:10px;margin-bottom:10px;background:#101018;border:1px solid var(--line);color:white;}
 button.primary{background:var(--red);border:none;padding:10px;width:100%;font-weight:800;color:white;cursor:pointer;}
@@ -56,6 +64,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:6px;}
 </style>
 </head>
 <body>
+
 <header>
   <div class="brand">ROOKIE <span>LEAGUE</span></div>
   <nav>
@@ -85,16 +94,23 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:6px;}
   </div>
 
   <div class="grid">
+    <!-- TABELA DE PILOTOS -->
     <div class="panel">
       <table>
         <thead>
           <tr><th>POS</th><th>PILOTO</th><th>VOLTA</th><th>Δ</th></tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <tr class="lead"><td>P1</td><td>#27 João Silva</td><td>1:32.451</td><td>—</td></tr>
+          <tr><td>P2</td><td>#11 Lucas Rocha</td><td>1:32.980</td><td>+0.529</td></tr>
+          <tr><td>P3</td><td>#44 Pedro Lima</td><td>1:33.102</td><td>+0.651</td></tr>
+        </tbody>
       </table>
     </div>
 
+    <!-- WEATHER + TRACK -->
     <div>
+      <!-- WEATHER -->
       <div class="weather">
         <div class="weather-title">CLIMA</div>
         <div class="weather-grid">
@@ -104,6 +120,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:6px;}
         </div>
       </div>
 
+      <!-- TRACK MAP -->
       <div class="track">
         <div class="track-title">TRACK MAP</div>
         <svg viewBox="0 0 600 320">
@@ -154,6 +171,7 @@ footer{text-align:center;font-size:11px;color:var(--muted);padding:6px;}
 
 <script>
 // NAV
+if(location.search.includes("overlay")) document.body.classList.add("overlay");
 function show(id,btn){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
@@ -161,69 +179,80 @@ function show(id,btn){
   btn.classList.add("active");
 }
 
-// LOGIN
+// SESSION + VOLTA
+let lap=1;
+let sessions=["Treino Livre","Qualifying","Corrida"];
+let currentSession=0;
+function nextLap(){
+  lap++;
+  if(lap>10){ lap=1; currentSession++; if(currentSession>=sessions.length) currentSession=sessions.length-1; }
+  document.getElementById("lapNumber").innerText=lap;
+  document.getElementById("sessionName").innerText=sessions[currentSession];
+}
+setInterval(nextLap,5000); // simulação
+
+// CAMPEONATO
 let isAdmin=false;
-async function login(){
-  const res=await fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user:user.value,pass:pass.value})});
-  const data=await res.json();
-  if(data.success){
+let champ=[{name:"João Silva",pts:52},{name:"Lucas Rocha",pts:44}];
+function renderChamp(){
+  const tb=document.getElementById("champTable");
+  tb.innerHTML="";
+  champ.sort((a,b)=>b.pts-a.pts).forEach((d,i)=>{
+    tb.innerHTML+=`<tr><td>P${i+1}</td><td>${d.name}</td><td>${d.pts}</td>${isAdmin?`<td><button class="danger" onclick="delChamp(${i})">X</button></td>`:""}</tr>`;
+  });
+}
+function addChamp(){ champ.push({name:cName.value,pts:Number(cPts.value)}); cName.value=""; cPts.value=""; renderChamp(); }
+function delChamp(i){ champ.splice(i,1); renderChamp(); }
+
+// LOGIN
+function login(){
+  if(user.value==="ADM" && pass.value==="3636"){
     isAdmin=true;
     adminStatus.innerText="Administrador";
     document.querySelectorAll(".admin-only").forEach(e=>e.classList.remove("hidden"));
     alert("Login ADM realizado");
+    renderChamp();
   }else alert("Login inválido");
 }
+renderChamp();
 
-// CAMPEONATO
-async function addChamp(){
-  if(!isAdmin) return;
-  const name=cName.value;
-  const pts=Number(cPts.value);
-  await fetch("/api/championship",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name,pts})});
-  cName.value=""; cPts.value="";
-}
-
-// TRACK MAP
+// TRACK ANIMATION
 const svg=document.querySelector(".track svg");
 const trackPath=document.getElementById("trackPath");
-let cars=[];
 const NUM_CARS=5;
+let cars=[];
 for(let i=0;i<NUM_CARS;i++){
   let c=document.createElementNS("http://www.w3.org/2000/svg","circle");
   c.setAttribute("r",7); c.setAttribute("fill","white"); svg.appendChild(c);
-  cars.push({circle:c, progress:i*0.1});
+  cars.push({circle:c, progress:i*0.1}); // simulação inicial
 }
 function getPointAt(progress){
   let pathLength=trackPath.getTotalLength();
   let point=trackPath.getPointAtLength(progress*pathLength);
   return {x:point.x,y:point.y};
 }
-
-// UPDATE SERVER STATE
-async function updateServerState(){
-  const res=await fetch("/api/state");
-  const data=await res.json();
-  document.getElementById("sessionName").innerText=data.session;
-  document.getElementById("lapNumber").innerText=Math.floor(data.lap);
-
-  // Atualiza leaderboard
-  const tb=document.querySelector("#live table tbody");
-  tb.innerHTML="";
-  data.championship.forEach((p,i)=>{
-    tb.innerHTML+=`<tr${i===0?" class='lead'":""}><td>P${i+1}</td><td>${p.name}</td><td>--</td><td>--</td></tr>`;
+setInterval(()=>{
+  cars.forEach((car,i)=>{
+    car.progress+=Math.random()*0.002;
+    if(car.progress>1) car.progress=0;
+    let pos=getPointAt(car.progress);
+    car.circle.setAttribute("cx",pos.x);
+    car.circle.setAttribute("cy",pos.y);
   });
+},50);
 
-  // Atualiza carros no mapa
-  data.cars.forEach((c,i)=>{
+// Para usar com dados reais do Assetto Corsa, substituir simulação acima por fetch da API:
+// setInterval(()=>{ fetch("http://localhost:9600/lapstat").then(res=>res.json()).then(updateCarsFromServer); },200);
+function updateCarsFromServer(data){
+  data.players.forEach((p,i)=>{
     if(cars[i]){
-      cars[i].progress=c.progress;
+      cars[i].progress=p.progress;
       let pos=getPointAt(cars[i].progress);
       cars[i].circle.setAttribute("cx",pos.x);
       cars[i].circle.setAttribute("cy",pos.y);
     }
   });
 }
-setInterval(updateServerState,200);
 </script>
 
 </body>
