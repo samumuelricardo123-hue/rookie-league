@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard Horizontal/Vertical</title>
+<title>F1 Dashboard Marcha Central</title>
 <style>
 html, body {
     margin: 0;
@@ -19,12 +19,11 @@ html, body {
 .dashboard {
     display: grid;
     grid-template-rows: auto 1fr auto;
-    grid-template-columns: 1fr;
     width: 100%;
     height: 100%;
 }
 
-/* Top section: RPM LEDs */
+/* Top: RPM LEDs */
 .rpm-container {
     display: flex;
     justify-content: space-between;
@@ -42,26 +41,28 @@ html, body {
 .led-rpm.yellow.on { background: #ff0; box-shadow: 0 0 8px #ff0; }
 .led-rpm.red.on { background: #f00; box-shadow: 0 0 10px #f00; }
 
-/* Middle section: Speed and Gear */
+/* Middle: Marcha e Velocidade */
 .middle-section {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     align-items: center;
-    padding: 1vh 2vw;
-}
-.speed-container {
-    color: #ff0;
-    text-shadow: 0 0 15px #ff0, 0 0 30px #ff0;
-    font-weight: bold;
-    text-align: center;
+    justify-content: center;
+    gap: 1vh;
 }
 .gear-display {
-    color: #ff0;
+    font-size: 20vw;
     font-weight: bold;
     text-shadow: 0 0 20px #ff0;
+    color: #ff0;
+}
+.speed-container {
+    font-size: 12vw;
+    font-weight: bold;
+    color: #ff0;
+    text-shadow: 0 0 15px #ff0, 0 0 30px #ff0;
 }
 
-/* Bottom section: Tires, Systems, Lap/Delta */
+/* Bottom: Tires, Systems, Lap/Delta */
 .bottom-section {
     display: flex;
     justify-content: space-between;
@@ -114,6 +115,12 @@ html, body {
 }
 
 /* Lap/Delta */
+.lap-delta-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vh;
+    text-align: right;
+}
 .lap-container, .delta-container {
     font-weight: bold;
     padding: 0.3vh 0.5vw;
@@ -123,7 +130,7 @@ html, body {
 .lap-container { color: #0ff; }
 .delta-container { color: #f00; }
 
-/* Fullscreen button */
+/* Fullscreen */
 .fullscreen-btn {
     position: fixed;
     top: 1vh;
@@ -147,7 +154,6 @@ html, body {
 
   <!-- Top: RPM LEDs -->
   <div class="rpm-container" id="rpm-container">
-    <!-- 20 LEDs -->
     <div class="led-rpm green" id="led0"></div>
     <div class="led-rpm green" id="led1"></div>
     <div class="led-rpm green" id="led2"></div>
@@ -170,10 +176,10 @@ html, body {
     <div class="led-rpm red" id="led19"></div>
   </div>
 
-  <!-- Middle: Speed and Gear -->
+  <!-- Middle: Marcha e Velocidade -->
   <div class="middle-section">
-    <div class="speed-container" id="speed">0</div>
     <div class="gear-display" id="gear">N</div>
+    <div class="speed-container" id="speed">0</div>
   </div>
 
   <!-- Bottom: Tires, Systems, Lap/Delta -->
@@ -188,7 +194,7 @@ html, body {
       <div class="drs" id="drs">DRS</div>
       <div class="ers-container"><div class="ers-bar" id="ers"></div></div>
     </div>
-    <div>
+    <div class="lap-delta-container">
       <div class="lap-container" id="lap">Volta: 0</div>
       <div class="delta-container" id="delta">+0.000</div>
     </div>
@@ -206,8 +212,8 @@ for(let i=0;i<20;i++) leds.push(document.getElementById('led'+i));
 
 ws.onmessage = (event)=>{
     const data = JSON.parse(event.data);
-    document.getElementById('speed').innerText = data.speed;
     document.getElementById('gear').innerText = data.gear;
+    document.getElementById('speed').innerText = data.speed;
     document.getElementById('lap').innerText = `Volta: ${data.lap}`;
     document.getElementById('delta').innerText = data.delta;
 
@@ -231,7 +237,7 @@ document.getElementById('fullscreen-btn').addEventListener('click', ()=>{
     else document.exitFullscreen();
 });
 
-// Responsividade LEDs
+// Responsividade LEDs e fontes
 function resizeDashboard(){
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -241,8 +247,8 @@ function resizeDashboard(){
         led.style.height = `${ledSize}px`;
     });
 
-    document.getElementById('speed').style.fontSize = `${Math.max(w,h)/8}px`;
-    document.getElementById('gear').style.fontSize = `${Math.max(w,h)/15}px`;
+    document.getElementById('gear').style.fontSize = `${Math.max(w,h)/4}px`;
+    document.getElementById('speed').style.fontSize = `${Math.max(w,h)/7}px`;
     document.getElementById('lap').style.fontSize = `${Math.max(w,h)/30}px`;
     document.getElementById('delta').style.fontSize = `${Math.max(w,h)/30}px`;
 }
