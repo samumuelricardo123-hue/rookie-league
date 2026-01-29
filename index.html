@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Ferrari Display Realista</title>
+<title>F1 Ferrari Display com Divisões</title>
 <style>
 html, body {
     margin: 0;
@@ -15,66 +15,88 @@ html, body {
     color: #fff;
     overflow: hidden;
 }
+
 .dashboard {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-/* RPM semicircular */
+/* Linhas de divisão horizontais */
+.divider-horizontal {
+    position: absolute;
+    width: 90%;
+    height: 2px;
+    background: rgba(255,255,255,0.2);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* RPM semicircular LEDs */
 .rpm-container {
     position: absolute;
     top: 2%;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
-    width: 80%;
+    justify-content: center;
 }
 .led-rpm {
-    width: 18px;
-    height: 18px;
-    margin: 1px;
     border-radius: 50%;
+    margin: 0.2vw;
     background: #111;
-    transition: background 0.1s, box-shadow 0.1s;
+    transition: all 0.1s;
 }
 .led-rpm.green.on { background: #0f0; box-shadow: 0 0 6px #0f0; }
 .led-rpm.yellow.on { background: #ff0; box-shadow: 0 0 8px #ff0; }
 .led-rpm.red.on { background: #f00; box-shadow: 0 0 10px #f00; }
 
-/* Speed */
+/* Speed central */
 .speed-container {
     position: absolute;
-    top: 40%;
+    top: 35%;
     left: 50%;
     transform: translateX(-50%);
     color: #ff0;
     text-shadow: 0 0 15px #ff0, 0 0 30px #ff0;
     font-weight: bold;
     text-align: center;
+    padding: 0.5vh 1vw;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.05);
 }
 
-/* Gear */
+/* Gear central */
 .gear-display {
     position: absolute;
-    top: 55%;
+    top: 50%;
     left: 50%;
     transform: translateX(-50%);
     color: #ff0;
     font-weight: bold;
     text-shadow: 0 0 20px #ff0;
+    padding: 0.5vh 1vw;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.05);
 }
 
 /* Lap and Delta */
 .lap-container, .delta-container {
     position: absolute;
-    top: 70%;
-    font-size: 1.5em;
+    top: 68%;
+    font-weight: bold;
+    padding: 0.3vh 0.5vw;
+    border-radius: 5px;
+    background: rgba(255,255,255,0.05);
 }
-.lap-container { left: 10%; color: #0ff; }
-.delta-container { right: 10%; color: #f00; }
+.lap-container { left: 5%; color: #0ff; }
+.delta-container { right: 5%; color: #f00; }
+
+/* Divider horizontal abaixo RPM */
+.divider-rpm {
+    top: 30%;
+}
 
 /* Tires */
 .tires-container {
@@ -83,8 +105,11 @@ html, body {
     width: 100%;
     display: flex;
     justify-content: space-around;
+    padding: 0 5%;
+    border-top: 2px solid rgba(255,255,255,0.2);
+    padding-top: 1vh;
 }
-.tire { display: flex; flex-direction: column; align-items: center; font-size: 1em; }
+.tire { display: flex; flex-direction: column; align-items: center; font-weight: bold; }
 .tire span { margin-top: 0.2em; }
 
 /* Systems */
@@ -96,10 +121,12 @@ html, body {
     display: flex;
     gap: 5vw;
     align-items: center;
+    border-top: 2px solid rgba(255,255,255,0.2);
+    padding-top: 1vh;
 }
 /* DRS */
 .drs {
-    width: 6vw;
+    width: 8vw;
     height: 3vh;
     background: #333;
     border-radius: 4px;
@@ -129,7 +156,7 @@ html, body {
     transition: width 0.2s;
 }
 
-/* Fullscreen */
+/* Fullscreen button */
 .fullscreen-btn {
     position: fixed;
     top: 1vh;
@@ -151,29 +178,12 @@ html, body {
 
 <div class="dashboard">
 
+  <!-- Divider RPM -->
+  <div class="divider-horizontal divider-rpm"></div>
+
   <!-- RPM -->
   <div class="rpm-container" id="rpm-container">
-    <!-- 20 LEDs -->
-    <div class="led-rpm green" id="led0"></div>
-    <div class="led-rpm green" id="led1"></div>
-    <div class="led-rpm green" id="led2"></div>
-    <div class="led-rpm green" id="led3"></div>
-    <div class="led-rpm green" id="led4"></div>
-    <div class="led-rpm yellow" id="led5"></div>
-    <div class="led-rpm yellow" id="led6"></div>
-    <div class="led-rpm yellow" id="led7"></div>
-    <div class="led-rpm yellow" id="led8"></div>
-    <div class="led-rpm yellow" id="led9"></div>
-    <div class="led-rpm red" id="led10"></div>
-    <div class="led-rpm red" id="led11"></div>
-    <div class="led-rpm red" id="led12"></div>
-    <div class="led-rpm red" id="led13"></div>
-    <div class="led-rpm red" id="led14"></div>
-    <div class="led-rpm red" id="led15"></div>
-    <div class="led-rpm red" id="led16"></div>
-    <div class="led-rpm red" id="led17"></div>
-    <div class="led-rpm red" id="led18"></div>
-    <div class="led-rpm red" id="led19"></div>
+    ${[...Array(20).keys()].map(i => `<div class="led-rpm ${i<5?'green':i<10?'yellow':'red'}" id="led${i}"></div>`).join('')}
   </div>
 
   <!-- Speed -->
@@ -203,9 +213,8 @@ html, body {
 </div>
 
 <script>
-// WebSocket (exemplo)
+// WebSocket
 const ws = new WebSocket('ws://localhost:8080');
-
 ws.onopen = ()=>console.log('Conectado');
 
 // LEDs RPM
@@ -214,29 +223,21 @@ for(let i=0;i<20;i++) leds.push(document.getElementById('led'+i));
 
 ws.onmessage = (event)=>{
     const data = JSON.parse(event.data);
-
     document.getElementById('speed').innerText = data.speed;
     document.getElementById('gear').innerText = data.gear;
     document.getElementById('lap').innerText = `Volta: ${data.lap}`;
     document.getElementById('delta').innerText = data.delta;
 
-    // Pneus com cores baseadas na temperatura
     ['FL','FR','RL','RR'].forEach(t=>{
         const el = document.getElementById('tire'+t);
         el.innerText = data.tires[t]+'°C';
-        if(data.tires[t]<70) el.style.color='#0f0';
-        else if(data.tires[t]<100) el.style.color='#ff0';
-        else el.style.color='#f00';
+        el.style.color = data.tires[t]<70?'#0f0':data.tires[t]<100?'#ff0':'#f00';
     });
 
-    // RPM LEDs
     const rpmPercent = data.rpm/22000;
     leds.forEach((led,i)=>led.classList.toggle('on', rpmPercent > i*0.05));
 
-    // DRS piscando
     document.getElementById('drs').classList.toggle('on', data.drs);
-
-    // ERS barra
     document.getElementById('ers').style.width = `${data.ers}%`;
 };
 
