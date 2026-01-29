@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard Realista – Ajustado</title>
+<title>F1 Dashboard – DRS/ERS Esquerda</title>
 <style>
 html, body {
     margin: 0;
@@ -16,7 +16,7 @@ html, body {
     overflow: hidden;
 }
 
-/* DASHBOARD PRINCIPAL */
+/* DASHBOARD */
 .dashboard {
     display: grid;
     grid-template-rows: 15vh 50vh 35vh;
@@ -25,7 +25,7 @@ html, body {
     position: relative;
 }
 
-/* --- RPM LEDs --- */
+/* RPM LEDs topo */
 .rpm-container {
     display: flex;
     justify-content: space-between;
@@ -42,13 +42,13 @@ html, body {
 .led-rpm.yellow.on { background: #ff0; box-shadow: 0 0 8px #ff0; }
 .led-rpm.red.on { background: #f00; box-shadow: 0 0 10px #f00; }
 
-/* --- MARCHA + VELOCIDADE --- */
+/* Marcha + velocidade */
 .middle-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-top: 8vh; /* SUBIU DE 10VH PARA 8VH */
+    padding-top: 8vh;
     z-index:1;
 }
 .gear-display {
@@ -65,7 +65,7 @@ html, body {
     margin-top: 1vh;
 }
 
-/* --- RODAPÉ: pneus, sistemas, volta/delta --- */
+/* Rodapé: pneus, volta/delta */
 .bottom-section {
     display: flex;
     justify-content: space-between;
@@ -79,20 +79,12 @@ html, body {
 .tire { display: flex; flex-direction: column; align-items: center; font-weight: bold; }
 .tire span { margin-top: 0.2em; }
 
-.systems { display: flex; flex-direction: column; align-items: center; gap: 1vh; }
-.drs { width: 8vw; height: 4vh; background: #333; border-radius: 4px;
-    display: flex; justify-content: center; align-items: center; font-weight: bold; color: #fff; transition: all 0.2s;}
-.drs.on { background: #ff0; color:#000; box-shadow:0 0 10px #ff0; animation: blink 1s infinite; }
-@keyframes blink { 0%,50%,100%{opacity:1} 25%,75%{opacity:0.4} }
-.ers-container { width: 15vw; height: 4vh; background:#222; border-radius:10px; overflow:hidden; }
-.ers-bar { height:100%; width:0%; background: linear-gradient(to right,#0f0,#ff0,#f00); box-shadow:0 0 8px #f00; transition: width 0.2s; }
-
 .lap-delta-container { display:flex; flex-direction:column; gap:0.5vh; text-align:right; }
 .lap-container, .delta-container { font-weight:bold; padding:0.2vh 0.5vw; border-radius:5px; background: rgba(255,255,255,0.05);}
 .lap-container{color:#0ff;}
 .delta-container{color:#f00;}
 
-/* --- PAINEL DIREITA --- */
+/* Lateral direita: info de corrida */
 .right-sidebar {
     position:absolute;
     top: 15vh;
@@ -113,6 +105,50 @@ html, body {
     background: rgba(255,255,255,0.05);
     width: 90%;
     text-align:left;
+}
+
+/* Lateral esquerda: DRS e ERS */
+.left-sidebar {
+    position:absolute;
+    top: 20vh;
+    left: 0;
+    width: 15vw;
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1vh 0.5vw;
+    gap: 2vh;
+    z-index:2;
+}
+.left-sidebar .drs {
+    width: 8vw;
+    height: 4vh;
+    background: #333;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: #fff;
+    transition: all 0.2s;
+}
+.left-sidebar .drs.on { background: #ff0; color:#000; box-shadow:0 0 10px #ff0; animation: blink 1s infinite; }
+@keyframes blink { 0%,50%,100%{opacity:1} 25%,75%{opacity:0.4} }
+
+.left-sidebar .ers-container {
+    width: 10vw;
+    height: 4vh;
+    background: #222;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.left-sidebar .ers-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right,#0f0,#ff0,#f00);
+    box-shadow: 0 0 8px #f00;
+    transition: width 0.2s;
 }
 
 /* Botões */
@@ -173,7 +209,7 @@ html, body {
     <div class="speed-container" id="speed">0</div>
   </div>
 
-  <!-- Rodapé: pneus, sistemas, volta/delta -->
+  <!-- Rodapé: pneus, volta/delta -->
   <div class="bottom-section editable" id="bottom-section">
     <div class="tires-container">
       <div class="tire">FL <span id="tireFL">0°C</span></div>
@@ -181,17 +217,13 @@ html, body {
       <div class="tire">RL <span id="tireRL">0°C</span></div>
       <div class="tire">RR <span id="tireRR">0°C</span></div>
     </div>
-    <div class="systems">
-      <div class="drs" id="drs">DRS</div>
-      <div class="ers-container"><div class="ers-bar" id="ers"></div></div>
-    </div>
     <div class="lap-delta-container">
       <div class="lap-container" id="lap">Volta: 0</div>
       <div class="delta-container" id="delta">+0.000</div>
     </div>
   </div>
 
-  <!-- Painel lateral direito -->
+  <!-- Lateral direita: info corrida -->
   <div class="right-sidebar editable" id="right-sidebar">
     <div id="position">Posição: 1</div>
     <div id="gapFront">Gap Frente: +0.000s</div>
@@ -200,6 +232,12 @@ html, body {
     <div id="engineTemp">Motor: 90°C</div>
     <div id="ersMode">ERS: Modo Normal</div>
     <div id="battery">Bateria: 100%</div>
+  </div>
+
+  <!-- Lateral esquerda: DRS e ERS -->
+  <div class="left-sidebar editable" id="left-sidebar">
+    <div class="drs" id="drs">DRS</div>
+    <div class="ers-container"><div class="ers-bar" id="ers"></div></div>
   </div>
 
 </div>
@@ -214,7 +252,6 @@ for(let i=0;i<20;i++) leds.push(document.getElementById('led'+i));
 
 ws.onmessage = (event)=>{
     const data = JSON.parse(event.data);
-
     document.getElementById('gear').innerText = data.gear;
     document.getElementById('speed').innerText = data.speed;
     document.getElementById('lap').innerText = `Volta: ${data.lap}`;
@@ -229,6 +266,7 @@ ws.onmessage = (event)=>{
     const rpmPercent = data.rpm/22000;
     leds.forEach((led,i)=>led.classList.toggle('on', rpmPercent > i*0.05));
 
+    // DRS / ERS lateral esquerda
     document.getElementById('drs').classList.toggle('on', data.drs);
     document.getElementById('ers').style.width = `${data.ers}%`;
 
