@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard – DRS/ERS Esquerda</title>
+<title>F1 Dashboard – ERS Vertical & DRS Verde</title>
 <style>
 html, body {
     margin: 0;
@@ -14,6 +14,7 @@ html, body {
     font-family: Arial, sans-serif;
     color: #fff;
     overflow: hidden;
+    transition: background 0.3s;
 }
 
 /* DASHBOARD */
@@ -84,7 +85,7 @@ html, body {
 .lap-container{color:#0ff;}
 .delta-container{color:#f00;}
 
-/* Lateral direita: info de corrida */
+/* Lateral direita: info corrida */
 .right-sidebar {
     position:absolute;
     top: 15vh;
@@ -107,48 +108,35 @@ html, body {
     text-align:left;
 }
 
-/* Lateral esquerda: DRS e ERS */
+/* Lateral esquerda: ERS vertical */
 .left-sidebar {
     position:absolute;
-    top: 20vh;
-    left: 0;
-    width: 15vw;
-    height: 30vh;
+    top: 15vh;
+    left: 1vw;
+    width: 3vw;
+    height: 60vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse; /* preenchimento de baixo para cima */
+    justify-content: flex-start;
     align-items: center;
     padding: 1vh 0.5vw;
-    gap: 2vh;
     z-index:2;
 }
-.left-sidebar .drs {
-    width: 8vw;
-    height: 4vh;
-    background: #333;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    color: #fff;
-    transition: all 0.2s;
-}
-.left-sidebar .drs.on { background: #ff0; color:#000; box-shadow:0 0 10px #ff0; animation: blink 1s infinite; }
-@keyframes blink { 0%,50%,100%{opacity:1} 25%,75%{opacity:0.4} }
-
 .left-sidebar .ers-container {
-    width: 10vw;
-    height: 4vh;
+    width: 100%;
+    height: 100%;
     background: #222;
     border-radius: 10px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column-reverse;
 }
 .left-sidebar .ers-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(to right,#0f0,#ff0,#f00);
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to top,#0f0,#ff0,#f00);
     box-shadow: 0 0 8px #f00;
-    transition: width 0.2s;
+    transition: height 0.2s;
 }
 
 /* Botões */
@@ -177,10 +165,11 @@ html, body {
 <button id="edit-layout-btn">Editar Layout</button>
 <button id="save-layout-btn">Salvar Layout</button>
 
-<div class="dashboard">
+<div class="dashboard" id="dashboard">
 
   <!-- RPM LEDs -->
   <div class="rpm-container editable" id="rpm-container">
+    <!-- 20 LEDs -->
     <div class="led-rpm green" id="led0"></div>
     <div class="led-rpm green" id="led1"></div>
     <div class="led-rpm green" id="led2"></div>
@@ -234,43 +223,51 @@ html, body {
     <div id="battery">Bateria: 100%</div>
   </div>
 
-  <!-- Lateral esquerda: DRS e ERS -->
+  <!-- Lateral esquerda: ERS vertical -->
   <div class="left-sidebar editable" id="left-sidebar">
-    <div class="drs" id="drs">DRS</div>
     <div class="ers-container"><div class="ers-bar" id="ers"></div></div>
   </div>
 
 </div>
 
 <script>
-// --- WebSocket exemplo ---
+// WebSocket exemplo
 const ws = new WebSocket('ws://localhost:8080');
 ws.onopen = ()=>console.log('Conectado');
 
 const leds = [];
 for(let i=0;i<20;i++) leds.push(document.getElementById('led'+i));
+const dashboard = document.getElementById('dashboard');
 
 ws.onmessage = (event)=>{
     const data = JSON.parse(event.data);
+
+    // Marcha / Velocidade
     document.getElementById('gear').innerText = data.gear;
     document.getElementById('speed').innerText = data.speed;
+
+    // Volta / Delta
     document.getElementById('lap').innerText = `Volta: ${data.lap}`;
     document.getElementById('delta').innerText = data.delta;
 
+    // Pneus
     ['FL','FR','RL','RR'].forEach(t=>{
         const el = document.getElementById('tire'+t);
         el.innerText = data.tires[t]+'°C';
         el.style.color = data.tires[t]<70?'#0f0':data.tires[t]<100?'#ff0':'#f00';
     });
 
+    // LEDs RPM
     const rpmPercent = data.rpm/22000;
     leds.forEach((led,i)=>led.classList.toggle('on', rpmPercent > i*0.05));
 
-    // DRS / ERS lateral esquerda
-    document.getElementById('drs').classList.toggle('on', data.drs);
-    document.getElementById('ers').style.width = `${data.ers}%`;
+    // ERS vertical
+    document.getElementById('ers').style.height = `${data.ers}%`;
 
-    // Painel lateral direito
+    // DRS: muda fundo do dashboard
+    dashboard.style.background = data.drs ? '#0f0' : '#0a0a0a';
+
+    // Lateral direita
     document.getElementById('position').innerText = `Posição: ${data.position}`;
     document.getElementById('gapFront').innerText = `Gap Frente: ${data.gapFront}s`;
     document.getElementById('gapBack').innerText = `Gap Atrás: ${data.gapBack}s`;
@@ -282,8 +279,7 @@ ws.onmessage = (event)=>{
 
 // Fullscreen
 document.getElementById('fullscreen-btn').addEventListener('click', ()=>{
-    const dash = document.querySelector('.dashboard');
-    if(!document.fullscreenElement) dash.requestFullscreen();
+    if(!document.fullscreenElement) dashboard.requestFullscreen();
     else document.exitFullscreen();
 });
 
