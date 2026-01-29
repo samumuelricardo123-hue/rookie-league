@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard Editável</title>
+<title>F1 Dashboard Editável – Corrigido</title>
 <style>
 html, body {
     margin: 0;
@@ -149,7 +149,7 @@ html, body {
 #save-layout-btn { left:110px; background:#222; color:#fff; display:none; }
 
 /* Modo edição */
-.editable { border: 1px dashed #fff; cursor: move; position:absolute; }
+.editable { border: 1px dashed #fff; cursor: move; }
 </style>
 </head>
 <body>
@@ -212,7 +212,7 @@ html, body {
 </div>
 
 <script>
-// WebSocket exemplo
+// --- WebSocket exemplo ---
 const ws = new WebSocket('ws://localhost:8080');
 ws.onopen = ()=>console.log('Conectado');
 
@@ -239,14 +239,14 @@ ws.onmessage = (event)=>{
     document.getElementById('ers').style.width = `${data.ers}%`;
 };
 
-// Fullscreen
+// --- Fullscreen ---
 document.getElementById('fullscreen-btn').addEventListener('click', ()=>{
     const dash = document.querySelector('.dashboard');
     if(!document.fullscreenElement) dash.requestFullscreen();
     else document.exitFullscreen();
 });
 
-// Responsividade dinâmica
+// --- Responsividade dinâmica ---
 function resizeDashboard(){
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -269,35 +269,43 @@ let editing = false;
 const editables = document.querySelectorAll('.editable');
 document.getElementById('edit-layout-btn').addEventListener('click', () => {
     editing = !editing;
-    editables.forEach(el => {
+    editables.forEach(el=>{
         el.style.border = editing ? '1px dashed #fff' : 'none';
     });
     document.getElementById('save-layout-btn').style.display = editing ? 'inline-block' : 'none';
 });
 
-// Drag & Drop simples
+// Drag & Drop corrigido para elementos com filhos
 editables.forEach(el=>{
     el.addEventListener('mousedown', e=>{
         if(!editing) return;
+
+        e.preventDefault(); // evita bloqueio por filhos
         const shiftX = e.clientX - el.getBoundingClientRect().left;
         const shiftY = e.clientY - el.getBoundingClientRect().top;
         el.style.position = 'absolute';
+        el.style.zIndex = 1000;
+
         function moveAt(pageX, pageY){
             el.style.left = pageX - shiftX + 'px';
             el.style.top = pageY - shiftY + 'px';
         }
+
         function onMouseMove(e){
             moveAt(e.pageX, e.pageY);
         }
+
         document.addEventListener('mousemove', onMouseMove);
+
         document.addEventListener('mouseup', ()=>{
             document.removeEventListener('mousemove', onMouseMove);
         }, {once:true});
     });
+    el.ondragstart = () => false;
 });
 
-// Salvar layout no localStorage
-document.getElementById('save-layout-btn').addEventListener('click', () => {
+// --- Salvar Layout ---
+document.getElementById('save-layout-btn').addEventListener('click', ()=>{
     const layout = {};
     editables.forEach(el=>{
         layout[el.id] = {top: el.style.top, left: el.style.left, width: el.offsetWidth, height: el.offsetHeight};
@@ -306,7 +314,7 @@ document.getElementById('save-layout-btn').addEventListener('click', () => {
     alert('Layout salvo!');
 });
 
-// Restaurar layout
+// --- Restaurar Layout ---
 window.addEventListener('load', ()=>{
     const saved = localStorage.getItem('f1-dashboard-layout');
     if(saved){
