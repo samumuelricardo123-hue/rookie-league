@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Ferrari Display com Divisões</title>
+<title>F1 Dashboard com RPM LEDs</title>
 <style>
 html, body {
     margin: 0;
@@ -16,13 +16,9 @@ html, body {
     overflow: hidden;
 }
 
-.dashboard {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
+.dashboard { position: relative; width: 100%; height: 100%; }
 
-/* Linhas de divisão horizontais */
+/* Divider horizontal */
 .divider-horizontal {
     position: absolute;
     width: 90%;
@@ -32,7 +28,7 @@ html, body {
     transform: translateX(-50%);
 }
 
-/* RPM semicircular LEDs */
+/* RPM LEDs */
 .rpm-container {
     position: absolute;
     top: 2%;
@@ -52,7 +48,7 @@ html, body {
 .led-rpm.yellow.on { background: #ff0; box-shadow: 0 0 8px #ff0; }
 .led-rpm.red.on { background: #f00; box-shadow: 0 0 10px #f00; }
 
-/* Speed central */
+/* Speed */
 .speed-container {
     position: absolute;
     top: 35%;
@@ -67,7 +63,7 @@ html, body {
     background: rgba(255,255,255,0.05);
 }
 
-/* Gear central */
+/* Gear */
 .gear-display {
     position: absolute;
     top: 50%;
@@ -92,11 +88,6 @@ html, body {
 }
 .lap-container { left: 5%; color: #0ff; }
 .delta-container { right: 5%; color: #f00; }
-
-/* Divider horizontal abaixo RPM */
-.divider-rpm {
-    top: 30%;
-}
 
 /* Tires */
 .tires-container {
@@ -156,7 +147,7 @@ html, body {
     transition: width 0.2s;
 }
 
-/* Fullscreen button */
+/* Fullscreen */
 .fullscreen-btn {
     position: fixed;
     top: 1vh;
@@ -179,11 +170,30 @@ html, body {
 <div class="dashboard">
 
   <!-- Divider RPM -->
-  <div class="divider-horizontal divider-rpm"></div>
+  <div class="divider-horizontal" style="top:30%;"></div>
 
-  <!-- RPM -->
+  <!-- RPM LEDs -->
   <div class="rpm-container" id="rpm-container">
-    ${[...Array(20).keys()].map(i => `<div class="led-rpm ${i<5?'green':i<10?'yellow':'red'}" id="led${i}"></div>`).join('')}
+    <div class="led-rpm green" id="led0"></div>
+    <div class="led-rpm green" id="led1"></div>
+    <div class="led-rpm green" id="led2"></div>
+    <div class="led-rpm green" id="led3"></div>
+    <div class="led-rpm green" id="led4"></div>
+    <div class="led-rpm yellow" id="led5"></div>
+    <div class="led-rpm yellow" id="led6"></div>
+    <div class="led-rpm yellow" id="led7"></div>
+    <div class="led-rpm yellow" id="led8"></div>
+    <div class="led-rpm yellow" id="led9"></div>
+    <div class="led-rpm red" id="led10"></div>
+    <div class="led-rpm red" id="led11"></div>
+    <div class="led-rpm red" id="led12"></div>
+    <div class="led-rpm red" id="led13"></div>
+    <div class="led-rpm red" id="led14"></div>
+    <div class="led-rpm red" id="led15"></div>
+    <div class="led-rpm red" id="led16"></div>
+    <div class="led-rpm red" id="led17"></div>
+    <div class="led-rpm red" id="led18"></div>
+    <div class="led-rpm red" id="led19"></div>
   </div>
 
   <!-- Speed -->
