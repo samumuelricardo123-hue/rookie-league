@@ -2,258 +2,146 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Rookie League | Live Timing</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>F1 Dashboard Avançado</title>
 <style>
-:root{
-  --bg:#0b0b0d;
-  --panel:#15151e;
-  --line:#2a2a38;
-  --red:#e10600;
-  --green:#00ff9c;
-  --text:#ffffff;
-  --muted:#9a9aa5;
+/* Reset básico */
+body { margin: 0; font-family: 'Arial', sans-serif; background: #0a0a0a; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+
+/* Layout principal */
+.dashboard {
+    display: grid;
+    grid-template-areas:
+        "wheel rpm"
+        "speed rpm"
+        "systems systems";
+    grid-gap: 30px;
+    text-align: center;
 }
-*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-body{margin:0;background:var(--bg);color:var(--text);}
-body.overlay header, body.overlay footer{display:none}
-header{height:64px; display:flex; align-items:center; justify-content:space-between; padding:0 24px; background:#000; border-bottom:2px solid var(--red);}
-.brand{font-weight:900; letter-spacing:3px;}
-.brand span{color:var(--red);}
-nav{display:flex;gap:16px;}
-nav button{background:none; border:none; color:#ccc; font-weight:700; cursor:pointer;}
-nav button.active{color:white; border-bottom:3px solid var(--red);}
-.admin{font-size:11px; color:var(--muted);}
-.section{display:none;padding:20px;}
-.section.active{display:block;}
-.session-bar{margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;}
-.session-bar div{font-weight:700; font-size:16px;}
-.session-bar .session-name{font-size:18px;}
-.leader{display:grid; grid-template-columns:80px 1fr 160px; align-items:center; background:linear-gradient(90deg,#000,#14141c); border-left:6px solid var(--red); padding:18px; margin-bottom:18px;}
-.pos{font-size:48px;font-weight:900;text-align:center;}
-.driver h1{margin:0;font-size:22px;}
-.driver small{color:var(--muted);}
-.stats{display:flex;gap:8px;margin-top:6px;}
-.stats span{background:#1e1e28;padding:4px 8px;font-size:11px;}
-.delta{text-align:right;}
-.delta strong{font-size:22px;color:var(--green);}
-.grid{display:grid;grid-template-columns:1fr 360px;gap:18px;}
-.panel{background:var(--panel);border:1px solid var(--line);}
-table{width:100%;border-collapse:collapse;}
-th,td{padding:10px;border-bottom:1px solid var(--line);font-size:14px;}
-th{color:var(--muted);font-size:12px;}
-.lead{background:#1a1a24;}
-.weather{background:var(--panel);border:1px solid var(--line);padding:12px;margin-bottom:12px;}
-.weather-title{font-size:11px;color:var(--muted);margin-bottom:8px;}
-.weather-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;}
-.weather-box{background:#1a1a24;padding:10px;}
-.weather-box strong{display:block;font-size:18px;}
-.weather-box small{font-size:11px;color:var(--muted);}
-.track{background:var(--panel);border:1px solid var(--line);padding:12px;}
-.track-title{font-size:11px;color:var(--muted);margin-bottom:6px;}
-.track svg{width:100%;height:240px;}
-.track path{fill:none;stroke:#3a3a4d;stroke-width:20;stroke-linecap:round;}
-.ideal{stroke:var(--red);stroke-width:6;stroke-dasharray:14 18;animation:dash 6s linear infinite;}
-@keyframes dash{to{stroke-dashoffset:-420;}}
-.car{fill:white;}
-input{width:100%;padding:10px;margin-bottom:10px;background:#101018;border:1px solid var(--line);color:white;}
-button.primary{background:var(--red);border:none;padding:10px;width:100%;font-weight:800;color:white;cursor:pointer;}
-button.danger{background:#a00000;border:none;padding:4px 8px;color:white;cursor:pointer;}
-.hidden{display:none;}
-footer{text-align:center;font-size:11px;color:var(--muted);padding:6px;}
+
+/* Volante F1 */
+.steering-wheel { grid-area: wheel; display: flex; justify-content: center; align-items: center; }
+.wheel {
+    width: 220px;
+    height: 220px;
+    border: 12px solid #333;
+    border-radius: 50%;
+    position: relative;
+    background: radial-gradient(circle at center, #111 0%, #222 100%);
+}
+.gear-display {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3em; color: #ff0; font-weight: bold;
+}
+
+/* LEDs Shift */
+.shift-leds {
+    position: absolute;
+    width: 200px; height: 200px;
+    top: 10px; left: 10px;
+    pointer-events: none;
+}
+.led {
+    position: absolute;
+    width: 20px; height: 6px;
+    background: #333;
+    border-radius: 3px;
+}
+.led.on { background: red; }
+
+/* RPM */
+.rpm-container { grid-area: rpm; display: flex; flex-direction: column; align-items: center; }
+.rpm-meter { position: relative; width: 180px; height: 180px; border-radius: 50%; background: #111; border: 8px solid #333; }
+.needle { position: absolute; width: 4px; height: 90px; background: red; top: 50%; left: 50%; transform-origin: bottom center; transform: rotate(-135deg); transition: transform 0.1s ease-out; }
+.rpm-zones { position: absolute; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; }
+.zone { position: absolute; width: 50%; height: 50%; top: 25%; left: 25%; border-radius: 50%; clip-path: polygon(50% 50%, 100% 0%, 100% 100%); opacity: 0.2; }
+.rpm-value { margin-top: 10px; font-size: 1.5em; }
+
+/* Speed */
+.speed-container h1 { grid-area: speed; font-size: 4em; color: #0ff; }
+
+/* DRS / ERS */
+.systems { grid-area: systems; display: flex; justify-content: center; gap: 40px; font-size: 1.2em; }
+.drs { color: #ff0; font-weight: bold; }
+.ers { color: #0f0; font-weight: bold; }
 </style>
 </head>
 <body>
+<div class="dashboard">
 
-<header>
-  <div class="brand">ROOKIE <span>LEAGUE</span></div>
-  <nav>
-    <button class="active" onclick="show('live',this)">LIVE</button>
-    <button onclick="show('champ',this)">CAMPEONATO</button>
-    <button onclick="show('signup',this)">INSCRIÇÃO</button>
-    <button onclick="show('login',this)">ADM</button>
-  </nav>
-  <div class="admin" id="adminStatus">Público</div>
-</header>
-
-<!-- LIVE -->
-<div id="live" class="section active">
-  <div class="session-bar">
-    <div class="session-name">Sessão: <span id="sessionName">Treino Livre</span></div>
-    <div>Volta: <span id="lapNumber">1</span></div>
-  </div>
-
-  <div class="leader">
-    <div class="pos">P1</div>
-    <div class="driver">
-      <h1>#27 João Silva</h1>
-      <small>BMW M4 GT3 • 1:32.451</small>
-      <div class="stats"><span>MED</span><span>Fuel 42%</span><span>ERS 78%</span></div>
-    </div>
-    <div class="delta"><small>GAP</small><strong>+0.000</strong></div>
-  </div>
-
-  <div class="grid">
-    <!-- TABELA DE PILOTOS -->
-    <div class="panel">
-      <table>
-        <thead>
-          <tr><th>POS</th><th>PILOTO</th><th>VOLTA</th><th>Δ</th></tr>
-        </thead>
-        <tbody>
-          <tr class="lead"><td>P1</td><td>#27 João Silva</td><td>1:32.451</td><td>—</td></tr>
-          <tr><td>P2</td><td>#11 Lucas Rocha</td><td>1:32.980</td><td>+0.529</td></tr>
-          <tr><td>P3</td><td>#44 Pedro Lima</td><td>1:33.102</td><td>+0.651</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- WEATHER + TRACK -->
-    <div>
-      <!-- WEATHER -->
-      <div class="weather">
-        <div class="weather-title">CLIMA</div>
-        <div class="weather-grid">
-          <div class="weather-box">☀️<strong>Sunny</strong><small>Clima</small></div>
-          <div class="weather-box"><strong>26°C</strong><small>Ar</small></div>
-          <div class="weather-box"><strong>38°C</strong><small>Pista</small></div>
-        </div>
-      </div>
-
-      <!-- TRACK MAP -->
-      <div class="track">
-        <div class="track-title">TRACK MAP</div>
-        <svg viewBox="0 0 600 320">
-          <path id="trackPath" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160" fill="none" stroke="#3a3a4d" stroke-width="20" stroke-linecap="round"/>
-          <path class="ideal" d="M80 160 Q160 40 320 60 Q500 80 520 160 Q540 260 360 280 Q200 300 120 240 Q60 200 80 160"/>
-        </svg>
+  <!-- Volante F1 -->
+  <div class="steering-wheel">
+    <div class="wheel">
+      <div class="gear-display" id="gear">N</div>
+      <div class="shift-leds" id="shift-leds">
+        <div class="led" style="top:10px; left:10px;"></div>
+        <div class="led" style="top:10px; left:40px;"></div>
+        <div class="led" style="top:10px; left:70px;"></div>
+        <div class="led" style="top:10px; left:100px;"></div>
+        <div class="led" style="top:10px; left:130px;"></div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- CAMPEONATO -->
-<div id="champ" class="section">
-  <div class="panel">
-    <table>
-      <thead>
-        <tr><th>POS</th><th>PILOTO</th><th>PTS</th><th class="admin-only hidden">AÇÕES</th></tr>
-      </thead>
-      <tbody id="champTable"></tbody>
-    </table>
-    <div class="admin-only hidden" style="padding:12px">
-      <input id="cName" placeholder="Piloto">
-      <input id="cPts" placeholder="Pontos">
-      <button class="primary" onclick="addChamp()">Adicionar</button>
+  <!-- RPM -->
+  <div class="rpm-container">
+    <div class="rpm-meter">
+      <div class="needle" id="rpm-needle"></div>
     </div>
+    <div class="rpm-value" id="rpm">0 RPM</div>
   </div>
-</div>
 
-<!-- INSCRIÇÃO -->
-<div id="signup" class="section">
-  <div class="panel" style="padding:16px">
-    <input placeholder="Nome do Piloto">
-    <input placeholder="Carro">
-    <button class="primary">Enviar</button>
+  <!-- Speed -->
+  <div class="speed-container">
+    <h1 id="speed">0 km/h</h1>
   </div>
-</div>
 
-<!-- LOGIN -->
-<div id="login" class="section">
-  <div class="panel" style="padding:16px">
-    <input id="user" placeholder="Usuário">
-    <input id="pass" type="password" placeholder="Senha">
-    <button class="primary" onclick="login()">Entrar</button>
+  <!-- DRS / ERS -->
+  <div class="systems">
+    <div class="drs" id="drs">DRS: OFF</div>
+    <div class="ers" id="ers">ERS: 0%</div>
   </div>
-</div>
 
-<footer>Rookie League • Live Timing</footer>
+</div>
 
 <script>
-// NAV
-if(location.search.includes("overlay")) document.body.classList.add("overlay");
-function show(id,btn){
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  btn.classList.add("active");
-}
+// Conexão WebSocket
+const ws = new WebSocket('ws://localhost:8080');
 
-// SESSION + VOLTA
-let lap=1;
-let sessions=["Treino Livre","Qualifying","Corrida"];
-let currentSession=0;
-function nextLap(){
-  lap++;
-  if(lap>10){ lap=1; currentSession++; if(currentSession>=sessions.length) currentSession=sessions.length-1; }
-  document.getElementById("lapNumber").innerText=lap;
-  document.getElementById("sessionName").innerText=sessions[currentSession];
-}
-setInterval(nextLap,5000); // simulação
+ws.onopen = () => console.log('Conectado ao servidor WebSocket');
 
-// CAMPEONATO
-let isAdmin=false;
-let champ=[{name:"João Silva",pts:52},{name:"Lucas Rocha",pts:44}];
-function renderChamp(){
-  const tb=document.getElementById("champTable");
-  tb.innerHTML="";
-  champ.sort((a,b)=>b.pts-a.pts).forEach((d,i)=>{
-    tb.innerHTML+=`<tr><td>P${i+1}</td><td>${d.name}</td><td>${d.pts}</td>${isAdmin?`<td><button class="danger" onclick="delChamp(${i})">X</button></td>`:""}</tr>`;
-  });
-}
-function addChamp(){ champ.push({name:cName.value,pts:Number(cPts.value)}); cName.value=""; cPts.value=""; renderChamp(); }
-function delChamp(i){ champ.splice(i,1); renderChamp(); }
+// Seleção de LEDs shift
+const leds = Array.from(document.querySelectorAll('#shift-leds .led'));
 
-// LOGIN
-function login(){
-  if(user.value==="ADM" && pass.value==="3636"){
-    isAdmin=true;
-    adminStatus.innerText="Administrador";
-    document.querySelectorAll(".admin-only").forEach(e=>e.classList.remove("hidden"));
-    alert("Login ADM realizado");
-    renderChamp();
-  }else alert("Login inválido");
-}
-renderChamp();
+ws.onmessage = (event) => {
+    const data = JSON.parse(event.data);
 
-// TRACK ANIMATION
-const svg=document.querySelector(".track svg");
-const trackPath=document.getElementById("trackPath");
-const NUM_CARS=5;
-let cars=[];
-for(let i=0;i<NUM_CARS;i++){
-  let c=document.createElementNS("http://www.w3.org/2000/svg","circle");
-  c.setAttribute("r",7); c.setAttribute("fill","white"); svg.appendChild(c);
-  cars.push({circle:c, progress:i*0.1}); // simulação inicial
-}
-function getPointAt(progress){
-  let pathLength=trackPath.getTotalLength();
-  let point=trackPath.getPointAtLength(progress*pathLength);
-  return {x:point.x,y:point.y};
-}
-setInterval(()=>{
-  cars.forEach((car,i)=>{
-    car.progress+=Math.random()*0.002;
-    if(car.progress>1) car.progress=0;
-    let pos=getPointAt(car.progress);
-    car.circle.setAttribute("cx",pos.x);
-    car.circle.setAttribute("cy",pos.y);
-  });
-},50);
+    // Velocidade
+    document.getElementById('speed').innerText = `${data.speed} km/h`;
 
-// Para usar com dados reais do Assetto Corsa, substituir simulação acima por fetch da API:
-// setInterval(()=>{ fetch("http://localhost:9600/lapstat").then(res=>res.json()).then(updateCarsFromServer); },200);
-function updateCarsFromServer(data){
-  data.players.forEach((p,i)=>{
-    if(cars[i]){
-      cars[i].progress=p.progress;
-      let pos=getPointAt(cars[i].progress);
-      cars[i].circle.setAttribute("cx",pos.x);
-      cars[i].circle.setAttribute("cy",pos.y);
-    }
-  });
-}
+    // RPM
+    document.getElementById('rpm').innerText = `${data.rpm} RPM`;
+    const maxRpm = 22000;
+    const deg = (data.rpm / maxRpm) * 270 - 135;
+    document.getElementById('rpm-needle').style.transform = `rotate(${deg}deg)`;
+
+    // Gear
+    document.getElementById('gear').innerText = data.gear;
+
+    // DRS
+    document.getElementById('drs').innerText = `DRS: ${data.drs ? 'ON' : 'OFF'}`;
+
+    // ERS
+    document.getElementById('ers').innerText = `ERS: ${data.ers}%`;
+
+    // LEDs Shift
+    const rpmPercent = data.rpm / maxRpm;
+    leds.forEach((led, i) => {
+        led.classList.toggle('on', rpmPercent > i * 0.15);
+    });
+};
 </script>
-
 </body>
 </html>
