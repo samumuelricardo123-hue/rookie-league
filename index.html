@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard Marcha Central</title>
+<title>F1 Dashboard Horizontal Otimizado</title>
 <style>
 html, body {
     margin: 0;
@@ -16,21 +16,20 @@ html, body {
     overflow: hidden;
 }
 
+/* Dashboard em grid vertical, 3 seções: RPM | Marcha/Velocidade | Info inferior */
 .dashboard {
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows: 15vh 50vh 35vh;
     width: 100%;
     height: 100%;
 }
 
-/* Top: RPM LEDs */
+/* TOP: RPM LEDs */
 .rpm-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1vh 2vw;
-    flex-wrap: nowrap;
-    overflow: hidden;
+    padding: 0 2vw;
 }
 .led-rpm {
     border-radius: 50%;
@@ -41,37 +40,37 @@ html, body {
 .led-rpm.yellow.on { background: #ff0; box-shadow: 0 0 8px #ff0; }
 .led-rpm.red.on { background: #f00; box-shadow: 0 0 10px #f00; }
 
-/* Middle: Marcha e Velocidade */
+/* MIDDLE: Marcha central e Velocidade abaixo */
 .middle-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1vh;
 }
 .gear-display {
-    font-size: 20vw;
+    font-size: 20vh;
     font-weight: bold;
-    text-shadow: 0 0 20px #ff0;
     color: #ff0;
+    text-shadow: 0 0 20px #ff0;
 }
 .speed-container {
-    font-size: 12vw;
+    font-size: 12vh;
     font-weight: bold;
     color: #ff0;
     text-shadow: 0 0 15px #ff0, 0 0 30px #ff0;
 }
 
-/* Bottom: Tires, Systems, Lap/Delta */
+/* BOTTOM: Pneus, Sistemas, Volta/Delta */
 .bottom-section {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     padding: 1vh 2vw;
     gap: 2vw;
+    font-size: 2.5vh;
 }
 
-/* Tires */
+/* Pneus */
 .tires-container {
     display: flex;
     gap: 2vw;
@@ -79,15 +78,16 @@ html, body {
 .tire { display: flex; flex-direction: column; align-items: center; font-weight: bold; }
 .tire span { margin-top: 0.2em; }
 
-/* Systems */
+/* Sistemas */
 .systems {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 2vw;
+    gap: 1vh;
 }
 .drs {
     width: 8vw;
-    height: 3vh;
+    height: 4vh;
     background: #333;
     border-radius: 4px;
     display: flex;
@@ -100,8 +100,8 @@ html, body {
 .drs.on { background: #ff0; color: #000; box-shadow: 0 0 10px #ff0; animation: blink 1s infinite; }
 @keyframes blink { 0%,50%,100%{opacity:1} 25%,75%{opacity:0.4} }
 .ers-container {
-    width: 20vw;
-    height: 3vh;
+    width: 15vw;
+    height: 4vh;
     background: #222;
     border-radius: 10px;
     overflow: hidden;
@@ -114,7 +114,7 @@ html, body {
     transition: width 0.2s;
 }
 
-/* Lap/Delta */
+/* Volta / Delta */
 .lap-delta-container {
     display: flex;
     flex-direction: column;
@@ -123,7 +123,7 @@ html, body {
 }
 .lap-container, .delta-container {
     font-weight: bold;
-    padding: 0.3vh 0.5vw;
+    padding: 0.2vh 0.5vw;
     border-radius: 5px;
     background: rgba(255,255,255,0.05);
 }
@@ -152,7 +152,7 @@ html, body {
 
 <div class="dashboard">
 
-  <!-- Top: RPM LEDs -->
+  <!-- TOP: RPM LEDs -->
   <div class="rpm-container" id="rpm-container">
     <div class="led-rpm green" id="led0"></div>
     <div class="led-rpm green" id="led1"></div>
@@ -176,13 +176,13 @@ html, body {
     <div class="led-rpm red" id="led19"></div>
   </div>
 
-  <!-- Middle: Marcha e Velocidade -->
+  <!-- MIDDLE: Marcha e Velocidade -->
   <div class="middle-section">
     <div class="gear-display" id="gear">N</div>
     <div class="speed-container" id="speed">0</div>
   </div>
 
-  <!-- Bottom: Tires, Systems, Lap/Delta -->
+  <!-- BOTTOM: Pneus, Sistemas, Lap/Delta -->
   <div class="bottom-section">
     <div class="tires-container">
       <div class="tire">FL <span id="tireFL">0°C</span></div>
@@ -237,7 +237,7 @@ document.getElementById('fullscreen-btn').addEventListener('click', ()=>{
     else document.exitFullscreen();
 });
 
-// Responsividade LEDs e fontes
+// Responsividade dinâmica
 function resizeDashboard(){
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -247,10 +247,10 @@ function resizeDashboard(){
         led.style.height = `${ledSize}px`;
     });
 
-    document.getElementById('gear').style.fontSize = `${Math.max(w,h)/4}px`;
-    document.getElementById('speed').style.fontSize = `${Math.max(w,h)/7}px`;
-    document.getElementById('lap').style.fontSize = `${Math.max(w,h)/30}px`;
-    document.getElementById('delta').style.fontSize = `${Math.max(w,h)/30}px`;
+    document.getElementById('gear').style.fontSize = `${Math.min(h*0.5, w*0.2)}px`;
+    document.getElementById('speed').style.fontSize = `${Math.min(h*0.3, w*0.15)}px`;
+    document.getElementById('lap').style.fontSize = `${Math.min(h*0.08, w*0.05)}px`;
+    document.getElementById('delta').style.fontSize = `${Math.min(h*0.08, w*0.05)}px`;
 }
 window.addEventListener('resize', resizeDashboard);
 resizeDashboard();
