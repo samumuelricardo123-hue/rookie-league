@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard RPM LEDs</title>
+<title>F1 Ferrari Display Completo</title>
 <style>
 body {
     margin: 0;
@@ -19,11 +19,36 @@ body {
 .dashboard {
     display: grid;
     grid-template-areas:
-        "rpm rpm"
-        "speed speed"
+        "speed rpm"
+        "gear rpm"
+        "tires rpm"
+        "lap delta"
+        "position distance"
         "systems systems";
-    grid-gap: 30px;
+    grid-gap: 8px;
     text-align: center;
+}
+
+/* Speed */
+.speed-container h1 {
+    grid-area: speed;
+    font-size: 5em;
+    color: #ff0;
+    text-shadow: 0 0 10px #ff0;
+}
+
+/* Gear central */
+.gear-container {
+    grid-area: gear;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.gear-display {
+    font-size: 4em;
+    color: #ff0;
+    font-weight: bold;
+    text-shadow: 0 0 15px #ff0;
 }
 
 /* RPM LEDs */
@@ -35,23 +60,63 @@ body {
     width: 300px;
 }
 .led-rpm {
-    width: 20px;
-    height: 20px;
-    margin: 4px;
-    background: #222;
+    width: 18px;
+    height: 18px;
+    margin: 2px;
+    background: #111;
     border-radius: 4px;
-    transition: background 0.1s;
+    transition: background 0.1s, box-shadow 0.1s;
 }
-.led-rpm.on {
-    background: red;
-    box-shadow: 0 0 10px red;
+.led-rpm.green.on { background: #0f0; box-shadow: 0 0 5px #0f0; }
+.led-rpm.yellow.on { background: #ff0; box-shadow: 0 0 8px #ff0; }
+.led-rpm.red.on { background: #f00; box-shadow: 0 0 10px #f00; }
+
+/* Tire temperatures */
+.tires-container {
+    grid-area: tires;
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    font-size: 1em;
+}
+.tire {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Speed */
-.speed-container h1 {
-    grid-area: speed;
-    font-size: 4em;
+/* Lap times */
+.lap-container {
+    grid-area: lap;
+    font-size: 1.2em;
     color: #0ff;
+}
+.delta-container {
+    grid-area: delta;
+    font-size: 1.2em;
+    color: #f00;
+}
+
+/* Position and distance */
+.position-container {
+    grid-area: position;
+    font-size: 1.2em;
+    color: #ff0;
+}
+.distance-container {
+    grid-area: distance;
+    font-size: 1.2em;
+    color: #0f0;
+}
+
+/* Systems */
+.systems {
+    grid-area: systems;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+    font-size: 1.2em;
 }
 
 /* DRS LED */
@@ -64,39 +129,32 @@ body {
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    transition: background 0.2s;
+    color: #fff;
+    transition: background 0.2s, color 0.2s;
 }
 .drs.on {
     background: #ff0;
     color: #000;
+    box-shadow: 0 0 10px #ff0;
 }
 
 /* ERS barra */
 .ers-container {
-    width: 200px;
+    width: 150px;
     height: 20px;
-    background: #333;
+    background: #222;
     border-radius: 10px;
     overflow: hidden;
 }
 .ers-bar {
     height: 100%;
     width: 0%;
-    background: #0f0;
+    background: #f00;
     transition: width 0.2s;
+    box-shadow: 0 0 5px #f00;
 }
 
-/* Systems container */
-.systems {
-    grid-area: systems;
-    display: flex;
-    justify-content: center;
-    gap: 50px;
-    align-items: center;
-    font-size: 1.2em;
-}
-
-/* Botão fullscreen */
+/* Fullscreen */
 .fullscreen-btn {
     position: fixed;
     top: 10px;
@@ -116,39 +174,72 @@ body {
 
 <button class="fullscreen-btn" id="fullscreen-btn">Tela Cheia</button>
 
-<div class="dashboard" id="dashboard">
+<div class="dashboard">
+
+  <!-- Velocidade -->
+  <div class="speed-container">
+    <h1 id="speed">0</h1>
+  </div>
 
   <!-- RPM LEDs -->
   <div class="rpm-container" id="rpm-container">
-    <!-- 20 LEDs de RPM -->
-    <div class="led-rpm" id="led0"></div>
-    <div class="led-rpm" id="led1"></div>
-    <div class="led-rpm" id="led2"></div>
-    <div class="led-rpm" id="led3"></div>
-    <div class="led-rpm" id="led4"></div>
-    <div class="led-rpm" id="led5"></div>
-    <div class="led-rpm" id="led6"></div>
-    <div class="led-rpm" id="led7"></div>
-    <div class="led-rpm" id="led8"></div>
-    <div class="led-rpm" id="led9"></div>
-    <div class="led-rpm" id="led10"></div>
-    <div class="led-rpm" id="led11"></div>
-    <div class="led-rpm" id="led12"></div>
-    <div class="led-rpm" id="led13"></div>
-    <div class="led-rpm" id="led14"></div>
-    <div class="led-rpm" id="led15"></div>
-    <div class="led-rpm" id="led16"></div>
-    <div class="led-rpm" id="led17"></div>
-    <div class="led-rpm" id="led18"></div>
-    <div class="led-rpm" id="led19"></div>
+    <!-- 20 LEDs -->
+    <div class="led-rpm green" id="led0"></div>
+    <div class="led-rpm green" id="led1"></div>
+    <div class="led-rpm green" id="led2"></div>
+    <div class="led-rpm green" id="led3"></div>
+    <div class="led-rpm green" id="led4"></div>
+    <div class="led-rpm yellow" id="led5"></div>
+    <div class="led-rpm yellow" id="led6"></div>
+    <div class="led-rpm yellow" id="led7"></div>
+    <div class="led-rpm yellow" id="led8"></div>
+    <div class="led-rpm yellow" id="led9"></div>
+    <div class="led-rpm red" id="led10"></div>
+    <div class="led-rpm red" id="led11"></div>
+    <div class="led-rpm red" id="led12"></div>
+    <div class="led-rpm red" id="led13"></div>
+    <div class="led-rpm red" id="led14"></div>
+    <div class="led-rpm red" id="led15"></div>
+    <div class="led-rpm red" id="led16"></div>
+    <div class="led-rpm red" id="led17"></div>
+    <div class="led-rpm red" id="led18"></div>
+    <div class="led-rpm red" id="led19"></div>
   </div>
 
-  <!-- Speed -->
-  <div class="speed-container">
-    <h1 id="speed">0 km/h</h1>
+  <!-- Marcha -->
+  <div class="gear-container">
+    <div class="gear-display" id="gear">N</div>
   </div>
 
-  <!-- Systems: DRS + ERS -->
+  <!-- Pneus -->
+  <div class="tires-container">
+    <div class="tire">
+      <div>FL</div>
+      <div id="tireFL">0°C</div>
+    </div>
+    <div class="tire">
+      <div>FR</div>
+      <div id="tireFR">0°C</div>
+    </div>
+    <div class="tire">
+      <div>RL</div>
+      <div id="tireRL">0°C</div>
+    </div>
+    <div class="tire">
+      <div>RR</div>
+      <div id="tireRR">0°C</div>
+    </div>
+  </div>
+
+  <!-- Volta e Delta -->
+  <div class="lap-container" id="lap">Volta: 0</div>
+  <div class="delta-container" id="delta">+0.000</div>
+
+  <!-- Posição e Distância -->
+  <div class="position-container" id="position">Posição: 0</div>
+  <div class="distance-container" id="distance">Distância: 0m</div>
+
+  <!-- Systems -->
   <div class="systems">
     <div class="drs" id="drs">DRS</div>
     <div class="ers-container">
@@ -164,43 +255,60 @@ const ws = new WebSocket('ws://localhost:8080');
 
 ws.onopen = () => console.log('Conectado ao servidor WebSocket');
 
+// LEDs RPM
 const leds = [];
 for(let i=0;i<20;i++){
     leds.push(document.getElementById('led'+i));
 }
 
+// Atualização dos dados
 ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
 
     // Velocidade
-    document.getElementById('speed').innerText = `${data.speed} km/h`;
+    document.getElementById('speed').innerText = `${data.speed}`;
 
     // RPM LEDs
-    const rpmPercent = data.rpm / 22000; // max RPM
-    leds.forEach((led, i) => {
+    const rpmPercent = data.rpm / 22000;
+    leds.forEach((led,i)=>{
         led.classList.toggle('on', rpmPercent > i*0.05);
     });
+
+    // Gear
+    document.getElementById('gear').innerText = data.gear;
+
+    // Pneus
+    document.getElementById('tireFL').innerText = data.tires.FL + '°C';
+    document.getElementById('tireFR').innerText = data.tires.FR + '°C';
+    document.getElementById('tireRL').innerText = data.tires.RL + '°C';
+    document.getElementById('tireRR').innerText = data.tires.RR + '°C';
+
+    // Volta e Delta
+    document.getElementById('lap').innerText = `Volta: ${data.lap}`;
+    document.getElementById('delta').innerText = data.delta;
+
+    // Posição e Distância
+    document.getElementById('position').innerText = `Posição: ${data.position}`;
+    document.getElementById('distance').innerText = `Distância: ${data.distance}m`;
 
     // DRS
     const drsEl = document.getElementById('drs');
     drsEl.classList.toggle('on', data.drs);
 
-    // ERS barra
+    // ERS
     document.getElementById('ers').style.width = `${data.ers}%`;
 };
 
-// Tela cheia
+// Fullscreen
 const fsBtn = document.getElementById('fullscreen-btn');
-const dashboard = document.getElementById('dashboard');
-
+const dashboard = document.querySelector('.dashboard');
 fsBtn.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
+    if(!document.fullscreenElement){
         dashboard.requestFullscreen();
-    } else {
+    }else{
         document.exitFullscreen();
     }
 });
 </script>
-
 </body>
 </html>
