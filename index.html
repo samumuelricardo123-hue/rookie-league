@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard Horizontal Otimizado</title>
+<title>F1 Dashboard Editável</title>
 <style>
 html, body {
     margin: 0;
@@ -16,7 +16,7 @@ html, body {
     overflow: hidden;
 }
 
-/* Dashboard em grid vertical, 3 seções: RPM | Marcha/Velocidade | Info inferior */
+/* DASHBOARD */
 .dashboard {
     display: grid;
     grid-template-rows: 15vh 50vh 35vh;
@@ -24,12 +24,13 @@ html, body {
     height: 100%;
 }
 
-/* TOP: RPM LEDs */
+/* RPM LEDs */
 .rpm-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 2vw;
+    z-index:1;
 }
 .led-rpm {
     border-radius: 50%;
@@ -40,12 +41,13 @@ html, body {
 .led-rpm.yellow.on { background: #ff0; box-shadow: 0 0 8px #ff0; }
 .led-rpm.red.on { background: #f00; box-shadow: 0 0 10px #f00; }
 
-/* MIDDLE: Marcha central e Velocidade abaixo */
+/* Middle: Marcha / Velocidade */
 .middle-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    z-index:1;
 }
 .gear-display {
     font-size: 20vh;
@@ -60,7 +62,7 @@ html, body {
     text-shadow: 0 0 15px #ff0, 0 0 30px #ff0;
 }
 
-/* BOTTOM: Pneus, Sistemas, Volta/Delta */
+/* Bottom Section: pneus, sistemas, volta/delta */
 .bottom-section {
     display: flex;
     justify-content: space-between;
@@ -68,6 +70,7 @@ html, body {
     padding: 1vh 2vw;
     gap: 2vw;
     font-size: 2.5vh;
+    z-index:1;
 }
 
 /* Pneus */
@@ -130,30 +133,36 @@ html, body {
 .lap-container { color: #0ff; }
 .delta-container { color: #f00; }
 
-/* Fullscreen */
-.fullscreen-btn {
+/* Botões Fullscreen / Edit */
+.fullscreen-btn, #edit-layout-btn, #save-layout-btn {
     position: fixed;
     top: 1vh;
-    right: 1vw;
-    background: #222;
-    color: #fff;
-    border: none;
     padding: 1vh 1vw;
+    border: none;
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    z-index: 1000;
+    z-index:1000;
 }
+.fullscreen-btn { right:1vw; background:#222; color:#fff; }
+#edit-layout-btn { left:1vw; background:#222; color:#fff; }
+#save-layout-btn { left:110px; background:#222; color:#fff; display:none; }
+
+/* Modo edição */
+.editable { border: 1px dashed #fff; cursor: move; position:absolute; }
 </style>
 </head>
 <body>
 
+<!-- Botões -->
 <button class="fullscreen-btn" id="fullscreen-btn">Tela Cheia</button>
+<button id="edit-layout-btn">Editar Layout</button>
+<button id="save-layout-btn">Salvar Layout</button>
 
 <div class="dashboard">
 
-  <!-- TOP: RPM LEDs -->
-  <div class="rpm-container" id="rpm-container">
+  <!-- RPM LEDs -->
+  <div class="rpm-container editable" id="rpm-container">
     <div class="led-rpm green" id="led0"></div>
     <div class="led-rpm green" id="led1"></div>
     <div class="led-rpm green" id="led2"></div>
@@ -176,14 +185,14 @@ html, body {
     <div class="led-rpm red" id="led19"></div>
   </div>
 
-  <!-- MIDDLE: Marcha e Velocidade -->
-  <div class="middle-section">
+  <!-- Middle: Marcha e Velocidade -->
+  <div class="middle-section editable" id="middle-section">
     <div class="gear-display" id="gear">N</div>
     <div class="speed-container" id="speed">0</div>
   </div>
 
-  <!-- BOTTOM: Pneus, Sistemas, Lap/Delta -->
-  <div class="bottom-section">
+  <!-- Bottom: Pneus, Sistemas, Lap/Delta -->
+  <div class="bottom-section editable" id="bottom-section">
     <div class="tires-container">
       <div class="tire">FL <span id="tireFL">0°C</span></div>
       <div class="tire">FR <span id="tireFR">0°C</span></div>
@@ -254,6 +263,66 @@ function resizeDashboard(){
 }
 window.addEventListener('resize', resizeDashboard);
 resizeDashboard();
+
+// --- Modo Edição ---
+let editing = false;
+const editables = document.querySelectorAll('.editable');
+document.getElementById('edit-layout-btn').addEventListener('click', () => {
+    editing = !editing;
+    editables.forEach(el => {
+        el.style.border = editing ? '1px dashed #fff' : 'none';
+    });
+    document.getElementById('save-layout-btn').style.display = editing ? 'inline-block' : 'none';
+});
+
+// Drag & Drop simples
+editables.forEach(el=>{
+    el.addEventListener('mousedown', e=>{
+        if(!editing) return;
+        const shiftX = e.clientX - el.getBoundingClientRect().left;
+        const shiftY = e.clientY - el.getBoundingClientRect().top;
+        el.style.position = 'absolute';
+        function moveAt(pageX, pageY){
+            el.style.left = pageX - shiftX + 'px';
+            el.style.top = pageY - shiftY + 'px';
+        }
+        function onMouseMove(e){
+            moveAt(e.pageX, e.pageY);
+        }
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', ()=>{
+            document.removeEventListener('mousemove', onMouseMove);
+        }, {once:true});
+    });
+});
+
+// Salvar layout no localStorage
+document.getElementById('save-layout-btn').addEventListener('click', () => {
+    const layout = {};
+    editables.forEach(el=>{
+        layout[el.id] = {top: el.style.top, left: el.style.left, width: el.offsetWidth, height: el.offsetHeight};
+    });
+    localStorage.setItem('f1-dashboard-layout', JSON.stringify(layout));
+    alert('Layout salvo!');
+});
+
+// Restaurar layout
+window.addEventListener('load', ()=>{
+    const saved = localStorage.getItem('f1-dashboard-layout');
+    if(saved){
+        const layout = JSON.parse(saved);
+        for(const id in layout){
+            const el = document.getElementById(id);
+            if(el){
+                el.style.position = 'absolute';
+                el.style.top = layout[id].top;
+                el.style.left = layout[id].left;
+                el.style.width = layout[id].width + 'px';
+                el.style.height = layout[id].height + 'px';
+            }
+        }
+    }
+});
 </script>
 </body>
 </html>
