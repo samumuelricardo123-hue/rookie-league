@@ -3,94 +3,144 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard Avançado</title>
+<title>F1 Dashboard RPM LEDs</title>
 <style>
-/* Reset básico */
-body { margin: 0; font-family: 'Arial', sans-serif; background: #0a0a0a; color: #fff; display: flex; justify-content: center; align-items: center; height: 100vh; }
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-/* Layout principal */
 .dashboard {
     display: grid;
     grid-template-areas:
-        "wheel rpm"
-        "speed rpm"
+        "rpm rpm"
+        "speed speed"
         "systems systems";
     grid-gap: 30px;
     text-align: center;
 }
 
-/* Volante F1 */
-.steering-wheel { grid-area: wheel; display: flex; justify-content: center; align-items: center; }
-.wheel {
-    width: 220px;
-    height: 220px;
-    border: 12px solid #333;
-    border-radius: 50%;
-    position: relative;
-    background: radial-gradient(circle at center, #111 0%, #222 100%);
+/* RPM LEDs */
+.rpm-container {
+    grid-area: rpm;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 300px;
 }
-.gear-display {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3em; color: #ff0; font-weight: bold;
+.led-rpm {
+    width: 20px;
+    height: 20px;
+    margin: 4px;
+    background: #222;
+    border-radius: 4px;
+    transition: background 0.1s;
 }
-
-/* LEDs Shift */
-.shift-leds {
-    position: absolute;
-    width: 200px; height: 200px;
-    top: 10px; left: 10px;
-    pointer-events: none;
+.led-rpm.on {
+    background: red;
+    box-shadow: 0 0 10px red;
 }
-.led {
-    position: absolute;
-    width: 20px; height: 6px;
-    background: #333;
-    border-radius: 3px;
-}
-.led.on { background: red; }
-
-/* RPM */
-.rpm-container { grid-area: rpm; display: flex; flex-direction: column; align-items: center; }
-.rpm-meter { position: relative; width: 180px; height: 180px; border-radius: 50%; background: #111; border: 8px solid #333; }
-.needle { position: absolute; width: 4px; height: 90px; background: red; top: 50%; left: 50%; transform-origin: bottom center; transform: rotate(-135deg); transition: transform 0.1s ease-out; }
-.rpm-zones { position: absolute; width: 100%; height: 100%; border-radius: 50%; pointer-events: none; }
-.zone { position: absolute; width: 50%; height: 50%; top: 25%; left: 25%; border-radius: 50%; clip-path: polygon(50% 50%, 100% 0%, 100% 100%); opacity: 0.2; }
-.rpm-value { margin-top: 10px; font-size: 1.5em; }
 
 /* Speed */
-.speed-container h1 { grid-area: speed; font-size: 4em; color: #0ff; }
+.speed-container h1 {
+    grid-area: speed;
+    font-size: 4em;
+    color: #0ff;
+}
 
-/* DRS / ERS */
-.systems { grid-area: systems; display: flex; justify-content: center; gap: 40px; font-size: 1.2em; }
-.drs { color: #ff0; font-weight: bold; }
-.ers { color: #0f0; font-weight: bold; }
+/* DRS LED */
+.drs {
+    width: 60px;
+    height: 30px;
+    background: #333;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+.drs.on {
+    background: #ff0;
+    color: #000;
+}
+
+/* ERS barra */
+.ers-container {
+    width: 200px;
+    height: 20px;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.ers-bar {
+    height: 100%;
+    width: 0%;
+    background: #0f0;
+    transition: width 0.2s;
+}
+
+/* Systems container */
+.systems {
+    grid-area: systems;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    align-items: center;
+    font-size: 1.2em;
+}
+
+/* Botão fullscreen */
+.fullscreen-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: #222;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1000;
+}
 </style>
 </head>
 <body>
-<div class="dashboard">
 
-  <!-- Volante F1 -->
-  <div class="steering-wheel">
-    <div class="wheel">
-      <div class="gear-display" id="gear">N</div>
-      <div class="shift-leds" id="shift-leds">
-        <div class="led" style="top:10px; left:10px;"></div>
-        <div class="led" style="top:10px; left:40px;"></div>
-        <div class="led" style="top:10px; left:70px;"></div>
-        <div class="led" style="top:10px; left:100px;"></div>
-        <div class="led" style="top:10px; left:130px;"></div>
-      </div>
-    </div>
-  </div>
+<button class="fullscreen-btn" id="fullscreen-btn">Tela Cheia</button>
 
-  <!-- RPM -->
-  <div class="rpm-container">
-    <div class="rpm-meter">
-      <div class="needle" id="rpm-needle"></div>
-    </div>
-    <div class="rpm-value" id="rpm">0 RPM</div>
+<div class="dashboard" id="dashboard">
+
+  <!-- RPM LEDs -->
+  <div class="rpm-container" id="rpm-container">
+    <!-- 20 LEDs de RPM -->
+    <div class="led-rpm" id="led0"></div>
+    <div class="led-rpm" id="led1"></div>
+    <div class="led-rpm" id="led2"></div>
+    <div class="led-rpm" id="led3"></div>
+    <div class="led-rpm" id="led4"></div>
+    <div class="led-rpm" id="led5"></div>
+    <div class="led-rpm" id="led6"></div>
+    <div class="led-rpm" id="led7"></div>
+    <div class="led-rpm" id="led8"></div>
+    <div class="led-rpm" id="led9"></div>
+    <div class="led-rpm" id="led10"></div>
+    <div class="led-rpm" id="led11"></div>
+    <div class="led-rpm" id="led12"></div>
+    <div class="led-rpm" id="led13"></div>
+    <div class="led-rpm" id="led14"></div>
+    <div class="led-rpm" id="led15"></div>
+    <div class="led-rpm" id="led16"></div>
+    <div class="led-rpm" id="led17"></div>
+    <div class="led-rpm" id="led18"></div>
+    <div class="led-rpm" id="led19"></div>
   </div>
 
   <!-- Speed -->
@@ -98,22 +148,26 @@ body { margin: 0; font-family: 'Arial', sans-serif; background: #0a0a0a; color: 
     <h1 id="speed">0 km/h</h1>
   </div>
 
-  <!-- DRS / ERS -->
+  <!-- Systems: DRS + ERS -->
   <div class="systems">
-    <div class="drs" id="drs">DRS: OFF</div>
-    <div class="ers" id="ers">ERS: 0%</div>
+    <div class="drs" id="drs">DRS</div>
+    <div class="ers-container">
+      <div class="ers-bar" id="ers"></div>
+    </div>
   </div>
 
 </div>
 
 <script>
-// Conexão WebSocket
+// WebSocket
 const ws = new WebSocket('ws://localhost:8080');
 
 ws.onopen = () => console.log('Conectado ao servidor WebSocket');
 
-// Seleção de LEDs shift
-const leds = Array.from(document.querySelectorAll('#shift-leds .led'));
+const leds = [];
+for(let i=0;i<20;i++){
+    leds.push(document.getElementById('led'+i));
+}
 
 ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
@@ -121,27 +175,32 @@ ws.onmessage = (event) => {
     // Velocidade
     document.getElementById('speed').innerText = `${data.speed} km/h`;
 
-    // RPM
-    document.getElementById('rpm').innerText = `${data.rpm} RPM`;
-    const maxRpm = 22000;
-    const deg = (data.rpm / maxRpm) * 270 - 135;
-    document.getElementById('rpm-needle').style.transform = `rotate(${deg}deg)`;
-
-    // Gear
-    document.getElementById('gear').innerText = data.gear;
+    // RPM LEDs
+    const rpmPercent = data.rpm / 22000; // max RPM
+    leds.forEach((led, i) => {
+        led.classList.toggle('on', rpmPercent > i*0.05);
+    });
 
     // DRS
-    document.getElementById('drs').innerText = `DRS: ${data.drs ? 'ON' : 'OFF'}`;
+    const drsEl = document.getElementById('drs');
+    drsEl.classList.toggle('on', data.drs);
 
-    // ERS
-    document.getElementById('ers').innerText = `ERS: ${data.ers}%`;
-
-    // LEDs Shift
-    const rpmPercent = data.rpm / maxRpm;
-    leds.forEach((led, i) => {
-        led.classList.toggle('on', rpmPercent > i * 0.15);
-    });
+    // ERS barra
+    document.getElementById('ers').style.width = `${data.ers}%`;
 };
+
+// Tela cheia
+const fsBtn = document.getElementById('fullscreen-btn');
+const dashboard = document.getElementById('dashboard');
+
+fsBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        dashboard.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+});
 </script>
+
 </body>
 </html>
