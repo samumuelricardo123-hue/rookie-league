@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard Editável – Corrigido</title>
+<title>F1 Dashboard Realista – Completo</title>
 <style>
 html, body {
     margin: 0;
@@ -16,15 +16,16 @@ html, body {
     overflow: hidden;
 }
 
-/* DASHBOARD */
+/* DASHBOARD PRINCIPAL */
 .dashboard {
     display: grid;
     grid-template-rows: 15vh 50vh 35vh;
     width: 100%;
     height: 100%;
+    position: relative;
 }
 
-/* RPM LEDs */
+/* --- RPM LEDs --- */
 .rpm-container {
     display: flex;
     justify-content: space-between;
@@ -41,12 +42,13 @@ html, body {
 .led-rpm.yellow.on { background: #ff0; box-shadow: 0 0 8px #ff0; }
 .led-rpm.red.on { background: #f00; box-shadow: 0 0 10px #f00; }
 
-/* Middle: Marcha / Velocidade */
+/* --- MARCHA + VELOCIDADE --- */
 .middle-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* ajusta posição vertical */
+    padding-top: 10vh; /* baixa marcha e velocidade para não sobrepor LEDs */
     z-index:1;
 }
 .gear-display {
@@ -60,9 +62,10 @@ html, body {
     font-weight: bold;
     color: #ff0;
     text-shadow: 0 0 15px #ff0, 0 0 30px #ff0;
+    margin-top: 1vh;
 }
 
-/* Bottom Section: pneus, sistemas, volta/delta */
+/* --- RODAPÉ: pneus, sistemas, volta/delta --- */
 .bottom-section {
     display: flex;
     justify-content: space-between;
@@ -72,68 +75,47 @@ html, body {
     font-size: 2.5vh;
     z-index:1;
 }
-
-/* Pneus */
-.tires-container {
-    display: flex;
-    gap: 2vw;
-}
+.tires-container { display: flex; gap: 2vw; }
 .tire { display: flex; flex-direction: column; align-items: center; font-weight: bold; }
 .tire span { margin-top: 0.2em; }
 
-/* Sistemas */
-.systems {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1vh;
-}
-.drs {
-    width: 8vw;
-    height: 4vh;
-    background: #333;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    color: #fff;
-    transition: all 0.2s;
-}
-.drs.on { background: #ff0; color: #000; box-shadow: 0 0 10px #ff0; animation: blink 1s infinite; }
+.systems { display: flex; flex-direction: column; align-items: center; gap: 1vh; }
+.drs { width: 8vw; height: 4vh; background: #333; border-radius: 4px;
+    display: flex; justify-content: center; align-items: center; font-weight: bold; color: #fff; transition: all 0.2s;}
+.drs.on { background: #ff0; color:#000; box-shadow:0 0 10px #ff0; animation: blink 1s infinite; }
 @keyframes blink { 0%,50%,100%{opacity:1} 25%,75%{opacity:0.4} }
-.ers-container {
-    width: 15vw;
-    height: 4vh;
-    background: #222;
-    border-radius: 10px;
-    overflow: hidden;
-}
-.ers-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(to right, #0f0,#ff0,#f00);
-    box-shadow: 0 0 8px #f00;
-    transition: width 0.2s;
-}
+.ers-container { width: 15vw; height: 4vh; background:#222; border-radius:10px; overflow:hidden; }
+.ers-bar { height:100%; width:0%; background: linear-gradient(to right,#0f0,#ff0,#f00); box-shadow:0 0 8px #f00; transition: width 0.2s; }
 
-/* Volta / Delta */
-.lap-delta-container {
+.lap-delta-container { display:flex; flex-direction:column; gap:0.5vh; text-align:right; }
+.lap-container, .delta-container { font-weight:bold; padding:0.2vh 0.5vw; border-radius:5px; background: rgba(255,255,255,0.05);}
+.lap-container{color:#0ff;}
+.delta-container{color:#f00;}
+
+/* --- PAINEL DIREITA --- */
+.right-sidebar {
+    position:absolute;
+    top: 15vh;
+    right: 0;
+    width: 20vw;
+    height: 65vh;
     display: flex;
     flex-direction: column;
-    gap: 0.5vh;
-    text-align: right;
+    align-items: flex-start;
+    padding: 1vh 1vw;
+    gap: 1.5vh;
+    z-index:2;
 }
-.lap-container, .delta-container {
+.right-sidebar div{
     font-weight: bold;
-    padding: 0.2vh 0.5vw;
-    border-radius: 5px;
+    padding:0.3vh 0.5vw;
+    border-radius:5px;
     background: rgba(255,255,255,0.05);
+    width: 90%;
+    text-align:left;
 }
-.lap-container { color: #0ff; }
-.delta-container { color: #f00; }
 
-/* Botões Fullscreen / Edit */
+/* Botões */
 .fullscreen-btn, #edit-layout-btn, #save-layout-btn {
     position: fixed;
     top: 1vh;
@@ -185,13 +167,13 @@ html, body {
     <div class="led-rpm red" id="led19"></div>
   </div>
 
-  <!-- Middle: Marcha e Velocidade -->
+  <!-- Marcha + Velocidade -->
   <div class="middle-section editable" id="middle-section">
     <div class="gear-display" id="gear">N</div>
     <div class="speed-container" id="speed">0</div>
   </div>
 
-  <!-- Bottom: Pneus, Sistemas, Lap/Delta -->
+  <!-- Rodapé: pneus, sistemas, volta/delta -->
   <div class="bottom-section editable" id="bottom-section">
     <div class="tires-container">
       <div class="tire">FL <span id="tireFL">0°C</span></div>
@@ -209,6 +191,17 @@ html, body {
     </div>
   </div>
 
+  <!-- Painel lateral direito -->
+  <div class="right-sidebar editable" id="right-sidebar">
+    <div id="position">Posição: 1</div>
+    <div id="gapFront">Gap Frente: +0.000s</div>
+    <div id="gapBack">Gap Atrás: +0.000s</div>
+    <div id="fuel">Combustível: 100%</div>
+    <div id="engineTemp">Motor: 90°C</div>
+    <div id="ersMode">ERS: Modo Normal</div>
+    <div id="battery">Bateria: 100%</div>
+  </div>
+
 </div>
 
 <script>
@@ -221,22 +214,38 @@ for(let i=0;i<20;i++) leds.push(document.getElementById('led'+i));
 
 ws.onmessage = (event)=>{
     const data = JSON.parse(event.data);
+
+    // Marcha / Velocidade
     document.getElementById('gear').innerText = data.gear;
     document.getElementById('speed').innerText = data.speed;
+
+    // Volta / Delta
     document.getElementById('lap').innerText = `Volta: ${data.lap}`;
     document.getElementById('delta').innerText = data.delta;
 
+    // Pneus
     ['FL','FR','RL','RR'].forEach(t=>{
         const el = document.getElementById('tire'+t);
         el.innerText = data.tires[t]+'°C';
         el.style.color = data.tires[t]<70?'#0f0':data.tires[t]<100?'#ff0':'#f00';
     });
 
+    // LEDs de RPM
     const rpmPercent = data.rpm/22000;
     leds.forEach((led,i)=>led.classList.toggle('on', rpmPercent > i*0.05));
 
+    // DRS / ERS
     document.getElementById('drs').classList.toggle('on', data.drs);
     document.getElementById('ers').style.width = `${data.ers}%`;
+
+    // Painel lateral direito
+    document.getElementById('position').innerText = `Posição: ${data.position}`;
+    document.getElementById('gapFront').innerText = `Gap Frente: ${data.gapFront}s`;
+    document.getElementById('gapBack').innerText = `Gap Atrás: ${data.gapBack}s`;
+    document.getElementById('fuel').innerText = `Combustível: ${data.fuel}%`;
+    document.getElementById('engineTemp').innerText = `Motor: ${data.engineTemp}°C`;
+    document.getElementById('ersMode').innerText = `ERS: ${data.ersMode}`;
+    document.getElementById('battery').innerText = `Bateria: ${data.battery}%`;
 };
 
 // --- Fullscreen ---
@@ -246,20 +255,15 @@ document.getElementById('fullscreen-btn').addEventListener('click', ()=>{
     else document.exitFullscreen();
 });
 
-// --- Responsividade dinâmica ---
+// --- Responsividade ---
 function resizeDashboard(){
     const w = window.innerWidth;
     const h = window.innerHeight;
     const ledSize = Math.max(Math.min(w/25, h/25), 10);
-    leds.forEach(led=>{
-        led.style.width = `${ledSize}px`;
-        led.style.height = `${ledSize}px`;
-    });
+    leds.forEach(led=>{led.style.width = `${ledSize}px`; led.style.height = `${ledSize}px`;});
 
     document.getElementById('gear').style.fontSize = `${Math.min(h*0.5, w*0.2)}px`;
     document.getElementById('speed').style.fontSize = `${Math.min(h*0.3, w*0.15)}px`;
-    document.getElementById('lap').style.fontSize = `${Math.min(h*0.08, w*0.05)}px`;
-    document.getElementById('delta').style.fontSize = `${Math.min(h*0.08, w*0.05)}px`;
 }
 window.addEventListener('resize', resizeDashboard);
 resizeDashboard();
@@ -269,52 +273,36 @@ let editing = false;
 const editables = document.querySelectorAll('.editable');
 document.getElementById('edit-layout-btn').addEventListener('click', () => {
     editing = !editing;
-    editables.forEach(el=>{
-        el.style.border = editing ? '1px dashed #fff' : 'none';
-    });
+    editables.forEach(el=>el.style.border = editing ? '1px dashed #fff' : 'none');
     document.getElementById('save-layout-btn').style.display = editing ? 'inline-block' : 'none';
 });
 
-// Drag & Drop corrigido para elementos com filhos
+// Drag & Drop corrigido para todos elementos editáveis
 editables.forEach(el=>{
     el.addEventListener('mousedown', e=>{
         if(!editing) return;
-
-        e.preventDefault(); // evita bloqueio por filhos
+        e.preventDefault();
         const shiftX = e.clientX - el.getBoundingClientRect().left;
         const shiftY = e.clientY - el.getBoundingClientRect().top;
         el.style.position = 'absolute';
         el.style.zIndex = 1000;
-
-        function moveAt(pageX, pageY){
-            el.style.left = pageX - shiftX + 'px';
-            el.style.top = pageY - shiftY + 'px';
-        }
-
-        function onMouseMove(e){
-            moveAt(e.pageX, e.pageY);
-        }
-
+        function moveAt(pageX, pageY){ el.style.left = pageX-shiftX+'px'; el.style.top = pageY-shiftY+'px'; }
+        function onMouseMove(e){ moveAt(e.pageX, e.pageY); }
         document.addEventListener('mousemove', onMouseMove);
-
-        document.addEventListener('mouseup', ()=>{
-            document.removeEventListener('mousemove', onMouseMove);
-        }, {once:true});
+        document.addEventListener('mouseup', ()=>document.removeEventListener('mousemove', onMouseMove), {once:true});
     });
     el.ondragstart = () => false;
 });
 
-// --- Salvar Layout ---
+// --- Salvar layout ---
 document.getElementById('save-layout-btn').addEventListener('click', ()=>{
     const layout = {};
-    editables.forEach(el=>{
-        layout[el.id] = {top: el.style.top, left: el.style.left, width: el.offsetWidth, height: el.offsetHeight};
-    });
+    editables.forEach(el=>layout[el.id]={top:el.style.top,left:el.style.left,width:el.offsetWidth,height:el.offsetHeight});
     localStorage.setItem('f1-dashboard-layout', JSON.stringify(layout));
     alert('Layout salvo!');
 });
 
-// --- Restaurar Layout ---
+// --- Restaurar layout ---
 window.addEventListener('load', ()=>{
     const saved = localStorage.getItem('f1-dashboard-layout');
     if(saved){
@@ -322,11 +310,11 @@ window.addEventListener('load', ()=>{
         for(const id in layout){
             const el = document.getElementById(id);
             if(el){
-                el.style.position = 'absolute';
-                el.style.top = layout[id].top;
-                el.style.left = layout[id].left;
-                el.style.width = layout[id].width + 'px';
-                el.style.height = layout[id].height + 'px';
+                el.style.position='absolute';
+                el.style.top=layout[id].top;
+                el.style.left=layout[id].left;
+                el.style.width=layout[id].width+'px';
+                el.style.height=layout[id].height+'px';
             }
         }
     }
