@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard Realista – Completo</title>
+<title>F1 Dashboard Realista – Ajustado</title>
 <style>
 html, body {
     margin: 0;
@@ -47,8 +47,8 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* ajusta posição vertical */
-    padding-top: 10vh; /* baixa marcha e velocidade para não sobrepor LEDs */
+    justify-content: flex-start;
+    padding-top: 8vh; /* SUBIU DE 10VH PARA 8VH */
     z-index:1;
 }
 .gear-display {
@@ -215,26 +215,20 @@ for(let i=0;i<20;i++) leds.push(document.getElementById('led'+i));
 ws.onmessage = (event)=>{
     const data = JSON.parse(event.data);
 
-    // Marcha / Velocidade
     document.getElementById('gear').innerText = data.gear;
     document.getElementById('speed').innerText = data.speed;
-
-    // Volta / Delta
     document.getElementById('lap').innerText = `Volta: ${data.lap}`;
     document.getElementById('delta').innerText = data.delta;
 
-    // Pneus
     ['FL','FR','RL','RR'].forEach(t=>{
         const el = document.getElementById('tire'+t);
         el.innerText = data.tires[t]+'°C';
         el.style.color = data.tires[t]<70?'#0f0':data.tires[t]<100?'#ff0':'#f00';
     });
 
-    // LEDs de RPM
     const rpmPercent = data.rpm/22000;
     leds.forEach((led,i)=>led.classList.toggle('on', rpmPercent > i*0.05));
 
-    // DRS / ERS
     document.getElementById('drs').classList.toggle('on', data.drs);
     document.getElementById('ers').style.width = `${data.ers}%`;
 
@@ -248,27 +242,26 @@ ws.onmessage = (event)=>{
     document.getElementById('battery').innerText = `Bateria: ${data.battery}%`;
 };
 
-// --- Fullscreen ---
+// Fullscreen
 document.getElementById('fullscreen-btn').addEventListener('click', ()=>{
     const dash = document.querySelector('.dashboard');
     if(!document.fullscreenElement) dash.requestFullscreen();
     else document.exitFullscreen();
 });
 
-// --- Responsividade ---
+// Responsividade
 function resizeDashboard(){
     const w = window.innerWidth;
     const h = window.innerHeight;
     const ledSize = Math.max(Math.min(w/25, h/25), 10);
     leds.forEach(led=>{led.style.width = `${ledSize}px`; led.style.height = `${ledSize}px`;});
-
     document.getElementById('gear').style.fontSize = `${Math.min(h*0.5, w*0.2)}px`;
     document.getElementById('speed').style.fontSize = `${Math.min(h*0.3, w*0.15)}px`;
 }
 window.addEventListener('resize', resizeDashboard);
 resizeDashboard();
 
-// --- Modo Edição ---
+// Modo Edição
 let editing = false;
 const editables = document.querySelectorAll('.editable');
 document.getElementById('edit-layout-btn').addEventListener('click', () => {
@@ -277,7 +270,7 @@ document.getElementById('edit-layout-btn').addEventListener('click', () => {
     document.getElementById('save-layout-btn').style.display = editing ? 'inline-block' : 'none';
 });
 
-// Drag & Drop corrigido para todos elementos editáveis
+// Drag & Drop
 editables.forEach(el=>{
     el.addEventListener('mousedown', e=>{
         if(!editing) return;
@@ -294,7 +287,7 @@ editables.forEach(el=>{
     el.ondragstart = () => false;
 });
 
-// --- Salvar layout ---
+// Salvar Layout
 document.getElementById('save-layout-btn').addEventListener('click', ()=>{
     const layout = {};
     editables.forEach(el=>layout[el.id]={top:el.style.top,left:el.style.left,width:el.offsetWidth,height:el.offsetHeight});
@@ -302,7 +295,7 @@ document.getElementById('save-layout-btn').addEventListener('click', ()=>{
     alert('Layout salvo!');
 });
 
-// --- Restaurar layout ---
+// Restaurar Layout
 window.addEventListener('load', ()=>{
     const saved = localStorage.getItem('f1-dashboard-layout');
     if(saved){
