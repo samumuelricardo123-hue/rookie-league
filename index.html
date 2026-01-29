@@ -3,119 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Ferrari Display Horizontal</title>
+<title>F1 Ferrari Display Realista</title>
 <style>
-body {
+html, body {
     margin: 0;
-    font-family: 'Arial', sans-serif;
-    background: #0a0a0a;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.dashboard {
-    display: grid;
-    grid-template-areas:
-        "rpm rpm rpm"
-        "speed gear lap"
-        "tires systems delta";
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 10px;
+    padding: 0;
     width: 100%;
-    padding: 10px;
-    text-align: center;
+    height: 100%;
+    background: #0a0a0a;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    overflow: hidden;
+}
+.dashboard {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
-/* RPM LEDs em arco */
+/* RPM semicircular */
 .rpm-container {
-    grid-area: rpm;
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    width: 100%;
+    width: 80%;
 }
 .led-rpm {
     width: 18px;
     height: 18px;
-    margin: 2px;
-    background: #111;
+    margin: 1px;
     border-radius: 50%;
+    background: #111;
     transition: background 0.1s, box-shadow 0.1s;
 }
-.led-rpm.green.on { background: #0f0; box-shadow: 0 0 5px #0f0; }
+.led-rpm.green.on { background: #0f0; box-shadow: 0 0 6px #0f0; }
 .led-rpm.yellow.on { background: #ff0; box-shadow: 0 0 8px #ff0; }
 .led-rpm.red.on { background: #f00; box-shadow: 0 0 10px #f00; }
 
 /* Speed */
 .speed-container {
-    grid-area: speed;
-}
-.speed-container h1 {
-    font-size: 4em;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
     color: #ff0;
-    text-shadow: 0 0 10px #ff0;
+    text-shadow: 0 0 15px #ff0, 0 0 30px #ff0;
+    font-weight: bold;
+    text-align: center;
 }
 
 /* Gear */
-.gear-container {
-    grid-area: gear;
-}
 .gear-display {
-    font-size: 3em;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translateX(-50%);
     color: #ff0;
     font-weight: bold;
-    text-shadow: 0 0 15px #ff0;
+    text-shadow: 0 0 20px #ff0;
 }
 
-/* Lap */
-.lap-container {
-    grid-area: lap;
+/* Lap and Delta */
+.lap-container, .delta-container {
+    position: absolute;
+    top: 70%;
     font-size: 1.5em;
-    color: #0ff;
 }
+.lap-container { left: 10%; color: #0ff; }
+.delta-container { right: 10%; color: #f00; }
 
 /* Tires */
 .tires-container {
-    grid-area: tires;
+    position: absolute;
+    bottom: 15%;
+    width: 100%;
     display: flex;
     justify-content: space-around;
-    font-size: 1em;
 }
-.tire {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+.tire { display: flex; flex-direction: column; align-items: center; font-size: 1em; }
+.tire span { margin-top: 0.2em; }
 
 /* Systems */
 .systems {
-    grid-area: systems;
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 1.2em;
+    gap: 5vw;
+    align-items: center;
 }
+/* DRS */
 .drs {
-    width: 50px;
-    height: 25px;
+    width: 6vw;
+    height: 3vh;
     background: #333;
-    border-radius: 6px;
+    border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
     color: #fff;
-    transition: background 0.2s, color 0.2s;
+    transition: all 0.2s;
 }
-.drs.on { background: #ff0; color: #000; box-shadow: 0 0 10px #ff0; }
+.drs.on { background: #ff0; color: #000; box-shadow: 0 0 10px #ff0; animation: blink 1s infinite; }
+@keyframes blink { 0%,50%,100%{opacity:1} 25%,75%{opacity:0.4} }
 
+/* ERS barra */
 .ers-container {
-    width: 120px;
-    height: 20px;
+    width: 20vw;
+    height: 3vh;
     background: #222;
     border-radius: 10px;
     overflow: hidden;
@@ -123,27 +124,20 @@ body {
 .ers-bar {
     height: 100%;
     width: 0%;
-    background: #f00;
+    background: linear-gradient(to right, #0f0,#ff0,#f00);
+    box-shadow: 0 0 8px #f00;
     transition: width 0.2s;
-    box-shadow: 0 0 5px #f00;
-}
-
-/* Delta */
-.delta-container {
-    grid-area: delta;
-    font-size: 1.2em;
-    color: #f00;
 }
 
 /* Fullscreen */
 .fullscreen-btn {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 1vh;
+    right: 1vw;
     background: #222;
     color: #fff;
     border: none;
-    padding: 8px 12px;
+    padding: 1vh 1vw;
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
@@ -157,7 +151,7 @@ body {
 
 <div class="dashboard">
 
-  <!-- RPM LEDs -->
+  <!-- RPM -->
   <div class="rpm-container" id="rpm-container">
     <!-- 20 LEDs -->
     <div class="led-rpm green" id="led0"></div>
@@ -183,57 +177,38 @@ body {
   </div>
 
   <!-- Speed -->
-  <div class="speed-container">
-    <h1 id="speed">0</h1>
-  </div>
+  <div class="speed-container" id="speed">0</div>
 
   <!-- Gear -->
-  <div class="gear-container">
-    <div class="gear-display" id="gear">N</div>
-  </div>
+  <div class="gear-display" id="gear">N</div>
 
-  <!-- Lap -->
+  <!-- Lap and Delta -->
   <div class="lap-container" id="lap">Volta: 0</div>
+  <div class="delta-container" id="delta">+0.000</div>
 
   <!-- Tires -->
   <div class="tires-container">
-    <div class="tire">
-      <div>FL</div>
-      <div id="tireFL">0°C</div>
-    </div>
-    <div class="tire">
-      <div>FR</div>
-      <div id="tireFR">0°C</div>
-    </div>
-    <div class="tire">
-      <div>RL</div>
-      <div id="tireRL">0°C</div>
-    </div>
-    <div class="tire">
-      <div>RR</div>
-      <div id="tireRR">0°C</div>
-    </div>
+    <div class="tire">FL <span id="tireFL">0°C</span></div>
+    <div class="tire">FR <span id="tireFR">0°C</span></div>
+    <div class="tire">RL <span id="tireRL">0°C</span></div>
+    <div class="tire">RR <span id="tireRR">0°C</span></div>
   </div>
 
   <!-- Systems -->
   <div class="systems">
     <div class="drs" id="drs">DRS</div>
-    <div class="ers-container">
-      <div class="ers-bar" id="ers"></div>
-    </div>
+    <div class="ers-container"><div class="ers-bar" id="ers"></div></div>
   </div>
-
-  <!-- Delta -->
-  <div class="delta-container" id="delta">+0.000</div>
 
 </div>
 
 <script>
-// WebSocket
+// WebSocket (exemplo)
 const ws = new WebSocket('ws://localhost:8080');
 
-ws.onopen = () => console.log('Conectado ao WebSocket');
+ws.onopen = ()=>console.log('Conectado');
 
+// LEDs RPM
 const leds = [];
 for(let i=0;i<20;i++) leds.push(document.getElementById('led'+i));
 
@@ -245,26 +220,52 @@ ws.onmessage = (event)=>{
     document.getElementById('lap').innerText = `Volta: ${data.lap}`;
     document.getElementById('delta').innerText = data.delta;
 
-    document.getElementById('tireFL').innerText = data.tires.FL+'°C';
-    document.getElementById('tireFR').innerText = data.tires.FR+'°C';
-    document.getElementById('tireRL').innerText = data.tires.RL+'°C';
-    document.getElementById('tireRR').innerText = data.tires.RR+'°C';
+    // Pneus com cores baseadas na temperatura
+    ['FL','FR','RL','RR'].forEach(t=>{
+        const el = document.getElementById('tire'+t);
+        el.innerText = data.tires[t]+'°C';
+        if(data.tires[t]<70) el.style.color='#0f0';
+        else if(data.tires[t]<100) el.style.color='#ff0';
+        else el.style.color='#f00';
+    });
 
-    const rpmPercent = data.rpm / 22000;
+    // RPM LEDs
+    const rpmPercent = data.rpm/22000;
     leds.forEach((led,i)=>led.classList.toggle('on', rpmPercent > i*0.05));
 
-    const drsEl = document.getElementById('drs');
-    drsEl.classList.toggle('on', data.drs);
+    // DRS piscando
+    document.getElementById('drs').classList.toggle('on', data.drs);
 
+    // ERS barra
     document.getElementById('ers').style.width = `${data.ers}%`;
 };
 
 // Fullscreen
-const fsBtn = document.getElementById('fullscreen-btn');
-fsBtn.addEventListener('click', ()=>{
-    if(!document.fullscreenElement) document.querySelector('.dashboard').requestFullscreen();
+document.getElementById('fullscreen-btn').addEventListener('click', ()=>{
+    const dash = document.querySelector('.dashboard');
+    if(!document.fullscreenElement) dash.requestFullscreen();
     else document.exitFullscreen();
 });
+
+// Responsividade dinâmica
+function resizeDashboard(){
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    const ledSize = Math.max(Math.min(w,h)/25, 10);
+    leds.forEach(led=>{
+        led.style.width = `${ledSize}px`;
+        led.style.height = `${ledSize}px`;
+        led.style.margin = `${ledSize/8}px`;
+    });
+
+    document.getElementById('speed').style.fontSize = `${Math.max(w,h)/8}px`;
+    document.getElementById('gear').style.fontSize = `${Math.max(w,h)/15}px`;
+    document.getElementById('lap').style.fontSize = `${Math.max(w,h)/30}px`;
+    document.getElementById('delta').style.fontSize = `${Math.max(w,h)/30}px`;
+}
+window.addEventListener('resize', resizeDashboard);
+resizeDashboard();
 </script>
 </body>
 </html>
