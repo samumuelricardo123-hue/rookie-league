@@ -4,57 +4,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>F1 2013 – Campeonato</title>
-
 <style>
+/* ======= RESET E BASE ======= */
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
-    margin:0;
     font-family:'Helvetica Neue',Arial,sans-serif;
     background:url('https://i.imgur.com/jZizpOi.png') no-repeat center center fixed;
     background-size:cover;
     color:#fff;
 }
 header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
     background:linear-gradient(90deg,#111,#222);
     padding:10px 20px;
     border-bottom:4px solid #e10600;
     display:flex;
     justify-content:space-between;
     align-items:center;
+    z-index:1000;
 }
-header h1{margin:0;font-size:1.6em}
-nav{display:flex; align-items:center;}
+header h1{font-size:1.6em;}
+nav{display:flex;align-items:center;}
 nav button, nav .tablink{
     background:#111;
     border:none;
-    padding:8px 12px;
+    padding:8px 14px;
     color:#fff;
     margin-left:5px;
     cursor:pointer;
+    font-weight:bold;
+    border-radius:4px;
 }
-nav button:hover, nav .tablink:hover{background:#e10600}
-nav .active{background:#e10600}
+nav button:hover, nav .tablink:hover{background:#e10600;}
+nav .active{background:#e10600;}
 
-main{padding:20px}
+main{padding:90px 20px 20px 20px;}
 
+/* ======= SEÇÕES ======= */
 section{
-    background:rgba(0,0,0,0.75);
-    padding:15px;
-    border-radius:6px;
+    background:rgba(0,0,0,0.85);
+    padding:20px;
+    border-radius:10px;
     margin-bottom:20px;
+    box-shadow:0 0 20px rgba(0,0,0,0.7);
 }
 
+/* ======= TABELA ======= */
 table{
     width:100%;
     border-collapse:collapse;
 }
 th,td{
-    border-bottom:1px solid #333;
-    padding:8px;
+    padding:12px;
     text-align:center;
+    border-bottom:1px solid #333;
+    font-size:1em;
 }
-th{color:#e10600}
-
-/* Líder estilo F1 moderna */
+th{
+    color:#e10600;
+    text-transform:uppercase;
+}
 .lider{
     background: linear-gradient(90deg,#e10600,#ff4c4c);
     color: #fff;
@@ -62,26 +74,31 @@ th{color:#e10600}
     font-size:1.2em;
     position: relative;
     overflow: hidden;
-    animation: pulseGlow 1.8s infinite;
-    box-shadow: 0 0 15px rgba(225,6,0,0.8), 0 0 30px rgba(255,76,76,0.6);
-    border-radius:4px;
+    animation: pulseGlow 1.5s infinite;
+    box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);
+    border-radius:6px;
 }
-
 @keyframes pulseGlow{
     0%{box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);}
     50%{box-shadow:0 0 25px rgba(225,6,0,1),0 0 50px rgba(255,76,76,1);}
     100%{box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);}
 }
 
-.hidden{display:none}
+/* ======= CALENDÁRIO ======= */
+#calendarioBody tr td:last-child{
+    font-weight:bold;
+}
+.status-Pendente{color:#ffcc00;}
+.status-Realizada{color:#00ff66;}
 
-/* LOGIN */
+/* ======= LOGIN ======= */
 .login-box{
     max-width:350px;
-    margin:60px auto;
-    background:rgba(0,0,0,0.9);
+    margin:100px auto;
+    background:rgba(0,0,0,0.95);
     padding:20px;
-    border-radius:6px;
+    border-radius:8px;
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
 }
 .login-box input{
     width:100%;
@@ -90,6 +107,7 @@ th{color:#e10600}
     background:#222;
     border:1px solid #444;
     color:#fff;
+    border-radius:4px;
 }
 .login-box button{
     width:100%;
@@ -98,24 +116,49 @@ th{color:#e10600}
     background:#e10600;
     border:none;
     color:#fff;
+    font-weight:bold;
+    border-radius:4px;
 }
 
-/* Abas admin */
-.tabs{display:flex;margin-bottom:10px; flex-wrap:wrap;}
+/* ======= ADMIN ======= */
+.tabs{display:flex;margin-bottom:15px;flex-wrap:wrap;}
 .tabs button{
     flex:1;
     background:#111;
     border:none;
-    padding:10px;
+    padding:12px;
     color:#fff;
     margin:2px 0;
+    border-radius:4px;
 }
-.tabs button.active{background:#e10600}
+.tabs button.active{background:#e10600;}
+.tabcontent{display:none;}
+.tabcontent.active{display:block;}
+
+/* ======= SCROLL LEADERBOARD ======= */
+#tabela tbody{
+    display:block;
+    max-height:400px;
+    overflow:hidden;
+    position:relative;
+}
+#tabela thead, #tabela tbody tr{
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+@keyframes scrollLeaderboard{
+    0%{transform:translateY(0);}
+    100%{transform:translateY(-100%);}
+}
+.leaderboard-scroll{
+    animation: scrollLeaderboard 15s linear infinite;
+}
+
 </style>
 </head>
 
 <body>
-
 <header>
 <h1>F1 2013 – Campeonato</h1>
 <nav>
@@ -126,15 +169,14 @@ th{color:#e10600}
 </header>
 
 <main>
-
-<!-- ====== PUBLICO ====== -->
+<!-- PUBLICO -->
 <section id="tabelaSec">
 <h2>Tabela do Campeonato</h2>
 <table id="tabela">
 <thead>
 <tr><th>Pos</th><th>Piloto</th><th>Equipe</th><th>Pontos</th><th>Vitórias</th></tr>
 </thead>
-<tbody></tbody>
+<tbody class="leaderboard-scroll"></tbody>
 </table>
 </section>
 
@@ -148,7 +190,7 @@ th{color:#e10600}
 </table>
 </section>
 
-<!-- ====== LOGIN ====== -->
+<!-- LOGIN -->
 <div id="login" class="login-box hidden">
 <h2>Login Administrador</h2>
 <input type="text" id="user" placeholder="Usuário">
@@ -157,38 +199,34 @@ th{color:#e10600}
 <p id="erro" style="color:#ff5555"></p>
 </div>
 
-<!-- ====== ADMIN ====== -->
+<!-- ADMIN -->
 <section id="admin" class="hidden">
 <h2>Painel Administrativo</h2>
-
 <div class="tabs">
 <button class="tablink active" onclick="openTab('entry')">Entry List</button>
 <button class="tablink" onclick="openTab('pistas')">Pistas</button>
 <button class="tablink" onclick="openTab('resultados')">Resultados</button>
 </div>
 
-<div id="entry" class="tabcontent">
+<div id="entry" class="tabcontent active">
 <input type="file" id="uploadEntryList" accept=".csv">
 <button onclick="processarEntryListCSV()">Upload Entry List</button>
 </div>
-
-<div id="pistas" class="tabcontent hidden">
+<div id="pistas" class="tabcontent">
 <input type="file" id="uploadPistas" accept=".csv,.json">
 <button onclick="processarPistas()">Upload Pistas</button>
 </div>
-
-<div id="resultados" class="tabcontent hidden">
+<div id="resultados" class="tabcontent">
 <select id="corridaSelecionada"></select>
 <input type="file" id="uploadArquivo" accept=".csv,.json">
 <button onclick="processarResultados()">Upload Resultados</button>
 </div>
 
 </section>
-
 </main>
 
 <script>
-// ========= PUBLICO - ABAS =========
+// PUBLICO
 function openPublicTab(tab){
     document.querySelectorAll('#tabelaSec,#calendarioSec').forEach(s=>s.classList.add('hidden'));
     document.getElementById(tab).classList.remove('hidden');
@@ -196,35 +234,32 @@ function openPublicTab(tab){
     event.target.classList.add('active');
 }
 
-// ========= LOGIN =========
+// LOGIN
 const USER="samuel", PASS="3636";
-function mostrarLogin(){
-    document.getElementById("login").classList.toggle("hidden");
-}
+function mostrarLogin(){document.getElementById("login").classList.toggle("hidden");}
 function login(){
-    if(user.value===USER && pass.value===PASS){
-        loginBox(true);
-    }else erro.innerText="Login inválido";
+    if(user.value===USER && pass.value===PASS) loginBox(true);
+    else erro.innerText="Login inválido";
 }
 function loginBox(ok){
     document.getElementById("login").classList.add("hidden");
     document.getElementById("admin").classList.remove("hidden");
 }
 
-// ========= DADOS =========
+// DADOS
 const pontos=[25,18,15,12,10,8,6,4,2,1];
 let pilotos = JSON.parse(localStorage.getItem('f1_2013_pilotos')) || [];
 let calendario = JSON.parse(localStorage.getItem('f1_2013_calendario')) || [];
 const selectCorrida=document.getElementById("corridaSelecionada");
 
-// ========= PUBLICO =========
+// PUBLICO
 function atualizarTabela(){
     const tbody=document.querySelector("#tabela tbody");
     tbody.innerHTML="";
     pilotos.sort((a,b)=>b.pontos-a.pontos);
     pilotos.forEach((p,i)=>{
         const tr=document.createElement("tr");
-        tr.className = i===0 ? "lider" : "";
+        tr.className=i===0?"lider":"";
         tr.innerHTML=`<td>${i+1}</td><td>${p.nome}</td><td>${p.equipe}</td><td>${p.pontos}</td><td>${p.vit}</td>`;
         tbody.appendChild(tr);
     });
@@ -234,26 +269,25 @@ function atualizarCalendario(){
     const body=document.getElementById("calendarioBody");
     body.innerHTML="";
     calendario.forEach(c=>{
-        body.innerHTML+=`<tr><td>${c.etapa}</td><td>${c.pista}</td><td>${c.data}</td><td>${c.status}</td></tr>`;
+        body.innerHTML+=`<tr class="status-${c.status}"><td>${c.etapa}</td><td>${c.pista}</td><td>${c.data}</td><td>${c.status}</td></tr>`;
     });
 }
 
-// ========= ADMIN =========
+// ADMIN
 function openTab(tab){
-    document.querySelectorAll(".tabcontent").forEach(t=>t.classList.add("hidden"));
-    document.getElementById(tab).classList.remove("hidden");
+    document.querySelectorAll(".tabcontent").forEach(t=>t.classList.remove("active"));
+    document.getElementById(tab).classList.add("active");
     document.querySelectorAll("#admin .tablink").forEach(b=>b.classList.remove("active"));
     event.target.classList.add("active");
 }
 
 function salvarDados(){
-    localStorage.setItem('f1_2013_pilotos', JSON.stringify(pilotos));
-    localStorage.setItem('f1_2013_calendario', JSON.stringify(calendario));
+    localStorage.setItem('f1_2013_pilotos',JSON.stringify(pilotos));
+    localStorage.setItem('f1_2013_calendario',JSON.stringify(calendario));
 }
 
 function processarEntryListCSV(){
-    const f=uploadEntryList.files[0];
-    if(!f)return;
+    const f=uploadEntryList.files[0]; if(!f)return;
     const r=new FileReader();
     r.onload=e=>{
         pilotos=[];
@@ -261,16 +295,13 @@ function processarEntryListCSV(){
             const [nome,equipe]=l.split(",");
             if(nome)pilotos.push({nome:nome.trim(),equipe:equipe||"",pontos:0,vit:0});
         });
-        salvarDados();
-        atualizarTabela();
-        alert("Entry List carregada");
+        salvarDados(); atualizarTabela(); alert("Entry List carregada");
     };
     r.readAsText(f);
 }
 
 function processarPistas(){
-    const f=uploadPistas.files[0];
-    if(!f)return;
+    const f=uploadPistas.files[0]; if(!f)return;
     const r=new FileReader();
     r.onload=e=>{
         calendario=[];
@@ -284,38 +315,30 @@ function processarPistas(){
             o.text=`Etapa ${c.etapa} - ${c.pista}`;
             selectCorrida.appendChild(o);
         });
-        salvarDados();
-        atualizarCalendario();
+        salvarDados(); atualizarCalendario();
     };
     r.readAsText(f);
 }
 
 function processarResultados(){
-    const f=uploadArquivo.files[0];
-    if(!f)return;
+    const f=uploadArquivo.files[0]; if(!f)return;
     const r=new FileReader();
     r.onload=e=>{
         e.target.result.split("\n").forEach((l,i)=>{
             const [nome]=l.split(",");
             const p=pilotos.find(x=>x.nome===nome);
-            if(p){
-                p.pontos+=pontos[i]||0;
-                if(i===0)p.vit++;
-            }
+            if(p){p.pontos+=pontos[i]||0;if(i===0)p.vit++;}
         });
         if(selectCorrida.selectedIndex>=0) calendario[selectCorrida.selectedIndex].status="Realizada";
-        salvarDados();
-        atualizarTabela();
-        atualizarCalendario();
+        salvarDados(); atualizarTabela(); atualizarCalendario();
         alert("Resultados aplicados");
     };
     r.readAsText(f);
 }
 
-// Inicializa tabela e calendário
+// INICIALIZAÇÃO
 atualizarTabela();
 atualizarCalendario();
 </script>
-
 </body>
 </html>
