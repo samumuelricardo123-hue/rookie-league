@@ -6,7 +6,7 @@
 <title>F1 2013 – Campeonato</title>
 <style>
 /* ===== GLOBAL ===== */
-body{margin:0;font-family:'Helvetica Neue',Arial,sans-serif;background:url('https://i.imgur.com/jZizpOi.png') no-repeat center center fixed;background-size:cover;color:#fff;}
+body{margin:0;font-family:'Helvetica Neue',Arial,sans-serif;background:#000;color:#fff;}
 header{background:linear-gradient(90deg,#111,#222);padding:10px 20px;border-bottom:4px solid #e10600;display:flex;justify-content:space-between;align-items:center;}
 header h1{margin:0;font-size:1.6em;}
 nav{display:flex;align-items:center;}
@@ -21,26 +21,24 @@ main{padding:10px;}
 #tabela thead th{color:#e10600;font-size:0.95em;text-transform:uppercase;border-bottom:2px solid #fff;padding:10px;position:sticky;top:0;background:rgba(0,0,0,0.85);z-index:1;}
 #tabela tbody td{padding:10px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.2);font-size:0.9em;transition:background 0.3s, transform 0.3s;}
 #tabela tbody tr:hover:not(.lider){background:rgba(225,6,0,0.15);transform:scale(1.02);}
-.lider{background: linear-gradient(90deg,#e10600,#ff4c4c);color: #fff;font-weight:bold;font-size:1.15em;position: relative;overflow: hidden;animation: pulseGlow 1.5s infinite;box-shadow:0 0 20px rgba(225,6,0,0.8),0 0 40px rgba(255,76,76,0.6);border-radius:6px;}
+.lider{background: linear-gradient(90deg,#e10600,#ff4c4c);color:#fff;font-weight:bold;font-size:1.15em;position:relative;overflow:hidden;animation:pulseGlow 1.5s infinite;box-shadow:0 0 20px rgba(225,6,0,0.8),0 0 40px rgba(255,76,76,0.6);border-radius:6px;}
 @keyframes pulseGlow{0%{box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);}50%{box-shadow:0 0 25px rgba(225,6,0,1),0 0 50px rgba(255,76,76,1);}100%{box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);}}
 
 /* ===== CALENDÁRIO ===== */
-#calendarioBody tr td{padding:8px;text-align:center;cursor:pointer;}
-.hidden{display:none;}
-#mapContainer{position:relative;width:100%;max-width:900px;margin:15px auto;border:5px solid #e10600;border-radius:12px;box-shadow:0 0 25px rgba(225,6,0,0.8),0 0 50px rgba(255,76,76,0.6);overflow:hidden;animation:glowPulse 2s infinite alternate;transition:transform 0.5s;}
-#pistaMap{width:100%;display:block;border-radius:10px;object-fit:contain;animation:fadeInMap 0.7s ease-in-out;}
-#mapInfo{position:absolute;top:15px;left:15px;background:rgba(0,0,0,0.6);color:#fff;padding:10px 15px;border-radius:8px;font-weight:bold;font-size:1.05em;text-shadow:0 0 5px #000;}
-#leaderMarker{position:absolute;width:20px;height:20px;border-radius:50%;background:#ffd700;border:2px solid #fff;top:10px;right:10px;box-shadow:0 0 15px #ffd700;display:none;animation:pulseLeader 1.5s infinite;}
-@keyframes fadeInMap{0%{opacity:0;transform:scale(0.95);}100%{opacity:1;transform:scale(1);}}
-@keyframes pulseLeader{0%{transform:scale(1);box-shadow:0 0 10px #ffd700;}50%{transform:scale(1.2);box-shadow:0 0 20px #ffd700;}100%{transform:scale(1);box-shadow:0 0 10px #ffd700;}}
+#calendarioBody tr td{padding:8px;text-align:center;}
+#mapContainer{position:relative;width:100%;max-width:900px;margin:15px auto;background:#000;border:5px solid #e10600;border-radius:12px;box-shadow:0 0 25px rgba(225,6,0,0.8),0 0 50px rgba(255,76,76,0.6);overflow:hidden;}
+#pistaMap{width:100%;display:block;border-radius:10px;object-fit:contain;filter:contrast(1.2) brightness(1.2);}
+#mapInfo{position:absolute;top:15px;left:15px;background:rgba(0,0,0,0.85);color:#fff;padding:10px 15px;border-radius:8px;font-weight:bold;font-size:1.05em;text-shadow:0 0 5px #000;}
+#leaderMarker{position:absolute;width:25px;height:25px;border-radius:50%;background:#ffd700;border:2px solid #fff;top:10px;right:10px;box-shadow:0 0 20px #ffd700,0 0 35px #ffd700 inset;display:none;animation:pulseLeader 1.5s infinite;}
+@keyframes pulseLeader{0%{transform:scale(1);}50%{transform:scale(1.2);}100%{transform:scale(1);}}
 
 /* ===== LOGIN ===== */
-.login-box{max-width:350px;margin:60px auto;background:rgba(0,0,0,0.9);padding:20px;border-radius:6px;}
+.login-box{max-width:350px;margin:60px auto;background:#111;padding:20px;border-radius:6px;}
 .login-box input{width:100%;padding:10px;margin-top:10px;background:#222;border:1px solid #444;color:#fff;}
 .login-box button{width:100%;margin-top:15px;padding:10px;background:#e10600;border:none;color:#fff;font-weight:bold;}
 
 /* ===== ABAS ADMIN ===== */
-.tabs{display:flex;margin-bottom:10px; flex-wrap:wrap;}
+.tabs{display:flex;margin-bottom:10px;flex-wrap:wrap;}
 .tabs button{flex:1;background:#111;border:none;padding:10px;color:#fff;margin:2px 0;cursor:pointer;}
 .tabs button.active{background:#e10600;}
 .tabcontent{display:none;}
@@ -62,29 +60,20 @@ input, button{font-size:0.9em;}
 <main>
 <section id="tabelaSec">
 <h2>Tabela do Campeonato</h2>
-<table id="tabela">
-<thead>
-<tr><th>Pos</th><th>Piloto</th><th>Equipe</th><th>Pontos</th><th>Vitórias</th></tr>
-</thead>
-<tbody></tbody>
-</table>
+<table id="tabela"><thead><tr><th>Pos</th><th>Piloto</th><th>Equipe</th><th>Pontos</th><th>Vitórias</th></tr></thead><tbody></tbody></table>
 </section>
 
 <section id="calendarioSec" class="hidden">
 <h2>Calendário</h2>
 <table>
-<thead>
-<tr><th>Etapa</th><th>Pista</th><th>Data</th><th>Status</th></tr>
-</thead>
+<thead><tr><th>Etapa</th><th>Pista</th><th>Data</th><th>Status</th></tr></thead>
 <tbody id="calendarioBody"></tbody>
 </table>
 
 <div id="mapContainer">
-<img id="pistaMap" src="" alt="Mapa da Pista">
-<div id="mapInfo">
-<span id="mapEtapa"></span> - <span id="mapPista"></span> | <span id="mapStatus"></span>
-</div>
-<div id="leaderMarker" title="Líder"></div>
+  <img id="pistaMap" src="" alt="Mapa da Pista">
+  <div id="mapInfo"><span id="mapEtapa"></span> - <span id="mapPista"></span> | <span id="mapStatus"></span></div>
+  <div id="leaderMarker" title="Líder"></div>
 </div>
 </section>
 
@@ -93,7 +82,7 @@ input, button{font-size:0.9em;}
 <input type="text" id="user" placeholder="Usuário">
 <input type="password" id="pass" placeholder="Senha">
 <button onclick="login()">Entrar</button>
-<p id="erro" style="color:#ff5555"></p>
+<p id="erro" style="color:#f55"></p>
 </div>
 
 <section id="admin" class="hidden">
@@ -126,108 +115,128 @@ input, button{font-size:0.9em;}
 </section>
 
 <script>
-const USER="samuel", PASS="3636";
-const REPO="seu_usuario/seu_repo"; // substituir pelo seu repo
-const TOKEN="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";
-let pilotos = [];
-let calendario = [];
-const pontos=[25,18,15,12,10,8,6,4,2,1];
+// — GitHub Config — 
+const OWNER = "SEU_USUARIO";       // seu GitHub
+const REPO  = "SEU_REPO";          // repositório
+const PATH_DATA = "f1_2013_data.json";
+const TOKEN = "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";
 
-const pistaMap=document.getElementById("pistaMap");
-const mapEtapa=document.getElementById("mapEtapa");
-const mapPista=document.getElementById("mapPista");
-const mapStatus=document.getElementById("mapStatus");
-const leaderMarker=document.getElementById("leaderMarker");
+// — Variáveis —
+let pilotos = [], calendario = [];
+const pontos = [25,18,15,12,10,8,6,4,2,1];
 
-async function githubGetFile(path){
-    const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
-        headers:{Authorization:`token ${TOKEN}`}
-    });
-    if(res.ok){ const data=await res.json(); return atob(data.content.replace(/\n/g,'')); }
-    return null;
+// DOM
+const pistaMap = document.getElementById("pistaMap");
+const mapEtapa = document.getElementById("mapEtapa");
+const mapPista = document.getElementById("mapPista");
+const mapStatus = document.getElementById("mapStatus");
+const leaderMarker = document.getElementById("leaderMarker");
+
+// — GitHub Helpers —
+async function githubGet(){
+  const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH_DATA}`, {
+    headers: { Authorization: `token ${TOKEN}` }
+  });
+  if(!res.ok) return null;
+  const data = await res.json();
+  return JSON.parse(atob(data.content));
 }
 
-async function githubSaveFile(path,content,message){
-    const getFile = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
-        headers:{Authorization:`token ${TOKEN}`}
-    });
-    let sha=null;
-    if(getFile.ok){ sha=(await getFile.json()).sha; }
-    await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`,{
-        method:"PUT",
-        headers:{Authorization:`token ${TOKEN}`, "Content-Type":"application/json"},
-        body:JSON.stringify({message,content:btoa(unescape(encodeURIComponent(content))),sha})
-    });
+async function githubSave(data){
+  const getRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH_DATA}`, {
+    headers: { Authorization: `token ${TOKEN}` }
+  });
+  const sha = getRes.ok ? (await getRes.json()).sha : null;
+  await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH_DATA}`, {
+    method: "PUT",
+    headers: { Authorization: `token ${TOKEN}`, "Content-Type":"application/json" },
+    body: JSON.stringify({
+      message: "Atualizando dados F1 2013",
+      content: btoa(JSON.stringify(data)),
+      sha
+    })
+  });
 }
 
-function openPublicTab(tab){document.querySelectorAll('#tabelaSec,#calendarioSec').forEach(s=>s.classList.add('hidden'));document.getElementById(tab).classList.remove('hidden');document.querySelectorAll('header .tablink').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');}
-function mostrarLogin(){ document.getElementById("login").classList.toggle("hidden"); }
-function login(){if(user.value===USER && pass.value===PASS){document.getElementById("login").classList.add("hidden");document.getElementById("admin").classList.remove("hidden");}else erro.innerText="Login inválido";}
-function openTab(tab){document.querySelectorAll("#admin .tabcontent").forEach(t=>t.classList.remove("active"));document.getElementById(tab).classList.add("active");document.querySelectorAll("#admin .tablink").forEach(b=>b.classList.remove("active"));event.target.classList.add("active");}
-
-function salvarDados(){
-    localStorage.setItem('f1_2013_pilotos', JSON.stringify(pilotos));
-    localStorage.setItem('f1_2013_calendario', JSON.stringify(calendario));
-    githubSaveFile("pilotos.json", JSON.stringify(pilotos),"Atualizando pilotos");
-    githubSaveFile("calendario.json", JSON.stringify(calendario),"Atualizando calendário");
-}
-
+// — Init — 
 async function carregarDados(){
-    const pilotosGit = await githubGetFile("pilotos.json");
-    const calendarioGit = await githubGetFile("calendario.json");
-    if(pilotosGit) pilotos = JSON.parse(pilotosGit);
-    if(calendarioGit) calendario = JSON.parse(calendarioGit);
+  const data = await githubGet();
+  if(data){ pilotos = data.pilotos||[]; calendario = data.calendario||[]; }
+  atualizarTabela(); atualizarCalendario();
+}
+function salvarDados(){
+  githubSave({ pilotos, calendario });
 }
 
+// — Abas —
+function openPublicTab(tab){
+  document.querySelectorAll("#tabelaSec,#calendarioSec").forEach(s=>s.classList.add("hidden"));
+  document.getElementById(tab).classList.remove("hidden");
+  document.querySelectorAll("header .tablink").forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+}
+function mostrarLogin(){ document.getElementById("login").classList.toggle("hidden"); }
+function login(){ if(user.value===USER && pass.value===PASS){document.getElementById("login").classList.add("hidden"); document.getElementById("admin").classList.remove("hidden");} else erro.innerText="Senha inválida"; }
+function openTab(tab){ document.querySelectorAll("#admin .tabcontent").forEach(t=>t.classList.remove("active")); document.getElementById(tab).classList.add("active"); document.querySelectorAll("#admin .tablink").forEach(b=>b.classList.remove("active")); event.target.classList.add("active"); }
+
+// — Atualizações —
 function atualizarTabela(){
-    const tbody=document.querySelector("#tabela tbody"); tbody.innerHTML="";
-    pilotos.sort((a,b)=>b.pontos-a.pontos);
-    pilotos.forEach((p,i)=>{const tr=document.createElement("tr");tr.className=i===0?"lider":"";tr.innerHTML=`<td>${i+1}</td><td>${p.nome}</td><td>${p.equipe}</td><td>${p.pontos}</td><td>${p.vit||0}</td>`;tbody.appendChild(tr);});
+  const tbody = document.querySelector("#tabela tbody");tbody.innerHTML="";
+  pilotos.sort((a,b)=>b.pontos-a.pontos);
+  pilotos.forEach((p,i)=>tbody.innerHTML+=`<tr class="${i===0?'lider':''}"><td>${i+1}</td><td>${p.nome}</td><td>${p.equipe}</td><td>${p.pontos}</td><td>${p.vit||0}</td></tr>`);
 }
 
 function atualizarCalendario(){
-    const body=document.getElementById("calendarioBody"); body.innerHTML="";
-    calendario.forEach(c=>{ body.innerHTML+=`<tr><td>${c.etapa}</td><td>${c.pista}</td><td>${c.data}</td><td>${c.status}</td></tr>`;});
-    if(calendario.length>0) mostrarMapa(calendario.length-1);
+  const body = document.getElementById("calendarioBody");body.innerHTML="";
+  calendario.forEach((c,i)=>body.innerHTML+=`<tr><td>${c.etapa}</td><td>${c.pista}</td><td>${c.data}</td><td>${c.status}</td></tr>`);
+  if(calendario.length) mostrarMapa(calendario.length-1);
 }
 
-function mostrarMapa(index){
-    const c = calendario[index];
-    if(c){
-        pistaMap.src = c.imgBase64 || "";
-        mapEtapa.innerText = `Etapa ${c.etapa}`;
-        mapPista.innerText = c.pista;
-        mapStatus.innerText = c.status;
-        if(pilotos[0] && c.status==="Realizada"){leaderMarker.style.display="block";leaderMarker.title=`Líder: ${pilotos[0].nome}`;}else leaderMarker.style.display="none";
-    }
+function mostrarMapa(idx){
+  const c = calendario[idx];
+  if(c){ pistaMap.src=c.imgBase64||""; mapEtapa.innerText=`Etapa ${c.etapa}`; mapPista.innerText=c.pista; mapStatus.innerText=c.status;
+    if(pilotos[0] && c.status==="Realizada"){ leaderMarker.style.display="block"; leaderMarker.title=`Líder: ${pilotos[0].nome}`;} else leaderMarker.style.display="none";
+  }
 }
 
+// — Uploads —
 function processarEntryListCSV(){
-    const f=uploadEntryList.files[0]; if(!f)return;
-    const r=new FileReader(); r.onload=e=>{
-        pilotos=[]; e.target.result.split("\n").forEach(l=>{const [nome,equipe]=l.split(",");if(nome)pilotos.push({nome:nome.trim(),equipe:equipe||"",pontos:0,vit:0});});
-        salvarDados(); atualizarTabela(); alert("Entry List carregada");
-    }; r.readAsText(f);
+  const f = uploadEntryList.files[0]; if(!f)return;
+  const r = new FileReader(); r.onload=e=>{
+    pilotos=[]; e.target.result.split("\n").forEach(l=>{
+      const [nome,equipe]=l.split(",");
+      if(nome) pilotos.push({nome:nome.trim(),equipe:equipe||"",pontos:0,vit:0});
+    });
+    salvarDados(); atualizarTabela();alert("Entry List carregada!");
+  }; r.readAsText(f);
 }
 
 function adicionarEtapa(){
-    const etapa=Number(etapaInput.value); const pista=pistaInput.value.trim(); const data=dataInput.value; const imgFile=imgPistaInput.files[0];
-    if(!etapa||!pista||!data){alert("Preencha todos os campos");return;}
-    if(imgFile){const reader=new FileReader();reader.onload=e=>{calendario.push({etapa,pista,data,status:"Pendente",imgBase64:e.target.result});salvarDados();atualizarCalendario();alert("Etapa adicionada com imagem");etapaInput.value="";pistaInput.value="";dataInput.value="";imgPistaInput.value="";};reader.readAsDataURL(imgFile);}
-    else {calendario.push({etapa,pista,data,status:"Pendente"});salvarDados();atualizarCalendario();alert("Etapa adicionada sem imagem");etapaInput.value="";pistaInput.value="";dataInput.value="";imgPistaInput.value="";}
+  const e = Number(etapaInput.value), p=pistaInput.value.trim(), d=dataInput.value, img=imgPistaInput.files[0];
+  if(!e||!p||!d){alert("Preencha todos os campos");return;}
+  if(img){
+    const r=new FileReader(); r.onload=ev=>{
+      calendario.push({etapa:e,pista:p,data:d,status:"Pendente",imgBase64:ev.target.result});
+      salvarDados(); atualizarCalendario(); alert("Etapa adicionada!");
+    }; r.readAsDataURL(img);
+  } else { calendario.push({etapa:e,pista:p,data:d,status:"Pendente"}); salvarDados(); atualizarCalendario(); }
 }
 
 function processarResultados(){
-    const f=uploadArquivo.files[0]; if(!f)return;
-    const r=new FileReader(); r.onload=e=>{
-        e.target.result.split("\n").forEach((l,i)=>{const [nome]=l.split(",");const p=pilotos.find(x=>x.nome===nome);if(p){p.pontos+=pontos[i]||0;if(i===0)p.vit=(p.vit||0)+1;}});
-        if(selectCorrida.selectedIndex>=0) calendario[selectCorrida.selectedIndex].status="Realizada";
-        salvarDados(); atualizarTabela(); atualizarCalendario(); alert("Resultados aplicados");
-    }; r.readAsText(f);
+  const f=uploadArquivo.files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=e=>{
+    e.target.result.split("\n").forEach((l,i)=>{
+      const [nome]=l.split(",");
+      const pil=pilotos.find(x=>x.nome===nome);
+      if(pil){ pil.pontos+=pontos[i]||0; if(i===0) pil.vit=(pil.vit||0)+1; }
+    });
+    if(corridaSelecionada.selectedIndex>=0) calendario[corridaSelecionada.selectedIndex].status="Realizada";
+    salvarDados(); atualizarTabela(); atualizarCalendario(); alert("Resultados aplicados!");
+  }; r.readAsText(f);
 }
 
-// Carrega dados do GitHub ao abrir
-carregarDados().then(()=>{atualizarTabela(); atualizarCalendario();});
+// Start
+carregarDados();
 </script>
 </body>
 </html>
