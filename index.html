@@ -54,16 +54,23 @@ th,td{
 }
 th{color:#e10600}
 
-/* Líder com animação */
+/* Líder estilo F1 moderna */
 .lider{
-    animation: pulse 1.5s infinite;
-    background: rgba(225,6,0,0.5);
+    background: linear-gradient(90deg,#e10600,#ff4c4c);
+    color: #fff;
     font-weight:bold;
+    font-size:1.2em;
+    position: relative;
+    overflow: hidden;
+    animation: pulseGlow 1.8s infinite;
+    box-shadow: 0 0 15px rgba(225,6,0,0.8), 0 0 30px rgba(255,76,76,0.6);
+    border-radius:4px;
 }
-@keyframes pulse{
-    0%{box-shadow:0 0 10px rgba(225,6,0,0.6);}
-    50%{box-shadow:0 0 20px rgba(225,6,0,1);}
-    100%{box-shadow:0 0 10px rgba(225,6,0,0.6);}
+
+@keyframes pulseGlow{
+    0%{box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);}
+    50%{box-shadow:0 0 25px rgba(225,6,0,1),0 0 50px rgba(255,76,76,1);}
+    100%{box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);}
 }
 
 .hidden{display:none}
@@ -217,7 +224,7 @@ function atualizarTabela(){
     pilotos.sort((a,b)=>b.pontos-a.pontos);
     pilotos.forEach((p,i)=>{
         const tr=document.createElement("tr");
-        if(i===0)tr.classList.add("lider");
+        tr.className = i===0 ? "lider" : "";
         tr.innerHTML=`<td>${i+1}</td><td>${p.nome}</td><td>${p.equipe}</td><td>${p.pontos}</td><td>${p.vit}</td>`;
         tbody.appendChild(tr);
     });
