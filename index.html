@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>F1 2013 – Campeonato</title>
 <style>
-/* ======= BASE ======= */
 body{
     margin:0;
     font-family:'Helvetica Neue',Arial,sans-serif;
@@ -34,9 +33,9 @@ nav button, nav .tablink{
 nav button:hover, nav .tablink:hover{background:#e10600}
 nav .active{background:#e10600}
 
-main{padding:10px;}
+main{padding:10px}
 
-/* ======= TABELA PILOTOS F1 MODERNA (TELA CHEIA) ======= */
+/* TABELA PILOTOS F1 MODERNA */
 #tabelaSec {
     height: calc(100vh - 60px);
     overflow-y: auto;
@@ -44,7 +43,6 @@ main{padding:10px;}
 #tabela {
     width:100%;
     border-collapse: collapse;
-    font-family: 'Arial', sans-serif;
 }
 #tabela thead th {
     color:#e10600;
@@ -68,7 +66,6 @@ main{padding:10px;}
     background:rgba(225,6,0,0.15);
     transform:scale(1.02);
 }
-/* Líder estilo F1 moderna */
 .lider {
     background: linear-gradient(90deg,#e10600,#ff4c4c);
     color: #fff;
@@ -86,8 +83,8 @@ main{padding:10px;}
     100%{box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);}
 }
 
-/* Calendário */
-#calendarioBody tr td{padding:8px;text-align:center;}
+/* Calendário público */
+#calendarioBody tr td{padding:8px;text-align:center;cursor:pointer;}
 #pistaMap {
     margin-top:10px;
     width:100%;
@@ -137,6 +134,7 @@ main{padding:10px;}
 .tabs button.active{background:#e10600}
 .tabcontent{display:none;}
 .tabcontent.active{display:block;}
+input, button{font-size:0.9em;}
 </style>
 </head>
 <body>
@@ -187,7 +185,7 @@ main{padding:10px;}
 <h2>Painel Administrativo</h2>
 <div class="tabs">
 <button class="tablink active" onclick="openTab('entry')">Entry List</button>
-<button class="tablink" onclick="openTab('pistas')">Pistas</button>
+<button class="tablink" onclick="openTab('calendarioAdmin')">Calendário</button>
 <button class="tablink" onclick="openTab('resultados')">Resultados</button>
 </div>
 
@@ -196,9 +194,13 @@ main{padding:10px;}
 <button onclick="processarEntryListCSV()">Upload Entry List</button>
 </div>
 
-<div id="pistas" class="tabcontent hidden">
-<input type="file" id="uploadPistas" accept=".csv,.json">
-<button onclick="processarPistas()">Upload Pistas</button>
+<div id="calendarioAdmin" class="tabcontent hidden">
+<h3>Adicionar etapa</h3>
+<input type="number" id="etapaInput" placeholder="Etapa" style="width:60px">
+<input type="text" id="pistaInput" placeholder="Nome da Pista">
+<input type="date" id="dataInput">
+<input type="file" id="imgPistaInput" accept=".png">
+<button onclick="adicionarEtapa()">Adicionar Etapa</button>
 </div>
 
 <div id="resultados" class="tabcontent hidden">
@@ -207,8 +209,6 @@ main{padding:10px;}
 <button onclick="processarResultados()">Upload Resultados</button>
 </div>
 </section>
-
-</main>
 
 <script>
 // ========= PUBLICO - ABAS =========
@@ -257,15 +257,18 @@ function atualizarTabela(){
 function atualizarCalendario(){
     const body=document.getElementById("calendarioBody");
     body.innerHTML="";
-    calendario.forEach(c=>{
-        body.innerHTML+=`<tr onclick="mostrarMapa('${c.pista}')"><td>${c.etapa}</td><td>${c.pista}</td><td>${c.data}</td><td>${c.status}</td></tr>`;
+    calendario.forEach((c,i)=>{
+        body.innerHTML+=`<tr onclick="mostrarMapa(${i})"><td>${c.etapa}</td><td>${c.pista}</td><td>${c.data}</td><td>${c.status}</td></tr>`;
     });
 }
 
-// Mostra mapa da pista
-function mostrarMapa(pista){
-    // Exemplo: nome da pista corresponde a um arquivo map.png na mesma pasta
-    pistaMap.src = pista.replace(/\s/g,"_") + "_map.png"; // Interlagos -> Interlagos_map.png
+function mostrarMapa(index){
+    const c = calendario[index];
+    if(c && c.imgBase64){
+        pistaMap.src = c.imgBase64;
+    } else {
+        pistaMap.src = "";
+    }
 }
 
 // ========= ADMIN =========
@@ -281,6 +284,7 @@ function salvarDados(){
     localStorage.setItem('f1_2013_calendario', JSON.stringify(calendario));
 }
 
+// Entry list
 function processarEntryListCSV(){
     const f=uploadEntryList.files[0];
     if(!f)return;
@@ -298,28 +302,36 @@ function processarEntryListCSV(){
     r.readAsText(f);
 }
 
-function processarPistas(){
-    const f=uploadPistas.files[0];
-    if(!f)return;
-    const r=new FileReader();
-    r.onload=e=>{
-        calendario=[];
-        e.target.result.split("\n").forEach(l=>{
-            const [etapa,pista,data]=l.split(",");
-            if(etapa)calendario.push({etapa,pista,data,status:"Pendente"});
-        });
-        selectCorrida.innerHTML="";
-        calendario.forEach(c=>{
-            const o=document.createElement("option");
-            o.text=`Etapa ${c.etapa} - ${c.pista}`;
-            selectCorrida.appendChild(o);
-        });
+// Calendário admin
+function adicionarEtapa(){
+    const etapa = Number(etapaInput.value);
+    const pista = pistaInput.value.trim();
+    const data = dataInput.value;
+    const imgFile = imgPistaInput.files[0];
+    if(!etapa || !pista || !data){
+        alert("Preencha todos os campos");
+        return;
+    }
+    if(imgFile){
+        const reader = new FileReader();
+        reader.onload = function(e){
+            calendario.push({etapa,pista,data,status:"Pendente",imgBase64:e.target.result});
+            salvarDados();
+            atualizarCalendario();
+            alert("Etapa adicionada com imagem");
+            etapaInput.value=""; pistaInput.value=""; dataInput.value=""; imgPistaInput.value="";
+        };
+        reader.readAsDataURL(imgFile);
+    } else {
+        calendario.push({etapa,pista,data,status:"Pendente"});
         salvarDados();
         atualizarCalendario();
-    };
-    r.readAsText(f);
+        alert("Etapa adicionada sem imagem");
+        etapaInput.value=""; pistaInput.value=""; dataInput.value=""; imgPistaInput.value="";
+    }
 }
 
+// Resultados
 function processarResultados(){
     const f=uploadArquivo.files[0];
     if(!f)return;
@@ -342,10 +354,9 @@ function processarResultados(){
     r.readAsText(f);
 }
 
-// Inicializa tabela e calendário
+// Inicializa
 atualizarTabela();
 atualizarCalendario();
 </script>
-
 </body>
 </html>
