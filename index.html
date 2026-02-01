@@ -3,349 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 Dashboard – ERS Vertical & DRS Verde</title>
+<title>Campeonato F1 2013</title>
 <style>
-html, body {
+/* Fonte e cores inspiradas na F1 2013 */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #0a0a0a;
+    color: #ffffff;
     margin: 0;
     padding: 0;
+}
+
+header {
+    background-color: #1b1b1b;
+    border-bottom: 4px solid #e10600; /* vermelho F1 */
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+main {
+    padding: 20px;
+}
+
+h2 {
+    color: #e10600;
+    margin-top: 30px;
+}
+
+/* Tabela estilo F1 2013 */
+table {
     width: 100%;
-    height: 100%;
-    background: #0a0a0a;
-    font-family: Arial, sans-serif;
-    color: #fff;
-    overflow: hidden;
-    transition: background 0.3s;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 16px;
+    background-color: #111;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-/* DASHBOARD */
-.dashboard {
-    display: grid;
-    grid-template-rows: 15vh 50vh 35vh;
-    width: 100%;
-    height: 100%;
-    position: relative;
+th, td {
+    padding: 12px 10px;
+    text-align: center;
+    border-bottom: 1px solid #333;
 }
 
-/* RPM LEDs topo */
-.rpm-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 2vw;
-    z-index:1;
-}
-.led-rpm {
-    border-radius: 50%;
-    background: #111;
-    transition: all 0.1s;
-}
-.led-rpm.green.on { background: #0f0; box-shadow: 0 0 6px #0f0; }
-.led-rpm.yellow.on { background: #ff0; box-shadow: 0 0 8px #ff0; }
-.led-rpm.red.on { background: #f00; box-shadow: 0 0 10px #f00; }
-
-/* Marcha + velocidade */
-.middle-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 8vh;
-    z-index:1;
-}
-.gear-display {
-    font-size: 20vh;
-    font-weight: bold;
-    color: #ff0;
-    text-shadow: 0 0 20px #ff0;
-}
-.speed-container {
-    font-size: 12vh;
-    font-weight: bold;
-    color: #ff0;
-    text-shadow: 0 0 15px #ff0, 0 0 30px #ff0;
-    margin-top: 1vh;
+th {
+    background-color: #1b1b1b;
+    color: #e10600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* Rodapé: pneus, volta/delta */
-.bottom-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 1vh 2vw;
-    gap: 2vw;
-    font-size: 2.5vh;
-    z-index:1;
-}
-.tires-container { display: flex; gap: 2vw; }
-.tire { display: flex; flex-direction: column; align-items: center; font-weight: bold; }
-.tire span { margin-top: 0.2em; }
-
-.lap-delta-container { display:flex; flex-direction:column; gap:0.5vh; text-align:right; }
-.lap-container, .delta-container { font-weight:bold; padding:0.2vh 0.5vw; border-radius:5px; background: rgba(255,255,255,0.05);}
-.lap-container{color:#0ff;}
-.delta-container{color:#f00;}
-
-/* Lateral direita: info corrida */
-.right-sidebar {
-    position:absolute;
-    top: 15vh;
-    right: 0;
-    width: 20vw;
-    height: 65vh;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1vh 1vw;
-    gap: 1.5vh;
-    z-index:2;
-}
-.right-sidebar div{
-    font-weight: bold;
-    padding:0.3vh 0.5vw;
-    border-radius:5px;
-    background: rgba(255,255,255,0.05);
-    width: 90%;
-    text-align:left;
+tr:nth-child(even) {
+    background-color: #141414;
 }
 
-/* Lateral esquerda: ERS vertical */
-.left-sidebar {
-    position:absolute;
-    top: 15vh;
-    left: 1vw;
-    width: 3vw;
-    height: 60vh;
-    display: flex;
-    flex-direction: column-reverse; /* preenchimento de baixo para cima */
-    justify-content: flex-start;
-    align-items: center;
-    padding: 1vh 0.5vw;
-    z-index:2;
-}
-.left-sidebar .ers-container {
-    width: 100%;
-    height: 100%;
-    background: #222;
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column-reverse;
-}
-.left-sidebar .ers-bar {
-    width: 100%;
-    height: 0%;
-    background: linear-gradient(to top,#0f0,#ff0,#f00);
-    box-shadow: 0 0 8px #f00;
-    transition: height 0.2s;
+tr:hover {
+    background-color: #222;
 }
 
-/* Botões */
-.fullscreen-btn, #edit-layout-btn, #save-layout-btn {
-    position: fixed;
-    top: 1vh;
-    padding: 1vh 1vw;
+/* Inputs e botões */
+input[type="file"] {
+    margin-top: 10px;
+    display: block;
+    padding: 5px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #e10600;
     border: none;
-    border-radius: 6px;
-    font-weight: bold;
+    color: white;
     cursor: pointer;
-    z-index:1000;
+    border-radius: 3px;
+    font-weight: bold;
 }
-.fullscreen-btn { right:1vw; background:#222; color:#fff; }
-#edit-layout-btn { left:1vw; background:#222; color:#fff; }
-#save-layout-btn { left:110px; background:#222; color:#fff; display:none; }
 
-/* Modo edição */
-.editable { border: 1px dashed #fff; cursor: move; }
+button:hover {
+    background-color: #c00400;
+}
+
+footer {
+    background-color: #1b1b1b;
+    text-align: center;
+    padding: 10px;
+    color: #888;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
 </style>
 </head>
 <body>
+<header>
+    <h1>Campeonato F1 2013</h1>
+</header>
+<main>
+    <h2>Tabela de Pontos</h2>
+    <table id="tabelaCampeonato">
+        <thead>
+            <tr>
+                <th>Posição</th>
+                <th>Piloto</th>
+                <th>Pontos</th>
+                <th>Vitórias</th>
+                <th>Última Corrida</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Linhas geradas pelo JS -->
+        </tbody>
+    </table>
 
-<!-- Botões -->
-<button class="fullscreen-btn" id="fullscreen-btn">Tela Cheia</button>
-<button id="edit-layout-btn">Editar Layout</button>
-<button id="save-layout-btn">Salvar Layout</button>
+    <h2>Upload de Resultados</h2>
+    <input type="file" id="uploadArquivo" accept=".csv,.json">
+    <button onclick="processarArquivo()">Atualizar Tabela</button>
 
-<div class="dashboard" id="dashboard">
+    <p>Formato CSV esperado:<br>
+    nome,pontos,vitórias,ultima_corrida</p>
+</main>
 
-  <!-- RPM LEDs -->
-  <div class="rpm-container editable" id="rpm-container">
-    <!-- 20 LEDs -->
-    <div class="led-rpm green" id="led0"></div>
-    <div class="led-rpm green" id="led1"></div>
-    <div class="led-rpm green" id="led2"></div>
-    <div class="led-rpm green" id="led3"></div>
-    <div class="led-rpm green" id="led4"></div>
-    <div class="led-rpm yellow" id="led5"></div>
-    <div class="led-rpm yellow" id="led6"></div>
-    <div class="led-rpm yellow" id="led7"></div>
-    <div class="led-rpm yellow" id="led8"></div>
-    <div class="led-rpm yellow" id="led9"></div>
-    <div class="led-rpm red" id="led10"></div>
-    <div class="led-rpm red" id="led11"></div>
-    <div class="led-rpm red" id="led12"></div>
-    <div class="led-rpm red" id="led13"></div>
-    <div class="led-rpm red" id="led14"></div>
-    <div class="led-rpm red" id="led15"></div>
-    <div class="led-rpm red" id="led16"></div>
-    <div class="led-rpm red" id="led17"></div>
-    <div class="led-rpm red" id="led18"></div>
-    <div class="led-rpm red" id="led19"></div>
-  </div>
-
-  <!-- Marcha + Velocidade -->
-  <div class="middle-section editable" id="middle-section">
-    <div class="gear-display" id="gear">N</div>
-    <div class="speed-container" id="speed">0</div>
-  </div>
-
-  <!-- Rodapé: pneus, volta/delta -->
-  <div class="bottom-section editable" id="bottom-section">
-    <div class="tires-container">
-      <div class="tire">FL <span id="tireFL">0°C</span></div>
-      <div class="tire">FR <span id="tireFR">0°C</span></div>
-      <div class="tire">RL <span id="tireRL">0°C</span></div>
-      <div class="tire">RR <span id="tireRR">0°C</span></div>
-    </div>
-    <div class="lap-delta-container">
-      <div class="lap-container" id="lap">Volta: 0</div>
-      <div class="delta-container" id="delta">+0.000</div>
-    </div>
-  </div>
-
-  <!-- Lateral direita: info corrida -->
-  <div class="right-sidebar editable" id="right-sidebar">
-    <div id="position">Posição: 1</div>
-    <div id="gapFront">Gap Frente: +0.000s</div>
-    <div id="gapBack">Gap Atrás: +0.000s</div>
-    <div id="fuel">Combustível: 100%</div>
-    <div id="engineTemp">Motor: 90°C</div>
-    <div id="ersMode">ERS: Modo Normal</div>
-    <div id="battery">Bateria: 100%</div>
-  </div>
-
-  <!-- Lateral esquerda: ERS vertical -->
-  <div class="left-sidebar editable" id="left-sidebar">
-    <div class="ers-container"><div class="ers-bar" id="ers"></div></div>
-  </div>
-
-</div>
+<footer>
+    © 2013 Campeonato F1
+</footer>
 
 <script>
-// WebSocket exemplo
-const ws = new WebSocket('ws://localhost:8080');
-ws.onopen = ()=>console.log('Conectado');
-
-const leds = [];
-for(let i=0;i<20;i++) leds.push(document.getElementById('led'+i));
-const dashboard = document.getElementById('dashboard');
-
-ws.onmessage = (event)=>{
-    const data = JSON.parse(event.data);
-
-    // Marcha / Velocidade
-    document.getElementById('gear').innerText = data.gear;
-    document.getElementById('speed').innerText = data.speed;
-
-    // Volta / Delta
-    document.getElementById('lap').innerText = `Volta: ${data.lap}`;
-    document.getElementById('delta').innerText = data.delta;
-
-    // Pneus
-    ['FL','FR','RL','RR'].forEach(t=>{
-        const el = document.getElementById('tire'+t);
-        el.innerText = data.tires[t]+'°C';
-        el.style.color = data.tires[t]<70?'#0f0':data.tires[t]<100?'#ff0':'#f00';
-    });
-
-    // LEDs RPM
-    const rpmPercent = data.rpm/22000;
-    leds.forEach((led,i)=>led.classList.toggle('on', rpmPercent > i*0.05));
-
-    // ERS vertical
-    document.getElementById('ers').style.height = `${data.ers}%`;
-
-    // DRS: muda fundo do dashboard
-    dashboard.style.background = data.drs ? '#0f0' : '#0a0a0a';
-
-    // Lateral direita
-    document.getElementById('position').innerText = `Posição: ${data.position}`;
-    document.getElementById('gapFront').innerText = `Gap Frente: ${data.gapFront}s`;
-    document.getElementById('gapBack').innerText = `Gap Atrás: ${data.gapBack}s`;
-    document.getElementById('fuel').innerText = `Combustível: ${data.fuel}%`;
-    document.getElementById('engineTemp').innerText = `Motor: ${data.engineTemp}°C`;
-    document.getElementById('ersMode').innerText = `ERS: ${data.ersMode}`;
-    document.getElementById('battery').innerText = `Bateria: ${data.battery}%`;
-};
-
-// Fullscreen
-document.getElementById('fullscreen-btn').addEventListener('click', ()=>{
-    if(!document.fullscreenElement) dashboard.requestFullscreen();
-    else document.exitFullscreen();
-});
-
-// Responsividade
-function resizeDashboard(){
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const ledSize = Math.max(Math.min(w/25, h/25), 10);
-    leds.forEach(led=>{led.style.width = `${ledSize}px`; led.style.height = `${ledSize}px`;});
-    document.getElementById('gear').style.fontSize = `${Math.min(h*0.5, w*0.2)}px`;
-    document.getElementById('speed').style.fontSize = `${Math.min(h*0.3, w*0.15)}px`;
+// Inicializa tabela com 20 posições vazias
+let pilotos = [];
+for(let i=1;i<=20;i++){
+    pilotos.push({posicao: i, nome: "", pontos: 0, vitorias: 0, ultima: ""});
 }
-window.addEventListener('resize', resizeDashboard);
-resizeDashboard();
 
-// Modo Edição
-let editing = false;
-const editables = document.querySelectorAll('.editable');
-document.getElementById('edit-layout-btn').addEventListener('click', () => {
-    editing = !editing;
-    editables.forEach(el=>el.style.border = editing ? '1px dashed #fff' : 'none');
-    document.getElementById('save-layout-btn').style.display = editing ? 'inline-block' : 'none';
-});
-
-// Drag & Drop
-editables.forEach(el=>{
-    el.addEventListener('mousedown', e=>{
-        if(!editing) return;
-        e.preventDefault();
-        const shiftX = e.clientX - el.getBoundingClientRect().left;
-        const shiftY = e.clientY - el.getBoundingClientRect().top;
-        el.style.position = 'absolute';
-        el.style.zIndex = 1000;
-        function moveAt(pageX, pageY){ el.style.left = pageX-shiftX+'px'; el.style.top = pageY-shiftY+'px'; }
-        function onMouseMove(e){ moveAt(e.pageX, e.pageY); }
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', ()=>document.removeEventListener('mousemove', onMouseMove), {once:true});
+// Atualiza a tabela no HTML
+function atualizarTabela() {
+    const tbody = document.querySelector("#tabelaCampeonato tbody");
+    tbody.innerHTML = "";
+    pilotos.sort((a,b)=>b.pontos - a.pontos || b.vitorias - a.vitorias);
+    pilotos.forEach((piloto, index) => {
+        piloto.posicao = index + 1;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${piloto.posicao}</td>
+            <td>${piloto.nome}</td>
+            <td>${piloto.pontos}</td>
+            <td>${piloto.vitorias}</td>
+            <td>${piloto.ultima}</td>
+        `;
+        tbody.appendChild(tr);
     });
-    el.ondragstart = () => false;
-});
+}
 
-// Salvar Layout
-document.getElementById('save-layout-btn').addEventListener('click', ()=>{
-    const layout = {};
-    editables.forEach(el=>layout[el.id]={top:el.style.top,left:el.style.left,width:el.offsetWidth,height:el.offsetHeight});
-    localStorage.setItem('f1-dashboard-layout', JSON.stringify(layout));
-    alert('Layout salvo!');
-});
-
-// Restaurar Layout
-window.addEventListener('load', ()=>{
-    const saved = localStorage.getItem('f1-dashboard-layout');
-    if(saved){
-        const layout = JSON.parse(saved);
-        for(const id in layout){
-            const el = document.getElementById(id);
-            if(el){
-                el.style.position='absolute';
-                el.style.top=layout[id].top;
-                el.style.left=layout[id].left;
-                el.style.width=layout[id].width+'px';
-                el.style.height=layout[id].height+'px';
-            }
-        }
+// Processa arquivo CSV ou JSON
+function processarArquivo() {
+    const arquivoInput = document.getElementById("uploadArquivo");
+    if(!arquivoInput.files.length){
+        alert("Selecione um arquivo CSV ou JSON!");
+        return;
     }
-});
+    const file = arquivoInput.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e){
+        const texto = e.target.result;
+        if(file.name.endsWith(".csv")){
+            atualizarPontosCSV(texto);
+        } else if(file.name.endsWith(".json")){
+            atualizarPontosJSON(texto);
+        } else {
+            alert("Formato de arquivo inválido!");
+        }
+    };
+    reader.readAsText(file);
+}
+
+// Atualiza tabela a partir de CSV
+function atualizarPontosCSV(csv){
+    const linhas = csv.split("\n");
+    linhas.forEach(linha => {
+        const [nome,pontos,vitórias,ultima] = linha.split(",");
+        if(nome){
+            let piloto = pilotos.find(p => p.nome === nome);
+            if(!piloto){ 
+                piloto = pilotos.find(p => p.nome === "");
+                piloto.nome = nome;
+            }
+            piloto.pontos += Number(pontos);
+            piloto.vitorias += Number(vitórias);
+            piloto.ultima = ultima;
+        }
+    });
+    atualizarTabela();
+}
+
+// Atualiza tabela a partir de JSON
+function atualizarPontosJSON(jsonText){
+    try {
+        const data = JSON.parse(jsonText);
+        data.forEach(item => {
+            if(item.nome){
+                let piloto = pilotos.find(p => p.nome === item.nome);
+                if(!piloto){ 
+                    piloto = pilotos.find(p => p.nome === "");
+                    piloto.nome = item.nome;
+                }
+                piloto.pontos += Number(item.pontos);
+                piloto.vitorias += Number(item.vitorias);
+                piloto.ultima = item.ultima;
+            }
+        });
+        atualizarTabela();
+    } catch(e){
+        alert("Erro ao processar JSON: "+e.message);
+    }
+}
+
+// Inicializa tabela vazia
+atualizarTabela();
 </script>
 </body>
 </html>
