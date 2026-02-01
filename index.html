@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>F1 2013 – Campeonato</title>
 <style>
+/* ====== GLOBAL ====== */
 body{
     margin:0;
     font-family:'Helvetica Neue',Arial,sans-serif;
@@ -32,10 +33,9 @@ nav button, nav .tablink{
 }
 nav button:hover, nav .tablink:hover{background:#e10600}
 nav .active{background:#e10600}
-
 main{padding:10px}
 
-/* TABELA PILOTOS F1 MODERNA */
+/* ====== TABELA PILOTOS F1 MODERNA ====== */
 #tabelaSec {
     height: calc(100vh - 60px);
     overflow-y: auto;
@@ -83,19 +83,66 @@ main{padding:10px}
     100%{box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);}
 }
 
-/* Calendário público */
+/* ====== CALENDÁRIO PUBLICO ====== */
 #calendarioBody tr td{padding:8px;text-align:center;cursor:pointer;}
-#pistaMap {
-    margin-top:10px;
-    width:100%;
-    max-height:500px;
-    object-fit:contain;
-    border:2px solid #e10600;
-    border-radius:6px;
-}
 .hidden{display:none}
 
-/* LOGIN */
+/* ====== MAPA DA PISTA ESTILO F1 TV ====== */
+#mapContainer{
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 15px auto;
+    border: 5px solid #e10600;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(225,6,0,0.8), 0 0 50px rgba(255,76,76,0.6);
+    overflow: hidden;
+    animation: glowPulse 2s infinite alternate;
+    transition: transform 0.5s;
+}
+#pistaMap{
+    width: 100%;
+    display:block;
+    border-radius: 10px;
+    object-fit: contain;
+    animation: fadeInMap 0.7s ease-in-out;
+}
+#mapInfo{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.05em;
+    text-shadow: 0 0 5px #000;
+}
+#leaderMarker{
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ffd700;
+    border: 2px solid #fff;
+    top: 10px;
+    right: 10px;
+    box-shadow: 0 0 15px #ffd700;
+    display:none;
+    animation: pulseLeader 1.5s infinite;
+}
+@keyframes fadeInMap{
+    0%{opacity:0; transform: scale(0.95);}
+    100%{opacity:1; transform: scale(1);}
+}
+@keyframes pulseLeader{
+    0%{transform: scale(1); box-shadow:0 0 10px #ffd700;}
+    50%{transform: scale(1.2); box-shadow:0 0 20px #ffd700;}
+    100%{transform: scale(1); box-shadow:0 0 10px #ffd700;}
+}
+
+/* ====== LOGIN ====== */
 .login-box{
     max-width:350px;
     margin:60px auto;
@@ -121,7 +168,7 @@ main{padding:10px}
     font-weight:bold;
 }
 
-/* Abas admin */
+/* ====== ABAS ADMIN ====== */
 .tabs{display:flex;margin-bottom:10px; flex-wrap:wrap;}
 .tabs button{
     flex:1;
@@ -137,8 +184,8 @@ main{padding:10px}
 input, button{font-size:0.9em;}
 </style>
 </head>
-<body>
 
+<body>
 <header>
 <h1>F1 2013 – Campeonato</h1>
 <nav>
@@ -168,7 +215,14 @@ input, button{font-size:0.9em;}
 </thead>
 <tbody id="calendarioBody"></tbody>
 </table>
-<img id="pistaMap" src="" alt="Mapa da Pista">
+
+<div id="mapContainer">
+    <img id="pistaMap" src="" alt="Mapa da Pista">
+    <div id="mapInfo">
+        <span id="mapEtapa"></span> - <span id="mapPista"></span> | <span id="mapStatus"></span>
+    </div>
+    <div id="leaderMarker" title="Líder"></div>
+</div>
 </section>
 
 <!-- ====== LOGIN ====== -->
@@ -211,7 +265,7 @@ input, button{font-size:0.9em;}
 </section>
 
 <script>
-// ========= PUBLICO - ABAS =========
+// ====== PUBLICO ======
 function openPublicTab(tab){
     document.querySelectorAll('#tabelaSec,#calendarioSec').forEach(s=>s.classList.add('hidden'));
     document.getElementById(tab).classList.remove('hidden');
@@ -219,11 +273,9 @@ function openPublicTab(tab){
     event.target.classList.add('active');
 }
 
-// ========= LOGIN =========
+// ====== LOGIN ======
 const USER="samuel", PASS="3636";
-function mostrarLogin(){
-    document.getElementById("login").classList.toggle("hidden");
-}
+function mostrarLogin(){ document.getElementById("login").classList.toggle("hidden"); }
 function login(){
     if(user.value===USER && pass.value===PASS){
         loginBox(true);
@@ -234,14 +286,19 @@ function loginBox(ok){
     document.getElementById("admin").classList.remove("hidden");
 }
 
-// ========= DADOS =========
+// ====== DADOS ======
 const pontos=[25,18,15,12,10,8,6,4,2,1];
 let pilotos = JSON.parse(localStorage.getItem('f1_2013_pilotos')) || [];
 let calendario = JSON.parse(localStorage.getItem('f1_2013_calendario')) || [];
 const selectCorrida=document.getElementById("corridaSelecionada");
 const pistaMap=document.getElementById("pistaMap");
+const mapEtapa=document.getElementById("mapEtapa");
+const mapPista=document.getElementById("mapPista");
+const mapStatus=document.getElementById("mapStatus");
+const leaderMarker=document.getElementById("leaderMarker");
+const mapContainer=document.getElementById("mapContainer");
 
-// ========= PUBLICO =========
+// ====== PUBLICO ======
 function atualizarTabela(){
     const tbody=document.querySelector("#tabela tbody");
     tbody.innerHTML="";
@@ -264,14 +321,25 @@ function atualizarCalendario(){
 
 function mostrarMapa(index){
     const c = calendario[index];
-    if(c && c.imgBase64){
-        pistaMap.src = c.imgBase64;
+    if(c){
+        pistaMap.src = c.imgBase64 || "";
+        mapEtapa.innerText = `Etapa ${c.etapa}`;
+        mapPista.innerText = c.pista;
+        mapStatus.innerText = c.status;
+
+        if(pilotos[0] && c.status==="Realizada"){
+            leaderMarker.style.display="block";
+            leaderMarker.title = `Líder: ${pilotos[0].nome}`;
+        }else leaderMarker.style.display="none";
+
+        mapContainer.style.transform = "scale(0.97)";
+        setTimeout(()=>{mapContainer.style.transform="scale(1)";},100);
     } else {
-        pistaMap.src = "";
+        pistaMap.src=""; mapEtapa.innerText=""; mapPista.innerText=""; mapStatus.innerText=""; leaderMarker.style.display="none";
     }
 }
 
-// ========= ADMIN =========
+// ====== ADMIN ======
 function openTab(tab){
     document.querySelectorAll(".tabcontent").forEach(t=>t.classList.remove("active"));
     document.getElementById(tab).classList.add("active");
@@ -295,9 +363,7 @@ function processarEntryListCSV(){
             const [nome,equipe]=l.split(",");
             if(nome)pilotos.push({nome:nome.trim(),equipe:equipe||"",pontos:0,vit:0});
         });
-        salvarDados();
-        atualizarTabela();
-        alert("Entry List carregada");
+        salvarDados(); atualizarTabela(); alert("Entry List carregada");
     };
     r.readAsText(f);
 }
@@ -308,24 +374,19 @@ function adicionarEtapa(){
     const pista = pistaInput.value.trim();
     const data = dataInput.value;
     const imgFile = imgPistaInput.files[0];
-    if(!etapa || !pista || !data){
-        alert("Preencha todos os campos");
-        return;
-    }
+    if(!etapa || !pista || !data){ alert("Preencha todos os campos"); return;}
     if(imgFile){
         const reader = new FileReader();
         reader.onload = function(e){
             calendario.push({etapa,pista,data,status:"Pendente",imgBase64:e.target.result});
-            salvarDados();
-            atualizarCalendario();
+            salvarDados(); atualizarCalendario();
             alert("Etapa adicionada com imagem");
             etapaInput.value=""; pistaInput.value=""; dataInput.value=""; imgPistaInput.value="";
         };
         reader.readAsDataURL(imgFile);
     } else {
         calendario.push({etapa,pista,data,status:"Pendente"});
-        salvarDados();
-        atualizarCalendario();
+        salvarDados(); atualizarCalendario();
         alert("Etapa adicionada sem imagem");
         etapaInput.value=""; pistaInput.value=""; dataInput.value=""; imgPistaInput.value="";
     }
@@ -340,23 +401,17 @@ function processarResultados(){
         e.target.result.split("\n").forEach((l,i)=>{
             const [nome]=l.split(",");
             const p=pilotos.find(x=>x.nome===nome);
-            if(p){
-                p.pontos+=pontos[i]||0;
-                if(i===0)p.vit++;
-            }
+            if(p){ p.pontos+=pontos[i]||0; if(i===0)p.vit++; }
         });
         if(selectCorrida.selectedIndex>=0) calendario[selectCorrida.selectedIndex].status="Realizada";
-        salvarDados();
-        atualizarTabela();
-        atualizarCalendario();
+        salvarDados(); atualizarTabela(); atualizarCalendario();
         alert("Resultados aplicados");
     };
     r.readAsText(f);
 }
 
 // Inicializa
-atualizarTabela();
-atualizarCalendario();
+atualizarTabela(); atualizarCalendario();
 </script>
 </body>
 </html>
