@@ -14,8 +14,9 @@ nav button:hover, nav .tablink:hover{background:#e10600;}
 nav .active{background:#e10600;}
 main{padding:10px;}
 
-/* TABELA PILOTOS */
-#tabelaSec{height:calc(100vh - 60px);overflow-y:auto;}
+/* PUBLICO */
+#tabelaSec, #calendarioSec{display:none;}
+#tabelaSec.active, #calendarioSec.active{display:block;}
 #tabela{width:100%;border-collapse:collapse;}
 #tabela thead th{color:#e10600;font-size:0.95em;text-transform:uppercase;border-bottom:2px solid #fff;padding:10px;position:sticky;top:0;background:rgba(0,0,0,0.85);z-index:1;}
 #tabela tbody td{padding:10px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.2);font-size:0.9em;transition:background 0.3s, transform 0.3s;}
@@ -25,11 +26,10 @@ main{padding:10px;}
 
 /* CALENDÁRIO */
 #calendarioBody tr td{padding:8px;text-align:center;}
-#mapContainer{position:relative;width:100%;max-width:900px;margin:15px auto;border:5px solid #e10600;border-radius:12px;box-shadow:0 0 25px rgba(225,6,0,0.8),0 0 50px rgba(255,76,76,0.6);overflow:hidden;animation:glowPulse 2s infinite alternate;transition:transform 0.5s;}
-#pistaMap{width:100%;display:block;border-radius:10px;object-fit:contain;animation:fadeInMap 0.7s ease-in-out;}
+#mapContainer{position:relative;width:100%;max-width:900px;margin:15px auto;border:5px solid #e10600;border-radius:12px;box-shadow:0 0 25px rgba(225,6,0,0.8),0 0 50px rgba(255,76,76,0.6);overflow:hidden;}
+#pistaMap{width:100%;display:block;border-radius:10px;object-fit:contain;}
 #mapInfo{position:absolute;top:15px;left:15px;background:rgba(0,0,0,0.6);color:#fff;padding:10px 15px;border-radius:8px;font-weight:bold;font-size:1.05em;text-shadow:0 0 5px #000;}
 #leaderMarker{position:absolute;width:20px;height:20px;border-radius:50%;background:#ffd700;border:2px solid #fff;top:10px;right:10px;box-shadow:0 0 15px #ffd700;display:none;animation:pulseLeader 1.5s infinite;}
-@keyframes fadeInMap{0%{opacity:0;transform:scale(0.95);}100%{opacity:1;transform:scale(1);}}
 @keyframes pulseLeader{0%{transform:scale(1);box-shadow:0 0 10px #ffd700;}50%{transform:scale(1.2);box-shadow:0 0 20px #ffd700;}100%{transform:scale(1);box-shadow:0 0 10px #ffd700;}}
 
 /* LOGIN */
@@ -39,7 +39,7 @@ main{padding:10px;}
 
 /* ABAS ADMIN */
 .tabs{display:flex;margin-bottom:10px;flex-wrap:wrap;}
-.tabs button{flex:1;background:#111;border:none;padding:10px;color:#fff;margin:2px 0;}
+.tabs button{flex:1;background:#111;border:none;padding:10px;color:#fff;margin:2px 0;cursor:pointer;}
 .tabs button.active{background:#e10600;}
 .tabcontent{display:none;}
 .tabcontent.active{display:block;}
@@ -58,7 +58,8 @@ input, button{font-size:0.9em;}
 </header>
 
 <main>
-<section id="tabelaSec">
+<!-- PUBLICO -->
+<section id="tabelaSec" class="active">
 <h2>Tabela do Campeonato</h2>
 <table id="tabela">
 <thead>
@@ -68,7 +69,7 @@ input, button{font-size:0.9em;}
 </table>
 </section>
 
-<section id="calendarioSec" class="hidden">
+<section id="calendarioSec">
 <h2>Calendário</h2>
 <table>
 <thead>
@@ -76,7 +77,6 @@ input, button{font-size:0.9em;}
 </thead>
 <tbody id="calendarioBody"></tbody>
 </table>
-
 <div id="mapContainer">
 <img id="pistaMap" src="" alt="Mapa da Pista">
 <div id="mapInfo">
@@ -86,6 +86,7 @@ input, button{font-size:0.9em;}
 </div>
 </section>
 
+<!-- LOGIN -->
 <div id="login" class="login-box hidden">
 <h2>Login Administrador</h2>
 <input type="text" id="user" placeholder="Usuário">
@@ -94,6 +95,7 @@ input, button{font-size:0.9em;}
 <p id="erro" style="color:#ff5555"></p>
 </div>
 
+<!-- ADMIN -->
 <section id="admin" class="hidden">
 <h2>Painel Administrativo</h2>
 <div class="tabs">
@@ -107,7 +109,7 @@ input, button{font-size:0.9em;}
 <button onclick="processarEntryListCSV()">Upload Entry List</button>
 </div>
 
-<div id="calendarioAdmin" class="tabcontent hidden">
+<div id="calendarioAdmin" class="tabcontent">
 <h3>Adicionar etapa</h3>
 <input type="number" id="etapaInput" placeholder="Etapa" style="width:60px">
 <input type="text" id="pistaInput" placeholder="Nome da Pista">
@@ -116,7 +118,7 @@ input, button{font-size:0.9em;}
 <button onclick="adicionarEtapa()">Adicionar Etapa</button>
 </div>
 
-<div id="resultados" class="tabcontent hidden">
+<div id="resultados" class="tabcontent">
 <select id="corridaSelecionada"></select>
 <input type="file" id="uploadArquivo" accept=".csv,.json">
 <button onclick="processarResultados()">Upload Resultados</button>
@@ -127,15 +129,15 @@ input, button{font-size:0.9em;}
 <script>
 // PUBLICO
 function openPublicTab(e, tab){
-    document.querySelectorAll('#tabelaSec,#calendarioSec').forEach(s=>s.classList.add('hidden'));
-    document.getElementById(tab).classList.remove('hidden');
+    document.querySelectorAll('#tabelaSec,#calendarioSec').forEach(s=>s.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
     document.querySelectorAll('header .tablink').forEach(b=>b.classList.remove('active'));
     e.currentTarget.classList.add('active');
 }
 
 // ADMIN
 function openTab(e, tab){
-    document.querySelectorAll(".tabcontent").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll("#admin .tabcontent").forEach(t=>t.classList.remove("active"));
     document.getElementById(tab).classList.add("active");
     document.querySelectorAll("#admin .tablink").forEach(b=>b.classList.remove("active"));
     e.currentTarget.classList.add("active");
