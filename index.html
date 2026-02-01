@@ -34,16 +34,13 @@ nav button, nav .tablink{
 nav button:hover, nav .tablink:hover{background:#e10600}
 nav .active{background:#e10600}
 
-main{padding:20px}
+main{padding:10px;}
 
-section{
-    background:rgba(0,0,0,0.75);
-    padding:15px;
-    border-radius:6px;
-    margin-bottom:20px;
+/* ======= TABELA PILOTOS F1 MODERNA (TELA CHEIA) ======= */
+#tabelaSec {
+    height: calc(100vh - 60px);
+    overflow-y: auto;
 }
-
-/* ======= TABELA PILOTOS F1 MODERNA ======= */
 #tabela {
     width:100%;
     border-collapse: collapse;
@@ -55,6 +52,10 @@ section{
     text-transform:uppercase;
     border-bottom:2px solid #fff;
     padding:10px;
+    position: sticky;
+    top: 0;
+    background:rgba(0,0,0,0.85);
+    z-index: 1;
 }
 #tabela tbody td {
     padding:10px;
@@ -87,6 +88,14 @@ section{
 
 /* Calendário */
 #calendarioBody tr td{padding:8px;text-align:center;}
+#pistaMap {
+    margin-top:10px;
+    width:100%;
+    max-height:500px;
+    object-fit:contain;
+    border:2px solid #e10600;
+    border-radius:6px;
+}
 .hidden{display:none}
 
 /* LOGIN */
@@ -161,6 +170,7 @@ section{
 </thead>
 <tbody id="calendarioBody"></tbody>
 </table>
+<img id="pistaMap" src="" alt="Mapa da Pista">
 </section>
 
 <!-- ====== LOGIN ====== -->
@@ -229,6 +239,7 @@ const pontos=[25,18,15,12,10,8,6,4,2,1];
 let pilotos = JSON.parse(localStorage.getItem('f1_2013_pilotos')) || [];
 let calendario = JSON.parse(localStorage.getItem('f1_2013_calendario')) || [];
 const selectCorrida=document.getElementById("corridaSelecionada");
+const pistaMap=document.getElementById("pistaMap");
 
 // ========= PUBLICO =========
 function atualizarTabela(){
@@ -247,8 +258,14 @@ function atualizarCalendario(){
     const body=document.getElementById("calendarioBody");
     body.innerHTML="";
     calendario.forEach(c=>{
-        body.innerHTML+=`<tr><td>${c.etapa}</td><td>${c.pista}</td><td>${c.data}</td><td>${c.status}</td></tr>`;
+        body.innerHTML+=`<tr onclick="mostrarMapa('${c.pista}')"><td>${c.etapa}</td><td>${c.pista}</td><td>${c.data}</td><td>${c.status}</td></tr>`;
     });
+}
+
+// Mostra mapa da pista
+function mostrarMapa(pista){
+    // Exemplo: nome da pista corresponde a um arquivo map.png na mesma pasta
+    pistaMap.src = pista.replace(/\s/g,"_") + "_map.png"; // Interlagos -> Interlagos_map.png
 }
 
 // ========= ADMIN =========
