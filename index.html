@@ -80,13 +80,14 @@ th{color:#e10600}
     color:#fff;
 }
 
-.tabs{display:flex;margin-bottom:10px}
+.tabs{display:flex;margin-bottom:10px; flex-wrap:wrap;}
 .tabs button{
     flex:1;
     background:#111;
     border:none;
     padding:10px;
     color:#fff;
+    margin:2px 0;
 }
 .tabs button.active{background:#e10600}
 </style>
@@ -101,8 +102,13 @@ th{color:#e10600}
 
 <main>
 
-<!-- ====== PUBLICO ====== -->
-<section>
+<!-- ====== PUBLICO - ABAS ====== -->
+<div class="tabs">
+<button class="tablink active" onclick="openPublicTab('tabelaSec')">Tabela</button>
+<button class="tablink" onclick="openPublicTab('calendarioSec')">Calendário</button>
+</div>
+
+<section id="tabelaSec">
 <h2>Tabela do Campeonato</h2>
 <table id="tabela">
 <thead>
@@ -112,7 +118,7 @@ th{color:#e10600}
 </table>
 </section>
 
-<section>
+<section id="calendarioSec" class="hidden">
 <h2>Calendário</h2>
 <table>
 <thead>
@@ -162,6 +168,14 @@ th{color:#e10600}
 </main>
 
 <script>
+// ========= PUBLICO - ABAS =========
+function openPublicTab(tab){
+    document.querySelectorAll('#tabelaSec,#calendarioSec').forEach(s=>s.classList.add('hidden'));
+    document.getElementById(tab).classList.remove('hidden');
+    document.querySelectorAll('.tablink').forEach(b=>b.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
 // ========= LOGIN =========
 const USER="samuel", PASS="3636";
 function mostrarLogin(){
@@ -262,13 +276,17 @@ function processarResultados(){
                 if(i===0)p.vit++;
             }
         });
-        calendario[selectCorrida.selectedIndex].status="Realizada";
+        if(selectCorrida.selectedIndex>=0) calendario[selectCorrida.selectedIndex].status="Realizada";
         atualizarTabela();
         atualizarCalendario();
         alert("Resultados aplicados");
     };
     r.readAsText(f);
 }
+
+// Inicializa tabela e calendário vazios
+atualizarTabela();
+atualizarCalendario();
 </script>
 
 </body>
