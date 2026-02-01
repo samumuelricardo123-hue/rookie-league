@@ -1,230 +1,91 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campeonato F1 2013</title>
-<style>
-/* Fonte e cores inspiradas na F1 2013 */
-body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #0a0a0a;
-    color: #ffffff;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #1b1b1b;
-    border-bottom: 4px solid #e10600; /* vermelho F1 */
-    padding: 20px;
-    text-align: center;
-}
-
-h1 {
-    margin: 0;
-    color: #ffffff;
-    font-size: 2em;
-    letter-spacing: 1px;
-}
-
-main {
-    padding: 20px;
-}
-
-h2 {
-    color: #e10600;
-    margin-top: 30px;
-}
-
-/* Tabela estilo F1 2013 */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 16px;
-    background-color: #111;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-th, td {
-    padding: 12px 10px;
-    text-align: center;
-    border-bottom: 1px solid #333;
-}
-
-th {
-    background-color: #1b1b1b;
-    color: #e10600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-tr:nth-child(even) {
-    background-color: #141414;
-}
-
-tr:hover {
-    background-color: #222;
-}
-
-/* Inputs e botões */
-input[type="file"] {
-    margin-top: 10px;
-    display: block;
-    padding: 5px;
-}
-
-button {
-    margin-top: 10px;
-    padding: 8px 12px;
-    background-color: #e10600;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 3px;
-    font-weight: bold;
-}
-
-button:hover {
-    background-color: #c00400;
-}
-
-footer {
-    background-color: #1b1b1b;
-    text-align: center;
-    padding: 10px;
-    color: #888;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}
-</style>
-</head>
-<body>
-<header>
-    <h1>Campeonato F1 2013</h1>
-</header>
-<main>
-    <h2>Tabela de Pontos</h2>
-    <table id="tabelaCampeonato">
-        <thead>
-            <tr>
-                <th>Posição</th>
-                <th>Piloto</th>
-                <th>Pontos</th>
-                <th>Vitórias</th>
-                <th>Última Corrida</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Linhas geradas pelo JS -->
-        </tbody>
-    </table>
-
-    <h2>Upload de Resultados</h2>
-    <input type="file" id="uploadArquivo" accept=".csv,.json">
-    <button onclick="processarArquivo()">Atualizar Tabela</button>
-
-    <p>Formato CSV esperado:<br>
-    nome,pontos,vitórias,ultima_corrida</p>
-</main>
-
-<footer>
-    © 2013 Campeonato F1
-</footer>
-
-<script>
-// Inicializa tabela com 20 posições vazias
-let pilotos = [];
+// ---------------- Pilotos ----------------
+let pilotos=[];
 for(let i=1;i<=20;i++){
-    pilotos.push({posicao: i, nome: "", pontos: 0, vitorias: 0, ultima: ""});
+    pilotos.push({posicao:i,nome:"",equipe:"",pontos:0,vitórias:0,ultima:"",bandeira:""});
 }
 
-// Atualiza a tabela no HTML
-function atualizarTabela() {
-    const tbody = document.querySelector("#tabelaCampeonato tbody");
-    tbody.innerHTML = "";
-    pilotos.sort((a,b)=>b.pontos - a.pontos || b.vitorias - a.vitorias);
-    pilotos.forEach((piloto, index) => {
-        piloto.posicao = index + 1;
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td>${piloto.posicao}</td>
-            <td>${piloto.nome}</td>
-            <td>${piloto.pontos}</td>
-            <td>${piloto.vitorias}</td>
-            <td>${piloto.ultima}</td>
-        `;
+// ---------------- Calendário ----------------
+let calendario=[]; // Começa vazio, será preenchido pelo upload de pistas
+
+// ---------------- Popula select corrida ----------------
+const selectCorrida=document.getElementById("corridaSelecionada");
+
+// ---------------- Atualiza Calendário ----------------
+function atualizarCalendario(){
+    const tbody=document.querySelector("#tabelaCalendario tbody");
+    tbody.innerHTML="";
+    selectCorrida.innerHTML=""; // Atualiza select
+    calendario.forEach(c=>{
+        // Adiciona linha na tabela
+        const tr=document.createElement("tr");
+        const cls=c.status==="Realizada"?"status-realizada":"status-pendente";
+        tr.innerHTML=`<td>${c.etapa}</td><td>${c.pista}</td><td>${c.data}</td><td class="${cls}">${c.status}</td>`;
         tbody.appendChild(tr);
+
+        // Adiciona opção no select de corrida
+        const opt=document.createElement("option");
+        opt.value=c.etapa;
+        opt.text=`Etapa ${c.etapa} - ${c.pista}`;
+        selectCorrida.appendChild(opt);
     });
 }
 
-// Processa arquivo CSV ou JSON
-function processarArquivo() {
-    const arquivoInput = document.getElementById("uploadArquivo");
-    if(!arquivoInput.files.length){
-        alert("Selecione um arquivo CSV ou JSON!");
-        return;
-    }
-    const file = arquivoInput.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e){
-        const texto = e.target.result;
-        if(file.name.endsWith(".csv")){
-            atualizarPontosCSV(texto);
-        } else if(file.name.endsWith(".json")){
-            atualizarPontosJSON(texto);
-        } else {
-            alert("Formato de arquivo inválido!");
-        }
+// ---------------- Upload Pistas ----------------
+function processarPistas(){
+    const fileInput=document.getElementById("uploadPistas");
+    if(!fileInput.files.length){alert("Selecione arquivo");return;}
+    const file=fileInput.files[0];
+    const reader=new FileReader();
+    reader.onload=function(e){
+        const text=e.target.result;
+        if(file.name.endsWith(".csv"))atualizarCalendarioCSV(text);
+        else if(file.name.endsWith(".json"))atualizarCalendarioJSON(text);
+        else alert("Formato inválido");
     };
     reader.readAsText(file);
 }
 
-// Atualiza tabela a partir de CSV
-function atualizarPontosCSV(csv){
-    const linhas = csv.split("\n");
-    linhas.forEach(linha => {
-        const [nome,pontos,vitórias,ultima] = linha.split(",");
-        if(nome){
-            let piloto = pilotos.find(p => p.nome === nome);
-            if(!piloto){ 
-                piloto = pilotos.find(p => p.nome === "");
-                piloto.nome = nome;
-            }
-            piloto.pontos += Number(pontos);
-            piloto.vitorias += Number(vitórias);
-            piloto.ultima = ultima;
+// CSV: etapa,pista,data
+function atualizarCalendarioCSV(csv){
+    const linhas=csv.split("\n");
+    calendario=[]; // Limpa calendário antigo
+    linhas.forEach(linha=>{
+        const [etapa,pista,data]=linha.split(",");
+        const etapaNum=Number(etapa);
+        if(etapaNum && pista){
+            calendario.push({etapa:etapaNum,pista:pista,data:data||"",status:"Pendente"});
         }
     });
-    atualizarTabela();
+    atualizarCalendario();
 }
 
-// Atualiza tabela a partir de JSON
-function atualizarPontosJSON(jsonText){
-    try {
-        const data = JSON.parse(jsonText);
-        data.forEach(item => {
-            if(item.nome){
-                let piloto = pilotos.find(p => p.nome === item.nome);
-                if(!piloto){ 
-                    piloto = pilotos.find(p => p.nome === "");
-                    piloto.nome = item.nome;
-                }
-                piloto.pontos += Number(item.pontos);
-                piloto.vitorias += Number(item.vitorias);
-                piloto.ultima = item.ultima;
+// JSON: [{etapa,pista,data}]
+function atualizarCalendarioJSON(jsonText){
+    try{
+        const data=JSON.parse(jsonText);
+        calendario=[]; // Limpa calendário antigo
+        data.forEach(item=>{
+            if(item.etapa && item.pista){
+                calendario.push({etapa:item.etapa,pista:item.pista,data:item.data||"",status:"Pendente"});
             }
         });
-        atualizarTabela();
-    } catch(e){
-        alert("Erro ao processar JSON: "+e.message);
-    }
+        atualizarCalendario();
+    } catch(e){alert("Erro JSON:"+e.message);}
 }
 
-// Inicializa tabela vazia
-atualizarTabela();
-</script>
-</body>
-</html>
+// ---------------- Upload Resultados ----------------
+function processarArquivo(){
+    const fileInput=document.getElementById("uploadArquivo");
+    if(!fileInput.files.length){alert("Selecione arquivo");return;}
+    const file=fileInput.files[0];
+    const reader=new FileReader();
+    reader.onload=function(e){
+        const text=e.target.result;
+        const corridaIndex=selectCorrida.selectedIndex;
+        if(corridaIndex<0){alert("Nenhuma corrida disponível para atualizar"); return;}
+        if(file.name.endsWith(".csv"))processarCorridaCSV(text,corridaIndex);
+        else if(file.name.endsWith(".json"))processarCorridaJSON(text,corridaIndex);
+        else alert("Formato inválido");
+    };
+    reader.readAsText(file);
+}
