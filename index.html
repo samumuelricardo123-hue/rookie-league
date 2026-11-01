@@ -602,7 +602,7 @@ async function refreshCloudRole(){
 async function loadCloudData(){
  const specs={
   championships:{select:'id,name,season,category,events,entrants,progress,rules,emperor_url',map:r=>({...r,id:String(r.id),emperorUrl:r.emperor_url||((/porsche cup/i.test(r.name||''))?'https://rookieleague.emperorservers.com/championship/9329f0f7-3e9d-4f20-938f-371bc8947a34':'')})},
-  drivers:{select:'id,name,team,category,email',map:r=>({...r,id:String(r.id),email:r.email||''})},
+  drivers:{select:'id,name,team,category,email,user_id',map:r=>({...r,id:String(r.id),email:r.email||'',userId:r.user_id||''})},
   tracks:{select:'id,name,country',map:r=>({...r,id:String(r.id),layout:null})},
   races:{select:'id,championship_id,name,race_date,race_time,track_id',map:r=>({id:String(r.id),champId:String(r.championship_id),name:r.name,date:r.race_date||'',time:r.race_time||'',trackId:r.track_id?String(r.track_id):''})},
   results:{select:'id,race_id,driver_id,position,points',map:r=>({id:String(r.id),raceId:String(r.race_id),driverId:String(r.driver_id),position:Number(r.position||0),points:Number(r.points||0)})},
@@ -767,23 +767,30 @@ async function updateResultDriverOptions(){
  box.innerHTML='<p class="hint">Carregando pilotos com inscrição aprovada neste campeonato…</p>';
  try{
   const {data,error}=await supabaseClient.from('championship_registrations')
-   .select('pilot_name,status')
+   .select('pilot_name,user_id,status')
    .eq('championship_id',String(champId))
    .eq('status','approved')
    .order('pilot_name',{ascending:true});
   if(error)throw error;
   const approvedNames=[...new Set((data||[]).map(r=>String(r.pilot_name||'').trim()).filter(Boolean))];
   const approvedSet=new Set(approvedNames.map(normalizedPilotName));
-  const eligible=db.drivers.filter(d=>approvedSet.has(normalizedPilotName(d.name))).sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
+  const approvedUserIds=new Set((data||[]).map(r=>String(r.user_id||'')).filter(Boolean));
+  const eligible=db.drivers.filter(d=>
+   (d.userId&&approvedUserIds.has(String(d.userId))) ||
+   approvedSet.has(normalizedPilotName(d.name))
+  ).sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
   approvedResultDriversByChamp[String(champId)]=eligible.map(d=>String(d.id));
   renderResultSlots(eligible);
-  const unmatched=approvedNames.filter(n=>!db.drivers.some(d=>normalizedPilotName(d.name)===normalizedPilotName(n)));
+  const unmatched=(data||[]).filter(r=>
+   !db.drivers.some(d=>(r.user_id&&d.userId&&String(d.userId)===String(r.user_id)) ||
+    normalizedPilotName(d.name)===normalizedPilotName(r.pilot_name))
+  ).map(r=>String(r.pilot_name||'')).filter(Boolean);
   const note=document.getElementById('resultEligibleNote');
   if(note){
    note.textContent=!approvedNames.length
     ?'Nenhuma inscrição aprovada neste campeonato. Aprove os pilotos na seção “Inscrições dos campeonatos”.'
     :unmatched.length
-     ?'Há '+unmatched.length+' piloto(s) aprovado(s) sem cadastro correspondente em “Cadastrar piloto”. Cadastre com o mesmo nome para liberar no lançamento: '+unmatched.join(', ')
+     ?'Há '+unmatched.length+' piloto(s) aprovado(s) sem perfil de piloto vinculado à conta. Confira o cadastro automático no Supabase: '+unmatched.join(', ')
      :eligible.length+' piloto(s) com inscrição aprovada disponíveis para lançar resultados.';
   }
  }catch(e){
