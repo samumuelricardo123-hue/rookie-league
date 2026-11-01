@@ -418,7 +418,8 @@ function renderChampionshipDetail(id){
  const table=standings(id),done=stages.filter(r=>db.results.some(x=>x.raceId===r.id)).length,pct=stages.length?Math.round(done/stages.length*100):Number(c.progress||0);
  const rows=stages.map((r,i)=>{const t=db.tracks.find(x=>x.id===r.trackId),res=db.results.filter(x=>x.raceId===r.id).sort((a,b)=>a.position-b.position),winner=res[0];return `<tr><td>${i+1}</td><td><b>${esc(r.name)}</b></td><td>${esc(t?.name||'A definir')}</td><td>${r.date?new Date(r.date+'T12:00:00').toLocaleDateString('pt-BR'):'A definir'}</td><td>${esc(r.time||'—')}</td><td>${winner?esc(driverName(winner.driverId)):'Pendente'}</td></tr>`}).join('');
  root.innerHTML=`<div class="detailHero"><div><div class="kicker">ROOKIE LEAGUE MOTORSPORT · CAMPEONATO OFICIAL</div><div class="detailTitle">${esc(c.name)}</div><p>${esc(c.season||'Temporada não informada')} · ${esc(c.category||'Categoria não informada')}</p></div><div class="detailProgress"><strong>${pct}%</strong><span>temporada concluída</span><div class="progress"><span style="width:${pct}%"></span></div></div></div>
- <div class="detailStats"><div class="metric"><div class="label">Etapas</div><strong>${stages.length||c.events||0}</strong></div><div class="metric"><div class="label">Pilotos</div><strong>${c.entrants||db.drivers.length}</strong></div><div class="metric"><div class="label">Etapas finalizadas</div><strong>${done}</strong></div><div class="metric"><div class="label">Líder atual</div><strong class="leaderName">${table[0]?esc(table[0].name):'—'}</strong></div></div>
+ <div class="detailStats"><div class="metric"><div class="label">Etapas</div><strong>${stages.length||c.events||0}</strong></div><div class="metric"><div class="label">Pilotos inscritos</div><strong id="championshipRosterCount">—</strong></div><div class="metric"><div class="label">Etapas finalizadas</div><strong>${done}</strong></div><div class="metric"><div class="label">Líder atual</div><strong class="leaderName">${table[0]?esc(table[0].name):'—'}</strong></div></div>
+ <div class="panel detailPanel rosterPanel" style="margin-bottom:16px"><div class="detailSectionHead"><div class="kicker">GRID OFICIAL</div><h2>Pilotos inscritos</h2><p>Lista de pilotos com inscrição aprovada neste campeonato.</p></div><div id="championshipRoster"><p class="hint">Carregando pilotos inscritos…</p></div></div>
  <div class="detailGrid"><div class="panel detailPanel"><div class="detailSectionHead"><div class="kicker">TEMPORADA</div><h2>Calendário oficial</h2></div><div class="tableWrap"><table class="detailTable"><thead><tr><th>#</th><th>Etapa</th><th>Pista</th><th>Data</th><th>Hora</th><th>Vencedor</th></tr></thead><tbody>${rows||'<tr><td colspan="6" class="empty">Etapas ainda não cadastradas.</td></tr>'}</tbody></table></div></div>
  <div class="panel detailPanel"><div class="detailSectionHead"><div class="kicker">CLASSIFICAÇÃO</div><h2>Ranking de pilotos</h2></div><div class="tableWrap"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th></tr></thead><tbody>${table.map((x,i)=>`<tr><td>${i+1}</td><td class="driver">${esc(x.name)}</td><td>${x.starts}</td><td class="count">${x.points}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">A classificação será exibida após os resultados.</td></tr>'}</tbody></table></div></div></div>
 <div class="detailActions"><button class="btn" onclick="document.getElementById('resultChamp').value='${id}';showPage('results')">CONSULTAR RESULTADOS</button><button class="btn secondary" onclick="showPage('calendar')">CALENDÁRIO GERAL</button></div>`;
@@ -434,9 +435,13 @@ async function loadChampionshipRoster(champId){
    .eq('status','approved')
    .order('pilot_name',{ascending:true});
   if(error)throw error;
+  const count=document.getElementById('championshipRosterCount');
+  if(count)count.textContent=String(data?.length||0);
   if(!data?.length){box.innerHTML='<p class="empty">Ainda não há pilotos com inscrição aprovada neste campeonato.</p>';return;}
-  box.innerHTML=`<div class="detailStats rosterStats"><div class="metric"><div class="label">Inscrições aprovadas</div><strong>${data.length}</strong></div></div><div class="rosterGrid">${data.map((r,i)=>`<div class="rosterPilot"><span class="rosterNumber">${String(i+1).padStart(2,'0')}</span><b>${esc(r.pilot_name||'Piloto')}</b><span class="rosterStatus">CONFIRMADO</span></div>`).join('')}</div>`;
+  box.innerHTML=`<div class="rosterGrid">${data.map((r,i)=>`<div class="rosterPilot"><span class="rosterNumber">${String(i+1).padStart(2,'0')}</span><b>${esc(r.pilot_name||'Piloto')}</b><span class="rosterStatus">CONFIRMADO</span></div>`).join('')}</div>`;
  }catch(e){
+  const count=document.getElementById('championshipRosterCount');
+  if(count)count.textContent='—';
   box.innerHTML=`<p class="hint">Não foi possível carregar os pilotos inscritos: ${esc(e.message||e)}. Verifique a política SELECT da tabela championship_registrations no Supabase.</p>`;
  }
 }
@@ -756,7 +761,9 @@ async function updateResultDriverOptions(){
  const champId=document.getElementById('resultChampSelect')?.value;
  const box=document.getElementById('resultSlots');
  if(!box)return;
- if(!champId){approvedResultDriversByChamp={};renderResultSlots([]);return}
+ if(!champId){approvedResultDriversByChamp={};renderResultSlots([]);const note=document.getElementById('resultEligibleNote');if(note)note.textContent='Selecione um campeonato para carregar somente os pilotos inscritos e aprovados.';return}
+ approvedResultDriversByChamp[String(champId)]=[];
+ renderResultSlots([]);
  box.innerHTML='<p class="hint">Carregando pilotos com inscrição aprovada neste campeonato…</p>';
  try{
   const {data,error}=await supabaseClient.from('championship_registrations')
@@ -765,9 +772,9 @@ async function updateResultDriverOptions(){
    .eq('status','approved')
    .order('pilot_name',{ascending:true});
   if(error)throw error;
-  const approvedNames=(data||[]).map(r=>r.pilot_name).filter(Boolean);
+  const approvedNames=[...new Set((data||[]).map(r=>String(r.pilot_name||'').trim()).filter(Boolean))];
   const approvedSet=new Set(approvedNames.map(normalizedPilotName));
-  const eligible=db.drivers.filter(d=>approvedSet.has(normalizedPilotName(d.name))).sort((a,b)=>a.name.localeCompare(b.name));
+  const eligible=db.drivers.filter(d=>approvedSet.has(normalizedPilotName(d.name))).sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'));
   approvedResultDriversByChamp[String(champId)]=eligible.map(d=>String(d.id));
   renderResultSlots(eligible);
   const unmatched=approvedNames.filter(n=>!db.drivers.some(d=>normalizedPilotName(d.name)===normalizedPilotName(n)));
