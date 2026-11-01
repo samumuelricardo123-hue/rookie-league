@@ -582,7 +582,7 @@ async function loadCloudData(){
 }
 async function afterCloudLogin(){
  document.getElementById('cloudStatus').textContent=cloudIsAdmin?'Conectado ao Supabase • Administrador autenticado.':'Conectado ao Supabase • Conta de piloto.';
- document.getElementById('adminCloudTools').style.display=cloudIsAdmin?'block':'none';
+ const adminTools=document.getElementById('adminCloudTools');if(adminTools)adminTools.style.display=cloudIsAdmin?'block':'none';
  document.getElementById('adminNav').hidden=!cloudIsAdmin;
  document.getElementById('authSubmit').style.display='none';
  document.getElementById('logoutBtn').style.display='inline-flex';
@@ -591,7 +591,7 @@ async function afterCloudLogin(){
  document.getElementById('authEmail').closest('.field').style.display='none';
  document.getElementById('authPassword').closest('.field').style.display='none';
  document.getElementById('cloudStatus').style.display='none';
- document.getElementById('pilotProfile').innerHTML='';
+ const profileBox=document.getElementById('pilotProfile');if(profileBox)profileBox.innerHTML='';
  document.getElementById('entryGate').classList.add('hidden');
  document.getElementById('accountNav').textContent=cloudIsAdmin?'♙ Minha conta • Admin':'♙ Minha conta';
  document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#trackForm,#raceForm,#resultForm,#titleForm').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
