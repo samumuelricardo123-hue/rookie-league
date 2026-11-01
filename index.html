@@ -259,6 +259,25 @@ function driverName(id){return db.drivers.find(d=>d.id===id)?.name||'Piloto remo
 function titleCount(id){return db.titles.filter(t=>t.driverId===id).length}
 function rankDrivers(){return [...db.drivers].map(d=>({...d,titles:titleCount(d.id)})).sort((a,b)=>b.titles-a.titles||a.name.localeCompare(b.name))}
 function podium(pos){return pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':pos}
+
+async function requestChampionshipRegistration(champId){
+ if(!cloudUser){alert('Entre na sua conta de piloto para se inscrever.');return;}
+ const champ=db.championships.find(c=>String(c.id)===String(champId));
+ if(!champ)return alert('Campeonato não encontrado.');
+ const stages=db.races.filter(r=>String(r.champId)===String(champId));
+ const done=stages.length?stages.filter(r=>db.results.some(x=>String(x.raceId)===String(r.id))).length>=stages.length:Number(champ.progress||0)===100;
+ if(done)return alert('As inscrições para este campeonato estão encerradas.');
+ const pilotName=prompt('Informe seu nome de piloto no servidor Emperor Servers:');
+ if(!pilotName||!pilotName.trim())return;
+ try{
+  const {data:existing,error:checkError}=await supabaseClient.from('championship_registrations').select('id,status').eq('championship_id',String(champId)).eq('user_id',cloudUser.id).maybeSingle();
+  if(checkError)throw checkError;
+  if(existing)return alert('Você já possui uma inscrição neste campeonato. Status: '+(existing.status==='approved'?'APROVADA':'SOLICITADA'));
+  const {error}=await supabaseClient.from('championship_registrations').insert({championship_id:String(champId),user_id:cloudUser.id,pilot_name:pilotName.trim(),status:'pending'});
+  if(error)throw error;
+  alert('Solicitação de inscrição enviada! Aguarde a confirmação da administração.');
+ }catch(e){alert('Não foi possível realizar a inscrição: '+(e.message||e));}
+}
 function card(c){
  let stages=db.races.filter(r=>r.champId===c.id).sort((a,b)=>(a.date||'9999-99-99').localeCompare(b.date||'9999-99-99'));
  let upcoming=stages.find(r=>r.date&&r.date>=new Date().toISOString().slice(0,10));
@@ -268,7 +287,7 @@ function card(c){
  let track=upcoming?db.tracks.find(t=>t.id===upcoming.trackId):null;
  let next=upcoming?`<div class="nextRace"><div class="dateBlock">${new Date(upcoming.date+'T12:00:00').toLocaleDateString('pt-BR',{day:'2-digit'})}<small>${new Date(upcoming.date+'T12:00:00').toLocaleDateString('pt-BR',{month:'short'})}</small></div><div><b>${esc(upcoming.name)}</b><small>${esc(track?.name||'Pista a definir')} ${upcoming.time?' · '+esc(upcoming.time):''}</small></div></div>`:'';
  let chips=`<div class="champMeta"><span>🏁 ${total} etapas</span><span>👤 ${Number(c.entrants||db.drivers.length)} pilotos</span>${c.category?`<span>◈ ${esc(c.category)}</span>`:''}${c.season?`<span>▣ ${esc(c.season)}</span>`:''}</div>`;
- return `<article class="champ"><div class="champTop"><span class="pill">${status}</span><span class="champCode" style="color:var(--green);font-weight:1000">ROOKIE / ${esc(c.name.toUpperCase())}</span></div><h3>${esc(c.name)}</h3>${chips}<div class="progress"><span style="width:${progress}%"></span></div><div class="champFoot"><span>${progress}% concluído</span><button class="textLink" onclick="openChampionship('${c.id}')">VER CAMPEONATO →</button></div>${officialServerResults[c.name]?.url?`<div class="officialCardLink"><a class="btn secondary small" href="${officialServerResults[c.name].url}" target="_blank" rel="noopener">RESULTADOS OFICIAIS NO EMPEROR ↗</a></div>`:''}${next}</article>`;
+ return `<article class="champ"><div class="champTop"><span class="pill">${status}</span><span class="champCode" style="color:var(--green);font-weight:1000">ROOKIE / ${esc(c.name.toUpperCase())}</span></div><h3>${esc(c.name)}</h3>${chips}<div class="progress"><span style="width:${progress}%"></span></div><div class="champFoot"><span>${progress}% concluído</span><button class="textLink" onclick="openChampionship('${c.id}')">VER CAMPEONATO →</button></div>${officialServerResults[c.name]?.url?`<div class="officialCardLink"><a class="btn secondary small" href="${officialServerResults[c.name].url}" target="_blank" rel="noopener">RESULTADOS OFICIAIS NO EMPEROR ↗</a></div>`:''}${progress<100?`<div class="officialCardLink"><button class="btn small" onclick="requestChampionshipRegistration('${String(c.id).replace(/'/g,"\\'")}')">INSCREVER-SE</button></div>`:''}${next}</article>`;
 }
 
 const officialServerResults = {
