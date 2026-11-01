@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rookie League Motorsport — Portal V16 — Web API Live Timing</title>
+<title>Rookie League Motorsport — Portal V26 — Supabase</title>
 <style>
 :root{--bg:#080d0b;--panel:#111916;--panel2:#17211c;--line:#29372f;--green:#a6ff00;--green2:#65c900;--text:#f2f7f1;--muted:#9aa99e;--red:#ff5757;--gold:#ffc857}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1d351f 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif}
@@ -117,11 +117,47 @@ input[type=file]{max-width:0}
 .apiTimingTable td{font-size:13px}
 .apiTimingFoot{display:flex;justify-content:space-between;align-items:center;padding:10px 15px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}
 @media(max-width:620px){.apiTimingTop{align-items:flex-start}.apiTimingFoot{gap:8px;flex-wrap:wrap}.apiTimingTable{min-width:610px}}
+
+.entryGate{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(ellipse at 50% 0%,#1d351f 0,transparent 55%),#080d0bf5;backdrop-filter:blur(10px)}
+.entryGate.hidden{display:none}
+.entryCard{width:min(100%,480px);padding:30px;border:1px solid #3b5728;border-radius:16px;background:#111916;box-shadow:0 24px 90px #000a}
+.entryCard h1{font-size:30px;margin:10px 0}
+.entryCard>p{color:#a9b7ac}
+.entryModes{display:flex;gap:8px;margin:20px 0}
+.entryField{display:block;color:#a9b7ac;font-size:11px;font-weight:900;letter-spacing:1px;margin:14px 0}
+.entryField input{display:block;width:100%;margin-top:7px;padding:13px;border-radius:8px;border:1px solid #29372f;background:#0b120f;color:#f2f7f1;font-size:15px}
+.entrySubmit{width:100%;margin-top:10px}
+.entryMessage{min-height:22px;font-size:12px;color:#a9b7ac}
+#adminNav[hidden]{display:none!important}
 </style></head>
 <body>
+
+<div id="entryGate" class="entryGate">
+  <div class="entryCard">
+    <div class="kicker">ROOKIE LEAGUE MOTORSPORT</div>
+    <h1 id="entryTitle">Entre no portal</h1>
+    <p id="entryDescription">Faça login ou crie sua conta de piloto para acessar campeonatos, resultados e calendário.</p>
+    <div class="entryModes">
+      <button type="button" id="entryLoginMode" class="btn small" onclick="setEntryMode('login')">ENTRAR</button>
+      <button type="button" id="entryRegisterMode" class="btn secondary small" onclick="setEntryMode('register')">CADASTRAR PILOTO</button>
+    </div>
+    <label id="entryNameLabel" class="entryField" style="display:none">NOME DO PILOTO
+      <input id="entryName" autocomplete="name" placeholder="Seu nome no grid">
+    </label>
+    <label class="entryField">E-MAIL
+      <input id="entryEmail" type="email" autocomplete="email" placeholder="seu@email.com">
+    </label>
+    <label class="entryField">SENHA
+      <input id="entryPassword" type="password" autocomplete="current-password" placeholder="Mínimo de 6 caracteres">
+    </label>
+    <button id="entrySubmit" class="btn entrySubmit" type="button" onclick="submitEntryAuth()">ENTRAR</button>
+    <p id="entryMessage" class="entryMessage" role="status">A administração é exclusiva da conta autorizada da liga.</p>
+  </div>
+</div>
+
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin">⚙ Administração</button><button data-page="account" id="accountNav">♙ Entrar / Cadastro</button></nav><span class="status">PORTAL OFICIAL • V10</span>
+<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração</button><button data-page="account" id="accountNav">♙ Entrar / Cadastro</button></nav><span class="status">PORTAL OFICIAL • SUPABASE</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
@@ -171,17 +207,22 @@ input[type=file]{max-width:0}
 <div id="titleForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Piloto campeão</label><select id="titleDriver"></select></div><div class="field"><label>Campeonato</label><select id="titleChamp"></select></div><div class="field"><label>Temporada / ano</label><input id="titleSeason" placeholder="Ex.: Temporada 2026"></div></div><div class="formactions"><button class="btn" onclick="addTitle()">REGISTRAR TÍTULO</button></div></div>
 <div class="sectionHead"><div><h2>Gerenciar dados</h2><p>Faça backup, restaure dados ou limpe registros.</p></div><div class="actions"><button class="btn secondary small" onclick="exportData()">↓ EXPORTAR BACKUP</button><label class="btn secondary small" style="cursor:pointer">↑ IMPORTAR BACKUP<input id="importFile" type="file" accept=".json,application/json" onchange="importData(event)" hidden></label></div></div><div class="panel quick"><div class="rowline"><div><b>Dados do portal</b><small id="dataSummary">Carregando…</small></div><button class="btn danger small" onclick="resetData()">RESTAURAR DADOS INICIAIS</button></div><div class="hint">A restauração apaga os dados adicionados neste navegador. Exporte um backup antes. A importação substitui os dados atuais pelo conteúdo do arquivo selecionado.</div></div>
 </section>
-<section id="account" class="page"><div class="subhead"><div class="kicker">ÁREA DO COMPETIDOR</div><h1>Conta do piloto</h1><p>Crie seu acesso ou entre para consultar seu perfil e resultados.</p></div>
+<section id="account" class="page"><div class="subhead"><div class="kicker">ÁREA DO COMPETIDOR</div><h1>Conta do piloto</h1><p>Entre com sua conta segura para acessar seu perfil e as ferramentas autorizadas.</p></div>
 <div class="panel authbox"><div class="authswitch"><button class="btn small" id="loginMode" onclick="setAuthMode('login')">ENTRAR</button><button class="btn secondary small" id="registerMode" onclick="setAuthMode('register')">CRIAR CADASTRO</button></div>
-<div class="field"><label>Nome completo do piloto</label><input id="authName" placeholder="Digite seu nome completo"></div>
+<div class="field" id="authNameField"><label>Nome completo do piloto</label><input id="authName" placeholder="Digite seu nome completo"></div>
 <div class="field" style="margin-top:12px"><label>E-mail</label><input id="authEmail" type="email" placeholder="voce@email.com"></div>
 <div class="field" style="margin-top:12px"><label>Senha</label><input id="authPassword" type="password" placeholder="Mínimo de 6 caracteres"></div>
 <div class="formactions"><button class="btn" id="authSubmit" onclick="submitAuth()">ENTRAR</button><button class="btn secondary" onclick="logoutPilot()" id="logoutBtn" style="display:none">SAIR</button></div>
-<p class="mutednote">Aviso: esta versão salva contas apenas neste navegador. Não use uma senha importante. Para login seguro entre vários dispositivos será necessário publicar o portal com banco de dados e autenticação no servidor.</p>
+<p class="mutednote" id="cloudStatus">Conectando ao banco de dados seguro…</p><div id="adminCloudTools" style="display:none;margin-top:14px"><button class="btn small" onclick="migrateLocalDataToCloud()">ENVIAR DADOS DESTE NAVEGADOR PARA O SUPABASE</button><p class="mutednote">Use uma vez para importar os dados locais existentes. O envio adiciona/atualiza registros e não apaga dados remotos.</p></div>
 <div id="pilotProfile"></div></div></section>
-<footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • VERSÃO 5.0</span></footer>
+<footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • SUPABASE • ACESSO DE PILOTOS</span></footer>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPABASE_URL="https://lxformxabgtgafykvhkw.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_eRVk8_-1vNP3XyMA_02d4w_OF03caaA";
+const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+let cloudUser=null,cloudIsAdmin=false,cloudReady=false;
 const seed={
 championships:[{id:'lmp2',name:'LMP2',events:5,entrants:14,progress:100},{id:'gt3',name:'GT3',events:4,entrants:16,progress:100},{id:'f2',name:'F2',events:4,entrants:16,progress:100},{id:'porsche',name:'Porsche Cup',events:9,entrants:16,progress:100},{id:'rookie',name:'Mine campeonato da rookie league',events:7,entrants:12,progress:100}],
 drivers:[{id:'d1',name:'Zé Carlos Senna',team:'',category:'LMP2'},{id:'d2',name:'Renato Camppos',team:'',category:'LMP2'},{id:'d3',name:'Samuel Ricardo',team:'',category:'LMP2'}],
@@ -203,9 +244,9 @@ if(!db.drivers.length) db.drivers=JSON.parse(JSON.stringify(seed.drivers));
 if(!db.titles.length) db.titles=JSON.parse(JSON.stringify(seed.titles));
 try{localStorage.setItem('rlm_portal_v2',JSON.stringify(db));}catch(e){}
 let authMode='login',loggedPilotId=null;
-function save(){localStorage.setItem('rlm_portal_v2',JSON.stringify(db));renderAll()}
+function save(){localStorage.setItem('rlm_portal_v2',JSON.stringify(db));renderAll();if(cloudReady&&cloudIsAdmin)syncChangedDataToCloud().catch(e=>console.error('Falha ao sincronizar:',e))}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');renderAll()}
+function showPage(id){if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');renderAll()}
 document.addEventListener('click',function(event){
  const button=event.target.closest('nav [data-page]');
  if(!button)return;
@@ -367,10 +408,104 @@ function addChampionship(){let name=document.getElementById('newChampName').valu
 function addTrack(){let name=document.getElementById('trackName').value.trim();if(!name)return alert('Informe o nome da pista.');if(db.tracks.some(t=>t.name.toLowerCase()===name.toLowerCase()))return alert('Esta pista já está cadastrada.');db.tracks.push({id:uid(),name,country:document.getElementById('trackCountry').value.trim(),layout:document.getElementById('trackLayout').value.trim()});document.getElementById('trackName').value='';document.getElementById('trackCountry').value='';document.getElementById('trackLayout').value='';save();alert('Pista cadastrada!')}
 function renderTracks(){let el=document.getElementById('trackList');if(el)el.innerHTML=db.tracks.map(t=>`<div class="trackitem"><b>${esc(t.name)}</b><span>${esc(t.country||'País não informado')}</span><div class="mutednote">${esc(t.layout||'')}</div><button class="btn danger small" style="margin-top:8px" onclick="deleteTrack('${t.id}')">EXCLUIR</button></div>`).join('')||'<div class="mutednote">Nenhuma pista cadastrada ainda.</div>'}
 function deleteTrack(id){if(db.races.some(r=>r.trackId===id))return alert('Esta pista está vinculada a uma etapa. Altere ou exclua a etapa antes.');if(confirm('Excluir esta pista?')){db.tracks=db.tracks.filter(t=>t.id!==id);save()}}
-function setAuthMode(mode){authMode=mode;document.getElementById('authName').parentElement.style.display=mode==='login'?'none':'block';document.getElementById('authSubmit').textContent=mode==='login'?'ENTRAR':'CRIAR CONTA';document.getElementById('loginMode').className=mode==='login'?'btn small':'btn secondary small';document.getElementById('registerMode').className=mode==='register'?'btn small':'btn secondary small'}
-function submitAuth(){let name=document.getElementById('authName').value.trim(),email=document.getElementById('authEmail').value.trim().toLowerCase(),pass=document.getElementById('authPassword').value;if(!email||pass.length<6||(authMode==='register'&&!name))return alert(authMode==='register'?'Informe nome completo, e-mail e senha com pelo menos 6 caracteres.':'Informe e-mail e senha com pelo menos 6 caracteres.');if(authMode==='register'){if(db.accounts.some(a=>a.email===email))return alert('Este e-mail já possui cadastro.');let pilot=db.drivers.find(d=>d.name.toLowerCase()===name.toLowerCase());if(!pilot){pilot={id:uid(),name,team:'',category:'Geral'};db.drivers.push(pilot);}else if(db.accounts.some(a=>a.driverId===pilot.id))return alert('Este piloto já possui uma conta.');db.accounts.push({id:uid(),driverId:pilot.id,email,password:pass});save();loggedPilotId=pilot.id;alert('Cadastro realizado! Seu perfil de piloto foi criado e você já pode acessar sua área.')}else{let a=db.accounts.find(a=>a.email===email&&a.password===pass);if(!a)return alert('E-mail ou senha inválidos.');loggedPilotId=a.driverId;}renderProfile()}
-function renderProfile(){let box=document.getElementById('pilotProfile');if(!box)return;let d=db.drivers.find(x=>x.id===loggedPilotId);if(!d){box.innerHTML='';return}let rs=db.results.filter(r=>r.driverId===d.id);box.innerHTML=`<div class="profilebox"><h2>Olá, ${esc(d.name)}!</h2><p>Equipe: ${esc(d.team||'—')} · Categoria: ${esc(d.category||'—')}</p><p><b>${rs.reduce((a,r)=>a+Number(r.points||0),0)} pontos</b> acumulados · ${rs.length} resultados lançados · ${titleCount(d.id)} títulos</p><h3>Histórico recente</h3>${rs.map(r=>{let race=db.races.find(x=>x.id===r.raceId);return `<div class="rowline">${esc(race?.name||'Etapa')} — ${esc(champName(race?.champId))}<b>${r.position}º · ${r.points} pts</b></div>`}).join('')||'<p>Ainda não há resultados registrados.</p>'}</div>`;document.getElementById('logoutBtn').style.display='inline-flex';document.getElementById('authSubmit').style.display='none'}
-function logoutPilot(){loggedPilotId=null;document.getElementById('pilotProfile').innerHTML='';document.getElementById('logoutBtn').style.display='none';document.getElementById('authSubmit').style.display='inline-flex';document.getElementById('authPassword').value=''}
+
+function setAuthMode(mode){authMode=mode;const nf=document.getElementById('authNameField');if(nf)nf.style.display=mode==='login'?'none':'block';const s=document.getElementById('authSubmit');if(s)s.textContent=mode==='login'?'ENTRAR':'CRIAR CONTA';const l=document.getElementById('loginMode'),r=document.getElementById('registerMode');if(l)l.className=mode==='login'?'btn small':'btn secondary small';if(r)r.className=mode==='register'?'btn small':'btn secondary small';}
+function setEntryMode(mode){
+  authMode=mode;
+  document.getElementById('entryNameLabel').style.display=mode==='register'?'block':'none';
+  document.getElementById('entryTitle').textContent=mode==='register'?'Cadastro de piloto':'Entre no portal';
+  document.getElementById('entryDescription').textContent=mode==='register'?'Crie sua conta para acessar a área de piloto da Rookie League.':'Faça login para acessar campeonatos, resultados, calendário e seu perfil.';
+  document.getElementById('entrySubmit').textContent=mode==='register'?'CRIAR CONTA':'ENTRAR';
+  document.getElementById('entryLoginMode').className=mode==='login'?'btn small':'btn secondary small';
+  document.getElementById('entryRegisterMode').className=mode==='register'?'btn small':'btn secondary small';
+  document.getElementById('entryPassword').autocomplete=mode==='login'?'current-password':'new-password';
+  document.getElementById('entryMessage').textContent='A área de Administração é exclusiva do administrador autorizado da liga.';
+}
+async function submitEntryAuth(){
+ const name=document.getElementById('entryName').value.trim(),email=document.getElementById('entryEmail').value.trim(),pass=document.getElementById('entryPassword').value;
+ if(!email||pass.length<6||(authMode==='register'&&!name)){document.getElementById('entryMessage').textContent='Informe os dados. A senha deve ter pelo menos 6 caracteres.';return}
+ const btn=document.getElementById('entrySubmit');btn.disabled=true;btn.textContent='AGUARDE...';
+ try{
+  let result;
+  if(authMode==='register') result=await supabaseClient.auth.signUp({email,password:pass,options:{data:{name,display_name:name}}});
+  else result=await supabaseClient.auth.signInWithPassword({email,password:pass});
+  if(result.error)throw result.error;
+  if(authMode==='register'&&!result.data.session){document.getElementById('entryMessage').textContent='Cadastro criado. Confirme seu e-mail pelo link enviado e depois entre.';return}
+  cloudUser=result.data.user;await refreshCloudRole();await loadCloudData();await afterCloudLogin();
+ }catch(e){document.getElementById('entryMessage').textContent='Não foi possível autenticar: '+(e.message||e)}
+ finally{btn.disabled=false;btn.textContent=authMode==='register'?'CRIAR CONTA':'ENTRAR'}
+}
+async function submitAuth(){
+ const name=document.getElementById('authName').value.trim(),email=document.getElementById('authEmail').value.trim(),pass=document.getElementById('authPassword').value;
+ if(!email||pass.length<6||(authMode==='register'&&!name))return alert('Informe os dados solicitados. A senha deve ter pelo menos 6 caracteres.');
+ try{let result;if(authMode==='register')result=await supabaseClient.auth.signUp({email,password:pass,options:{data:{name,display_name:name}}});else result=await supabaseClient.auth.signInWithPassword({email,password:pass});if(result.error)throw result.error;cloudUser=result.data.user;if(authMode==='register'&&!result.data.session){alert('Cadastro criado. Confirme seu e-mail antes de entrar.');return}await refreshCloudRole();await loadCloudData();await afterCloudLogin()}catch(e){alert('Não foi possível autenticar: '+(e.message||e))}
+}
+async function refreshCloudRole(){
+ cloudIsAdmin=false;if(!cloudUser)return;
+ const {data,error}=await supabaseClient.from('profiles').select('is_admin').eq('id',cloudUser.id).maybeSingle();
+ if(error)throw error;cloudIsAdmin=!!data?.is_admin;cloudReady=true;
+}
+async function loadCloudData(){
+ const specs={
+  championships:{select:'id,name,season,category,events,entrants,progress,rules',map:r=>({...r,id:String(r.id)})},
+  drivers:{select:'id,name,team,category',map:r=>({...r,id:String(r.id)})},
+  tracks:{select:'id,name,country',map:r=>({...r,id:String(r.id),layout:null})},
+  races:{select:'id,championship_id,name,race_date,race_time,track_id',map:r=>({id:String(r.id),champId:String(r.championship_id),name:r.name,date:r.race_date||'',time:r.race_time||'',trackId:r.track_id?String(r.track_id):''})},
+  results:{select:'id,race_id,driver_id,position,points',map:r=>({id:String(r.id),raceId:String(r.race_id),driverId:String(r.driver_id),position:Number(r.position||0),points:Number(r.points||0)})},
+  titles:{select:'id,driver_id,championship_id,season',map:r=>({id:String(r.id),driverId:String(r.driver_id),champId:String(r.championship_id),season:r.season||''})}
+ };
+ const loaded={};
+ for(const [table,spec] of Object.entries(specs)){
+  const {data,error}=await supabaseClient.from(table).select(spec.select);
+  if(error)throw new Error('Falha ao carregar '+table+': '+error.message);
+  loaded[table]=(data||[]).map(spec.map);
+ }
+ // Dados do banco são a fonte principal. Mantém cópia local apenas como cache/backup.
+ db.championships=loaded.championships;db.drivers=loaded.drivers;db.tracks=loaded.tracks;
+ db.races=loaded.races;db.results=loaded.results;db.titles=loaded.titles;
+ localStorage.setItem('rlm_portal_v2',JSON.stringify(db));renderAll();
+}
+async function afterCloudLogin(){
+ document.getElementById('cloudStatus').textContent=cloudIsAdmin?'Conectado ao Supabase • Administrador autenticado.':'Conectado ao Supabase • Conta de piloto.';
+ document.getElementById('adminCloudTools').style.display=cloudIsAdmin?'block':'none';
+ document.getElementById('adminNav').hidden=!cloudIsAdmin;
+ document.getElementById('authSubmit').style.display='none';
+ document.getElementById('logoutBtn').style.display='inline-flex';
+ document.getElementById('entryGate').classList.add('hidden');
+ document.getElementById('accountNav').textContent=cloudIsAdmin?'♙ Minha conta • Admin':'♙ Minha conta';
+ document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#trackForm,#raceForm,#resultForm,#titleForm').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
+ loggedPilotId=null;renderProfile();showPage('home');
+}
+function renderProfile(){const box=document.getElementById('pilotProfile');if(!box)return;box.innerHTML=`<div class="profilebox"><h2>Conta autenticada</h2><p>${esc(cloudUser?.email||'')}</p><p>${cloudIsAdmin?'Administrador da Rookie League':'Acesso de piloto'}</p></div>`}
+async function logoutPilot(){
+ await supabaseClient.auth.signOut();cloudUser=null;cloudIsAdmin=false;cloudReady=false;loggedPilotId=null;
+ document.getElementById('pilotProfile').innerHTML='';document.getElementById('logoutBtn').style.display='none';document.getElementById('authSubmit').style.display='inline-flex';
+ document.getElementById('adminCloudTools').style.display='none';document.getElementById('adminNav').hidden=true;
+ document.getElementById('cloudStatus').textContent='Desconectado do Supabase.';document.getElementById('authPassword').value='';
+ document.getElementById('entryGate').classList.remove('hidden');setEntryMode('login');showPage('home');
+}
+function rowsForCloud(){db.titles.forEach(t=>{if(!t.id)t.id=uid()});return {championships:db.championships.map(x=>({id:String(x.id),name:x.name,season:x.season||null,category:x.category||null,events:Number(x.events||0),entrants:Number(x.entrants||0),progress:Number(x.progress||0),rules:x.rules||null})),drivers:db.drivers.map(x=>({id:String(x.id),name:x.name,team:x.team||null,category:x.category||null})),tracks:db.tracks.map(x=>({id:String(x.id),name:x.name,country:x.country||null})),races:db.races.map(x=>({id:String(x.id),championship_id:String(x.champId),name:x.name,race_date:x.date||null,race_time:x.time||null,track_id:x.trackId||null})),results:db.results.map(x=>({id:String(x.id),race_id:String(x.raceId),driver_id:String(x.driverId),position:Number(x.position),points:Number(x.points||0)})),titles:db.titles.map(x=>({id:String(x.id||uid()),driver_id:String(x.driverId),championship_id:String(x.champId),season:x.season||null}))}}
+async function syncChangedDataToCloud(){
+ if(!cloudIsAdmin)throw new Error('Somente o administrador pode alterar os dados.');
+ const groups=rowsForCloud();
+ for(const table of ['championships','drivers','tracks','races','results','titles']){
+  if(groups[table].length){const {error}=await supabaseClient.from(table).upsert(groups[table]);if(error)throw error}
+ }
+ document.getElementById('cloudStatus').textContent='Sincronização com Supabase concluída.';
+}
+async function migrateLocalDataToCloud(){if(!cloudIsAdmin)return alert('Entre com a conta administradora.');if(!confirm('Enviar os registros deste navegador para o Supabase? Os registros existentes serão atualizados por ID; nada será apagado.'))return;try{await syncChangedDataToCloud();alert('Dados enviados ao Supabase. Confira as tabelas no painel antes de ativar a leitura remota.')}catch(e){alert('Falha na migração: '+(e.message||e))}}
+async function initializeCloud(){
+ try{
+  const {data,error}=await supabaseClient.auth.getSession();if(error)throw error;
+  if(data.session){cloudUser=data.session.user;await refreshCloudRole();await loadCloudData();await afterCloudLogin()}
+  else{document.getElementById('cloudStatus').textContent='Supabase pronto. Faça login ou crie sua conta de piloto.';document.getElementById('entryGate').classList.remove('hidden');setEntryMode('login')}
+ }catch(e){
+  document.getElementById('cloudStatus').textContent='Falha ao conectar ao Supabase: '+e.message;
+  document.getElementById('entryGate').classList.remove('hidden');
+  document.getElementById('entryMessage').textContent='Erro de conexão: '+e.message;
+ }
+}
+
 function addDriver(){let name=document.getElementById('pilotName').value.trim();if(!name)return alert('Informe o nome do piloto.');if(db.drivers.some(d=>d.name.toLowerCase()===name.toLowerCase()))return alert('Este piloto já está cadastrado.');db.drivers.push({id:uid(),name,team:document.getElementById('pilotTeam').value.trim(),category:document.getElementById('pilotClass').value});document.getElementById('pilotName').value='';document.getElementById('pilotTeam').value='';save();alert('Piloto cadastrado!')}
 function addRace(){let champId=document.getElementById('raceChamp').value,name=document.getElementById('raceName').value.trim();if(!champId||!name)return alert('Selecione o campeonato e informe o nome da etapa.');db.races.push({id:uid(),champId,name,date:document.getElementById('raceDate').value,time:document.getElementById('raceTime').value||'',trackId:document.getElementById('raceTrack').value||''});document.getElementById('raceName').value='';document.getElementById('raceDate').value='';document.getElementById('raceTime').value='';save();alert('Etapa criada!')}
 function addResult(){let raceId=document.getElementById('resultRace').value,driverId=document.getElementById('resultDriver').value,pos=Number(document.getElementById('resultPosition').value),points=Number(document.getElementById('resultPoints').value);if(!raceId||!driverId||!Number.isInteger(pos)||pos<1||!Number.isFinite(points)||points<0)return alert('Preencha etapa, piloto, posição e pontos corretamente.');if(db.results.some(r=>r.raceId===raceId&&r.driverId===driverId))return alert('Este piloto já tem resultado nesta etapa.');db.results.push({id:uid(),raceId,driverId,position:pos,points});document.getElementById('resultPosition').value='';document.getElementById('resultPoints').value='';save();alert('Resultado lançado! A classificação foi atualizada.')}
@@ -429,5 +564,7 @@ function renderCalendar(){
 }
 
 renderAll();
+supabaseClient.auth.onAuthStateChange(async (_event, session)=>{if(!session){cloudUser=null;cloudIsAdmin=false;cloudReady=false;document.getElementById('adminNav').hidden=true;document.getElementById('entryGate').classList.remove('hidden')} });
+initializeCloud();
 startLiveTimingPolling();
 </script></body></html>
