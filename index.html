@@ -129,6 +129,12 @@ input[type=file]{max-width:0}
 .entrySubmit{width:100%;margin-top:10px}
 .entryMessage{min-height:22px;font-size:12px;color:#a9b7ac}
 #adminNav[hidden]{display:none!important}
+
+.rosterGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px;margin-top:12px}
+.rosterPilot{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line,#29352e);border-radius:10px;background:rgba(255,255,255,.02)}
+.rosterNumber{font-size:11px;color:var(--muted,#9aa99f);font-weight:800}
+.rosterPilot b{flex:1}
+.rosterStatus{font-size:9px;letter-spacing:.08em;color:var(--accent,#a6ff00);font-weight:800}
 </style></head>
 <body>
 
@@ -273,7 +279,7 @@ async function loadRegistrationRequests(){
    const c=db.championships.find(x=>String(x.id)===String(r.championship_id));
    const date=r.created_at?new Date(r.created_at).toLocaleDateString('pt-BR'):'—';
    const status=r.status==='approved'?'APROVADA':r.status==='rejected'?'RECUSADA':'PENDENTE';
-   return `<tr><td>${esc(c?.name||r.championship_id)}</td><td class="driver">${esc(r.pilot_name)}</td><td>${date}</td><td>${status}</td><td>${r.status==='pending'?`<button class="btn small" onclick="setRegistrationStatus(${Number(r.id)},'approved')">ACEITAR</button> <button class="btn danger small" onclick="setRegistrationStatus(${Number(r.id)},'rejected')">RECUSAR</button>`:`<button class="btn secondary small" onclick="setRegistrationStatus(${Number(r.id)},'pending')">REABRIR</button>`}</td></tr>`;
+   return `<tr><td>${esc(c?.name||r.championship_id)}</td><td class="driver">${esc(r.pilot_name)}</td><td>${date}</td><td>${status}</td><td>${r.status==='pending'?`<button class="btn small" onclick="setRegistrationStatus('${String(r.id)}','approved')">ACEITAR</button> <button class="btn danger small" onclick="setRegistrationStatus('${String(r.id)}','rejected')">RECUSAR</button>`:`<button class="btn secondary small" onclick="setRegistrationStatus('${String(r.id)}','pending')">REABRIR</button>`}</td></tr>`;
   }).join('')}</tbody></table></div>`;
  }catch(e){box.innerHTML=`<p class="hint">Erro ao carregar inscrições: ${esc(e.message||e)}. Confira a tabela e as políticas RLS no Supabase.</p>`;}
 }
@@ -283,6 +289,7 @@ async function setRegistrationStatus(id,status){
   const {error}=await supabaseClient.from('championship_registrations').update({status}).eq('id',id);
   if(error)throw error;
   await loadRegistrationRequests();
+  if(activeChampionshipDetailId)await loadChampionshipRoster(activeChampionshipDetailId);
   alert(status==='approved'?'Inscrição aprovada!':status==='rejected'?'Inscrição recusada.':'Inscrição reaberta.');
  }catch(e){alert('Não foi possível atualizar a inscrição: '+(e.message||e));}
 }
@@ -323,8 +330,10 @@ const officialServerResults = {
  'Porsche Cup': {url:'https://rookieleague.emperorservers.com/championship/30c7ccac-4bd8-4192-b435-0434f8a8a704',drivers:[['Ze Carlos Senna',166],['Samuel Ricardo',157],['iKingThiago',98],['Renato',86],['Synx',76],['Mário Paim',67],['FireZz',66],['ELIAS TAXI',50],['Kass Faria',30],['Adão Duque',14]]},
  'Mine campeonato da rookie league': {url:'https://rookieleague.emperorservers.com/championship/69803ffe-0618-42f8-8eab-408baa043680',drivers:[['Samuel Ricardo',141],['ADAO DUQUE',113],['Ze Carlos Senna',94],['Kass',68],['Mario',58],['Elias Taxi',48],['iKingThiago',41],['FERNANDO PIQUET',25],['William_Cruz',10],['Neil',6]]}
 };
+let activeChampionshipDetailId=null;
 function openChampionship(id){showPage('champDetail');renderChampionshipDetail(id)}
 function renderChampionshipDetail(id){
+ activeChampionshipDetailId=String(id);
  const c=db.championships.find(x=>x.id===id),root=document.getElementById('champDetailContent');if(!c||!root)return;
  const stages=db.races.filter(r=>r.champId===id).sort((a,b)=>(a.date||'9999-99-99').localeCompare(b.date||'9999-99-99'));
  const table=standings(id),done=stages.filter(r=>db.results.some(x=>x.raceId===r.id)).length,pct=stages.length?Math.round(done/stages.length*100):Number(c.progress||0);
@@ -334,8 +343,26 @@ function renderChampionshipDetail(id){
  <div class="detailGrid"><div class="panel detailPanel"><div class="detailSectionHead"><div class="kicker">TEMPORADA</div><h2>Calendário oficial</h2></div><div class="tableWrap"><table class="detailTable"><thead><tr><th>#</th><th>Etapa</th><th>Pista</th><th>Data</th><th>Hora</th><th>Vencedor</th></tr></thead><tbody>${rows||'<tr><td colspan="6" class="empty">Etapas ainda não cadastradas.</td></tr>'}</tbody></table></div></div>
  <div class="panel detailPanel"><div class="detailSectionHead"><div class="kicker">CLASSIFICAÇÃO</div><h2>Ranking de pilotos</h2></div><div class="tableWrap"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th></tr></thead><tbody>${table.map((x,i)=>`<tr><td>${i+1}</td><td class="driver">${esc(x.name)}</td><td>${x.starts}</td><td class="count">${x.points}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">A classificação será exibida após os resultados.</td></tr>'}</tbody></table></div></div></div>
  <div class="panel detailPanel officialResultsPanel"><div class="detailSectionHead"><div><div class="kicker">FONTE OFICIAL · EMPEROR SERVERS</div><h2>Classificação importada do servidor</h2><p class="officialSyncNote">Classificação registrada a partir dos dados do servidor oficial. Esta cópia não atualiza sozinha; use o botão para conferir a versão mais recente no Emperor Servers.</p></div><a class="btn secondary small" href="${officialServerResults[c.name]?.url||'https://rookieleague.emperorservers.com/championships'}" target="_blank" rel="noopener">ABRIR RESULTADO ORIGINAL ↗</a></div><div class="tableWrap"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Pontos oficiais</th></tr></thead><tbody>${(officialServerResults[c.name]?.drivers||[]).map((d,i)=>`<tr><td class="rank">${i+1}</td><td class="driver">${esc(d[0])}</td><td class="count">${d[1]}</td></tr>`).join('')||'<tr><td colspan="3">Classificação oficial indisponível para este campeonato.</td></tr>'}</tbody></table></div></div>
+ <div class="panel detailPanel"><div class="detailSectionHead"><div><div class="kicker">GRID DA COMPETIÇÃO</div><h2>Pilotos inscritos</h2><p>Lista de participantes com inscrição aprovada pela administração.</p></div><button class="btn secondary small" onclick="loadChampionshipRoster('${id}')">↻ ATUALIZAR</button></div><div id="championshipRoster"><p class="hint">Carregando pilotos inscritos…</p></div></div>
  <div class="panel rulesPanel"><div class="kicker">INFORMAÇÕES DA COMPETIÇÃO</div><h2>Regulamento e observações</h2><p>${esc(c.rules||'Regulamento ainda não publicado.')}</p></div>
  <div class="detailActions"><button class="btn" onclick="document.getElementById('resultChamp').value='${id}';showPage('results')">CONSULTAR RESULTADOS</button><button class="btn secondary" onclick="showPage('calendar')">CALENDÁRIO GERAL</button></div>`;
+ loadChampionshipRoster(id);
+}
+async function loadChampionshipRoster(champId){
+ const box=document.getElementById('championshipRoster');if(!box)return;
+ box.innerHTML='<p class="hint">Carregando pilotos inscritos…</p>';
+ try{
+  const {data,error}=await supabaseClient.from('championship_registrations')
+   .select('id,pilot_name,status,created_at')
+   .eq('championship_id',String(champId))
+   .eq('status','approved')
+   .order('pilot_name',{ascending:true});
+  if(error)throw error;
+  if(!data?.length){box.innerHTML='<p class="empty">Ainda não há pilotos com inscrição aprovada neste campeonato.</p>';return;}
+  box.innerHTML=`<div class="detailStats rosterStats"><div class="metric"><div class="label">Inscrições aprovadas</div><strong>${data.length}</strong></div></div><div class="rosterGrid">${data.map((r,i)=>`<div class="rosterPilot"><span class="rosterNumber">${String(i+1).padStart(2,'0')}</span><b>${esc(r.pilot_name||'Piloto')}</b><span class="rosterStatus">CONFIRMADO</span></div>`).join('')}</div>`;
+ }catch(e){
+  box.innerHTML=`<p class="hint">Não foi possível carregar os pilotos inscritos: ${esc(e.message||e)}. Verifique a política SELECT da tabela championship_registrations no Supabase.</p>`;
+ }
 }
 function standings(champId){let arr=db.drivers.map(d=>{let rs=db.results.filter(r=>r.driverId===d.id&&db.races.some(x=>x.id===r.raceId&&x.champId===champId));return {id:d.id,name:d.name,points:rs.reduce((s,r)=>s+Number(r.points||0),0),starts:rs.length}}).filter(x=>x.starts).sort((a,b)=>b.points-a.points||b.starts-a.starts||a.name.localeCompare(b.name));return arr}
 function renderOfficialResults(){
