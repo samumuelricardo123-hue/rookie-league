@@ -205,7 +205,7 @@ input[type=file]{max-width:0}
 <div id="raceForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Campeonato</label><select id="raceChamp"></select></div><div class="field"><label>Nome / número da etapa</label><input id="raceName" placeholder="Ex.: Etapa 1 — Interlagos"></div><div class="field"><label>Data da corrida</label><input id="raceDate" type="date"></div><div class="field"><label>Horário de início</label><input id="raceTime" type="time"></div><div class="field"><label>Pista</label><select id="raceTrack"></select></div></div><div class="formactions"><button class="btn" onclick="addRace()">CRIAR ETAPA</button></div></div>
 <div id="resultForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Etapa</label><select id="resultRace"></select></div><div class="field"><label>Piloto</label><select id="resultDriver"></select></div><div class="field"><label>Posição final</label><input id="resultPosition" type="number" min="1" step="1" placeholder="1"></div><div class="field"><label>Pontos conquistados</label><input id="resultPoints" type="number" min="0" step="0.5" placeholder="25"></div></div><div class="formactions"><button class="btn" onclick="addResult()">LANÇAR RESULTADO</button><span class="hint">Informe os pontos conforme o regulamento da sua liga.</span></div></div>
 <div id="titleForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Piloto campeão</label><select id="titleDriver"></select></div><div class="field"><label>Campeonato</label><select id="titleChamp"></select></div><div class="field"><label>Temporada / ano</label><input id="titleSeason" placeholder="Ex.: Temporada 2026"></div></div><div class="formactions"><button class="btn" onclick="addTitle()">REGISTRAR TÍTULO</button></div></div>
-<div class="sectionHead"><div><h2>Gerenciar dados</h2><p>Faça backup, restaure dados ou limpe registros.</p></div><div class="actions"><button class="btn secondary small" onclick="exportData()">↓ EXPORTAR BACKUP</button><label class="btn secondary small" style="cursor:pointer">↑ IMPORTAR BACKUP<input id="importFile" type="file" accept=".json,application/json" onchange="importData(event)" hidden></label></div></div><div class="panel quick"><div class="rowline"><div><b>Dados do portal</b><small id="dataSummary">Carregando…</small></div><button class="btn danger small" onclick="resetData()">RESTAURAR DADOS INICIAIS</button></div><div class="hint">A restauração apaga os dados adicionados neste navegador. Exporte um backup antes. A importação substitui os dados atuais pelo conteúdo do arquivo selecionado.</div></div>
+<div id="registrationAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Inscrições dos campeonatos</h2><p>Analise as solicitações dos pilotos e aprove ou recuse a participação.</p></div><button class="btn secondary small" onclick="loadRegistrationRequests()">↻ ATUALIZAR</button></div><div id="registrationRequestRows"><p class="hint">Carregando inscrições…</p></div></div>\n<div class="sectionHead"><div><h2>Gerenciar dados</h2><p>Faça backup, restaure dados ou limpe registros.</p></div><div class="actions"><button class="btn secondary small" onclick="exportData()">↓ EXPORTAR BACKUP</button><label class="btn secondary small" style="cursor:pointer">↑ IMPORTAR BACKUP<input id="importFile" type="file" accept=".json,application/json" onchange="importData(event)" hidden></label></div></div><div class="panel quick"><div class="rowline"><div><b>Dados do portal</b><small id="dataSummary">Carregando…</small></div><button class="btn danger small" onclick="resetData()">RESTAURAR DADOS INICIAIS</button></div><div class="hint">A restauração apaga os dados adicionados neste navegador. Exporte um backup antes. A importação substitui os dados atuais pelo conteúdo do arquivo selecionado.</div></div>
 </section>
 <section id="account" class="page"><div class="subhead"><div class="kicker">ÁREA DO COMPETIDOR</div><h1>Conta do piloto</h1><p>Entre com sua conta segura para acessar seu perfil e as ferramentas autorizadas.</p></div>
 <div class="panel authbox"><div class="authswitch"><button class="btn small" id="loginMode" onclick="setAuthMode('login')">ENTRAR</button><button class="btn secondary small" id="registerMode" onclick="setAuthMode('register')">CRIAR CADASTRO</button></div>
@@ -260,6 +260,32 @@ function titleCount(id){return db.titles.filter(t=>t.driverId===id).length}
 function rankDrivers(){return [...db.drivers].map(d=>({...d,titles:titleCount(d.id)})).sort((a,b)=>b.titles-a.titles||a.name.localeCompare(b.name))}
 function podium(pos){return pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':pos}
 
+
+async function loadRegistrationRequests(){
+ const box=document.getElementById('registrationRequestRows');if(!box)return;
+ if(!cloudIsAdmin){box.innerHTML='<p class="hint">Acesso restrito à administração.</p>';return;}
+ box.innerHTML='<p class="hint">Carregando inscrições…</p>';
+ try{
+  const {data,error}=await supabaseClient.from('championship_registrations').select('id,championship_id,user_id,pilot_name,status,created_at').order('created_at',{ascending:false});
+  if(error)throw error;
+  if(!data?.length){box.innerHTML='<p class="empty">Nenhuma solicitação de inscrição até o momento.</p>';return;}
+  box.innerHTML=`<div class="tablewrap"><table><thead><tr><th>Campeonato</th><th>Piloto</th><th>Solicitação</th><th>Status</th><th>Ações</th></tr></thead><tbody>${data.map(r=>{
+   const c=db.championships.find(x=>String(x.id)===String(r.championship_id));
+   const date=r.created_at?new Date(r.created_at).toLocaleDateString('pt-BR'):'—';
+   const status=r.status==='approved'?'APROVADA':r.status==='rejected'?'RECUSADA':'PENDENTE';
+   return `<tr><td>${esc(c?.name||r.championship_id)}</td><td class="driver">${esc(r.pilot_name)}</td><td>${date}</td><td>${status}</td><td>${r.status==='pending'?`<button class="btn small" onclick="setRegistrationStatus(${Number(r.id)},'approved')">ACEITAR</button> <button class="btn danger small" onclick="setRegistrationStatus(${Number(r.id)},'rejected')">RECUSAR</button>`:`<button class="btn secondary small" onclick="setRegistrationStatus(${Number(r.id)},'pending')">REABRIR</button>`}</td></tr>`;
+  }).join('')}</tbody></table></div>`;
+ }catch(e){box.innerHTML=`<p class="hint">Erro ao carregar inscrições: ${esc(e.message||e)}. Confira a tabela e as políticas RLS no Supabase.</p>`;}
+}
+async function setRegistrationStatus(id,status){
+ if(!cloudIsAdmin)return alert('Apenas o administrador pode alterar inscrições.');
+ try{
+  const {error}=await supabaseClient.from('championship_registrations').update({status}).eq('id',id);
+  if(error)throw error;
+  await loadRegistrationRequests();
+  alert(status==='approved'?'Inscrição aprovada!':status==='rejected'?'Inscrição recusada.':'Inscrição reaberta.');
+ }catch(e){alert('Não foi possível atualizar a inscrição: '+(e.message||e));}
+}
 async function requestChampionshipRegistration(champId){
  if(!cloudUser){alert('Entre na sua conta de piloto para se inscrever.');return;}
  const champ=db.championships.find(c=>String(c.id)===String(champId));
@@ -493,6 +519,8 @@ async function afterCloudLogin(){
  document.getElementById('entryGate').classList.add('hidden');
  document.getElementById('accountNav').textContent=cloudIsAdmin?'♙ Minha conta • Admin':'♙ Minha conta';
  document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#trackForm,#raceForm,#resultForm,#titleForm').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
+ document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';
+ if(cloudIsAdmin)loadRegistrationRequests();
  loggedPilotId=null;renderProfile();showPage('home');
 }
 function renderProfile(){const box=document.getElementById('pilotProfile');if(!box)return;box.innerHTML=`<div class="profilebox"><h2>Conta autenticada</h2><p>${esc(cloudUser?.email||'')}</p><p>${cloudIsAdmin?'Administrador da Rookie League':'Acesso de piloto'}</p></div>`}
