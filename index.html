@@ -1,376 +1,127 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>F1 2013 – Campeonato</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rookie League Motorsport — Portal V3</title>
 <style>
-/* ====== GLOBAL ====== */
-body{
-    margin:0;
-    font-family:'Helvetica Neue',Arial,sans-serif;
-    background:url('https://i.imgur.com/jZizpOi.png') no-repeat center center fixed;
-    background-size:cover;
-    color:#fff;
-}
-header{
-    background:linear-gradient(90deg,#111,#222);
-    padding:10px 20px;
-    border-bottom:4px solid #e10600;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-header h1{margin:0;font-size:1.6em}
-nav{display:flex; align-items:center;}
-nav button, nav .tablink{
-    background:#111;
-    border:none;
-    padding:8px 12px;
-    color:#fff;
-    margin-left:5px;
-    cursor:pointer;
-}
-nav button:hover, nav .tablink:hover{background:#e10600}
-nav .active{background:#e10600}
-main{padding:10px}
+:root{--bg:#080d0b;--panel:#111916;--panel2:#17211c;--line:#29372f;--green:#a6ff00;--green2:#65c900;--text:#f2f7f1;--muted:#9aa99e;--red:#ff5757;--gold:#ffc857}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1d351f 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif}
+button,input,select{font:inherit}.shell{max-width:1440px;margin:auto;padding:0 24px}
+header{min-height:78px;border-bottom:1px solid #30422c;background:#080d0bee;position:sticky;top:0;z-index:10;backdrop-filter:blur(14px)}
+.nav{min-height:78px;display:flex;align-items:center;gap:24px}.logo{font-weight:1000;letter-spacing:1px;font-size:19px;white-space:nowrap}.logo b{color:var(--green)}.flag{color:var(--green);font-size:24px}
+nav{display:flex;gap:5px;align-items:center;flex:1;overflow:auto}nav button,.navright button{border:0;background:transparent;color:#c8d2ca;padding:10px 11px;border-radius:8px;cursor:pointer;font-weight:700;white-space:nowrap}nav button.active,nav button:hover{color:var(--green);background:#a6ff0014}.status{font-size:10px;font-weight:900;color:#111;background:var(--green);padding:7px 9px;border-radius:5px;letter-spacing:.5px}
+.hero{padding:35px 0 24px;display:grid;grid-template-columns:1.35fr .65fr;gap:18px}.heroMain{padding:34px;border:1px solid #3b5728;border-radius:16px;background:linear-gradient(115deg,#17251aee,#0b120fdd);position:relative;overflow:hidden}
+.kicker{color:var(--green);font-size:11px;letter-spacing:3px;font-weight:900}.hero h1{font-size:clamp(32px,5vw,56px);line-height:1.02;margin:13px 0}.hero h1 span{color:var(--green)}.hero p{color:#b5c1b7;max-width:650px;margin:0 0 20px}.actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:1px solid var(--green);background:var(--green);color:#10170b;border-radius:8px;padding:10px 15px;font-weight:900;cursor:pointer}.btn.secondary{background:transparent;color:var(--green)}.btn.danger{border-color:#a83b3b;background:#a83b3b;color:white}.btn.small{padding:7px 10px;font-size:12px}
+.heroAside{border:1px solid var(--line);border-radius:16px;background:linear-gradient(150deg,#1a261d,#0e1511);padding:22px;display:flex;flex-direction:column;justify-content:space-between}.asideTop{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;letter-spacing:1.5px;font-weight:800}.bigNum{font-size:52px;font-weight:1000;color:var(--green);line-height:1}.heroAside h3{margin:8px 0 2px}.heroAside p{font-size:13px;margin:0;color:var(--muted)}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:4px 0 28px}.metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px}.metric .label{font-size:10px;color:var(--muted);font-weight:800;letter-spacing:1px;text-transform:uppercase}.metric strong{display:block;font-size:27px;margin-top:4px}.metric strong em{font-style:normal;color:var(--green)}
+.sectionHead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:25px 0 13px}.sectionHead h2{margin:0;font-size:22px}.sectionHead p{margin:3px 0 0;color:var(--muted);font-size:13px}.tools{display:flex;gap:8px;flex-wrap:wrap}.tools input,.tools select,.field input,.field select{background:#0c140f;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:10px 11px;outline:none;width:100%}.tools input{width:auto;min-width:190px}.tools input:focus,.field input:focus,.field select:focus{border-color:var(--green)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.champ{border:1px solid var(--line);border-radius:13px;background:linear-gradient(145deg,#17221b,#0e1511);padding:18px}.champTop{display:flex;justify-content:space-between;align-items:center}.pill{font-size:10px;padding:5px 8px;border-radius:5px;background:#a6ff001a;color:var(--green);font-weight:900;letter-spacing:.7px}.champ h3{font-size:20px;margin:14px 0 3px}.meta{color:var(--muted);font-size:12px}.progress{height:7px;border-radius:20px;background:#263229;margin:15px 0 8px;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--green2),var(--green));border-radius:20px}.champFoot{display:flex;justify-content:space-between;color:#b8c4ba;font-size:12px}
+.panel{border:1px solid var(--line);border-radius:13px;background:var(--panel);overflow:hidden}.tableWrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:620px}th{text-align:left;padding:13px 15px;color:var(--muted);font-size:10px;letter-spacing:1.2px;text-transform:uppercase;background:#17211b}td{padding:13px 15px;border-top:1px solid var(--line)}tbody tr:hover{background:#a6ff0008}.rank{font-size:18px}.driver{font-weight:900}.count{color:var(--green);font-weight:1000;font-size:18px}
+.page{display:none}.page.active{display:block}.subhead{padding:25px 0 7px}.subhead h1{margin:0;font-size:31px}.subhead p{color:var(--muted);margin:4px 0 0}.textLink{border:0;background:none;color:var(--green);font-weight:900;cursor:pointer;padding:0}
+.formgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:17px}.field label{display:block;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;margin-bottom:6px}.field.full{grid-column:1/-1}.formactions{display:flex;gap:8px;align-items:center;padding:0 17px 17px;flex-wrap:wrap}.hint{color:var(--muted);font-size:12px}.empty{padding:25px;text-align:center;color:var(--muted)}.tabs{display:flex;gap:8px;flex-wrap:wrap}.tabs button{background:#111a15;color:#cbd5cd;border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer;font-weight:800}.tabs button.active{border-color:var(--green);color:var(--green);background:#a6ff0012}
+.twoCol{display:grid;grid-template-columns:1fr 1fr;gap:15px}.quick{padding:18px}.quick h3{margin:0 0 10px}.rowline{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-top:1px solid var(--line)}.rowline small{display:block;color:var(--muted)}
+footer{margin:35px 0 0;border-top:1px solid var(--line);padding:20px 0 30px;display:flex;justify-content:space-between;color:#718076;font-size:10px;letter-spacing:1px}
+@media(max-width:900px){.nav{flex-wrap:wrap;padding:10px 0;gap:8px}nav{order:3;flex-basis:100%}.hero{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.shell{padding:0 13px}.metrics{grid-template-columns:repeat(2,1fr)}.cards,.twoCol,.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.sectionHead{align-items:flex-start;flex-direction:column}footer{display:block}footer span{display:block;margin:5px 0}.heroMain{padding:23px}}
 
-/* ====== TABELA PILOTOS F1 MODERNA ====== */
-#tabelaSec {
-    height: calc(100vh - 60px);
-    overflow-y: auto;
-}
-#tabela {
-    width:100%;
-    border-collapse: collapse;
-}
-#tabela thead th {
-    color:#e10600;
-    font-size:0.95em;
-    text-transform:uppercase;
-    border-bottom:2px solid #fff;
-    padding:10px;
-    position: sticky;
-    top: 0;
-    background:#000;
-    z-index: 1;
-}
-#tabela tbody td {
-    padding:10px;
-    text-align:center;
-    border-bottom:1px solid rgba(255,255,255,0.2);
-    font-size:0.9em;
-    transition: background 0.3s, transform 0.3s;
-}
-#tabela tbody tr:hover:not(.lider){
-    background:rgba(225,6,0,0.15);
-    transform:scale(1.02);
-}
-.lider {
-    background: linear-gradient(90deg,#e10600,#ff4c4c);
-    color: #fff;
-    font-weight:bold;
-    font-size:1.15em;
-    position: relative;
-    overflow: hidden;
-    animation: pulseGlow 1.5s infinite;
-    box-shadow: 0 0 20px rgba(225,6,0,0.8),0 0 40px rgba(255,76,76,0.6);
-    border-radius:6px;
-}
-@keyframes pulseGlow{
-    0%{box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);}
-    50%{box-shadow:0 0 25px rgba(225,6,0,1),0 0 50px rgba(255,76,76,1);}
-    100%{box-shadow:0 0 15px rgba(225,6,0,0.8),0 0 30px rgba(255,76,76,0.6);}
-}
-
-/* ====== CALENDÁRIO ====== */
-#calendarioBody tr td{padding:8px;text-align:center;cursor:pointer;}
-#mapContainer{
-    position: relative;
-    width: 100%;
-    max-width: 900px;
-    margin: 15px auto;
-    background: #000;
-    border: 5px solid #e10600;
-    border-radius: 12px;
-    box-shadow: 0 0 25px rgba(225,6,0,0.8), 0 0 50px rgba(255,76,76,0.6);
-    overflow: hidden;
-}
-#pistaMap{
-    width:100%;
-    display:block;
-    border-radius:10px;
-    object-fit:contain;
-}
-#mapInfo{
-    position:absolute;
-    top:10px;
-    left:10px;
-    background:rgba(0,0,0,0.7);
-    padding:10px 15px;
-    border-radius:6px;
-    font-weight:bold;
-}
-
-/* ====== LOGIN ====== */
-.login-box{
-    max-width:350px;
-    margin:60px auto;
-    background:rgba(0,0,0,0.9);
-    padding:20px;
-    border-radius:6px;
-}
-.login-box input{
-    width:100%;
-    padding:10px;
-    margin-top:10px;
-    background:#222;
-    border:1px solid #444;
-    color:#fff;
-}
-.login-box button{
-    width:100%;
-    margin-top:15px;
-    padding:10px;
-    background:#e10600;
-    border:none;
-    color:#fff;
-    font-weight:bold;
-}
-
-/* ====== ABAS ADMIN ====== */
-.tabs{display:flex;margin-bottom:10px; flex-wrap:wrap;}
-.tabs button{
-    flex:1;
-    background:#111;
-    border:none;
-    padding:10px;
-    color:#fff;
-    margin:2px 0;
-}
-.tabs button.active{background:#e10600}
-.tabcontent{display:none;}
-.tabcontent.active{display:block;}
-</style>
-</head>
+/* V3 refinements */
+.status{box-shadow:0 0 18px #a6ff0033}
+.heroMain:after{content:"RL";position:absolute;right:22px;bottom:-48px;font-size:190px;line-height:1;font-weight:1000;color:#a6ff0009;pointer-events:none}
+.btn{transition:transform .15s ease,filter .15s ease,box-shadow .15s ease}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.08);box-shadow:0 5px 20px #a6ff0022}
+.panel,.champ,.metric{box-shadow:0 10px 30px #00000020}
+nav button{transition:background .15s ease,color .15s ease}
+input[type=file]{max-width:0}
+@media(max-width:620px){.actions{width:100%}.actions .btn{flex:1}.tools input{width:100%}}
+</style></head>
 <body>
-
-<header>
-<h1>F1 2013 – Campeonato</h1>
-<nav>
-<button class="tablink active" onclick="openPublicTab('tabelaSec')">Tabela</button>
-<button class="tablink" onclick="openPublicTab('calendarioSec')">Calendário</button>
-<button onclick="mostrarLogin()">Área do Administrador</button>
-</nav>
-</header>
-
-<main>
-<!-- PUBLICO -->
-<section id="tabelaSec">
-<h2>Tabela do Campeonato</h2>
-<table id="tabela">
-<thead>
-<tr><th>Pos</th><th>Piloto</th><th>Equipe</th><th>Pontos</th><th>Vitórias</th></tr>
-</thead>
-<tbody></tbody>
-</table>
+<header><div class="shell nav">
+<div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
+<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="results">▥ Resultados</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin">⚙ Administração</button></nav><span class="status">PORTAL OFICIAL • V3</span>
+</div></header>
+<main class="shell">
+<section id="home" class="page active">
+<div class="hero"><div class="heroMain"><div class="kicker">● PORTAL OFICIAL • ROOKIE LEAGUE MOTORSPORT</div><h1>A CORRIDA<br>COMEÇA <span>AQUI.</span></h1><p>Campeonatos, resultados, pilotos e conquistas. Acompanhe a história da Rookie League Motorsport.</p><div class="actions"><button class="btn" onclick="showPage('championships')">VER CAMPEONATOS ↗</button><button class="btn secondary" onclick="showPage('hall')">HALL DA FAMA</button></div></div>
+<div class="heroAside"><div class="asideTop"><span>CAMPEONATO EM DESTAQUE</span><span>RL MOTORSPORT</span></div><div><div class="bigNum">LMP2</div><h3>Temporada concluída</h3><p>5 eventos · 14 participantes · 100% concluído</p></div><span class="pill">CAMPEONATO FINALIZADO</span></div></div>
+<div class="metrics"><div class="metric"><div class="label">Campeonatos</div><strong id="metricChamps">05</strong></div><div class="metric"><div class="label">Pilotos cadastrados</div><strong id="metricDrivers">03</strong></div><div class="metric"><div class="label">Etapas lançadas</div><strong id="metricRaces">00</strong></div><div class="metric"><div class="label">Títulos no Hall</div><strong><em id="metricTitles">04</em></strong></div></div>
+<div class="sectionHead"><div><h2>Campeonatos</h2><p>Competições cadastradas na liga.</p></div><button class="textLink" onclick="showPage('championships')">VER TODOS →</button></div><div class="cards" id="homeCards"></div>
+<div class="sectionHead"><div><h2>Hall da Fama</h2><p>Os pilotos que já levantaram a taça.</p></div><button class="textLink" onclick="showPage('hall')">RANKING COMPLETO →</button></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Categoria</th></tr></thead><tbody id="homeHall"></tbody></table></div>
 </section>
-
-<section id="calendarioSec" class="hidden">
-<h2>Calendário</h2>
-<table>
-<thead>
-<tr><th>Etapa</th><th>Pista</th><th>Data</th><th>Status</th></tr>
-</thead>
-<tbody id="calendarioBody"></tbody>
-</table>
-
-<div id="mapContainer">
-    <img id="pistaMap" src="" alt="Mapa da Pista">
-    <div id="mapInfo"></div>
-</div>
+<section id="championships" class="page"><div class="subhead"><div class="kicker">COMPETIÇÕES OFICIAIS</div><h1>Campeonatos</h1><p>Visão geral das categorias e temporadas.</p></div><div class="sectionHead"><div><h2>Todos os campeonatos</h2><p>Dados iniciais importados do painel enviado.</p></div><div class="tools"><input id="champSearch" placeholder="Buscar campeonato..." oninput="renderAll()"></div></div><div class="cards" id="allCards"></div></section>
+<section id="results" class="page"><div class="subhead"><div class="kicker">CLASSIFICAÇÃO OFICIAL</div><h1>Resultados</h1><p>Resultados por etapa e classificação acumulada.</p></div><div class="sectionHead"><div><h2>Classificação do campeonato</h2><p>Os pontos são somados automaticamente a partir das etapas lançadas.</p></div><div class="tools"><select id="resultChamp" onchange="renderAll()"></select></div></div><div class="panel tableWrap"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th><th>Resultados</th></tr></thead><tbody id="standings"></tbody></table></div><div class="sectionHead"><div><h2>Etapas lançadas</h2><p>Histórico de resultados registrados.</p></div></div><div class="panel tableWrap"><table><thead><tr><th>Campeonato</th><th>Etapa</th><th>Data</th><th>Vencedor</th><th>Participantes</th><th>Ação</th></tr></thead><tbody id="raceRows"></tbody></table></div></section>
+<section id="drivers" class="page"><div class="subhead"><div class="kicker">GRID DE PILOTOS</div><h1>Pilotos</h1><p>Cadastro e histórico dos competidores.</p></div><div class="sectionHead"><div><h2>Pilotos cadastrados</h2><p>Use a administração para adicionar novos pilotos.</p></div><div class="tools"><input id="driverSearch" placeholder="Buscar piloto..." oninput="renderAll()"></div></div><div class="panel tableWrap"><table><thead><tr><th>Piloto</th><th>Equipe</th><th>Títulos</th><th>Pontos registrados</th></tr></thead><tbody id="driverRows"></tbody></table></div></section>
+<section id="hall" class="page"><div class="subhead"><div class="kicker">OS GRANDES NOMES DA LIGA</div><h1>Hall da Fama</h1><p>Uma homenagem aos campeões da Rookie League Motorsport.</p></div><div class="metrics"><div class="metric"><div class="label">Pilotos homenageados</div><strong id="hallDrivers">03</strong></div><div class="metric"><div class="label">Títulos registrados</div><strong><em id="hallTitles">04</em></strong></div><div class="metric"><div class="label">Categoria</div><strong>LMP2</strong></div><div class="metric"><div class="label">Liga</div><strong style="font-size:18px">ROOKIE</strong></div></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Temporadas</th></tr></thead><tbody id="hallRows"></tbody></table></div><p class="hint">Empates são mantidos na mesma posição. As temporadas podem ser informadas no cadastro de títulos.</p></section>
+<section id="admin" class="page"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button class="active" data-tab="pilotForm">＋ Cadastrar piloto</button><button data-tab="raceForm">＋ Criar etapa</button><button data-tab="resultForm">＋ Lançar resultado</button><button data-tab="titleForm">♛ Registrar título</button></div>
+<div id="pilotForm" class="panel" style="margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do piloto</label><input id="pilotName" placeholder="Ex.: Maria Silva"></div><div class="field"><label>Equipe (opcional)</label><input id="pilotTeam" placeholder="Nome da equipe"></div><div class="field"><label>Categoria principal</label><select id="pilotClass"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Outra</option></select></div></div><div class="formactions"><button class="btn" onclick="addDriver()">SALVAR PILOTO</button><span class="hint">Não duplique pilotos; confira a lista antes de salvar.</span></div></div>
+<div id="raceForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Campeonato</label><select id="raceChamp"></select></div><div class="field"><label>Nome / número da etapa</label><input id="raceName" placeholder="Ex.: Etapa 1 — Interlagos"></div><div class="field"><label>Data (opcional)</label><input id="raceDate" type="date"></div></div><div class="formactions"><button class="btn" onclick="addRace()">CRIAR ETAPA</button></div></div>
+<div id="resultForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Etapa</label><select id="resultRace"></select></div><div class="field"><label>Piloto</label><select id="resultDriver"></select></div><div class="field"><label>Posição final</label><input id="resultPosition" type="number" min="1" step="1" placeholder="1"></div><div class="field"><label>Pontos conquistados</label><input id="resultPoints" type="number" min="0" step="0.5" placeholder="25"></div></div><div class="formactions"><button class="btn" onclick="addResult()">LANÇAR RESULTADO</button><span class="hint">Informe os pontos conforme o regulamento da sua liga.</span></div></div>
+<div id="titleForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Piloto campeão</label><select id="titleDriver"></select></div><div class="field"><label>Campeonato</label><select id="titleChamp"></select></div><div class="field"><label>Temporada / ano</label><input id="titleSeason" placeholder="Ex.: Temporada 2026"></div></div><div class="formactions"><button class="btn" onclick="addTitle()">REGISTRAR TÍTULO</button></div></div>
+<div class="sectionHead"><div><h2>Gerenciar dados</h2><p>Faça backup, restaure dados ou limpe registros.</p></div><div class="actions"><button class="btn secondary small" onclick="exportData()">↓ EXPORTAR BACKUP</button><label class="btn secondary small" style="cursor:pointer">↑ IMPORTAR BACKUP<input id="importFile" type="file" accept=".json,application/json" onchange="importData(event)" hidden></label></div></div><div class="panel quick"><div class="rowline"><div><b>Dados do portal</b><small id="dataSummary">Carregando…</small></div><button class="btn danger small" onclick="resetData()">RESTAURAR DADOS INICIAIS</button></div><div class="hint">A restauração apaga os dados adicionados neste navegador. Exporte um backup antes. A importação substitui os dados atuais pelo conteúdo do arquivo selecionado.</div></div>
 </section>
-
-<!-- LOGIN -->
-<div id="login" class="login-box hidden">
-<h2>Login Administrador</h2>
-<input type="text" id="user" placeholder="Usuário">
-<input type="password" id="pass" placeholder="Senha">
-<button onclick="login()">Entrar</button>
-<p id="erro" style="color:#ff5555"></p>
-</div>
-
-<!-- ADMIN -->
-<section id="admin" class="hidden">
-<h2>Painel Administrativo</h2>
-<div class="tabs">
-<button class="tablink active" onclick="openTab('entry')">Entry List</button>
-<button class="tablink" onclick="openTab('calendarioAdmin')">Calendário</button>
-<button class="tablink" onclick="openTab('resultados')">Resultados</button>
-<button onclick="gerarImagemTabela()">Imagem Tabela</button>
-<button onclick="gerarImagemCalendario()">Imagem Calendário</button>
-</div>
-
-<div id="entry" class="tabcontent active">
-<input type="file" id="uploadEntryList" accept=".csv">
-<button onclick="processarEntryListCSV()">Upload Entry List</button>
-<button onclick="salvarPilotos()">Salvar no GitHub</button>
-</div>
-
-<div id="calendarioAdmin" class="tabcontent">
-<h3>Adicionar etapa</h3>
-<input type="number" id="etapaInput" placeholder="Etapa" style="width:60px">
-<input type="text" id="pistaInput" placeholder="Nome da Pista">
-<input type="date" id="dataInput">
-<input type="file" id="imgPistaInput" accept=".png">
-<button onclick="adicionarEtapa()">Adicionar Etapa</button>
-<button onclick="salvarCalendario()">Salvar no GitHub</button>
-</div>
-
-<div id="resultados" class="tabcontent">
-<select id="corridaSelecionada"></select>
-<input type="file" id="uploadArquivo" accept=".csv,.json">
-<button onclick="processarResultados()">Upload Resultados</button>
-</div>
-</section>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • VERSÃO 3.0</span></footer>
+</main>
 <script>
-const USER="samuel", PASS="3636";
-const pontos=[25,18,15,12,10,8,6,4,2,1];
-let pilotos = JSON.parse(localStorage.getItem('f1_2013_pilotos'))||[];
-let calendario = JSON.parse(localStorage.getItem('f1_2013_calendario'))||[];
-
-const pistaMap=document.getElementById("pistaMap");
-const mapInfo=document.getElementById("mapInfo");
-
-// Abas público
-function openPublicTab(tab){
-    document.querySelectorAll('#tabelaSec,#calendarioSec').forEach(s=>s.classList.add('hidden'));
-    document.getElementById(tab).classList.remove('hidden');
-    document.querySelectorAll('header .tablink').forEach(b=>b.classList.remove('active'));
-    event.target.classList.add('active');
+const seed={
+championships:[{id:'lmp2',name:'LMP2',events:5,entrants:14,progress:100},{id:'gt3',name:'GT3',events:4,entrants:16,progress:100},{id:'f2',name:'F2',events:4,entrants:16,progress:100},{id:'porsche',name:'Porsche Cup',events:9,entrants:16,progress:100},{id:'rookie',name:'Mine campeonato da rookie league',events:7,entrants:12,progress:100}],
+drivers:[{id:'d1',name:'Zé Carlos Senna',team:'',category:'LMP2'},{id:'d2',name:'Renato Camppos',team:'',category:'LMP2'},{id:'d3',name:'Samuel Ricardo',team:'',category:'LMP2'}],
+titles:[{driverId:'d1',champId:'lmp2',season:''},{driverId:'d1',champId:'lmp2',season:''},{driverId:'d2',champId:'lmp2',season:''},{driverId:'d3',champId:'lmp2',season:''}],
+races:[],results:[]
+};
+let db;try{db=JSON.parse(localStorage.getItem('rlm_portal_v2'))||structuredClone(seed)}catch(e){db=JSON.parse(JSON.stringify(seed))}
+function save(){localStorage.setItem('rlm_portal_v2',JSON.stringify(db));renderAll()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});renderAll()}
+document.querySelectorAll('nav [data-page]').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));['pilotForm','raceForm','resultForm','titleForm'].forEach(id=>document.getElementById(id).style.display=id===b.dataset.tab?'block':'none');refreshSelects()}));
+function champName(id){return db.championships.find(c=>c.id===id)?.name||'—'}
+function driverName(id){return db.drivers.find(d=>d.id===id)?.name||'Piloto removido'}
+function titleCount(id){return db.titles.filter(t=>t.driverId===id).length}
+function rankDrivers(){return [...db.drivers].map(d=>({...d,titles:titleCount(d.id)})).sort((a,b)=>b.titles-a.titles||a.name.localeCompare(b.name))}
+function podium(pos){return pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':pos}
+function card(c){return `<article class="champ"><div class="champTop"><span class="pill">${c.progress===100?'CONCLUÍDO':'EM ANDAMENTO'}</span><span style="color:var(--green);font-weight:900">RL / ${esc(c.name.toUpperCase())}</span></div><h3>${esc(c.name)}</h3><div class="meta">${c.events} eventos previstos · ${c.entrants} participantes</div><div class="progress"><span style="width:${c.progress}%"></span></div><div class="champFoot"><span>${c.progress}% concluído</span><button class="textLink" onclick="document.getElementById('resultChamp').value='${c.id}';showPage('results')">VER RESULTADOS →</button></div></article>`}
+function standings(champId){let arr=db.drivers.map(d=>{let rs=db.results.filter(r=>r.driverId===d.id&&db.races.some(x=>x.id===r.raceId&&x.champId===champId));return {id:d.id,name:d.name,points:rs.reduce((s,r)=>s+Number(r.points||0),0),starts:rs.length}}).filter(x=>x.starts).sort((a,b)=>b.points-a.points||b.starts-a.starts||a.name.localeCompare(b.name));return arr}
+function renderAll(){
+document.getElementById('homeCards').innerHTML=db.championships.slice(0,3).map(card).join('');
+let q=(document.getElementById('champSearch')?.value||'').toLowerCase();document.getElementById('allCards').innerHTML=db.championships.filter(c=>c.name.toLowerCase().includes(q)).map(card).join('')||'<div class="empty">Nenhum campeonato encontrado.</div>';
+let ranks=rankDrivers(),position=0,last=-1;let hall=ranks.map((d,i)=>{if(d.titles!==last)position=i+1;last=d.titles;return `<tr><td class="rank">${podium(position)}</td><td class="driver">${esc(d.name)}</td><td class="count">${d.titles}</td><td>${esc(d.category||'—')}</td></tr>`}).join('');
+document.getElementById('homeHall').innerHTML=hall;document.getElementById('hallRows').innerHTML=ranks.map((d,i)=>`<tr><td class="rank">${podium(i===0?1:(d.titles===ranks[0]?.titles?1:i+1))}</td><td class="driver">${esc(d.name)}</td><td class="count">${d.titles}</td><td>${db.titles.filter(t=>t.driverId===d.id).map(t=>esc(t.season||champName(t.champId))).join(', ')||'—'}</td></tr>`).join('');
+let dq=(document.getElementById('driverSearch')?.value||'').toLowerCase();document.getElementById('driverRows').innerHTML=db.drivers.filter(d=>d.name.toLowerCase().includes(dq)).map(d=>`<tr><td class="driver">${esc(d.name)}</td><td>${esc(d.team||'—')}</td><td class="count">${titleCount(d.id)}</td><td>${db.results.filter(r=>r.driverId===d.id).reduce((s,r)=>s+Number(r.points||0),0)}</td></tr>`).join('')||'<tr><td colspan="4">Nenhum piloto cadastrado.</td></tr>';
+let selected=document.getElementById('resultChamp').value||db.championships[0]?.id;document.getElementById('resultChamp').innerHTML=db.championships.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');if(db.championships.some(c=>c.id===selected))document.getElementById('resultChamp').value=selected;else selected=db.championships[0]?.id;
+let st=standings(selected);document.getElementById('standings').innerHTML=st.map((x,i)=>`<tr><td class="rank">${podium(i+1)}</td><td class="driver">${esc(x.name)}</td><td>${x.starts}</td><td class="count">${x.points}</td><td><button class="textLink" onclick="showPage('admin');document.querySelector('[data-tab=resultForm]').click()">LANÇAR / AJUSTAR →</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Ainda não há resultados lançados para este campeonato.</td></tr>';
+document.getElementById('raceRows').innerHTML=db.races.map(r=>{let res=db.results.filter(x=>x.raceId===r.id).sort((a,b)=>a.position-b.position);return `<tr><td>${esc(champName(r.champId))}</td><td>${esc(r.name)}</td><td>${esc(r.date||'—')}</td><td>${res.length?esc(driverName(res[0].driverId)):'Aguardando resultados'}</td><td>${res.length}</td><td><button class="btn danger small" onclick="deleteRace('${r.id}')">EXCLUIR</button></td></tr>`}).join('')||'<tr><td colspan="6" class="empty">Nenhuma etapa cadastrada ainda.</td></tr>';
+document.getElementById('metricChamps').textContent=String(db.championships.length).padStart(2,'0');document.getElementById('metricDrivers').textContent=String(db.drivers.length).padStart(2,'0');document.getElementById('metricRaces').textContent=String(db.races.length).padStart(2,'0');document.getElementById('metricTitles').textContent=db.titles.length;document.getElementById('hallDrivers').textContent=db.drivers.length;document.getElementById('hallTitles').textContent=db.titles.length;
+document.getElementById('dataSummary').textContent=`${db.drivers.length} pilotos · ${db.races.length} etapas · ${db.results.length} resultados · ${db.titles.length} títulos`;
+refreshSelects();
 }
+function fillSelect(id,items,placeholder){let el=document.getElementById(id),old=el.value;el.innerHTML=(placeholder?`<option value="">${placeholder}</option>`:'')+items.map(x=>`<option value="${x.value}">${esc(x.label)}</option>`).join('');if(items.some(x=>x.value===old))el.value=old}
+function refreshSelects(){fillSelect('raceChamp',db.championships.map(c=>({value:c.id,label:c.name})));fillSelect('titleChamp',db.championships.map(c=>({value:c.id,label:c.name})));fillSelect('titleDriver',db.drivers.map(d=>({value:d.id,label:d.name})), 'Selecione o piloto');fillSelect('resultDriver',db.drivers.map(d=>({value:d.id,label:d.name})), 'Selecione o piloto');fillSelect('resultRace',db.races.map(r=>({value:r.id,label:champName(r.champId)+' — '+r.name})), 'Selecione a etapa')}
+function uid(){return 'id'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function addDriver(){let name=document.getElementById('pilotName').value.trim();if(!name)return alert('Informe o nome do piloto.');if(db.drivers.some(d=>d.name.toLowerCase()===name.toLowerCase()))return alert('Este piloto já está cadastrado.');db.drivers.push({id:uid(),name,team:document.getElementById('pilotTeam').value.trim(),category:document.getElementById('pilotClass').value});document.getElementById('pilotName').value='';document.getElementById('pilotTeam').value='';save();alert('Piloto cadastrado!')}
+function addRace(){let champId=document.getElementById('raceChamp').value,name=document.getElementById('raceName').value.trim();if(!champId||!name)return alert('Selecione o campeonato e informe o nome da etapa.');db.races.push({id:uid(),champId,name,date:document.getElementById('raceDate').value});document.getElementById('raceName').value='';document.getElementById('raceDate').value='';save();alert('Etapa criada!')}
+function addResult(){let raceId=document.getElementById('resultRace').value,driverId=document.getElementById('resultDriver').value,pos=Number(document.getElementById('resultPosition').value),points=Number(document.getElementById('resultPoints').value);if(!raceId||!driverId||!Number.isInteger(pos)||pos<1||!Number.isFinite(points)||points<0)return alert('Preencha etapa, piloto, posição e pontos corretamente.');if(db.results.some(r=>r.raceId===raceId&&r.driverId===driverId))return alert('Este piloto já tem resultado nesta etapa.');db.results.push({id:uid(),raceId,driverId,position:pos,points});document.getElementById('resultPosition').value='';document.getElementById('resultPoints').value='';save();alert('Resultado lançado! A classificação foi atualizada.')}
+function addTitle(){let driverId=document.getElementById('titleDriver').value,champId=document.getElementById('titleChamp').value,season=document.getElementById('titleSeason').value.trim();if(!driverId||!champId)return alert('Selecione piloto e campeonato.');db.titles.push({driverId,champId,season});document.getElementById('titleSeason').value='';save();alert('Título registrado no Hall da Fama!')}
+function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='rookie-league-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function resetData(){if(!confirm('Isso apagará todos os cadastros e resultados adicionados neste navegador. Continuar?'))return;db=JSON.parse(JSON.stringify(seed));save()}
 
-// Login
-function mostrarLogin(){ document.getElementById("login").classList.toggle("hidden"); }
-function login(){
-    if(user.value===USER && pass.value===PASS){ loginBox(); } 
-    else erro.innerText="Login inválido";
+function deleteRace(id){
+  const race=db.races.find(r=>r.id===id);if(!race)return;
+  if(!confirm(`Excluir "${race.name}" e todos os resultados desta etapa?`))return;
+  db.races=db.races.filter(r=>r.id!==id);db.results=db.results.filter(r=>r.raceId!==id);save();
 }
-function loginBox(){
-    document.getElementById("login").classList.add("hidden");
-    document.getElementById("admin").classList.remove("hidden");
+function importData(event){
+  const file=event.target.files?.[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const data=JSON.parse(reader.result);
+      if(!data||!Array.isArray(data.championships)||!Array.isArray(data.drivers)||!Array.isArray(data.titles)||!Array.isArray(data.races)||!Array.isArray(data.results))throw new Error('Estrutura inválida');
+      if(!confirm('Importar este backup vai substituir todos os dados atuais. Continuar?'))return;
+      db=data;save();alert('Backup importado com sucesso!');
+    }catch(e){alert('Não foi possível importar. Verifique se o arquivo é um backup válido da Rookie League.');}
+    event.target.value='';
+  };
+  reader.readAsText(file);
 }
-
-// Admin abas
-function openTab(tab){
-    document.querySelectorAll(".tabcontent").forEach(t=>t.classList.remove("active"));
-    document.getElementById(tab).classList.add("active");
-    document.querySelectorAll("#admin .tablink").forEach(b=>b.classList.remove("active"));
-    event.target.classList.add("active");
-}
-
-// Atualiza tabela e calendário
-function atualizarTabela(){
-    const tbody=document.querySelector("#tabela tbody");
-    tbody.innerHTML="";
-    pilotos.sort((a,b)=>b.pontos-a.pontos);
-    pilotos.forEach((p,i)=>{
-        const tr=document.createElement("tr");
-        tr.className = i===0 ? "lider" : "";
-        tr.innerHTML=`<td>${i+1}</td><td>${p.nome}</td><td>${p.equipe}</td><td>${p.pontos}</td><td>${p.vit}</td>`;
-        tbody.appendChild(tr);
-    });
-}
-
-function atualizarCalendario(){
-    const body=document.getElementById("calendarioBody");
-    body.innerHTML="";
-    calendario.forEach(c=>{
-        body.innerHTML+=`<tr><td>${c.etapa}</td><td>${c.pista}</td><td>${c.data}</td><td>${c.status}</td></tr>`;
-    });
-    // Mostra o último mapa de pista
-    const last = calendario[calendario.length-1];
-    if(last && last.imgBase64){ pistaMap.src=last.imgBase64; mapInfo.innerText=`Etapa ${last.etapa} - ${last.pista} | ${last.status}`;}
-}
-
-// Salvamento local
-function salvarDados(){
-    localStorage.setItem('f1_2013_pilotos',JSON.stringify(pilotos));
-    localStorage.setItem('f1_2013_calendario',JSON.stringify(calendario));
-}
-
-// Upload CSV Entry List
-function processarEntryListCSV(){
-    const f=uploadEntryList.files[0];
-    if(!f) return;
-    const r=new FileReader();
-    r.onload=e=>{
-        pilotos=[];
-        e.target.result.split("\n").forEach(l=>{
-            const [nome,equipe]=l.split(",");
-            if(nome) pilotos.push({nome:nome.trim(),equipe:equipe||"",pontos:0,vit:0});
-        });
-        salvarDados(); atualizarTabela(); alert("Entry List carregada");
-    };
-    r.readAsText(f);
-}
-
-// Adicionar etapa
-function adicionarEtapa(){
-    const etapa=Number(etapaInput.value);
-    const pista=pistaInput.value.trim();
-    const data=dataInput.value;
-    const imgFile=imgPistaInput.files[0];
-    if(!etapa||!pista||!data){ alert("Preencha todos os campos"); return; }
-    if(imgFile){
-        const reader=new FileReader();
-        reader.onload=e=>{
-            calendario.push({etapa,pista,data,status:"Pendente",imgBase64:e.target.result});
-            salvarDados(); atualizarCalendario();
-            etapaInput.value=""; pistaInput.value=""; dataInput.value=""; imgPistaInput.value="";
-        }
-        reader.readAsDataURL(imgFile);
-    } else {
-        calendario.push({etapa,pista,data,status:"Pendente"});
-        salvarDados(); atualizarCalendario();
-    }
-}
-
-// Processar resultados
-function processarResultados(){
-    const f=uploadArquivo.files[0];
-    if(!f) return;
-    const r=new FileReader();
-    r.onload=e=>{
-        e.target.result.split("\n").forEach((l,i)=>{
-            const [nome]=l.split(",");
-            const p=pilotos.find(x=>x.nome===nome);
-            if(p){ p.pontos+=pontos[i]||0; if(i===0)p.vit++; }
-        });
-        salvarDados(); atualizarTabela(); atualizarCalendario();
-    }
-    r.readAsText(f);
-}
-
-// ===== HTML2Canvas para imagens =====
-function gerarImagemTabela(){
-    html2canvas(document.getElementById("tabela")).then(canvas=>{
-        const link=document.createElement("a");
-        link.href=canvas.toDataURL(); link.download="tabela.png"; link.click();
-    });
-}
-function gerarImagemCalendario(){
-    html2canvas(document.getElementById("calendarioSec")).then(canvas=>{
-        const link=document.createElement("a");
-        link.href=canvas.toDataURL(); link.download="calendario.png"; link.click();
-    });
-}
-
-// Inicialização
-atualizarTabela(); atualizarCalendario();
-</script>
-
-</body>
-</html>
+renderAll();
+</script></body></html>
