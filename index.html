@@ -545,7 +545,7 @@ async function submitEntryAuth(){
   if(authMode==='register') result=await supabaseClient.auth.signUp({email,password:pass,options:{data:{name,display_name:name}}});
   else result=await supabaseClient.auth.signInWithPassword({email,password:pass});
   if(result.error)throw result.error;
-  if(authMode==='register'&&!result.data.session){document.getElementById('entryMessage').textContent='Cadastro criado. Confirme seu e-mail pelo link enviado e depois entre.';return}
+  if(authMode==='register'&&!result.data.session){document.getElementById('entryMessage').textContent='Cadastro de piloto criado! Seu perfil de piloto e carteira R (SR 2,50) já foram provisionados. Confirme seu e-mail pelo link enviado e depois entre.';return}
   cloudUser=result.data.user;await refreshCloudRole();await loadCloudData();await afterCloudLogin();
  }catch(e){document.getElementById('entryMessage').textContent='Não foi possível autenticar: '+(e.message||e)}
  finally{btn.disabled=false;btn.textContent=authMode==='register'?'CRIAR CONTA':'ENTRAR'}
@@ -553,7 +553,7 @@ async function submitEntryAuth(){
 async function submitAuth(){
  const name=document.getElementById('authName').value.trim(),email=document.getElementById('authEmail').value.trim(),pass=document.getElementById('authPassword').value;
  if(!email||pass.length<6||(authMode==='register'&&!name))return alert('Informe os dados solicitados. A senha deve ter pelo menos 6 caracteres.');
- try{let result;if(authMode==='register')result=await supabaseClient.auth.signUp({email,password:pass,options:{data:{name,display_name:name}}});else result=await supabaseClient.auth.signInWithPassword({email,password:pass});if(result.error)throw result.error;cloudUser=result.data.user;if(authMode==='register'&&!result.data.session){alert('Cadastro criado. Confirme seu e-mail antes de entrar.');return}await refreshCloudRole();await loadCloudData();await afterCloudLogin()}catch(e){alert('Não foi possível autenticar: '+(e.message||e))}
+ try{let result;if(authMode==='register')result=await supabaseClient.auth.signUp({email,password:pass,options:{data:{name,display_name:name}}});else result=await supabaseClient.auth.signInWithPassword({email,password:pass});if(result.error)throw result.error;cloudUser=result.data.user;if(authMode==='register'&&!result.data.session){alert('Cadastro de piloto criado! Seu perfil e carteira R (SR 2,50) já foram provisionados. Confirme seu e-mail antes de entrar.');return}await refreshCloudRole();await loadCloudData();await afterCloudLogin()}catch(e){alert('Não foi possível autenticar: '+(e.message||e))}
 }
 async function refreshCloudRole(){
  cloudIsAdmin=false;if(!cloudUser)return;
