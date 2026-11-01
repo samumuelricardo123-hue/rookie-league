@@ -149,6 +149,15 @@ input[type=file]{max-width:0}
 .champUrlField{grid-column:1/-1}.champUrlField small{display:block;color:var(--muted,#9aa99f);font-size:12px;margin-top:6px}
 .emperorImportHelp{margin-top:10px;padding:11px 13px;border:1px solid var(--line,#29352e);border-radius:9px;color:var(--muted,#9aa99f);font-size:12px;line-height:1.5}
 .emperorImportHelp b{color:var(--accent,#a6ff00)}
+
+.license-card{margin-top:14px;padding:18px;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:linear-gradient(135deg,rgba(35,45,60,.8),rgba(12,17,25,.95))}
+.license-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px}
+.license-stat{padding:13px;border-radius:10px;background:rgba(255,255,255,.055)}
+.license-stat small{display:block;color:var(--muted,#9aa5b4);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.license-stat strong{display:block;font-size:25px;margin-top:5px}
+.license-progress{height:8px;border-radius:20px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:8px}
+.license-progress span{display:block;height:100%;background:#e5b84b}
+@media(max-width:650px){.license-grid{grid-template-columns:1fr}}
 </style></head>
 <body>
 
@@ -220,7 +229,7 @@ input[type=file]{max-width:0}
 <section id="hall" class="page"><div class="subhead"><div class="kicker">OS GRANDES NOMES DA LIGA</div><h1>Hall da Fama</h1><p>Uma homenagem aos campeões da Rookie League Motorsport.</p></div><div class="metrics"><div class="metric"><div class="label">Pilotos homenageados</div><strong id="hallDrivers">03</strong></div><div class="metric"><div class="label">Títulos registrados</div><strong><em id="hallTitles">04</em></strong></div><div class="metric"><div class="label">Categoria</div><strong>LMP2</strong></div><div class="metric"><div class="label">Liga</div><strong style="font-size:18px">ROOKIE</strong></div></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Temporadas</th></tr></thead><tbody id="hallRows"></tbody></table></div><p class="hint">Empates são mantidos na mesma posição. As temporadas podem ser informadas no cadastro de títulos.</p></section>
 <section id="admin" class="page"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button class="active" data-tab="pilotForm">＋ Cadastrar piloto</button><button data-tab="champForm">＋ Cadastrar campeonato</button><button data-tab="trackForm">＋ Cadastrar pista</button><button data-tab="raceForm">＋ Criar etapa</button><button data-tab="resultForm">＋ Lançar resultado</button><button data-tab="titleForm">♛ Registrar título</button></div>
 <div id="champForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do campeonato</label><input id="newChampName" placeholder="Ex.: Rookie League GT3"></div><div class="field"><label>Temporada / ano</label><input id="newChampSeason" placeholder="Ex.: Temporada 2026"></div><div class="field"><label>Categoria</label><select id="newChampCategory"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select></div><div class="formactions"><button class="btn" onclick="addChampionship()">CADASTRAR CAMPEONATO</button><span class="hint">Depois de cadastrar, crie as etapas e defina pista, data e horário de cada corrida.</span></div></div>
-<div id="pilotForm" class="panel" style="margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do piloto</label><input id="pilotName" placeholder="Ex.: Maria Silva"></div><div class="field"><label>Equipe (opcional)</label><input id="pilotTeam" placeholder="Nome da equipe"></div><div class="field"><label>Categoria principal</label><select id="pilotClass"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Outra</option></select></div></div><div class="formactions"><button class="btn" onclick="addDriver()">SALVAR PILOTO</button><span class="hint">Não duplique pilotos; confira a lista antes de salvar.</span></div></div>
+<div id="pilotForm" class="panel" style="margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do piloto</label><input id="pilotName" placeholder="Ex.: Maria Silva"></div><div class="field"><label>Equipe (opcional)</label><input id="pilotTeam" placeholder="Nome da equipe"></div><div class="field"><label>E-mail da conta do piloto</label><input id="pilotEmail" type="email" placeholder="email usado no login"></div><div class="field"><label>Categoria principal</label><select id="pilotClass"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Outra</option></select></div></div><div class="formactions"><button class="btn" onclick="addDriver()">SALVAR PILOTO</button><span class="hint">Não duplique pilotos; confira a lista antes de salvar.</span></div></div>
 <div id="trackForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome da pista / circuito</label><input id="trackName" placeholder="Ex.: Autódromo de Interlagos"></div><div class="field"><label>País</label><input id="trackCountry" placeholder="Brasil"></div><div class="field"><label>Traçado / configuração (opcional)</label><input id="trackLayout" placeholder="Ex.: GP — 4,3 km"></div></div><div class="formactions"><button class="btn" onclick="addTrack()">CADASTRAR PISTA</button></div><div id="trackList" class="tracklist"></div></div>
 <div id="raceForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Campeonato</label><select id="raceChamp"></select></div><div class="field"><label>Nome / número da etapa</label><input id="raceName" placeholder="Ex.: Etapa 1 — Interlagos"></div><div class="field"><label>Data da corrida</label><input id="raceDate" type="date"></div><div class="field"><label>Horário de início</label><input id="raceTime" type="time"></div><div class="field"><label>Pista</label><select id="raceTrack"></select></div></div><div class="formactions"><button class="btn" onclick="addRace()">CRIAR ETAPA</button></div></div>
 <div id="resultForm" class="panel resultEntryPanel" style="display:none;margin-top:13px">
@@ -234,7 +243,20 @@ input[type=file]{max-width:0}
 <div class="formactions"><button class="btn" onclick="addResult()">SALVAR RESULTADOS</button><span class="hint">Deixe vazias as posições que não participaram. Os resultados existentes nesta etapa serão preservados; pilotos já lançados não serão duplicados.</span></div>
 </div>
 <div id="titleForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Piloto campeão</label><select id="titleDriver"></select></div><div class="field"><label>Campeonato</label><select id="titleChamp"></select></div><div class="field"><label>Temporada / ano</label><input id="titleSeason" placeholder="Ex.: Temporada 2026"></div></div><div class="formactions"><button class="btn" onclick="addTitle()">REGISTRAR TÍTULO</button></div></div>
-<div id="registrationAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Inscrições dos campeonatos</h2><p>Analise as solicitações dos pilotos e aprove ou recuse a participação.</p></div><button class="btn secondary small" onclick="loadRegistrationRequests()">↻ ATUALIZAR</button></div><div id="registrationRequestRows"><p class="hint">Carregando inscrições…</p></div></div>\n<div class="sectionHead"><div><h2>Gerenciar dados</h2><p>Faça backup, restaure dados ou limpe registros.</p></div><div class="actions"><button class="btn secondary small" onclick="exportData()">↓ EXPORTAR BACKUP</button><label class="btn secondary small" style="cursor:pointer">↑ IMPORTAR BACKUP<input id="importFile" type="file" accept=".json,application/json" onchange="importData(event)" hidden></label></div></div><div class="panel quick"><div class="rowline"><div><b>Dados do portal</b><small id="dataSummary">Carregando…</small></div><button class="btn danger small" onclick="resetData()">RESTAURAR DADOS INICIAIS</button></div><div class="hint">A restauração apaga os dados adicionados neste navegador. Exporte um backup antes. A importação substitui os dados atuais pelo conteúdo do arquivo selecionado.</div></div>
+<div id="registrationAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Inscrições dos campeonatos</h2><p>Analise as solicitações dos pilotos e aprove ou recuse a participação.</p></div><button class="btn secondary small" onclick="loadRegistrationRequests()">↻ ATUALIZAR</button></div><div id="registrationRequestRows"><p class="hint">Carregando inscrições…</p></div>
+<div id="licenseAdmin" class="panel" style="margin-top:13px">
+ <div class="sectionHead"><div><h2>Carteiras e Safety Rating</h2><p>Avalie cada piloto após a corrida. A nota atualiza o SR automaticamente.</p></div><button class="btn secondary small" onclick="loadLicenseAdmin()">↻ ATUALIZAR</button></div>
+ <div class="formgrid">
+  <div class="field"><label>Piloto</label><select id="licenseDriver"></select></div>
+  <div class="field"><label>Campeonato</label><select id="licenseChamp" onchange="updateLicenseRaceOptions()"></select></div>
+  <div class="field"><label>Etapa / corrida</label><select id="licenseRace"></select></div>
+  <div class="field"><label>Avaliação pós-corrida</label><select id="licenseScore"><option value="5">5 — Excelente (+0,20 SR)</option><option value="4">4 — Boa (+0,10 SR)</option><option value="3" selected>3 — Neutra (sem alteração)</option><option value="2">2 — Ruim (−0,10 SR)</option><option value="1">1 — Muito ruim (−0,20 SR)</option></select></div>
+ </div>
+ <div class="formactions"><button class="btn" onclick="submitLicenseEvaluation()">SALVAR AVALIAÇÃO</button></div>
+ <div id="licenseAdminStatus" class="hint">O piloto precisa ter e-mail cadastrado e vinculado à conta para consultar sua carteira.</div>
+ <div class="tableWrap" style="margin-top:12px"><table><thead><tr><th>Piloto</th><th>Carteira</th><th>SR</th><th>Participação no campeonato</th><th>Próxima classe</th></tr></thead><tbody id="licenseAdminRows"></tbody></table></div>
+</div>
+</div>\n<div class="sectionHead"><div><h2>Gerenciar dados</h2><p>Faça backup, restaure dados ou limpe registros.</p></div><div class="actions"><button class="btn secondary small" onclick="exportData()">↓ EXPORTAR BACKUP</button><label class="btn secondary small" style="cursor:pointer">↑ IMPORTAR BACKUP<input id="importFile" type="file" accept=".json,application/json" onchange="importData(event)" hidden></label></div></div><div class="panel quick"><div class="rowline"><div><b>Dados do portal</b><small id="dataSummary">Carregando…</small></div><button class="btn danger small" onclick="resetData()">RESTAURAR DADOS INICIAIS</button></div><div class="hint">A restauração apaga os dados adicionados neste navegador. Exporte um backup antes. A importação substitui os dados atuais pelo conteúdo do arquivo selecionado.</div></div>
 </section>
 <section id="account" class="page"><div class="subhead"><div class="kicker">ÁREA DO COMPETIDOR</div><h1>Conta do piloto</h1><p>Entre com sua conta segura para acessar seu perfil e as ferramentas autorizadas.</p></div>
 <div class="panel authbox"><div class="authswitch"><button class="btn small" id="loginMode" onclick="setAuthMode('login')">ENTRAR</button><button class="btn secondary small" id="registerMode" onclick="setAuthMode('register')">CRIAR CADASTRO</button></div>
@@ -242,7 +264,7 @@ input[type=file]{max-width:0}
 <div class="field" style="margin-top:12px"><label>E-mail</label><input id="authEmail" type="email" placeholder="voce@email.com"></div>
 <div class="field" style="margin-top:12px"><label>Senha</label><input id="authPassword" type="password" placeholder="Mínimo de 6 caracteres"></div>
 <div class="formactions"><button class="btn" id="authSubmit" onclick="submitAuth()">ENTRAR</button><button class="btn secondary" onclick="logoutPilot()" id="logoutBtn" style="display:none">SAIR</button></div>
-<p class="mutednote" id="cloudStatus">Conectando ao banco de dados seguro…</p><div id="adminCloudTools" style="display:none;margin-top:14px"><button class="btn small" onclick="migrateLocalDataToCloud()">ENVIAR DADOS DESTE NAVEGADOR PARA O SUPABASE</button><p class="mutednote">Use uma vez para importar os dados locais existentes. O envio adiciona/atualiza registros e não apaga dados remotos.</p></div>
+<p class="mutednote" id="cloudStatus">Conectando ao banco de dados seguro…</p>
 <div id="pilotProfile"></div></div></section>
 <footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • SUPABASE • ACESSO DE PILOTOS</span></footer>
 </main>
@@ -541,7 +563,7 @@ async function refreshCloudRole(){
 async function loadCloudData(){
  const specs={
   championships:{select:'id,name,season,category,events,entrants,progress,rules,emperor_url',map:r=>({...r,id:String(r.id),emperorUrl:r.emperor_url||((/porsche cup/i.test(r.name||''))?'https://rookieleague.emperorservers.com/championship/9329f0f7-3e9d-4f20-938f-371bc8947a34':'')})},
-  drivers:{select:'id,name,team,category',map:r=>({...r,id:String(r.id)})},
+  drivers:{select:'id,name,team,category,email',map:r=>({...r,id:String(r.id),email:r.email||''})},
   tracks:{select:'id,name,country',map:r=>({...r,id:String(r.id),layout:null})},
   races:{select:'id,championship_id,name,race_date,race_time,track_id',map:r=>({id:String(r.id),champId:String(r.championship_id),name:r.name,date:r.race_date||'',time:r.race_time||'',trackId:r.track_id?String(r.track_id):''})},
   results:{select:'id,race_id,driver_id,position,points',map:r=>({id:String(r.id),raceId:String(r.race_id),driverId:String(r.driver_id),position:Number(r.position||0),points:Number(r.points||0)})},
@@ -564,22 +586,113 @@ async function afterCloudLogin(){
  document.getElementById('adminNav').hidden=!cloudIsAdmin;
  document.getElementById('authSubmit').style.display='none';
  document.getElementById('logoutBtn').style.display='inline-flex';
+ document.querySelector('.authswitch').style.display='none';
+ document.getElementById('authNameField').style.display='none';
+ document.getElementById('authEmail').closest('.field').style.display='none';
+ document.getElementById('authPassword').closest('.field').style.display='none';
+ document.getElementById('cloudStatus').style.display='none';
+ document.getElementById('pilotProfile').innerHTML='';
  document.getElementById('entryGate').classList.add('hidden');
  document.getElementById('accountNav').textContent=cloudIsAdmin?'♙ Minha conta • Admin':'♙ Minha conta';
  document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#trackForm,#raceForm,#resultForm,#titleForm').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
- document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';
- if(cloudIsAdmin)loadRegistrationRequests();
- loggedPilotId=null;renderProfile();showPage('home');
+ document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';document.getElementById('licenseAdmin').style.display=cloudIsAdmin?'':'none';
+ if(cloudIsAdmin){loadRegistrationRequests();loadLicenseAdmin();}
+ loggedPilotId=null;await renderProfile();showPage('home');
 }
-function renderProfile(){const box=document.getElementById('pilotProfile');if(!box)return;box.innerHTML=`<div class="profilebox"><h2>Conta autenticada</h2><p>${esc(cloudUser?.email||'')}</p><p>${cloudIsAdmin?'Administrador da Rookie League':'Acesso de piloto'}</p></div>`}
+
+const LICENSE_CLASSES=['R','D','C','B','A'];
+function srDelta(score){return ({5:.20,4:.10,3:0,2:-.10,1:-.20})[Number(score)]||0}
+function nextLicenseClass(cls){const i=LICENSE_CLASSES.indexOf(cls||'R');return LICENSE_CLASSES[Math.min(LICENSE_CLASSES.length-1,Math.max(0,i)+1)]}
+function updateLicenseRaceOptions(){const champId=document.getElementById('licenseChamp')?.value,el=document.getElementById('licenseRace');if(!el)return;const races=db.races.filter(r=>String(r.champId)===String(champId));el.innerHTML='<option value="">Selecione a etapa</option>'+races.map(r=>`<option value="${esc(r.id)}">${esc(r.name)}</option>`).join('')}
+async function ensureDriverLicense(driverId){
+ let {data,error}=await supabaseClient.from('driver_licenses').select('*').eq('driver_id',String(driverId)).maybeSingle();
+ if(error)throw error;
+ if(!data){if(!cloudIsAdmin)return {driver_id:String(driverId),license_class:'R',safety_rating:2.50};const {data:created,error:insertError}=await supabaseClient.from('driver_licenses').insert({driver_id:String(driverId),license_class:'R',safety_rating:2.50}).select('*').single();if(insertError)throw insertError;data=created}
+ return data;
+}
+function completionFor(driverId,champId){
+ const stages=db.races.filter(r=>String(r.champId)===String(champId));
+ const completed=stages.filter(r=>db.results.some(x=>String(x.raceId)===String(r.id)&&String(x.driverId)===String(driverId))).length;
+ return {completed,total:stages.length,pct:stages.length?Math.round(completed/stages.length*100):0};
+}
+async function loadLicenseAdmin(){
+ if(!cloudIsAdmin)return;
+ const driverSel=document.getElementById('licenseDriver'),champSel=document.getElementById('licenseChamp');
+ if(!driverSel||!champSel)return;
+ driverSel.innerHTML='<option value="">Selecione o piloto</option>'+db.drivers.map(d=>`<option value="${esc(d.id)}">${esc(d.name)}</option>`).join('');
+ champSel.innerHTML='<option value="">Selecione o campeonato</option>'+db.championships.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+ updateLicenseRaceOptions();
+ const body=document.getElementById('licenseAdminRows');
+ try{
+  const {data,error}=await supabaseClient.from('driver_licenses').select('driver_id,license_class,safety_rating');
+  if(error)throw error;
+  body.innerHTML=db.drivers.map(d=>{const l=(data||[]).find(x=>String(x.driver_id)===String(d.id)),champ=db.championships[0],p=champ?completionFor(d.id,champ.id):{pct:0,completed:0,total:0};return `<tr><td>${esc(d.name)}<div class="mutednote">${esc(d.email||'E-mail não vinculado')}</div></td><td>${esc(l?.license_class||'R')}</td><td>${Number(l?.safety_rating??2.5).toFixed(2)}</td><td>${p.completed}/${p.total} (${p.pct}%) — ${esc(champ?.name||'Sem campeonato')}</td><td>${esc(nextLicenseClass(l?.license_class||'R'))}</td></tr>`}).join('');
+  document.getElementById('licenseAdminStatus').textContent='Carteiras carregadas. A promoção ocorre quando o piloto atinge 80% de participação e SR mínimo de 3,00.';
+ }catch(e){body.innerHTML=`<tr><td colspan="5">Erro ao carregar carteiras: ${esc(e.message||e)}. Execute o SQL de configuração no Supabase.</td></tr>`}
+}
+async function submitLicenseEvaluation(){
+ if(!cloudIsAdmin)return alert('Apenas o administrador pode avaliar pilotos.');
+ const driverId=document.getElementById('licenseDriver').value,champId=document.getElementById('licenseChamp').value,raceId=document.getElementById('licenseRace').value,score=Number(document.getElementById('licenseScore').value);
+ if(!driverId||!champId||!raceId)return alert('Selecione piloto, campeonato e etapa.');
+ const driver=db.drivers.find(d=>String(d.id)===String(driverId)),race=db.races.find(r=>String(r.id)===String(raceId));
+ if(!driver||!driver.email)return alert('Cadastre o e-mail de login deste piloto no cadastro de pilotos antes de avaliar.');
+ if(!race||String(race.champId)!==String(champId))return alert('A etapa não pertence ao campeonato selecionado.');
+ try{
+  const license=await ensureDriverLicense(driverId),newSR=Math.max(0,Math.min(4.99,Math.round((Number(license.safety_rating)+srDelta(score))*100)/100));
+  const {error:evalError}=await supabaseClient.from('license_evaluations').insert({driver_id:String(driverId),championship_id:String(champId),race_id:String(raceId),score,sr_change:srDelta(score),admin_user_id:cloudUser.id});
+  if(evalError)throw evalError;
+  const {error:updateError}=await supabaseClient.from('driver_licenses').update({safety_rating:newSR,updated_at:new Date().toISOString()}).eq('driver_id',String(driverId));
+  if(updateError)throw updateError;
+  let promotionMsg='Sem promoção nesta avaliação.';
+  const p=completionFor(driverId,champId);
+  if(p.total>0&&(p.completed/p.total)>=0.80&&newSR>=3.00){
+   const {data:already,error:checkErr}=await supabaseClient.from('license_promotions').select('id').eq('driver_id',String(driverId)).eq('championship_id',String(champId)).maybeSingle();
+   if(checkErr)throw checkErr;
+   if(!already&&license.license_class!=='A'){
+    const promoted=nextLicenseClass(license.license_class);
+    const {error:promErr}=await supabaseClient.from('license_promotions').insert({driver_id:String(driverId),championship_id:String(champId),from_class:license.license_class,to_class:promoted,completion_pct:p.pct,safety_rating:newSR});
+    if(promErr)throw promErr;
+    const {error:classErr}=await supabaseClient.from('driver_licenses').update({license_class:promoted,updated_at:new Date().toISOString()}).eq('driver_id',String(driverId));
+    if(classErr)throw classErr;
+    promotionMsg=` Promoção concedida: ${license.license_class} → ${promoted}.`;
+   }
+  }
+  alert(`Avaliação salva! SR: ${Number(license.safety_rating).toFixed(2)} → ${newSR.toFixed(2)}.${promotionMsg}`);
+  await loadLicenseAdmin();await renderProfile();
+ }catch(e){alert('Não foi possível salvar a avaliação: '+(e.message||e)+'. Confira se executou o SQL de configuração no Supabase.')}
+}
+
+async function renderProfile(){
+ const box=document.getElementById('pilotProfile');if(!box)return;
+ if(!cloudUser){box.innerHTML='';return}
+ box.innerHTML='<p class="hint">Carregando sua carteira de piloto…</p>';
+ try{
+  const email=(cloudUser.email||'').toLowerCase();
+  const {data:drivers,error:driverError}=await supabaseClient.from('drivers').select('id,name,email').ilike('email',email);
+  if(driverError)throw driverError;
+  const driver=drivers?.[0];
+  if(!driver){box.innerHTML='<div class="license-card"><h3>Carteira de piloto</h3><p>Seu login ainda não está vinculado a um piloto. Peça ao administrador para cadastrar este e-mail no seu perfil de piloto.</p></div>';return}
+  const license=await ensureDriverLicense(driver.id);
+  const evals=await supabaseClient.from('license_evaluations').select('score,sr_change,created_at,race_id').eq('driver_id',String(driver.id)).order('created_at',{ascending:false}).limit(8);
+  if(evals.error)throw evals.error;
+  const next=nextLicenseClass(license.license_class||'R');
+  box.innerHTML=`<div class="license-card"><div class="kicker">ROOKIE LEAGUE • DRIVER LICENSE</div><h2>${esc(driver.name)}</h2><div class="license-grid"><div class="license-stat"><small>Carteira atual</small><strong>${esc(license.license_class||'R')}</strong></div><div class="license-stat"><small>Safety Rating</small><strong>${Number(license.safety_rating??2.5).toFixed(2)}</strong></div><div class="license-stat"><small>Próxima classe</small><strong>${esc(next)}</strong></div></div><p class="hint">Promoção: completar pelo menos 80% das etapas de um campeonato e manter SR mínimo de 3,00. A carteira inicial é R.</p><h3 style="margin-top:18px">Últimas avaliações</h3><div class="tableWrap"><table><thead><tr><th>Data</th><th>Nota</th><th>Variação SR</th></tr></thead><tbody>${(evals.data||[]).map(x=>`<tr><td>${new Date(x.created_at).toLocaleDateString('pt-BR')}</td><td>${x.score}/5</td><td>${Number(x.sr_change)>0?'+':''}${Number(x.sr_change).toFixed(2)}</td></tr>`).join('')||'<tr><td colspan="3">Nenhuma avaliação registrada.</td></tr>'}</tbody></table></div></div>`;
+ }catch(e){box.innerHTML=`<div class="license-card"><h3>Carteira de piloto</h3><p>Não foi possível carregar sua carteira: ${esc(e.message||e)}. Confira a configuração do Supabase.</p></div>`}
+}
+
 async function logoutPilot(){
  await supabaseClient.auth.signOut();cloudUser=null;cloudIsAdmin=false;cloudReady=false;loggedPilotId=null;
  document.getElementById('pilotProfile').innerHTML='';document.getElementById('logoutBtn').style.display='none';document.getElementById('authSubmit').style.display='inline-flex';
- document.getElementById('adminCloudTools').style.display='none';document.getElementById('adminNav').hidden=true;
+ document.querySelector('.authswitch').style.display='flex';
+ document.getElementById('authNameField').style.display='';
+ document.getElementById('authEmail').closest('.field').style.display='';
+ document.getElementById('authPassword').closest('.field').style.display='';
+ document.getElementById('cloudStatus').style.display='';
+ document.getElementById('adminNav').hidden=true;
  document.getElementById('cloudStatus').textContent='Desconectado do Supabase.';document.getElementById('authPassword').value='';
  document.getElementById('entryGate').classList.remove('hidden');setEntryMode('login');showPage('home');
 }
-function rowsForCloud(){db.titles.forEach(t=>{if(!t.id)t.id=uid()});return {championships:db.championships.map(x=>({id:String(x.id),name:x.name,season:x.season||null,category:x.category||null,events:Number(x.events||0),entrants:Number(x.entrants||0),progress:Number(x.progress||0),rules:x.rules||null,emperor_url:x.emperorUrl||null})),drivers:db.drivers.map(x=>({id:String(x.id),name:x.name,team:x.team||null,category:x.category||null})),tracks:db.tracks.map(x=>({id:String(x.id),name:x.name,country:x.country||null})),races:db.races.map(x=>({id:String(x.id),championship_id:String(x.champId),name:x.name,race_date:x.date||null,race_time:x.time||null,track_id:x.trackId||null})),results:db.results.map(x=>({id:String(x.id),race_id:String(x.raceId),driver_id:String(x.driverId),position:Number(x.position),points:Number(x.points||0)})),titles:db.titles.map(x=>({id:String(x.id||uid()),driver_id:String(x.driverId),championship_id:String(x.champId),season:x.season||null}))}}
+function rowsForCloud(){db.titles.forEach(t=>{if(!t.id)t.id=uid()});return {championships:db.championships.map(x=>({id:String(x.id),name:x.name,season:x.season||null,category:x.category||null,events:Number(x.events||0),entrants:Number(x.entrants||0),progress:Number(x.progress||0),rules:x.rules||null,emperor_url:x.emperorUrl||null})),drivers:db.drivers.map(x=>({id:String(x.id),name:x.name,team:x.team||null,category:x.category||null,email:x.email||null})),tracks:db.tracks.map(x=>({id:String(x.id),name:x.name,country:x.country||null})),races:db.races.map(x=>({id:String(x.id),championship_id:String(x.champId),name:x.name,race_date:x.date||null,race_time:x.time||null,track_id:x.trackId||null})),results:db.results.map(x=>({id:String(x.id),race_id:String(x.raceId),driver_id:String(x.driverId),position:Number(x.position),points:Number(x.points||0)})),titles:db.titles.map(x=>({id:String(x.id||uid()),driver_id:String(x.driverId),championship_id:String(x.champId),season:x.season||null}))}}
 async function syncChangedDataToCloud(){
  if(!cloudIsAdmin)throw new Error('Somente o administrador pode alterar os dados.');
  const groups=rowsForCloud();
@@ -601,7 +714,7 @@ async function initializeCloud(){
  }
 }
 
-function addDriver(){let name=document.getElementById('pilotName').value.trim();if(!name)return alert('Informe o nome do piloto.');if(db.drivers.some(d=>d.name.toLowerCase()===name.toLowerCase()))return alert('Este piloto já está cadastrado.');db.drivers.push({id:uid(),name,team:document.getElementById('pilotTeam').value.trim(),category:document.getElementById('pilotClass').value});document.getElementById('pilotName').value='';document.getElementById('pilotTeam').value='';save();alert('Piloto cadastrado!')}
+function addDriver(){let name=document.getElementById('pilotName').value.trim(),email=document.getElementById('pilotEmail').value.trim().toLowerCase();if(!name)return alert('Informe o nome do piloto.');if(db.drivers.some(d=>d.name.toLowerCase()===name.toLowerCase()))return alert('Este piloto já está cadastrado.');if(email&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return alert('Informe um e-mail válido.');db.drivers.push({id:uid(),name,team:document.getElementById('pilotTeam').value.trim(),category:document.getElementById('pilotClass').value,email});document.getElementById('pilotName').value='';document.getElementById('pilotTeam').value='';document.getElementById('pilotEmail').value='';save();alert('Piloto cadastrado!')}
 function addRace(){let champId=document.getElementById('raceChamp').value,name=document.getElementById('raceName').value.trim();if(!champId||!name)return alert('Selecione o campeonato e informe o nome da etapa.');db.races.push({id:uid(),champId,name,date:document.getElementById('raceDate').value,time:document.getElementById('raceTime').value||'',trackId:document.getElementById('raceTrack').value||''});document.getElementById('raceName').value='';document.getElementById('raceDate').value='';document.getElementById('raceTime').value='';save();alert('Etapa criada!')}
 let approvedResultDriversByChamp = {};
 function normalizedPilotName(value){return String(value||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').trim().toLocaleLowerCase('pt-BR').replace(/\\s+/g,' ')}
