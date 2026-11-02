@@ -867,8 +867,8 @@ async function submitDriverProfileChange(driverId){
 }
 async function loadProfileChangeRequests(){
  const box=document.getElementById('profileChangeRows');if(!box||!cloudIsAdmin)return;
- try{const {data,error}=await supabaseClient.from('driver_profile_change_requests').select('*').order('created_at',{ascending:false});if(error)throw error;
- const pending=(data||[]).filter(x=>x.status==='pending').length,b=document.getElementById('profileChangeBadge');b.textContent=String(pending);b.hidden=!pending;
+ try{const {data,error}=await supabaseClient.from('driver_profile_change_requests').select('*').eq('status','pending').order('created_at',{ascending:false});if(error)throw error;
+ const pending=(data||[]).length,b=document.getElementById('profileChangeBadge');b.textContent=String(pending);b.hidden=!pending;
  box.innerHTML=data?.length?`<div class="tableWrap"><table><thead><tr><th>Piloto</th><th>Equipe</th><th>Número</th><th>Foto</th><th>Status</th><th>Ações</th></tr></thead><tbody>${data.map(x=>{const d=db.drivers.find(z=>String(z.id)===String(x.driver_id));return `<tr><td>${esc(d?.name||x.driver_id)}</td><td>${esc(x.requested_team||'—')}</td><td>${esc(x.requested_car_number||'—')}</td><td>${x.requested_photo_url?`<a href="${esc(x.requested_photo_url)}" target="_blank" rel="noopener">Ver foto</a>`:'—'}</td><td>${x.status==='pending'?'PENDENTE':x.status==='approved'?'APROVADA':'RECUSADA'}</td><td>${x.status==='pending'?`<button class="btn small" onclick="decideProfileChange('${x.id}','approved')">ACEITAR</button> <button class="btn danger small" onclick="decideProfileChange('${x.id}','rejected')">RECUSAR</button>`:'—'}</td></tr>`}).join('')}</tbody></table></div>`:'<p class="empty">Nenhuma solicitação de alteração.</p>';
  }catch(e){box.innerHTML=`<p class="hint">Falha ao carregar solicitações: ${esc(e.message||e)}. Execute o SQL da atualização.</p>`}
 }
