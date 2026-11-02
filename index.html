@@ -163,7 +163,7 @@ input[type=file]{max-width:0}
 .license-progress{height:8px;border-radius:20px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:8px}
 .license-progress span{display:block;height:100%;background:#e5b84b}
 @media(max-width:650px){.license-grid{grid-template-columns:1fr}}
-</style></head>
+.profileEditGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.profileAvatar{width:78px;height:78px;border-radius:50%;object-fit:cover;border:2px solid var(--green);background:#17221a}.profilePending{padding:10px;border:1px solid #e5b84b66;background:#e5b84b12;border-radius:9px;margin:12px 0;color:#f0d58b}@media(max-width:650px){.profileEditGrid{grid-template-columns:1fr}}</style></head>
 <body>
 
 <div id="entryGate" class="entryGate">
@@ -256,7 +256,7 @@ input[type=file]{max-width:0}
 </div>
 <div id="titleForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Piloto campeão</label><select id="titleDriver"></select></div><div class="field"><label>Campeonato</label><select id="titleChamp"></select></div><div class="field"><label>Temporada / ano</label><input id="titleSeason" placeholder="Ex.: Temporada 2026"></div></div><div class="formactions"><button class="btn" onclick="addTitle()">REGISTRAR TÍTULO</button></div></div>
 <div id="registrationAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Inscrições dos campeonatos <span id="registrationPendingBadge" class="adminNoticeBadge" hidden>0</span></h2><p>Analise as solicitações dos pilotos e aprove ou recuse a participação.</p></div><button class="btn secondary small" onclick="loadRegistrationRequests()">↻ ATUALIZAR</button></div><div id="registrationPendingNotice" class="registrationNotice" hidden></div><div id="registrationRequestRows"><p class="hint">Carregando inscrições…</p></div>
-<div id="licenseAdmin" class="panel" style="margin-top:13px">
+<div id="profileChangeAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Alterações de perfil dos pilotos <span id="profileChangeBadge" class="adminNoticeBadge" hidden>0</span></h2><p>Revise e aprove as alterações solicitadas.</p></div><button class="btn secondary small" onclick="loadProfileChangeRequests()">↻ ATUALIZAR</button></div><div id="profileChangeRows"><p class="hint">Carregando…</p></div></div><div id="licenseAdmin" class="panel" style="margin-top:13px">
  <div class="sectionHead"><div><h2>Carteiras e Safety Rating</h2><p>Avalie cada piloto após a corrida. A nota atualiza o SR automaticamente.</p></div><button class="btn secondary small" onclick="loadLicenseAdmin()">↻ ATUALIZAR</button></div>
  <div class="formgrid">
   <div class="field"><label>Piloto</label><select id="licenseDriver"></select></div>
@@ -758,7 +758,7 @@ async function afterCloudLogin(){
  document.getElementById('entryGate').classList.add('hidden');
  document.getElementById('accountNav').textContent=cloudIsAdmin?'♙ Minha conta • Admin':'♙ Minha conta';
  document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#funForm,#trackForm,#raceForm,#resultForm,#titleForm').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
- document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';document.getElementById('licenseAdmin').style.display=cloudIsAdmin?'':'none';
+ document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';const pc=document.getElementById('profileChangeAdmin');if(pc)pc.style.display=cloudIsAdmin?'':'none';if(cloudIsAdmin)loadProfileChangeRequests();document.getElementById('licenseAdmin').style.display=cloudIsAdmin?'':'none';
  if(cloudIsAdmin){startRegistrationPolling();loadLicenseAdmin();}
  loggedPilotId=null;await renderProfile();showPage('home');await refreshPilotChampionshipActions();
 }
@@ -826,23 +826,47 @@ async function submitLicenseEvaluation(){
 }
 
 async function renderProfile(){
- const box=document.getElementById('pilotProfile');if(!box)return;
- if(!cloudUser){box.innerHTML='';return}
- box.innerHTML='<p class="hint">Carregando sua carteira de piloto…</p>';
+ const box=document.getElementById('pilotProfile');if(!box)return;if(!cloudUser){box.innerHTML='';return}
+ box.innerHTML='<p class="hint">Carregando perfil…</p>';
  try{
-  const email=(cloudUser.email||'').toLowerCase();
-  const {data:drivers,error:driverError}=await supabaseClient.from('drivers').select('id,name,email').ilike('email',email);
-  if(driverError)throw driverError;
-  const driver=drivers?.[0];
-  if(!driver){box.innerHTML='<div class="license-card"><h3>Carteira de piloto</h3><p>Seu login ainda não está vinculado a um piloto. Peça ao administrador para cadastrar este e-mail no seu perfil de piloto.</p></div>';return}
-  const license=await ensureDriverLicense(driver.id);
-  const evals=await supabaseClient.from('license_evaluations').select('score,sr_change,created_at,race_id').eq('driver_id',String(driver.id)).order('created_at',{ascending:false}).limit(8);
-  if(evals.error)throw evals.error;
-  const next=nextLicenseClass(license.license_class||'R');
-  box.innerHTML=`<div class="license-card"><div class="kicker">ROOKIE LEAGUE • DRIVER LICENSE</div><h2>${esc(driver.name)}</h2><div class="license-grid"><div class="license-stat"><small>Carteira atual</small><strong>${esc(license.license_class||'R')}</strong></div><div class="license-stat"><small>Safety Rating</small><strong>${Number(license.safety_rating??2.5).toFixed(2)}</strong></div><div class="license-stat"><small>Próxima classe</small><strong>${esc(next)}</strong></div></div><p class="hint">Promoção: completar pelo menos 80% das etapas de um campeonato e manter SR mínimo de 3,00. A carteira inicial é R.</p><h3 style="margin-top:18px">Últimas avaliações</h3><div class="tableWrap"><table><thead><tr><th>Data</th><th>Nota</th><th>Variação SR</th></tr></thead><tbody>${(evals.data||[]).map(x=>`<tr><td>${new Date(x.created_at).toLocaleDateString('pt-BR')}</td><td>${x.score}/5</td><td>${Number(x.sr_change)>0?'+':''}${Number(x.sr_change).toFixed(2)}</td></tr>`).join('')||'<tr><td colspan="3">Nenhuma avaliação registrada.</td></tr>'}</tbody></table></div></div>`;
- }catch(e){box.innerHTML=`<div class="license-card"><h3>Carteira de piloto</h3><p>Não foi possível carregar sua carteira: ${esc(e.message||e)}. Confira a configuração do Supabase.</p></div>`}
+  const {data:drivers,error}=await supabaseClient.from('drivers').select('id,name,email,team,profile_photo_url,car_number').ilike('email',(cloudUser.email||'').toLowerCase());if(error)throw error;
+  const d=drivers?.[0];if(!d){box.innerHTML='<div class="license-card"><h3>Perfil do piloto</h3><p>Seu login ainda não está vinculado a um piloto. Peça ao administrador para cadastrar seu e-mail.</p></div>';return}
+  const license=await ensureDriverLicense(d.id);
+  const {data:evals,error:ee}=await supabaseClient.from('license_evaluations').select('score,sr_change,created_at').eq('driver_id',String(d.id)).order('created_at',{ascending:false}).limit(8);if(ee)throw ee;
+  const {data:pending,error:pe}=await supabaseClient.from('driver_profile_change_requests').select('id').eq('driver_id',String(d.id)).eq('status','pending').limit(1);if(pe)throw pe;
+  const rs=db.results.filter(x=>String(x.driverId)===String(d.id)),wins=rs.filter(x=>Number(x.position)===1).length,podiums=rs.filter(x=>Number(x.position)<=3).length,titles=db.titles.filter(x=>String(x.driverId)===String(d.id)).length;
+  const photo=d.profile_photo_url||'';
+  box.innerHTML=`<div class="license-card"><div style="display:flex;align-items:center;gap:15px;margin-bottom:16px">${photo?`<img class="profileAvatar" src="${esc(photo)}" alt="Foto">`:'<div class="profileAvatar" style="display:grid;place-items:center;font-size:28px">🏎</div>'}<div><div class="kicker">ROOKIE LEAGUE • DRIVER PROFILE</div><h2>${esc(d.name)}</h2><p class="hint">${esc(d.team||'Equipe não definida')} ${d.car_number?' • #'+esc(d.car_number):''}</p></div></div>
+  <div class="license-grid"><div class="license-stat"><small>Licença</small><strong>${esc(license.license_class||'R')}</strong></div><div class="license-stat"><small>Safety Rating</small><strong>${Number(license.safety_rating??2.5).toFixed(2)}</strong></div><div class="license-stat"><small>Próxima classe</small><strong>${esc(nextLicenseClass(license.license_class||'R'))}</strong></div></div>
+  <div class="license-grid"><div class="license-stat"><small>Corridas</small><strong>${rs.length}</strong></div><div class="license-stat"><small>Vitórias</small><strong>${wins}</strong></div><div class="license-stat"><small>Pódios</small><strong>${podiums}</strong></div><div class="license-stat"><small>Títulos</small><strong>${titles}</strong></div></div>
+  ${pending?.length?'<div class="profilePending">Sua alteração está aguardando aprovação do administrador.</div>':''}
+  <h3 style="margin-top:18px">Solicitar alteração do perfil</h3><p class="hint">Equipe, número e foto só serão atualizados após aprovação do administrador.</p>
+  <div class="profileEditGrid"><div class="field"><label>Equipe</label><input id="profileTeamRequest" maxlength="80" value="${esc(d.team||'')}" placeholder="Nome da equipe"></div><div class="field"><label>Número do carro</label><input id="profileCarRequest" maxlength="8" value="${esc(d.car_number||'')}" placeholder="Ex.: 27"></div><div class="field" style="grid-column:1/-1"><label>URL da foto</label><input id="profilePhotoRequest" type="url" value="${esc(photo)}" placeholder="https://..."></div></div><div class="formactions"><button class="btn" onclick="submitDriverProfileChange('${String(d.id)}')">ENVIAR PARA APROVAÇÃO</button></div>
+  <h3 style="margin-top:18px">Últimas avaliações</h3><div class="tableWrap"><table><thead><tr><th>Data</th><th>Nota</th><th>Variação SR</th></tr></thead><tbody>${(evals||[]).map(x=>`<tr><td>${new Date(x.created_at).toLocaleDateString('pt-BR')}</td><td>${x.score}/5</td><td>${Number(x.sr_change)>0?'+':''}${Number(x.sr_change).toFixed(2)}</td></tr>`).join('')||'<tr><td colspan="3">Nenhuma avaliação registrada.</td></tr>'}</tbody></table></div></div>`;
+ }catch(e){box.innerHTML=`<div class="license-card"><h3>Perfil do piloto</h3><p>Falha ao carregar: ${esc(e.message||e)}. Confira se executou o SQL da atualização.</p></div>`}
 }
-
+async function submitDriverProfileChange(driverId){
+ const team=document.getElementById('profileTeamRequest').value.trim(),car=document.getElementById('profileCarRequest').value.trim(),photo=document.getElementById('profilePhotoRequest').value.trim();
+ if(photo&&!/^https?:\/\/\S+$/i.test(photo))return alert('Informe uma URL de foto válida.');
+ try{const {data,error:qe}=await supabaseClient.from('driver_profile_change_requests').select('id').eq('driver_id',String(driverId)).eq('status','pending').limit(1);if(qe)throw qe;if(data?.length)return alert('Você já tem uma solicitação pendente.');
+ const {error}=await supabaseClient.from('driver_profile_change_requests').insert({user_id:cloudUser.id,driver_id:String(driverId),requested_team:team,requested_car_number:car,requested_photo_url:photo,status:'pending'});if(error)throw error;alert('Solicitação enviada ao administrador!');await renderProfile();
+ }catch(e){alert('Erro ao enviar solicitação: '+(e.message||e))}
+}
+async function loadProfileChangeRequests(){
+ const box=document.getElementById('profileChangeRows');if(!box||!cloudIsAdmin)return;
+ try{const {data,error}=await supabaseClient.from('driver_profile_change_requests').select('*').order('created_at',{ascending:false});if(error)throw error;
+ const pending=(data||[]).filter(x=>x.status==='pending').length,b=document.getElementById('profileChangeBadge');b.textContent=String(pending);b.hidden=!pending;
+ box.innerHTML=data?.length?`<div class="tableWrap"><table><thead><tr><th>Piloto</th><th>Equipe</th><th>Número</th><th>Foto</th><th>Status</th><th>Ações</th></tr></thead><tbody>${data.map(x=>{const d=db.drivers.find(z=>String(z.id)===String(x.driver_id));return `<tr><td>${esc(d?.name||x.driver_id)}</td><td>${esc(x.requested_team||'—')}</td><td>${esc(x.requested_car_number||'—')}</td><td>${x.requested_photo_url?`<a href="${esc(x.requested_photo_url)}" target="_blank" rel="noopener">Ver foto</a>`:'—'}</td><td>${x.status==='pending'?'PENDENTE':x.status==='approved'?'APROVADA':'RECUSADA'}</td><td>${x.status==='pending'?`<button class="btn small" onclick="decideProfileChange('${x.id}','approved')">ACEITAR</button> <button class="btn danger small" onclick="decideProfileChange('${x.id}','rejected')">RECUSAR</button>`:'—'}</td></tr>`}).join('')}</tbody></table></div>`:'<p class="empty">Nenhuma solicitação de alteração.</p>';
+ }catch(e){box.innerHTML=`<p class="hint">Falha ao carregar solicitações: ${esc(e.message||e)}. Execute o SQL da atualização.</p>`}
+}
+async function decideProfileChange(id,status){
+ if(!cloudIsAdmin)return alert('Apenas o administrador pode aprovar.');
+ try{const {data:r,error}=await supabaseClient.from('driver_profile_change_requests').select('*').eq('id',id).single();if(error)throw error;
+ if(status==='approved'){const {error:e}=await supabaseClient.from('drivers').update({team:r.requested_team||null,car_number:r.requested_car_number||null,profile_photo_url:r.requested_photo_url||null}).eq('id',String(r.driver_id));if(e)throw e;}
+ const {error:de}=await supabaseClient.from('driver_profile_change_requests').update({status,reviewed_at:new Date().toISOString(),reviewed_by:cloudUser.id}).eq('id',id);if(de)throw de;
+ await loadProfileChangeRequests();alert(status==='approved'?'Perfil atualizado!':'Solicitação recusada.');
+ }catch(e){alert('Falha ao analisar solicitação: '+(e.message||e))}
+}
 async function logoutPilot(){
  await supabaseClient.auth.signOut();if(registrationPollTimer)clearInterval(registrationPollTimer);registrationPollTimer=null;lastPendingRegistrationIds=new Set();registrationNotificationPrimed=false;cloudUser=null;cloudIsAdmin=false;cloudReady=false;loggedPilotId=null;
  document.getElementById('pilotProfile').innerHTML='';document.getElementById('logoutBtn').style.display='none';document.getElementById('authSubmit').style.display='inline-flex';
