@@ -662,18 +662,24 @@ function renderHomeNextRace(){
 }
 function renderNews(){
  const wall=document.getElementById('newsWall');
- if(wall){const posts=[...(db.news||[])].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));wall.innerHTML=posts.map(n=>`<article class="newsCard"><div class="newsMeta"><span class="newsCategory">${esc(n.category||'Comunicado')}</span><time>${n.createdAt?new Date(n.createdAt).toLocaleString('pt-BR'):'Agora'}</time></div><h2>${esc(n.title)}</h2><p>${esc(n.body).replace(/\n/g,'<br>')}</p><small>ROOKIE LEAGUE MOTORSPORT · ${esc(n.authorName||'Administração')}</small></article>`).join('')||'<div class="empty">Ainda não há notícias publicadas.</div>'}
+ if(wall){const posts=[...(db.news||[])].filter(n=>n.isPublished!==false).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));wall.innerHTML=posts.map(n=>`<article class="newsCard"><div class="newsMeta"><span class="newsCategory">${esc(n.category||'Comunicado')}</span><time>${n.createdAt?new Date(n.createdAt).toLocaleString('pt-BR'):'Agora'}</time></div><h2>${esc(n.title)}</h2><p>${esc(n.body).replace(/\n/g,'<br>')}</p><small>ROOKIE LEAGUE MOTORSPORT · ${esc(n.authorName||'Administração')}</small></article>`).join('')||'<div class="empty">Ainda não há notícias publicadas.</div>'}
  const list=document.getElementById('adminNewsList');
- if(list&&cloudIsAdmin){list.innerHTML=(db.news||[]).slice().sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).map(n=>`<div class="trackrow"><span><strong>${esc(n.title)}</strong><small>${esc(n.category||'Comunicado')}</small></span><button class="btn danger small" onclick="deleteNews('${esc(n.id)}')">EXCLUIR</button></div>`).join('')||'<p class="empty">Nenhuma notícia publicada.</p>'}
+ if(list&&cloudIsAdmin){const posts=(db.news||[]).slice().sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));list.innerHTML=posts.map(n=>`<div class="trackrow"><span><strong>${esc(n.title)}</strong><small>${esc(n.category||'Comunicado')} · ${n.isPublished===false?'AGUARDANDO APROVAÇÃO':(n.sourceType==='manual'?'PUBLICADA':'AUTOMÁTICA')}</small></span><span class="tools">${n.isPublished===false?`<button class="btn small" onclick="approveNews('${esc(n.id)}')">APROVAR</button>`:''}<button class="btn danger small" onclick="deleteNews('${esc(n.id)}')">EXCLUIR</button></span></div>`).join('')||'<p class="empty">Nenhuma notícia cadastrada.</p>'}
 }
 async function publishNews(){
- if(!cloudIsAdmin)return alert('Apenas o administrador pode publicar notícias.');
+ if(!cloudIsAdmin)return alert('Apenas o administrador pode enviar comunicados para aprovação.');
  const title=document.getElementById('newsTitle').value.trim(),category=document.getElementById('newsCategory').value,body=document.getElementById('newsBody').value.trim();
  if(!title||!body)return alert('Preencha o título e o conteúdo da notícia.');
- const {data,error}=await supabaseClient.from('news_posts').insert({title,category,body,author_name:'Administração'}).select('id,title,category,body,created_at,author_name').single();
- if(error)return alert('Não foi possível publicar: '+error.message);
- db.news.unshift({id:String(data.id),title:data.title,category:data.category,body:data.body,createdAt:data.created_at,authorName:data.author_name});
- document.getElementById('newsTitle').value='';document.getElementById('newsBody').value='';renderNews();alert('Notícia publicada para todos os pilotos!');
+ const {data,error}=await supabaseClient.from('news_posts').insert({title,category,body,author_name:'Administração',is_published:false,requires_approval:true,source_type:'manual'}).select('id,title,category,body,created_at,author_name,is_published,requires_approval,source_type').single();
+ if(error)return alert('Não foi possível enviar para aprovação. Execute o SQL da atualização primeiro. Detalhe: '+error.message);
+ db.news.unshift({id:String(data.id),title:data.title,category:data.category,body:data.body,createdAt:data.created_at,authorName:data.author_name,isPublished:false,requiresApproval:true,sourceType:'manual'});
+ document.getElementById('newsTitle').value='';document.getElementById('newsBody').value='';renderNews();alert('Comunicado enviado para a fila de aprovação. Ele só ficará visível aos pilotos depois de aprovado.');
+}
+async function approveNews(id){
+ if(!cloudIsAdmin)return alert('Apenas o administrador pode aprovar comunicados.');
+ const {data,error}=await supabaseClient.from('news_posts').update({is_published:true,requires_approval:false,approved_by:cloudUser.id,published_at:new Date().toISOString()}).eq('id',id).select('id').single();
+ if(error)return alert('Não foi possível aprovar: '+error.message);
+ const item=db.news.find(n=>String(n.id)===String(id));if(item){item.isPublished=true;item.requiresApproval=false;}renderNews();
 }
 async function deleteNews(id){
  if(!cloudIsAdmin||!confirm('Excluir esta notícia?'))return;
@@ -746,7 +752,7 @@ async function refreshCloudRole(){
 }
 async function loadCloudData(){
  const specs={
-  news_posts:{select:'id,title,category,body,created_at,author_name',map:r=>({id:String(r.id),title:r.title,category:r.category||'Comunicado',body:r.body,createdAt:r.created_at,authorName:r.author_name||'Administração'})},
+  news_posts:{select:'id,title,category,body,created_at,author_name,is_published,requires_approval,event_key,source_type',map:r=>({id:String(r.id),title:r.title,category:r.category||'Comunicado',body:r.body,createdAt:r.created_at,authorName:r.author_name||'Administração',isPublished:r.is_published!==false,requiresApproval:!!r.requires_approval,eventKey:r.event_key||'',sourceType:r.source_type||'manual'})},
   fun_events:{select:'id,name,event_date,event_time,track_name,description,server_url',map:r=>({id:String(r.id),name:r.name,date:r.event_date||'',time:r.event_time||'',trackName:r.track_name||'',description:r.description||'',serverUrl:r.server_url||''})},
   championships:{select:'id,name,season,category,events,entrants,progress,rules,emperor_url,car_selection_url',map:r=>({...r,id:String(r.id),emperorUrl:r.emperor_url||'',carSelectionUrl:r.car_selection_url||''})},
   drivers:{select:'id,name,team,category,email,user_id',map:r=>({...r,id:String(r.id),email:r.email||'',userId:r.user_id||''})},
