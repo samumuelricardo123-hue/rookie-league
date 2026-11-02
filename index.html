@@ -584,27 +584,45 @@ function toggleLiveTiming(){
 }
 function renderHomeNextRace(){
  const now=new Date();now.setHours(0,0,0,0);
- const upcoming=(db.races||[]).filter(r=>r.date).map(r=>{
+ const upcomingRaces=(db.races||[]).filter(r=>r.date).map(r=>{
    const d=new Date(r.date+'T12:00:00');
-   return {race:r,date:d};
- }).filter(x=>!isNaN(x.date)&&x.date>=now).sort((a,b)=>a.date-b.date)[0];
+   return {item:r,date:d,type:'race'};
+ });
+ const upcomingFun=(db.funEvents||[]).filter(e=>e.date).map(e=>{
+   const d=new Date(e.date+'T12:00:00');
+   return {item:e,date:d,type:'fun'};
+ });
+ const upcoming=[...upcomingRaces,...upcomingFun]
+   .filter(x=>!isNaN(x.date)&&x.date>=now)
+   .sort((a,b)=>a.date-b.date||(a.item.time||'').localeCompare(b.item.time||''))[0];
  const dateEl=document.getElementById('homeNextRaceDate');
  const nameEl=document.getElementById('homeNextRaceName');
  const infoEl=document.getElementById('homeNextRaceInfo');
+ const kicker=document.querySelector('#homeNextRace .nextRaceKicker');
  if(!dateEl||!nameEl||!infoEl)return;
  if(!upcoming){
+   if(kicker)kicker.textContent='PRÓXIMO EVENTO';
    dateEl.textContent='--/--';
-   nameEl.textContent='Nenhuma corrida agendada';
-   infoEl.textContent='Cadastre uma etapa com data futura para ela aparecer aqui.';
+   nameEl.textContent='Nenhum evento agendado';
+   infoEl.textContent='Cadastre uma etapa ou evento 4FUN com data futura para aparecer aqui.';
    return;
  }
- const r=upcoming.race;
+ const item=upcoming.item;
  dateEl.textContent=upcoming.date.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
- nameEl.textContent=r.name||'Próxima etapa';
- const champ=(db.championships||[]).find(c=>c.id===r.champId);
- const track=(db.tracks||[]).find(t=>t.id===r.trackId);
- const parts=[champ?.name,track?.name,r.time].filter(Boolean);
- infoEl.textContent=parts.join(' · ')+' · '+upcoming.date.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+ if(upcoming.type==='fun'){
+   if(kicker)kicker.textContent='PRÓXIMO EVENTO 4FUN';
+   nameEl.textContent='4FUN · '+(item.name||'Evento livre');
+   const parts=[item.trackName,item.time].filter(Boolean);
+   infoEl.textContent=parts.join(' · ')+(parts.length?' · ':'')+upcoming.date.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+ }else{
+   if(kicker)kicker.textContent='PRÓXIMA CORRIDA';
+   const r=item;
+   nameEl.textContent=r.name||'Próxima etapa';
+   const champ=(db.championships||[]).find(c=>String(c.id)===String(r.champId));
+   const track=(db.tracks||[]).find(t=>String(t.id)===String(r.trackId));
+   const parts=[champ?.name,track?.name,r.time].filter(Boolean);
+   infoEl.textContent=parts.join(' · ')+' · '+upcoming.date.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'});
+ }
 }
 function renderAll(){
 renderFunEvents();document.getElementById('homeCards').innerHTML=db.championships.slice(0,3).map(card).join('');renderHomeNextRace();
