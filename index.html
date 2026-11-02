@@ -201,7 +201,7 @@ input[type=file]{max-width:0}
 
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • SUPABASE</span>
+<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • SUPABASE</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
@@ -245,6 +245,20 @@ input[type=file]{max-width:0}
 <section id="hall" class="page"><div class="subhead"><div class="kicker">OS GRANDES NOMES DA LIGA</div><h1>Hall da Fama</h1><p>Uma homenagem aos campeões da Rookie League Motorsport.</p></div><div class="metrics"><div class="metric"><div class="label">Pilotos homenageados</div><strong id="hallDrivers">03</strong></div><div class="metric"><div class="label">Títulos registrados</div><strong><em id="hallTitles">04</em></strong></div><div class="metric"><div class="label">Categoria</div><strong>LMP2</strong></div><div class="metric"><div class="label">Liga</div><strong style="font-size:18px">ROOKIE</strong></div></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Temporadas</th></tr></thead><tbody id="hallRows"></tbody></table></div><p class="hint">Empates são mantidos na mesma posição. As temporadas podem ser informadas no cadastro de títulos.</p></section>
 <section id="news" class="page"><div class="subhead"><div class="kicker">COMUNICAÇÃO OFICIAL</div><h1>Mural de notícias</h1><p>Comunicados, novidades e informações oficiais da Rookie League Motorsport.</p></div><div id="newsWall" class="newsWall"><div class="empty">Carregando notícias...</div></div></section>
 
+
+<section id="community" class="page">
+ <div class="subhead"><div class="kicker">COMUNIDADE • ROOKIE LEAGUE</div><h1>Mural da comunidade</h1><p>Compartilhe novidades, fotos por link e momentos da sua carreira com os outros pilotos.</p></div>
+ <div class="panel" style="margin-top:13px">
+  <h2>Nova publicação</h2><div id="communityLoginHint" class="empty">Entre na sua conta para publicar no mural.</div>
+  <div id="communityComposer" style="display:none"><textarea id="communityBody" rows="4" maxlength="2000" placeholder="O que está acontecendo na pista?"></textarea><div class="formgrid"><div class="field full"><label>Link de imagem ou vídeo (opcional)</label><input id="communityMedia" type="url" placeholder="https://..."></div></div><div class="formactions"><button class="btn" onclick="submitCommunityPost()">PUBLICAR</button></div></div>
+ </div>
+ <div id="communityWall" class="tracklist" style="margin-top:13px"><p class="empty">Carregando publicações...</p></div>
+</section>
+<section id="awards" class="page">
+ <div class="subhead"><div class="kicker">ROOKIE LEAGUE AWARDS</div><h1>Premiação de fim de temporada</h1><p>Reconhecendo os destaques, campeões e momentos marcantes de cada temporada.</p></div>
+ <div id="seasonAwardsWall" class="tracklist" style="margin-top:13px"><p class="empty">Carregando premiações...</p></div>
+</section>
+
 <section id="racecontrol" class="page">
  <div class="subhead"><div class="kicker">FAIR PLAY • COMPETIÇÃO</div><h1>Direção de Prova</h1><p>Envie protestos sobre incidentes e acompanhe as decisões oficiais da organização.</p></div>
  <div class="panel" style="margin-top:13px">
@@ -266,7 +280,7 @@ input[type=file]{max-width:0}
  <div class="panel" style="margin-top:13px"><h2>Decisões publicadas</h2><p class="hint">Decisões oficiais e penalidades divulgadas pela direção de prova.</p><div id="publishedPenalties" class="tracklist"><p class="empty">Carregando decisões...</p></div></div>
 </section>
 
-<section id="admin" class="page"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button type="button" class="active"  onclick="switchAdminTab('pilotForm',this)"data-tab="pilotForm">＋ Cadastrar piloto</button><button type="button"  onclick="switchAdminTab('champForm',this)"data-tab="champForm">＋ Cadastrar campeonato</button><button type="button" onclick="switchAdminTab('newsForm',this)" data-tab="newsForm">▤ Publicar notícia</button><button type="button" onclick="switchAdminTab('raceControlAdmin',this)" data-tab="raceControlAdmin">⚑ Direção de prova</button><button type="button" onclick="switchAdminTab('funForm',this)" data-tab="funForm">★ Cadastrar 4FUN</button><button type="button"  onclick="switchAdminTab('trackForm',this)"data-tab="trackForm">＋ Cadastrar pista</button><button type="button"  onclick="switchAdminTab('raceForm',this)"data-tab="raceForm">＋ Criar etapa</button><button type="button"  onclick="switchAdminTab('resultForm',this)"data-tab="resultForm">＋ Lançar resultado</button><button type="button"  onclick="switchAdminTab('titleForm',this)"data-tab="titleForm">♛ Registrar título</button></div>
+<section id="admin" class="page"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button type="button" class="active"  onclick="switchAdminTab('pilotForm',this)"data-tab="pilotForm">＋ Cadastrar piloto</button><button type="button"  onclick="switchAdminTab('champForm',this)"data-tab="champForm">＋ Cadastrar campeonato</button><button type="button" onclick="switchAdminTab('newsForm',this)" data-tab="newsForm">▤ Publicar notícia</button><button type="button" onclick="switchAdminTab('communityAdmin',this)" data-tab="communityAdmin">▧ Comunidade</button><button type="button" onclick="switchAdminTab('awardsAdmin',this)" data-tab="awardsAdmin">🏆 Premiações</button><button type="button" onclick="switchAdminTab('raceControlAdmin',this)" data-tab="raceControlAdmin">⚑ Direção de prova</button><button type="button" onclick="switchAdminTab('funForm',this)" data-tab="funForm">★ Cadastrar 4FUN</button><button type="button"  onclick="switchAdminTab('trackForm',this)"data-tab="trackForm">＋ Cadastrar pista</button><button type="button"  onclick="switchAdminTab('raceForm',this)"data-tab="raceForm">＋ Criar etapa</button><button type="button"  onclick="switchAdminTab('resultForm',this)"data-tab="resultForm">＋ Lançar resultado</button><button type="button"  onclick="switchAdminTab('titleForm',this)"data-tab="titleForm">♛ Registrar título</button></div>
 <div id="newsForm" class="panel" style="display:none;margin-top:13px"><h3>Publicar no mural</h3><div class="formgrid"><div class="field"><label>Título</label><input id="newsTitle" maxlength="120" placeholder="Ex.: Inscrições abertas para a nova temporada"></div><div class="field"><label>Categoria</label><select id="newsCategory"><option>Comunicado</option><option>Campeonato</option><option>Resultado</option><option>Evento 4FUN</option><option>Atualização</option></select></div><div class="field full"><label>Notícia</label><textarea id="newsBody" rows="5" maxlength="5000" placeholder="Escreva o comunicado oficial..."></textarea></div></div><div class="formactions"><button class="btn" onclick="publishNews()">PUBLICAR NOTÍCIA</button></div><div id="adminNewsList" class="tracklist"></div></div>
 <div class="formactions" style="margin-top:12px"><a class="btn" href="https://supabase.com/dashboard/project/lxformxabgtgafykvhkw/editor/17649?schema=public" target="_blank" rel="noopener noreferrer">↗ ABRIR SUPABASE — GERENCIAR INSCRIÇÕES</a></div>
 <div id="champForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do campeonato</label><input id="newChampName" placeholder="Ex.: Rookie League GT3"></div><div class="field"><label>Temporada / ano</label><input id="newChampSeason" placeholder="Ex.: Temporada 2026"></div><div class="field"><label>Categoria</label><select id="newChampCategory"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select></div><div class="field full champUrlField"><label>URL para escolha de carro (opcional)</label><input id="newChampCarUrl" type="url" placeholder="https://site.com/escolher-carro"><small>O link aparecerá para os pilotos com inscrição aprovada.</small></div><div class="formactions"><button class="btn" onclick="addChampionship()">CADASTRAR CAMPEONATO</button><span class="hint">Depois de cadastrar, crie as etapas e defina pista, data e horário de cada corrida.</span></div></div></div>
@@ -289,6 +303,15 @@ input[type=file]{max-width:0}
 <div class="formactions"><button class="btn" onclick="addResult()">SALVAR RESULTADOS</button><span class="hint">Deixe vazias as posições que não participaram. Os resultados existentes nesta etapa serão preservados; pilotos já lançados não serão duplicados.</span></div>
 </div>
 <div id="titleForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Piloto campeão</label><select id="titleDriver"></select></div><div class="field"><label>Campeonato</label><select id="titleChamp"></select></div><div class="field"><label>Temporada / ano</label><input id="titleSeason" placeholder="Ex.: Temporada 2026"></div></div><div class="formactions"><button class="btn" onclick="addTitle()">REGISTRAR TÍTULO</button></div></div>
+
+
+<div id="communityAdmin" class="panel" style="display:none;margin-top:13px"><h2>Moderação da comunidade</h2><p class="hint">Remova publicações inadequadas do mural.</p><div id="communityModeration"></div></div>
+<div id="awardsAdmin" class="panel" style="display:none;margin-top:13px"><h2>Organizar premiação</h2><div class="formgrid">
+<div class="field"><label>Temporada</label><input id="awardSeason" maxlength="40" placeholder="Ex.: Temporada 2026"></div>
+<div class="field"><label>Categoria</label><select id="awardCategory"><option>Campeão da temporada</option><option>Melhor piloto</option><option>Piloto revelação</option><option>Melhor equipe</option><option>Fair Play</option><option>Maior evolução</option><option>Melhor estreante</option><option>Prêmio especial</option></select></div>
+<div class="field"><label>Vencedor</label><select id="awardDriver"></select></div>
+<div class="field"><label>Descrição (opcional)</label><input id="awardDescription" maxlength="300" placeholder="Motivo ou destaque"></div>
+</div><div class="formactions"><button class="btn" onclick="publishSeasonAward()">PUBLICAR PREMIAÇÃO</button></div><h3>Premiações cadastradas</h3><div id="adminAwards"></div></div>
 
 <div id="raceControlAdmin" class="panel" style="display:none;margin-top:13px">
  <div class="sectionHead"><div><h2>Protestos recebidos</h2><p>Analise os relatos, registre a decisão e publique penalidades.</p></div><button class="btn secondary small" onclick="loadRaceControl()">↻ ATUALIZAR</button></div>
@@ -363,7 +386,7 @@ let authMode='login',loggedPilotId=null;
 function save(){localStorage.setItem('rlm_portal_v2',JSON.stringify(db));renderAll();if(cloudReady&&cloudIsAdmin)syncChangedDataToCloud().catch(e=>console.error('Falha ao sincronizar:',e))}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function switchAdminTab(targetId,button){
- const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm','raceControlAdmin'];
+ const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm','communityAdmin','awardsAdmin','raceControlAdmin'];
  if(!allowed.includes(targetId))return;
  const admin=document.getElementById('admin');
  if(!admin)return;
@@ -390,7 +413,7 @@ document.addEventListener('click',function(event){
  event.preventDefault();
  event.stopPropagation();
  const targetId=tab.getAttribute('data-tab');
- const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm','raceControlAdmin'];
+ const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm','communityAdmin','awardsAdmin','raceControlAdmin'];
  if(!allowed.includes(targetId))return;
  const admin=document.getElementById('admin');
  if(!admin)return;
@@ -805,8 +828,56 @@ async function publishPenalty(){
 }
 async function deletePenalty(id){if(!cloudIsAdmin||!confirm('Excluir esta decisão?'))return;const {error}=await supabaseClient.from('race_penalties').delete().eq('id',id);if(error)return alert(error.message);await loadRaceControl();}
 
+
+async function loadCommunityAwards(){
+ if(!cloudReady)return;
+ try{
+  const [posts,awards]=await Promise.all([
+   supabaseClient.from('community_posts').select('id,user_id,pilot_name,body,media_url,created_at').order('created_at',{ascending:false}),
+   supabaseClient.from('season_awards').select('id,season,category,driver_id,winner_name,description,created_at').order('created_at',{ascending:false})
+  ]);
+  if(posts.error)throw posts.error;if(awards.error)throw awards.error;
+  db.communityPosts=(posts.data||[]).map(r=>({id:String(r.id),userId:r.user_id,pilotName:r.pilot_name,body:r.body,mediaUrl:r.media_url||'',createdAt:r.created_at}));
+  db.seasonAwards=(awards.data||[]).map(r=>({id:String(r.id),season:r.season,category:r.category,driverId:String(r.driver_id||''),winnerName:r.winner_name,description:r.description||'',createdAt:r.created_at}));
+  renderCommunityAwards();
+ }catch(e){console.error('Comunidade/premiações:',e);const w=document.getElementById('communityWall');if(w)w.innerHTML='<p class="empty">Não foi possível carregar o mural: '+esc(e.message)+'</p>'}
+}
+function renderCommunityAwards(){
+ const logged=!!cloudUser;
+ const hint=document.getElementById('communityLoginHint'),composer=document.getElementById('communityComposer');
+ if(hint)hint.style.display=logged?'none':'block';if(composer)composer.style.display=logged?'block':'none';
+ const wall=document.getElementById('communityWall');
+ if(wall)wall.innerHTML=(db.communityPosts||[]).map(p=>`<article class="newsCard"><div class="newsMeta"><span class="newsCategory">PILOTO</span><time>${p.createdAt?new Date(p.createdAt).toLocaleString('pt-BR'):'Agora'}</time></div><h2>${esc(p.pilotName)}</h2><p>${esc(p.body).replace(/\n/g,'<br>')}</p>${p.mediaUrl?(/\\.(mp4|webm)(\\?|$)/i.test(p.mediaUrl)?`<a href="${esc(p.mediaUrl)}" target="_blank" rel="noopener">Abrir vídeo</a>`:`<a href="${esc(p.mediaUrl)}" target="_blank" rel="noopener">Abrir imagem/mídia</a>`):''}${cloudIsAdmin?`<div class="formactions"><button class="btn danger small" onclick="deleteCommunityPost('${esc(p.id)}')">REMOVER</button></div>`:''}</article>`).join('')||'<p class="empty">Ainda não há publicações. Seja o primeiro a participar!</p>';
+ const awards=document.getElementById('seasonAwardsWall');
+ if(awards){const groups={};(db.seasonAwards||[]).forEach(a=>(groups[a.season]??=[]).push(a));awards.innerHTML=Object.entries(groups).map(([season,items])=>`<div class="panel" style="margin-bottom:12px"><h2>🏆 ${esc(season)}</h2><div class="badgeWall">${items.map(a=>`<div class="badgeMedal"><span class="badgeMedalIcon">🏅</span><div><strong>${esc(a.category)}</strong><small>${esc(a.winnerName)}${a.description?' · '+esc(a.description):''}</small></div></div>`).join('')}</div></div>`).join('')||'<p class="empty">As premiações oficiais aparecerão aqui após serem publicadas pela administração.</p>'}
+ const mod=document.getElementById('communityModeration');if(mod&&cloudIsAdmin)mod.innerHTML=(db.communityPosts||[]).map(p=>`<div class="trackrow"><span><strong>${esc(p.pilotName)}</strong><small>${esc(p.body)}</small></span><button class="btn danger small" onclick="deleteCommunityPost('${esc(p.id)}')">REMOVER</button></div>`).join('')||'<p class="empty">Nenhuma publicação.</p>';
+ const driverSelect=document.getElementById('awardDriver');if(driverSelect){const old=driverSelect.value;driverSelect.innerHTML=db.drivers.map(d=>`<option value="${esc(d.id)}">${esc(d.name)}</option>`).join('');driverSelect.value=old}
+ const adminAwards=document.getElementById('adminAwards');if(adminAwards&&cloudIsAdmin)adminAwards.innerHTML=(db.seasonAwards||[]).map(a=>`<div class="trackrow"><span><strong>${esc(a.season)} · ${esc(a.category)}</strong><small>${esc(a.winnerName)} · ${esc(a.description)}</small></span><button class="btn danger small" onclick="deleteSeasonAward('${esc(a.id)}')">EXCLUIR</button></div>`).join('')||'<p class="empty">Nenhuma premiação cadastrada.</p>';
+}
+async function submitCommunityPost(){
+ if(!cloudUser)return alert('Entre na sua conta para publicar.');
+ const body=document.getElementById('communityBody').value.trim(),media=document.getElementById('communityMedia').value.trim();
+ if(!body)return alert('Escreva uma mensagem antes de publicar.');
+ if(media&&!/^https?:\/\//i.test(media))return alert('O link deve começar com http:// ou https://.');
+ const {data:driver,error:de}=await supabaseClient.from('drivers').select('id,name').eq('user_id',cloudUser.id).maybeSingle();
+ if(de)return alert(de.message);if(!driver)return alert('Sua conta não está vinculada a um piloto.');
+ const {error}=await supabaseClient.from('community_posts').insert({user_id:cloudUser.id,driver_id:String(driver.id),pilot_name:driver.name,body,media_url:media||null});
+ if(error)return alert('Não foi possível publicar: '+error.message);
+ document.getElementById('communityBody').value='';document.getElementById('communityMedia').value='';await loadCommunityAwards();alert('Publicação enviada ao mural!');
+}
+async function deleteCommunityPost(id){if(!cloudIsAdmin||!confirm('Remover esta publicação?'))return;const {error}=await supabaseClient.from('community_posts').delete().eq('id',id);if(error)return alert(error.message);await loadCommunityAwards()}
+async function publishSeasonAward(){
+ if(!cloudIsAdmin)return alert('Apenas o administrador pode publicar premiações.');
+ const season=document.getElementById('awardSeason').value.trim(),category=document.getElementById('awardCategory').value,driverId=document.getElementById('awardDriver').value,description=document.getElementById('awardDescription').value.trim();
+ const driver=db.drivers.find(d=>String(d.id)===String(driverId));if(!season||!driver)return alert('Informe a temporada e selecione o vencedor.');
+ const {error}=await supabaseClient.from('season_awards').insert({season,category,driver_id:String(driverId),winner_name:driver.name,description});
+ if(error)return alert('Não foi possível publicar a premiação: '+error.message);
+ document.getElementById('awardDescription').value='';await loadCommunityAwards();alert('Premiação publicada!');
+}
+async function deleteSeasonAward(id){if(!cloudIsAdmin||!confirm('Excluir esta premiação?'))return;const {error}=await supabaseClient.from('season_awards').delete().eq('id',id);if(error)return alert(error.message);await loadCommunityAwards()}
+
 function renderAll(){
-renderRaceControlGate();renderNews();renderFunEvents();document.getElementById('homeCards').innerHTML=db.championships.slice(0,3).map(card).join('');renderHomeNextRace();
+renderRaceControlGate();renderNews();renderCommunityAwards();renderFunEvents();document.getElementById('homeCards').innerHTML=db.championships.slice(0,3).map(card).join('');renderHomeNextRace();
 let q=(document.getElementById('champSearch')?.value||'').toLowerCase(),cat=document.getElementById('champCategoryFilter')?.value||'',status=document.getElementById('champStatusFilter')?.value||'';let filtered=db.championships.filter(c=>{let stages=db.races.filter(r=>r.champId===c.id),done=stages.length?stages.filter(r=>db.results.some(x=>x.raceId===r.id)).length>=stages.length:Number(c.progress||0)===100;return c.name.toLowerCase().includes(q)&&(!cat||c.category===cat)&&(!status||(status==='done'?done:!done))});document.getElementById('allCards').innerHTML=filtered.map(card).join('')||'<div class="empty">Nenhum campeonato encontrado com esses filtros.</div>';if(cloudUser)refreshPilotChampionshipActions();
 let ranks=rankDrivers().filter(d=>d.titles>0),position=0,last=-1;let hall=ranks.map((d,i)=>{if(d.titles!==last)position=i+1;last=d.titles;return `<tr><td class="rank">${podium(position)}</td><td class="driver">${esc(d.name)}</td><td class="count">${d.titles}</td><td>${esc(d.category||'—')}</td></tr>`}).join('')||'<tr><td colspan="4" class="empty">Nenhum piloto com título registrado ainda.</td></tr>';
 document.getElementById('homeHall').innerHTML=hall;document.getElementById('hallRows').innerHTML=ranks.map((d,i)=>`<tr><td class="rank">${podium(i===0?1:(d.titles===ranks[0]?.titles?1:i+1))}</td><td class="driver">${esc(d.name)}</td><td class="count">${d.titles}</td><td>${db.titles.filter(t=>t.driverId===d.id).map(t=>esc(t.season||champName(t.champId))).join(', ')||'—'}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">Nenhum piloto com título registrado ainda.</td></tr>';
@@ -871,6 +942,8 @@ async function refreshCloudRole(){
 }
 async function loadCloudData(){
  const specs={
+  community_posts:{select:'id,user_id,pilot_name,body,media_url,created_at',map:r=>({id:String(r.id),userId:r.user_id,pilotName:r.pilot_name,body:r.body,mediaUrl:r.media_url||'',createdAt:r.created_at})},
+  season_awards:{select:'id,season,category,driver_id,winner_name,description,created_at',map:r=>({id:String(r.id),season:r.season,category:r.category,driverId:String(r.driver_id||''),winnerName:r.winner_name,description:r.description||'',createdAt:r.created_at})},
   news_posts:{select:'id,title,category,body,created_at,author_name,is_published,requires_approval,event_key,source_type',map:r=>({id:String(r.id),title:r.title,category:r.category||'Comunicado',body:r.body,createdAt:r.created_at,authorName:r.author_name||'Administração',isPublished:r.is_published!==false,requiresApproval:!!r.requires_approval,eventKey:r.event_key||'',sourceType:r.source_type||'manual'})},
   fun_events:{select:'id,name,event_date,event_time,track_name,description,server_url',map:r=>({id:String(r.id),name:r.name,date:r.event_date||'',time:r.event_time||'',trackName:r.track_name||'',description:r.description||'',serverUrl:r.server_url||''})},
   championships:{select:'id,name,season,category,events,entrants,progress,rules,emperor_url,car_selection_url',map:r=>({...r,id:String(r.id),emperorUrl:r.emperor_url||'',carSelectionUrl:r.car_selection_url||''})},
@@ -887,7 +960,7 @@ async function loadCloudData(){
   loaded[table]=(data||[]).map(spec.map);
  }
  // Dados do banco são a fonte principal. Mantém cópia local apenas como cache/backup.
- db.news=loaded.news_posts||[];db.championships=loaded.championships;db.drivers=loaded.drivers;db.tracks=loaded.tracks;
+ db.news=loaded.news_posts||[];db.communityPosts=loaded.community_posts||[];db.seasonAwards=loaded.season_awards||[];db.championships=loaded.championships;db.drivers=loaded.drivers;db.tracks=loaded.tracks;
  db.races=loaded.races;db.results=loaded.results;db.titles=loaded.titles;db.funEvents=loaded.fun_events||[];
  localStorage.setItem('rlm_portal_v2',JSON.stringify(db));renderAll();
 }
@@ -906,7 +979,7 @@ async function afterCloudLogin(){
  document.getElementById('entryGate').classList.add('hidden');
  document.getElementById('accountNav').textContent=cloudIsAdmin?'♙ Minha conta • Admin':'♙ Minha conta';
  document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#funForm,#trackForm,#raceForm,#resultForm,#titleForm,#newsForm').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
- document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';const pc=document.getElementById('profileChangeAdmin');if(pc)pc.style.display=cloudIsAdmin?'':'none';if(cloudIsAdmin)loadProfileChangeRequests();loadRaceControl();document.getElementById('licenseAdmin').style.display=cloudIsAdmin?'':'none';
+ document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';const pc=document.getElementById('profileChangeAdmin');if(pc)pc.style.display=cloudIsAdmin?'':'none';if(cloudIsAdmin)loadProfileChangeRequests();loadRaceControl();loadCommunityAwards();document.getElementById('licenseAdmin').style.display=cloudIsAdmin?'':'none';
  if(cloudIsAdmin){startRegistrationPolling();loadLicenseAdmin();}
  loggedPilotId=null;await renderProfile();showPage('home');await refreshPilotChampionshipActions();
 }
