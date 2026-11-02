@@ -191,7 +191,7 @@ input[type=file]{max-width:0}
 
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • SUPABASE</span>
+<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • SUPABASE</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
@@ -234,7 +234,29 @@ input[type=file]{max-width:0}
 <section id="drivers" class="page"><div class="subhead"><div class="kicker">GRID DE PILOTOS</div><h1>Pilotos</h1><p>Cadastro e histórico dos competidores.</p></div><div class="sectionHead"><div><h2>Pilotos cadastrados</h2><p>Use a administração para adicionar novos pilotos.</p></div><div class="tools"><input id="driverSearch" placeholder="Buscar piloto..." oninput="renderAll()"></div></div><div class="panel tableWrap"><table><thead><tr><th>Piloto</th><th>Equipe</th><th>Títulos</th><th>Pontos registrados</th></tr></thead><tbody id="driverRows"></tbody></table></div></section>
 <section id="hall" class="page"><div class="subhead"><div class="kicker">OS GRANDES NOMES DA LIGA</div><h1>Hall da Fama</h1><p>Uma homenagem aos campeões da Rookie League Motorsport.</p></div><div class="metrics"><div class="metric"><div class="label">Pilotos homenageados</div><strong id="hallDrivers">03</strong></div><div class="metric"><div class="label">Títulos registrados</div><strong><em id="hallTitles">04</em></strong></div><div class="metric"><div class="label">Categoria</div><strong>LMP2</strong></div><div class="metric"><div class="label">Liga</div><strong style="font-size:18px">ROOKIE</strong></div></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Temporadas</th></tr></thead><tbody id="hallRows"></tbody></table></div><p class="hint">Empates são mantidos na mesma posição. As temporadas podem ser informadas no cadastro de títulos.</p></section>
 <section id="news" class="page"><div class="subhead"><div class="kicker">COMUNICAÇÃO OFICIAL</div><h1>Mural de notícias</h1><p>Comunicados, novidades e informações oficiais da Rookie League Motorsport.</p></div><div id="newsWall" class="newsWall"><div class="empty">Carregando notícias...</div></div></section>
-<section id="admin" class="page"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button type="button" class="active"  onclick="switchAdminTab('pilotForm',this)"data-tab="pilotForm">＋ Cadastrar piloto</button><button type="button"  onclick="switchAdminTab('champForm',this)"data-tab="champForm">＋ Cadastrar campeonato</button><button type="button" onclick="switchAdminTab('newsForm',this)" data-tab="newsForm">▤ Publicar notícia</button><button type="button" onclick="switchAdminTab('funForm',this)" data-tab="funForm">★ Cadastrar 4FUN</button><button type="button"  onclick="switchAdminTab('trackForm',this)"data-tab="trackForm">＋ Cadastrar pista</button><button type="button"  onclick="switchAdminTab('raceForm',this)"data-tab="raceForm">＋ Criar etapa</button><button type="button"  onclick="switchAdminTab('resultForm',this)"data-tab="resultForm">＋ Lançar resultado</button><button type="button"  onclick="switchAdminTab('titleForm',this)"data-tab="titleForm">♛ Registrar título</button></div>
+
+<section id="racecontrol" class="page">
+ <div class="subhead"><div class="kicker">FAIR PLAY • COMPETIÇÃO</div><h1>Direção de Prova</h1><p>Envie protestos sobre incidentes e acompanhe as decisões oficiais da organização.</p></div>
+ <div class="panel" style="margin-top:13px">
+  <h2>Enviar protesto</h2>
+  <p class="hint">É necessário entrar na sua conta. Descreva o incidente com respeito e, se possível, inclua um link para o vídeo ou replay.</p>
+  <div id="protestLoginHint" class="empty">Faça login como piloto para enviar um protesto.</div>
+  <div id="protestForm" style="display:none">
+   <div class="formgrid">
+    <div class="field"><label>Etapa</label><select id="protestRace"></select></div>
+    <div class="field"><label>Tipo de incidente</label><select id="protestType"><option>Colisão</option><option>Ultrapassagem irregular</option><option>Defesa irregular</option><option>Corte de pista</option><option>Conduta antidesportiva</option><option>Outro</option></select></div>
+    <div class="field full"><label>Piloto envolvido (opcional)</label><select id="protestAgainst"><option value="">Não informar</option></select></div>
+    <div class="field full"><label>Descrição do incidente</label><textarea id="protestDescription" rows="5" maxlength="3000" placeholder="Informe volta, curva, contexto e o que aconteceu..."></textarea></div>
+    <div class="field full"><label>Link de vídeo/replay (opcional)</label><input id="protestEvidence" type="url" placeholder="https://..."></div>
+   </div>
+   <div class="formactions"><button class="btn" onclick="submitProtest()">ENVIAR PROTESTO</button></div>
+  </div>
+ </div>
+ <div class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Minhas solicitações</h2><p>Consulte o andamento dos protestos enviados pela sua conta.</p></div><button class="btn secondary small" onclick="loadRaceControl()">↻ ATUALIZAR</button></div><div id="myProtests" class="tracklist"><p class="empty">Entre na sua conta para consultar.</p></div></div>
+ <div class="panel" style="margin-top:13px"><h2>Decisões publicadas</h2><p class="hint">Decisões oficiais e penalidades divulgadas pela direção de prova.</p><div id="publishedPenalties" class="tracklist"><p class="empty">Carregando decisões...</p></div></div>
+</section>
+
+<section id="admin" class="page"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button type="button" class="active"  onclick="switchAdminTab('pilotForm',this)"data-tab="pilotForm">＋ Cadastrar piloto</button><button type="button"  onclick="switchAdminTab('champForm',this)"data-tab="champForm">＋ Cadastrar campeonato</button><button type="button" onclick="switchAdminTab('newsForm',this)" data-tab="newsForm">▤ Publicar notícia</button><button type="button" onclick="switchAdminTab('raceControlAdmin',this)" data-tab="raceControlAdmin">⚑ Direção de prova</button><button type="button" onclick="switchAdminTab('funForm',this)" data-tab="funForm">★ Cadastrar 4FUN</button><button type="button"  onclick="switchAdminTab('trackForm',this)"data-tab="trackForm">＋ Cadastrar pista</button><button type="button"  onclick="switchAdminTab('raceForm',this)"data-tab="raceForm">＋ Criar etapa</button><button type="button"  onclick="switchAdminTab('resultForm',this)"data-tab="resultForm">＋ Lançar resultado</button><button type="button"  onclick="switchAdminTab('titleForm',this)"data-tab="titleForm">♛ Registrar título</button></div>
 <div id="newsForm" class="panel" style="display:none;margin-top:13px"><h3>Publicar no mural</h3><div class="formgrid"><div class="field"><label>Título</label><input id="newsTitle" maxlength="120" placeholder="Ex.: Inscrições abertas para a nova temporada"></div><div class="field"><label>Categoria</label><select id="newsCategory"><option>Comunicado</option><option>Campeonato</option><option>Resultado</option><option>Evento 4FUN</option><option>Atualização</option></select></div><div class="field full"><label>Notícia</label><textarea id="newsBody" rows="5" maxlength="5000" placeholder="Escreva o comunicado oficial..."></textarea></div></div><div class="formactions"><button class="btn" onclick="publishNews()">PUBLICAR NOTÍCIA</button></div><div id="adminNewsList" class="tracklist"></div></div>
 <div class="formactions" style="margin-top:12px"><a class="btn" href="https://supabase.com/dashboard/project/lxformxabgtgafykvhkw/editor/17649?schema=public" target="_blank" rel="noopener noreferrer">↗ ABRIR SUPABASE — GERENCIAR INSCRIÇÕES</a></div>
 <div id="champForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do campeonato</label><input id="newChampName" placeholder="Ex.: Rookie League GT3"></div><div class="field"><label>Temporada / ano</label><input id="newChampSeason" placeholder="Ex.: Temporada 2026"></div><div class="field"><label>Categoria</label><select id="newChampCategory"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select></div><div class="field full champUrlField"><label>URL para escolha de carro (opcional)</label><input id="newChampCarUrl" type="url" placeholder="https://site.com/escolher-carro"><small>O link aparecerá para os pilotos com inscrição aprovada.</small></div><div class="formactions"><button class="btn" onclick="addChampionship()">CADASTRAR CAMPEONATO</button><span class="hint">Depois de cadastrar, crie as etapas e defina pista, data e horário de cada corrida.</span></div></div></div>
@@ -257,6 +279,24 @@ input[type=file]{max-width:0}
 <div class="formactions"><button class="btn" onclick="addResult()">SALVAR RESULTADOS</button><span class="hint">Deixe vazias as posições que não participaram. Os resultados existentes nesta etapa serão preservados; pilotos já lançados não serão duplicados.</span></div>
 </div>
 <div id="titleForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Piloto campeão</label><select id="titleDriver"></select></div><div class="field"><label>Campeonato</label><select id="titleChamp"></select></div><div class="field"><label>Temporada / ano</label><input id="titleSeason" placeholder="Ex.: Temporada 2026"></div></div><div class="formactions"><button class="btn" onclick="addTitle()">REGISTRAR TÍTULO</button></div></div>
+
+<div id="raceControlAdmin" class="panel" style="display:none;margin-top:13px">
+ <div class="sectionHead"><div><h2>Protestos recebidos</h2><p>Analise os relatos, registre a decisão e publique penalidades.</p></div><button class="btn secondary small" onclick="loadRaceControl()">↻ ATUALIZAR</button></div>
+ <div id="adminProtests" class="tracklist"><p class="empty">Carregando protestos...</p></div>
+ <hr style="border-color:var(--line);margin:20px 0">
+ <h2>Registrar penalidade / decisão</h2>
+ <div class="formgrid">
+  <div class="field"><label>Etapa</label><select id="penaltyRace"></select></div>
+  <div class="field"><label>Piloto penalizado</label><select id="penaltyDriver"></select></div>
+  <div class="field"><label>Tipo de decisão</label><select id="penaltyType"><option>Advertência</option><option>Penalidade de tempo</option><option>Perda de posição</option><option>Desclassificação</option><option>Perda de pontos</option><option>Sem penalidade</option><option>Outra decisão</option></select></div>
+  <div class="field"><label>Penalidade em segundos (se aplicável)</label><input id="penaltySeconds" type="number" min="0" step="1" placeholder="Ex.: 10"></div>
+  <div class="field"><label>Desconto de pontos (se aplicável)</label><input id="penaltyPoints" type="number" min="0" step="1" placeholder="Ex.: 5"></div>
+  <div class="field full"><label>Fundamentação / decisão</label><textarea id="penaltyReason" rows="4" maxlength="3000" placeholder="Descreva a análise e a decisão da direção de prova..."></textarea></div>
+ </div>
+ <div class="formactions"><button class="btn" onclick="publishPenalty()">PUBLICAR DECISÃO</button></div>
+ <h2 style="margin-top:22px">Histórico de decisões</h2><div id="adminPenalties" class="tracklist"></div>
+</div>
+
 <div id="registrationAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Inscrições dos campeonatos <span id="registrationPendingBadge" class="adminNoticeBadge" hidden>0</span></h2><p>Analise as solicitações dos pilotos e aprove ou recuse a participação.</p></div><button class="btn secondary small" onclick="loadRegistrationRequests()">↻ ATUALIZAR</button></div><div id="registrationPendingNotice" class="registrationNotice" hidden></div><div id="registrationRequestRows"><p class="hint">Carregando inscrições…</p></div>
 <div id="profileChangeAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Alterações de perfil dos pilotos <span id="profileChangeBadge" class="adminNoticeBadge" hidden>0</span></h2><p>Revise e aprove as alterações solicitadas.</p></div><button class="btn secondary small" onclick="loadProfileChangeRequests()">↻ ATUALIZAR</button></div><div id="profileChangeRows"><p class="hint">Carregando…</p></div></div><div id="licenseAdmin" class="panel" style="margin-top:13px">
  <div class="sectionHead"><div><h2>Carteiras e Safety Rating</h2><p>Avalie cada piloto após a corrida. A nota atualiza o SR automaticamente.</p></div><button class="btn secondary small" onclick="loadLicenseAdmin()">↻ ATUALIZAR</button></div>
@@ -313,7 +353,7 @@ let authMode='login',loggedPilotId=null;
 function save(){localStorage.setItem('rlm_portal_v2',JSON.stringify(db));renderAll();if(cloudReady&&cloudIsAdmin)syncChangedDataToCloud().catch(e=>console.error('Falha ao sincronizar:',e))}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function switchAdminTab(targetId,button){
- const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm'];
+ const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm','raceControlAdmin'];
  if(!allowed.includes(targetId))return;
  const admin=document.getElementById('admin');
  if(!admin)return;
@@ -340,7 +380,7 @@ document.addEventListener('click',function(event){
  event.preventDefault();
  event.stopPropagation();
  const targetId=tab.getAttribute('data-tab');
- const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm'];
+ const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm','raceControlAdmin'];
  if(!allowed.includes(targetId))return;
  const admin=document.getElementById('admin');
  if(!admin)return;
@@ -686,8 +726,77 @@ async function deleteNews(id){
  const {error}=await supabaseClient.from('news_posts').delete().eq('id',id);if(error)return alert('Não foi possível excluir: '+error.message);
  db.news=db.news.filter(n=>String(n.id)!==String(id));renderNews();
 }
+
+let raceControlCache={protests:[],penalties:[]};
+function raceLabel(id){const r=db.races.find(x=>String(x.id)===String(id));if(!r)return 'Etapa';const c=db.championships.find(x=>String(x.id)===String(r.champId));return (c?c.name+' • ':'')+r.name;}
+async function loadRaceControl(){
+ if(!cloudReady){renderRaceControlGate();return}
+ try{
+  let pr={data:[],error:null};
+  if(cloudUser)pr=await supabaseClient.from('race_protests').select('*').order('created_at',{ascending:false});
+  const pe=await supabaseClient.from('race_penalties').select('*').eq('is_published',true).order('created_at',{ascending:false});
+  if(pr.error)throw pr.error;if(pe.error)throw pe.error;
+  raceControlCache.protests=pr.data||[];raceControlCache.penalties=pe.data||[];
+  if(cloudIsAdmin){
+   const all=await supabaseClient.from('race_penalties').select('*').order('created_at',{ascending:false});
+   if(all.error)throw all.error;raceControlCache.allPenalties=all.data||[];
+  }
+  renderRaceControl();
+ }catch(e){console.error(e);const el=document.getElementById('myProtests');if(el)el.innerHTML='<p class="empty">Não foi possível carregar a direção de prova: '+esc(e.message)+'</p>'}
+}
+function renderRaceControlGate(){
+ const logged=!!cloudUser,form=document.getElementById('protestForm'),hint=document.getElementById('protestLoginHint');
+ if(form)form.style.display=logged?'block':'none';if(hint)hint.style.display=logged?'none':'block';
+}
+function renderRaceControl(){
+ renderRaceControlGate();
+ const raceOptions=db.races.map(r=>`<option value="${esc(r.id)}">${esc(raceLabel(r.id))}</option>`).join('');
+ ['protestRace','penaltyRace'].forEach(id=>{const el=document.getElementById(id);if(el){const old=el.value;el.innerHTML=raceOptions||'<option value="">Nenhuma etapa cadastrada</option>';if(old)el.value=old}});
+ const drivers=db.drivers.map(d=>`<option value="${esc(d.id)}">${esc(d.name)}</option>`).join('');
+ const against=document.getElementById('protestAgainst');if(against){const old=against.value;against.innerHTML='<option value="">Não informar</option>'+drivers;against.value=old}
+ const penaltyDriver=document.getElementById('penaltyDriver');if(penaltyDriver){const old=penaltyDriver.value;penaltyDriver.innerHTML=drivers;penaltyDriver.value=old}
+ const mine=document.getElementById('myProtests');
+ if(mine){const rows=(raceControlCache.protests||[]).filter(x=>x.reporter_user_id===cloudUser?.id);mine.innerHTML=rows.map(x=>`<div class="trackrow"><span><strong>${esc(x.incident_type)} • ${esc(x.race_name||raceLabel(x.race_id))}</strong><small>${esc(x.description)}<br>Status: ${esc(x.status)}${x.admin_decision?' • '+esc(x.admin_decision):''}</small></span><span class="tools">${x.evidence_url?`<a target="_blank" rel="noopener" href="${esc(x.evidence_url)}">REPLAY</a>`:''}</span></div>`).join('')||'<p class="empty">Você ainda não enviou protestos.</p>'}
+ const published=document.getElementById('publishedPenalties');
+ if(published)published.innerHTML=(raceControlCache.penalties||[]).map(x=>`<div class="trackrow"><span><strong>${esc(x.penalty_type)} • ${esc(x.pilot_name)}</strong><small>${esc(x.race_name)}<br>${esc(x.reason)}${Number(x.penalty_seconds)>0?' • +'+x.penalty_seconds+'s':''}${Number(x.points_deduction)>0?' • -'+x.points_deduction+' pontos':''}</small></span></div>`).join('')||'<p class="empty">Nenhuma decisão publicada.</p>';
+ const admin=document.getElementById('adminProtests');
+ if(admin&&cloudIsAdmin)admin.innerHTML=(raceControlCache.protests||[]).map(x=>`<div class="trackrow"><span><strong>${esc(x.pilot_name)} • ${esc(x.incident_type)}</strong><small>${esc(x.race_name||raceLabel(x.race_id))} · ${esc(x.description)}<br>Envolvido: ${esc(x.accused_pilot||'Não informado')} · Status: ${esc(x.status)} ${x.evidence_url?'· <a target="_blank" rel="noopener" href="'+esc(x.evidence_url)+'">REPLAY</a>':''}</small></span><span class="tools"><button class="btn small" onclick="decideProtest('${esc(x.id)}','accepted')">PROCEDENTE</button><button class="btn secondary small" onclick="decideProtest('${esc(x.id)}','rejected')">IMPROCEDENTE</button><button class="btn secondary small" onclick="decideProtest('${esc(x.id)}','review')">EM ANÁLISE</button></span></div>`).join('')||'<p class="empty">Nenhum protesto recebido.</p>';
+ const hist=document.getElementById('adminPenalties');if(hist&&cloudIsAdmin)hist.innerHTML=(raceControlCache.allPenalties||[]).map(x=>`<div class="trackrow"><span><strong>${esc(x.pilot_name)} • ${esc(x.penalty_type)}</strong><small>${esc(x.race_name)} · ${esc(x.reason)} · ${x.is_published?'PUBLICADA':'RASCUNHO'}</small></span><span class="tools"><button class="btn danger small" onclick="deletePenalty('${esc(x.id)}')">EXCLUIR</button></span></div>`).join('')||'<p class="empty">Nenhuma decisão registrada.</p>';
+}
+async function submitProtest(){
+ if(!cloudUser)return alert('Entre na sua conta de piloto para enviar um protesto.');
+ const raceId=document.getElementById('protestRace').value,description=document.getElementById('protestDescription').value.trim(),evidence=document.getElementById('protestEvidence').value.trim();
+ if(!raceId||!description)return alert('Selecione a etapa e descreva o incidente.');
+ if(evidence&&!/^https?:\/\//i.test(evidence))return alert('O link do replay deve começar com http:// ou https://.');
+ const {data:driver,error:driverError}=await supabaseClient.from('drivers').select('id,name').eq('user_id',cloudUser.id).maybeSingle();
+ if(driverError)return alert('Não foi possível identificar seu cadastro de piloto: '+driverError.message);
+ if(!driver)return alert('Sua conta ainda não está vinculada a um cadastro de piloto. Peça ao administrador para conferir seu perfil.');
+ const race=db.races.find(r=>String(r.id)===String(raceId));
+ const payload={reporter_user_id:cloudUser.id,driver_id:String(driver.id),pilot_name:driver.name,race_id:String(raceId),race_name:raceLabel(raceId),incident_type:document.getElementById('protestType').value,accused_pilot:db.drivers.find(d=>String(d.id)===document.getElementById('protestAgainst').value)?.name||'',description,evidence_url:evidence||null,status:'pending'};
+ const {error}=await supabaseClient.from('race_protests').insert(payload);if(error)return alert('Falha ao enviar protesto: '+error.message);
+ document.getElementById('protestDescription').value='';document.getElementById('protestEvidence').value='';await loadRaceControl();alert('Protesto enviado à direção de prova.');
+}
+async function decideProtest(id,status){
+ if(!cloudIsAdmin)return alert('Acesso restrito ao administrador.');
+ const decision=prompt('Registre a fundamentação ou decisão para o piloto:');if(decision===null)return;
+ const {error}=await supabaseClient.from('race_protests').update({status,admin_decision:decision,reviewed_by:cloudUser.id,reviewed_at:new Date().toISOString()}).eq('id',id);
+ if(error)return alert('Falha ao atualizar protesto: '+error.message);await loadRaceControl();
+}
+async function publishPenalty(){
+ if(!cloudIsAdmin)return alert('Acesso restrito ao administrador.');
+ const raceId=document.getElementById('penaltyRace').value,driverId=document.getElementById('penaltyDriver').value,reason=document.getElementById('penaltyReason').value.trim();
+ if(!raceId||!driverId||!reason)return alert('Selecione a etapa, o piloto e informe a fundamentação.');
+ const race=db.races.find(r=>String(r.id)===String(raceId)),driver=db.drivers.find(d=>String(d.id)===String(driverId));
+ const seconds=Number(document.getElementById('penaltySeconds').value||0),points=Number(document.getElementById('penaltyPoints').value||0);
+ if(seconds<0||points<0||!Number.isFinite(seconds)||!Number.isFinite(points))return alert('Confira os valores da penalidade.');
+ const payload={race_id:String(raceId),race_name:raceLabel(raceId),driver_id:String(driverId),pilot_name:driver?.name||'Piloto',penalty_type:document.getElementById('penaltyType').value,penalty_seconds:seconds,points_deduction:points,reason,is_published:true,created_by:cloudUser.id};
+ const {error}=await supabaseClient.from('race_penalties').insert(payload);if(error)return alert('Falha ao publicar decisão: '+error.message);
+ document.getElementById('penaltyReason').value='';document.getElementById('penaltySeconds').value='';document.getElementById('penaltyPoints').value='';await loadRaceControl();alert('Decisão publicada na página Direção de Prova.');
+}
+async function deletePenalty(id){if(!cloudIsAdmin||!confirm('Excluir esta decisão?'))return;const {error}=await supabaseClient.from('race_penalties').delete().eq('id',id);if(error)return alert(error.message);await loadRaceControl();}
+
 function renderAll(){
-renderNews();renderFunEvents();document.getElementById('homeCards').innerHTML=db.championships.slice(0,3).map(card).join('');renderHomeNextRace();
+renderRaceControlGate();renderNews();renderFunEvents();document.getElementById('homeCards').innerHTML=db.championships.slice(0,3).map(card).join('');renderHomeNextRace();
 let q=(document.getElementById('champSearch')?.value||'').toLowerCase(),cat=document.getElementById('champCategoryFilter')?.value||'',status=document.getElementById('champStatusFilter')?.value||'';let filtered=db.championships.filter(c=>{let stages=db.races.filter(r=>r.champId===c.id),done=stages.length?stages.filter(r=>db.results.some(x=>x.raceId===r.id)).length>=stages.length:Number(c.progress||0)===100;return c.name.toLowerCase().includes(q)&&(!cat||c.category===cat)&&(!status||(status==='done'?done:!done))});document.getElementById('allCards').innerHTML=filtered.map(card).join('')||'<div class="empty">Nenhum campeonato encontrado com esses filtros.</div>';if(cloudUser)refreshPilotChampionshipActions();
 let ranks=rankDrivers().filter(d=>d.titles>0),position=0,last=-1;let hall=ranks.map((d,i)=>{if(d.titles!==last)position=i+1;last=d.titles;return `<tr><td class="rank">${podium(position)}</td><td class="driver">${esc(d.name)}</td><td class="count">${d.titles}</td><td>${esc(d.category||'—')}</td></tr>`}).join('')||'<tr><td colspan="4" class="empty">Nenhum piloto com título registrado ainda.</td></tr>';
 document.getElementById('homeHall').innerHTML=hall;document.getElementById('hallRows').innerHTML=ranks.map((d,i)=>`<tr><td class="rank">${podium(i===0?1:(d.titles===ranks[0]?.titles?1:i+1))}</td><td class="driver">${esc(d.name)}</td><td class="count">${d.titles}</td><td>${db.titles.filter(t=>t.driverId===d.id).map(t=>esc(t.season||champName(t.champId))).join(', ')||'—'}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">Nenhum piloto com título registrado ainda.</td></tr>';
@@ -787,7 +896,7 @@ async function afterCloudLogin(){
  document.getElementById('entryGate').classList.add('hidden');
  document.getElementById('accountNav').textContent=cloudIsAdmin?'♙ Minha conta • Admin':'♙ Minha conta';
  document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#funForm,#trackForm,#raceForm,#resultForm,#titleForm,#newsForm').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
- document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';const pc=document.getElementById('profileChangeAdmin');if(pc)pc.style.display=cloudIsAdmin?'':'none';if(cloudIsAdmin)loadProfileChangeRequests();document.getElementById('licenseAdmin').style.display=cloudIsAdmin?'':'none';
+ document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';const pc=document.getElementById('profileChangeAdmin');if(pc)pc.style.display=cloudIsAdmin?'':'none';if(cloudIsAdmin)loadProfileChangeRequests();loadRaceControl();document.getElementById('licenseAdmin').style.display=cloudIsAdmin?'':'none';
  if(cloudIsAdmin){startRegistrationPolling();loadLicenseAdmin();}
  loggedPilotId=null;await renderProfile();showPage('home');await refreshPilotChampionshipActions();
 }
