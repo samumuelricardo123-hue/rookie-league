@@ -163,7 +163,7 @@ input[type=file]{max-width:0}
 .license-progress{height:8px;border-radius:20px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:8px}
 .license-progress span{display:block;height:100%;background:#e5b84b}
 @media(max-width:650px){.license-grid{grid-template-columns:1fr}}
-.profileEditGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.profileAvatar{width:78px;height:78px;border-radius:50%;object-fit:cover;border:2px solid var(--green);background:#17221a}.profilePending{padding:10px;border:1px solid #e5b84b66;background:#e5b84b12;border-radius:9px;margin:12px 0;color:#f0d58b}@media(max-width:650px){.profileEditGrid{grid-template-columns:1fr}}</style></head>
+.profileEditGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.profileAvatar{width:78px;height:78px;border-radius:50%;object-fit:cover;border:2px solid var(--green);background:#17221a}.profilePending{padding:10px;border:1px solid #e5b84b66;background:#e5b84b12;border-radius:9px;margin:12px 0;color:#f0d58b}@media(max-width:650px){.profileEditGrid{grid-template-columns:1fr}}.redDotBadge{background:#ef3038!important;color:#fff!important;border:2px solid #101713!important;min-width:10px!important;width:10px;height:10px;padding:0!important;border-radius:50%!important;font-size:0!important;display:inline-block;vertical-align:top;margin-left:5px;box-shadow:0 0 0 2px #ef303833}.redDotBadge[hidden]{display:none!important}nav button{position:relative}</style></head>
 <body>
 
 <div id="entryGate" class="entryGate">
@@ -191,7 +191,7 @@ input[type=file]{max-width:0}
 
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro</button></nav><span class="status">PORTAL OFICIAL • SUPABASE</span>
+<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • SUPABASE</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
@@ -325,7 +325,7 @@ function switchAdminTab(targetId,button){
  });
  try{refreshSelects()}catch(error){console.error('Falha ao atualizar listas da administração:',error)}
 }
-function showPage(id){if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');renderAll()}
+function showPage(id){if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');if(id==='account'&&cloudUser){const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;markPilotProfileNotificationsSeen()}renderAll()}
 document.addEventListener('click',function(event){
  const button=event.target.closest('nav [data-page]');
  if(!button)return;
@@ -825,6 +825,7 @@ async function submitLicenseEvaluation(){
  }catch(e){alert('Não foi possível salvar a avaliação: '+(e.message||e)+'. Confira se executou o SQL de configuração no Supabase.')}
 }
 
+async function markPilotProfileNotificationsSeen(){try{if(!cloudUser)return;const {data}=await supabaseClient.from('driver_profile_change_requests').select('id').eq('user_id',cloudUser.id).in('status',['approved','rejected']);const key='rookie_profile_seen_'+cloudUser.id;localStorage.setItem(key,JSON.stringify((data||[]).map(x=>String(x.id))));}catch(e){console.warn('Não foi possível marcar notificações como lidas.',e)}}
 async function renderProfile(){
  const box=document.getElementById('pilotProfile');if(!box)return;if(!cloudUser){box.innerHTML='';return}
  box.innerHTML='<p class="hint">Carregando perfil…</p>';
@@ -834,6 +835,7 @@ async function renderProfile(){
   const license=await ensureDriverLicense(d.id);
   const {data:evals,error:ee}=await supabaseClient.from('license_evaluations').select('score,sr_change,created_at').eq('driver_id',String(d.id)).order('created_at',{ascending:false}).limit(8);if(ee)throw ee;
   const {data:pending,error:pe}=await supabaseClient.from('driver_profile_change_requests').select('id').eq('driver_id',String(d.id)).eq('status','pending').limit(1);if(pe)throw pe;
+  const {data:decided,error:de}=await supabaseClient.from('driver_profile_change_requests').select('id,status,reviewed_at').eq('driver_id',String(d.id)).in('status',['approved','rejected']).order('reviewed_at',{ascending:false});if(de)throw de;const seenKey='rookie_profile_seen_'+cloudUser.id;let seenIds=[];try{seenIds=JSON.parse(localStorage.getItem(seenKey)||'[]')}catch(e){}const unread=(decided||[]).filter(x=>!seenIds.includes(String(x.id)));const pilotDot=document.getElementById('pilotAccountBadge');if(pilotDot)pilotDot.hidden=unread.length===0;
   const rs=db.results.filter(x=>String(x.driverId)===String(d.id)),wins=rs.filter(x=>Number(x.position)===1).length,podiums=rs.filter(x=>Number(x.position)<=3).length,titles=db.titles.filter(x=>String(x.driverId)===String(d.id)).length;
   const photo=d.profile_photo_url||'';
   box.innerHTML=`<div class="license-card"><div style="display:flex;align-items:center;gap:15px;margin-bottom:16px">${photo?`<img class="profileAvatar" src="${esc(photo)}" alt="Foto">`:'<div class="profileAvatar" style="display:grid;place-items:center;font-size:28px">🏎</div>'}<div><div class="kicker">ROOKIE LEAGUE • DRIVER PROFILE</div><h2>${esc(d.name)}</h2><p class="hint">${esc(d.team||'Equipe não definida')} ${d.car_number?' • #'+esc(d.car_number):''}</p></div></div>
@@ -868,7 +870,7 @@ async function submitDriverProfileChange(driverId){
 async function loadProfileChangeRequests(){
  const box=document.getElementById('profileChangeRows');if(!box||!cloudIsAdmin)return;
  try{const {data,error}=await supabaseClient.from('driver_profile_change_requests').select('*').eq('status','pending').order('created_at',{ascending:false});if(error)throw error;
- const pending=(data||[]).length,b=document.getElementById('profileChangeBadge');b.textContent=String(pending);b.hidden=!pending;
+ const pending=(data||[]).length,b=document.getElementById('profileChangeBadge');b.textContent=String(pending);b.hidden=!pending;const adminDot=document.getElementById('adminRegistrationBadge');if(adminDot&&pending>0)adminDot.hidden=false;
  box.innerHTML=data?.length?`<div class="tableWrap"><table><thead><tr><th>Piloto</th><th>Equipe</th><th>Número</th><th>Foto</th><th>Status</th><th>Ações</th></tr></thead><tbody>${data.map(x=>{const d=db.drivers.find(z=>String(z.id)===String(x.driver_id));return `<tr><td>${esc(d?.name||x.driver_id)}</td><td>${esc(x.requested_team||'—')}</td><td>${esc(x.requested_car_number||'—')}</td><td>${x.requested_photo_url?`<a href="${esc(x.requested_photo_url)}" target="_blank" rel="noopener">Ver foto</a>`:'—'}</td><td>${x.status==='pending'?'PENDENTE':x.status==='approved'?'APROVADA':'RECUSADA'}</td><td>${x.status==='pending'?`<button class="btn small" onclick="decideProfileChange('${x.id}','approved')">ACEITAR</button> <button class="btn danger small" onclick="decideProfileChange('${x.id}','rejected')">RECUSAR</button>`:'—'}</td></tr>`}).join('')}</tbody></table></div>`:'<p class="empty">Nenhuma solicitação de alteração.</p>';
  }catch(e){box.innerHTML=`<p class="hint">Falha ao carregar solicitações: ${esc(e.message||e)}. Execute o SQL da atualização.</p>`}
 }
