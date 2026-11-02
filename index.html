@@ -8,6 +8,13 @@
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1d351f 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif}
 button,input,select{font:inherit}.shell{max-width:1440px;margin:auto;padding:0 24px}
 header{min-height:78px;border-bottom:1px solid #30422c;background:#080d0bee;position:sticky;top:0;z-index:10;backdrop-filter:blur(14px)}
+.nav{position:relative;flex-wrap:wrap}
+nav{display:none;position:absolute;top:calc(100% - 2px);left:24px;right:24px;z-index:30;flex-direction:column;align-items:stretch;gap:3px;padding:12px;background:#0b130f;border:1px solid #30422c;border-radius:12px;box-shadow:0 16px 36px #000b;max-height:75vh;overflow-y:auto}
+.nav.menu-open nav{display:flex}
+nav button,.navright button{width:100%;text-align:left;padding:12px 14px}
+.menuToggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid #40513d;background:#111916;color:#f2f7f1;border-radius:9px;padding:10px 13px;font-weight:800;cursor:pointer;white-space:nowrap}
+.menuToggle:hover{border-color:var(--green);color:var(--green)}
+@media(max-width:600px){.shell{padding:0 14px}.nav{gap:10px}.logo{font-size:16px}.status{font-size:8px;padding:6px}.menuToggle{margin-left:auto}}
 .nav{min-height:78px;display:flex;align-items:center;gap:24px}.logo{font-weight:1000;letter-spacing:1px;font-size:19px;white-space:nowrap}.logo b{color:var(--green)}.flag{color:var(--green);font-size:24px}
 nav{display:flex;gap:5px;align-items:center;flex:1;overflow:auto}nav button,.navright button{border:0;background:transparent;color:#c8d2ca;padding:10px 11px;border-radius:8px;cursor:pointer;font-weight:700;white-space:nowrap}nav button.active,nav button:hover{color:var(--green);background:#a6ff0014}.status{font-size:10px;font-weight:900;color:#111;background:var(--green);padding:7px 9px;border-radius:5px;letter-spacing:.5px}
 .hero{padding:35px 0 24px;display:grid;grid-template-columns:1.35fr .65fr;gap:18px}.heroMain{padding:34px;border:1px solid #3b5728;border-radius:16px;background:linear-gradient(115deg,#17251aee,#0b120fdd);position:relative;overflow:hidden}
@@ -269,7 +276,7 @@ input[type=file]{max-width:0}
 
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • V69</span>
+<button class="menuToggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav">☰ MENU</button><nav id="mainNav"><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • V69</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
@@ -498,11 +505,21 @@ function switchAdminTab(targetId,button){
  try{refreshSelects()}catch(error){console.error('Falha ao atualizar listas da administração:',error)}
 }
 function showPage(id){if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');if(id==='garage')loadGarage();if(id==='account'&&cloudUser){const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;markPilotProfileNotificationsSeen()}renderAll()}
+document.getElementById('menuToggle')?.addEventListener('click',function(){
+ const bar=document.querySelector('.nav');
+ const opened=bar.classList.toggle('menu-open');
+ this.setAttribute('aria-expanded',opened?'true':'false');
+ this.textContent=opened?'✕ FECHAR':'☰ MENU';
+});
 document.addEventListener('click',function(event){
  const button=event.target.closest('nav [data-page]');
  if(!button)return;
  event.preventDefault();
  showPage(button.dataset.page);
+ const bar=document.querySelector('.nav');
+ const toggle=document.getElementById('menuToggle');
+ bar.classList.remove('menu-open');
+ if(toggle){toggle.setAttribute('aria-expanded','false');toggle.textContent='☰ MENU';}
 });
 document.addEventListener('click',function(event){
  const tab=event.target.closest('.tabs [data-tab]');
