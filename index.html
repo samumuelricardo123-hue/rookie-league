@@ -129,6 +129,10 @@ input[type=file]{max-width:0}
 .entrySubmit{width:100%;margin-top:10px}
 .entryMessage{min-height:22px;font-size:12px;color:#a9b7ac}
 #adminNav[hidden]{display:none!important}
+.adminNoticeBadge{display:inline-flex;align-items:center;justify-content:center;min-width:19px;height:19px;margin-left:5px;padding:0 5px;border-radius:20px;background:#ff4545;color:#fff;font-size:10px;font-weight:1000;box-shadow:0 0 12px #ff454566;vertical-align:middle}
+.adminNoticeBadge[hidden]{display:none!important}
+.registrationNotice{margin:12px 17px 0;padding:11px 13px;border:1px solid #a6ff0055;border-radius:9px;background:#a6ff000d;color:#d9f6bd;font-size:13px}
+.registrationNotice strong{color:var(--green)}
 
 .rosterGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:9px;margin-top:12px}
 .rosterPilot{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line,#29352e);border-radius:10px;background:rgba(255,255,255,.02)}
@@ -187,7 +191,7 @@ input[type=file]{max-width:0}
 
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração</button><button data-page="account" id="accountNav">♙ Entrar / Cadastro</button></nav><span class="status">PORTAL OFICIAL • SUPABASE</span>
+<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro</button></nav><span class="status">PORTAL OFICIAL • SUPABASE</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
@@ -251,7 +255,7 @@ input[type=file]{max-width:0}
 <div class="formactions"><button class="btn" onclick="addResult()">SALVAR RESULTADOS</button><span class="hint">Deixe vazias as posições que não participaram. Os resultados existentes nesta etapa serão preservados; pilotos já lançados não serão duplicados.</span></div>
 </div>
 <div id="titleForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Piloto campeão</label><select id="titleDriver"></select></div><div class="field"><label>Campeonato</label><select id="titleChamp"></select></div><div class="field"><label>Temporada / ano</label><input id="titleSeason" placeholder="Ex.: Temporada 2026"></div></div><div class="formactions"><button class="btn" onclick="addTitle()">REGISTRAR TÍTULO</button></div></div>
-<div id="registrationAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Inscrições dos campeonatos</h2><p>Analise as solicitações dos pilotos e aprove ou recuse a participação.</p></div><button class="btn secondary small" onclick="loadRegistrationRequests()">↻ ATUALIZAR</button></div><div id="registrationRequestRows"><p class="hint">Carregando inscrições…</p></div>
+<div id="registrationAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Inscrições dos campeonatos <span id="registrationPendingBadge" class="adminNoticeBadge" hidden>0</span></h2><p>Analise as solicitações dos pilotos e aprove ou recuse a participação.</p></div><button class="btn secondary small" onclick="loadRegistrationRequests()">↻ ATUALIZAR</button></div><div id="registrationPendingNotice" class="registrationNotice" hidden></div><div id="registrationRequestRows"><p class="hint">Carregando inscrições…</p></div>
 <div id="licenseAdmin" class="panel" style="margin-top:13px">
  <div class="sectionHead"><div><h2>Carteiras e Safety Rating</h2><p>Avalie cada piloto após a corrida. A nota atualiza o SR automaticamente.</p></div><button class="btn secondary small" onclick="loadLicenseAdmin()">↻ ATUALIZAR</button></div>
  <div class="formgrid">
@@ -282,6 +286,7 @@ const SUPABASE_URL="https://lxformxabgtgafykvhkw.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_eRVk8_-1vNP3XyMA_02d4w_OF03caaA";
 const supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 let cloudUser=null,cloudIsAdmin=false,cloudReady=false;
+let registrationPollTimer=null,lastPendingRegistrationIds=new Set(),registrationNotificationPrimed=false;
 const seed={
 championships:[{id:'lmp2',name:'LMP2',events:5,entrants:14,progress:100},{id:'gt3',name:'GT3',events:4,entrants:16,progress:100},{id:'f2',name:'F2',events:4,entrants:16,progress:100},{id:'porsche',name:'Porsche Cup',events:9,entrants:16,progress:100},{id:'rookie',name:'Mine campeonato da rookie league',events:7,entrants:12,progress:100}],
 drivers:[{id:'d1',name:'Zé Carlos Senna',team:'',category:'LMP2'},{id:'d2',name:'Renato Camppos',team:'',category:'LMP2'},{id:'d3',name:'Samuel Ricardo',team:'',category:'LMP2'}],
@@ -354,6 +359,35 @@ function rankDrivers(){return [...db.drivers].map(d=>({...d,titles:titleCount(d.
 function podium(pos){return pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':pos}
 
 
+function updateRegistrationNotificationUI(rows){
+ const pending=(rows||[]).filter(r=>r.status==='pending');
+ const count=pending.length;
+ const navBadge=document.getElementById('adminRegistrationBadge');
+ const panelBadge=document.getElementById('registrationPendingBadge');
+ const notice=document.getElementById('registrationPendingNotice');
+ [navBadge,panelBadge].forEach(el=>{if(!el)return;el.textContent=String(count);el.hidden=count===0});
+ if(notice){notice.hidden=count===0;notice.innerHTML=count?`<strong>${count} solicitação(ões) aguardando análise.</strong> Abra esta lista para aceitar ou recusar a participação.`:'';}
+ if(registrationNotificationPrimed){
+  const fresh=pending.filter(r=>!lastPendingRegistrationIds.has(String(r.id)));
+  if(fresh.length && 'Notification' in window && Notification.permission==='granted'){
+   fresh.forEach(r=>new Notification('Nova inscrição • Rookie League',{body:`${r.pilot_name} solicitou entrada em ${champNameByRegistration(r.championship_id)}.`}));
+  }
+ }
+ lastPendingRegistrationIds=new Set(pending.map(r=>String(r.id)));
+ registrationNotificationPrimed=true;
+}
+function champNameByRegistration(id){return db.championships.find(c=>String(c.id)===String(id))?.name||'um campeonato';}
+async function requestRegistrationNotificationPermission(){
+ if(!cloudIsAdmin || !('Notification' in window) || Notification.permission!=='default')return;
+ try{await Notification.requestPermission();}catch(e){console.warn('Permissão de notificações não concedida.',e);}
+}
+function startRegistrationPolling(){
+ if(registrationPollTimer)clearInterval(registrationPollTimer);
+ if(!cloudIsAdmin)return;
+ requestRegistrationNotificationPermission();
+ loadRegistrationRequests();
+ registrationPollTimer=setInterval(()=>{if(cloudIsAdmin)loadRegistrationRequests();},30000);
+}
 async function loadRegistrationRequests(){
  const box=document.getElementById('registrationRequestRows');if(!box)return;
  if(!cloudIsAdmin){box.innerHTML='<p class="hint">Acesso restrito à administração.</p>';return;}
@@ -725,7 +759,7 @@ async function afterCloudLogin(){
  document.getElementById('accountNav').textContent=cloudIsAdmin?'♙ Minha conta • Admin':'♙ Minha conta';
  document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#funForm,#trackForm,#raceForm,#resultForm,#titleForm').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
  document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';document.getElementById('licenseAdmin').style.display=cloudIsAdmin?'':'none';
- if(cloudIsAdmin){loadRegistrationRequests();loadLicenseAdmin();}
+ if(cloudIsAdmin){startRegistrationPolling();loadLicenseAdmin();}
  loggedPilotId=null;await renderProfile();showPage('home');await refreshPilotChampionshipActions();
 }
 
@@ -810,7 +844,7 @@ async function renderProfile(){
 }
 
 async function logoutPilot(){
- await supabaseClient.auth.signOut();cloudUser=null;cloudIsAdmin=false;cloudReady=false;loggedPilotId=null;
+ await supabaseClient.auth.signOut();if(registrationPollTimer)clearInterval(registrationPollTimer);registrationPollTimer=null;lastPendingRegistrationIds=new Set();registrationNotificationPrimed=false;cloudUser=null;cloudIsAdmin=false;cloudReady=false;loggedPilotId=null;
  document.getElementById('pilotProfile').innerHTML='';document.getElementById('logoutBtn').style.display='none';document.getElementById('authSubmit').style.display='inline-flex';
  document.querySelector('.authswitch').style.display='flex';
  document.getElementById('authNameField').style.display='';
@@ -949,7 +983,7 @@ function renderCalendar(){
 }
 
 renderAll();
-supabaseClient.auth.onAuthStateChange(async (_event, session)=>{if(!session){cloudUser=null;cloudIsAdmin=false;cloudReady=false;document.getElementById('adminNav').hidden=true;document.getElementById('entryGate').classList.remove('hidden')} });
+supabaseClient.auth.onAuthStateChange(async (_event, session)=>{if(!session){if(registrationPollTimer)clearInterval(registrationPollTimer);registrationPollTimer=null;lastPendingRegistrationIds=new Set();registrationNotificationPrimed=false;cloudUser=null;cloudIsAdmin=false;cloudReady=false;document.getElementById('adminNav').hidden=true;document.getElementById('entryGate').classList.remove('hidden')} });
 initializeCloud();
 startLiveTimingPolling();
 </script></body></html>
