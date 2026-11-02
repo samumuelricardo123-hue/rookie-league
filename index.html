@@ -841,15 +841,28 @@ async function renderProfile(){
   <div class="license-grid"><div class="license-stat"><small>Corridas</small><strong>${rs.length}</strong></div><div class="license-stat"><small>Vitórias</small><strong>${wins}</strong></div><div class="license-stat"><small>Pódios</small><strong>${podiums}</strong></div><div class="license-stat"><small>Títulos</small><strong>${titles}</strong></div></div>
   ${pending?.length?'<div class="profilePending">Sua alteração está aguardando aprovação do administrador.</div>':''}
   <h3 style="margin-top:18px">Solicitar alteração do perfil</h3><p class="hint">Equipe, número e foto só serão atualizados após aprovação do administrador.</p>
-  <div class="profileEditGrid"><div class="field"><label>Equipe</label><input id="profileTeamRequest" maxlength="80" value="${esc(d.team||'')}" placeholder="Nome da equipe"></div><div class="field"><label>Número do carro</label><input id="profileCarRequest" maxlength="8" value="${esc(d.car_number||'')}" placeholder="Ex.: 27"></div><div class="field" style="grid-column:1/-1"><label>URL da foto</label><input id="profilePhotoRequest" type="url" value="${esc(photo)}" placeholder="https://..."></div></div><div class="formactions"><button class="btn" onclick="submitDriverProfileChange('${String(d.id)}')">ENVIAR PARA APROVAÇÃO</button></div>
+  <div class="profileEditGrid"><div class="field"><label>Equipe</label><input id="profileTeamRequest" maxlength="80" value="${esc(d.team||'')}" placeholder="Nome da equipe"></div><div class="field"><label>Número do carro</label><input id="profileCarRequest" maxlength="8" value="${esc(d.car_number||'')}" placeholder="Ex.: 27"></div><div class="field" style="grid-column:1/-1"><label>Foto do piloto</label><input id="profilePhotoRequest" type="file" accept="image/png,image/jpeg,image/webp"><input id="profileCurrentPhoto" type="hidden" value="${esc(photo)}"><small class="hint">Selecione uma imagem JPG, PNG ou WEBP de até 5 MB. A foto só muda após aprovação.</small></div></div><div class="formactions"><button class="btn" onclick="submitDriverProfileChange('${String(d.id)}')">ENVIAR PARA APROVAÇÃO</button></div>
   <h3 style="margin-top:18px">Últimas avaliações</h3><div class="tableWrap"><table><thead><tr><th>Data</th><th>Nota</th><th>Variação SR</th></tr></thead><tbody>${(evals||[]).map(x=>`<tr><td>${new Date(x.created_at).toLocaleDateString('pt-BR')}</td><td>${x.score}/5</td><td>${Number(x.sr_change)>0?'+':''}${Number(x.sr_change).toFixed(2)}</td></tr>`).join('')||'<tr><td colspan="3">Nenhuma avaliação registrada.</td></tr>'}</tbody></table></div></div>`;
  }catch(e){box.innerHTML=`<div class="license-card"><h3>Perfil do piloto</h3><p>Falha ao carregar: ${esc(e.message||e)}. Confira se executou o SQL da atualização.</p></div>`}
 }
 async function submitDriverProfileChange(driverId){
- const team=document.getElementById('profileTeamRequest').value.trim(),car=document.getElementById('profileCarRequest').value.trim(),photo=document.getElementById('profilePhotoRequest').value.trim();
- if(photo&&!/^https?:\/\/\S+$/i.test(photo))return alert('Informe uma URL de foto válida.');
- try{const {data,error:qe}=await supabaseClient.from('driver_profile_change_requests').select('id').eq('driver_id',String(driverId)).eq('status','pending').limit(1);if(qe)throw qe;if(data?.length)return alert('Você já tem uma solicitação pendente.');
- const {error}=await supabaseClient.from('driver_profile_change_requests').insert({user_id:cloudUser.id,driver_id:String(driverId),requested_team:team,requested_car_number:car,requested_photo_url:photo,status:'pending'});if(error)throw error;alert('Solicitação enviada ao administrador!');await renderProfile();
+ const team=document.getElementById('profileTeamRequest').value.trim(),car=document.getElementById('profileCarRequest').value.trim();
+ const file=document.getElementById('profilePhotoRequest')?.files?.[0];
+ let photo=document.getElementById('profileCurrentPhoto')?.value||'';
+ try{
+  if(file){
+   if(!['image/jpeg','image/png','image/webp'].includes(file.type))return alert('Use uma imagem JPG, PNG ou WEBP.');
+   if(file.size>5*1024*1024)return alert('A imagem deve ter no máximo 5 MB.');
+   const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+   const storagePath=`${cloudUser.id}/${driverId}/${Date.now()}_${safeName}`;
+   const {error:uploadError}=await supabaseClient.storage.from('driver-photos').upload(storagePath,file,{cacheControl:'3600',upsert:true,contentType:file.type});
+   if(uploadError)throw uploadError;
+   const {data:publicData}=supabaseClient.storage.from('driver-photos').getPublicUrl(storagePath);
+   photo=publicData.publicUrl;
+  }
+  const {data,error:qe}=await supabaseClient.from('driver_profile_change_requests').select('id').eq('driver_id',String(driverId)).eq('status','pending').limit(1);if(qe)throw qe;if(data?.length)return alert('Você já tem uma solicitação pendente.');
+  const {error}=await supabaseClient.from('driver_profile_change_requests').insert({user_id:cloudUser.id,driver_id:String(driverId),requested_team:team,requested_car_number:car,requested_photo_url:photo||null,status:'pending'});if(error)throw error;
+  alert('Solicitação enviada ao administrador!');await renderProfile();
  }catch(e){alert('Erro ao enviar solicitação: '+(e.message||e))}
 }
 async function loadProfileChangeRequests(){
