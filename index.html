@@ -209,7 +209,7 @@ input[type=file]{max-width:0}
 <section id="results"  class="page"><div class="subhead"><div class="kicker">CLASSIFICAÇÃO OFICIAL</div><h1>Resultados</h1><p>Resultados por etapa e classificação acumulada.</p></div><div class="sectionHead"><div><h2>Classificação oficial importada</h2><p>Tabela de pilotos e pontuação dos campeonatos recebidos do Emperor Servers.</p></div><div class="tools"><select id="officialResultChamp" onchange="renderOfficialResults()"></select></div></div>
 <div class="panel tableWrap officialResultsPanel"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Pontos</th></tr></thead><tbody id="officialStandings"></tbody></table></div>
 <p class="hint" style="margin-top:9px">Os resultados são exibidos diretamente nesta página. A tabela é uma cópia importada e precisa ser atualizada quando houver novas pontuações no servidor.</p>
-<div class="sectionHead"><div><h2>Resultados registrados no portal</h2><p>Classificação calculada automaticamente a partir das etapas lançadas aqui.</p></div><div class="tools"><select id="resultChamp" onchange="renderAll()"></select></div></div><div class="panel tableWrap"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th><th>Resultados</th></tr></thead><tbody id="standings"></tbody></table></div><div class="sectionHead"><div><h2>Etapas lançadas</h2><p>Histórico de resultados registrados.</p></div></div><div class="panel tableWrap"><table><thead><tr><th>Campeonato</th><th>Etapa</th><th>Data</th><th>Vencedor</th><th>Participantes</th><th>Ação</th></tr></thead><tbody id="raceRows"></tbody></table></div></section>
+<div class="sectionHead"><div><h2>Resultados registrados no portal</h2><p>Classificação calculada automaticamente a partir das etapas lançadas aqui.</p></div><div class="tools"><select id="resultChamp" onchange="renderAll()"></select></div></div><div class="panel tableWrap"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th><th>Resultados</th></tr></thead><tbody id="standings"></tbody></table></div><div class="sectionHead"><div><h2>Etapas lançadas</h2><p>Histórico de resultados registrados.</p></div></div><div class="panel tableWrap"><table><thead><tr><th>Campeonato / Tipo</th><th>Etapa / Evento</th><th>Data</th><th>Vencedor</th><th>Participantes</th><th>Ação</th></tr></thead><tbody id="raceRows"></tbody></table></div></section>
 
 <section id="calendar" class="page">
   <div class="subhead"><div class="kicker">AGENDA DA TEMPORADA</div><h1>Calendário</h1><p>Veja as próximas corridas, datas e etapas da Rookie League Motorsport.</p></div>
@@ -223,9 +223,9 @@ input[type=file]{max-width:0}
   <div class="panel" style="padding:14px">
     <div class="calendar-grid" id="calendarGrid"></div>
   </div>
-  <div class="sectionHead"><div><h2>Agenda de etapas</h2><p>Lista cronológica dos eventos cadastrados.</p></div></div>
-  <div class="panel tableWrap"><table><thead><tr><th>Data</th><th>Campeonato</th><th>Etapa</th><th>Status</th></tr></thead><tbody id="calendarAgenda"></tbody></table></div>
-  <p class="hint" style="margin-top:10px">Para adicionar uma corrida ao calendário, entre em Administração → Criar etapa e informe a data.</p>
+  <div class="sectionHead"><div><h2>Agenda de eventos</h2><p>Campeonatos e eventos 4FUN em ordem cronológica.</p></div></div>
+  <div class="panel tableWrap"><table><thead><tr><th>Data</th><th>Campeonato / Tipo</th><th>Etapa / Evento</th><th>Status</th></tr></thead><tbody id="calendarAgenda"></tbody></table></div>
+  <p class="hint" style="margin-top:10px">As etapas dos campeonatos e os eventos 4FUN com data aparecem automaticamente neste calendário.</p>
 </section>
 <section id="drivers" class="page"><div class="subhead"><div class="kicker">GRID DE PILOTOS</div><h1>Pilotos</h1><p>Cadastro e histórico dos competidores.</p></div><div class="sectionHead"><div><h2>Pilotos cadastrados</h2><p>Use a administração para adicionar novos pilotos.</p></div><div class="tools"><input id="driverSearch" placeholder="Buscar piloto..." oninput="renderAll()"></div></div><div class="panel tableWrap"><table><thead><tr><th>Piloto</th><th>Equipe</th><th>Títulos</th><th>Pontos registrados</th></tr></thead><tbody id="driverRows"></tbody></table></div></section>
 <section id="hall" class="page"><div class="subhead"><div class="kicker">OS GRANDES NOMES DA LIGA</div><h1>Hall da Fama</h1><p>Uma homenagem aos campeões da Rookie League Motorsport.</p></div><div class="metrics"><div class="metric"><div class="label">Pilotos homenageados</div><strong id="hallDrivers">03</strong></div><div class="metric"><div class="label">Títulos registrados</div><strong><em id="hallTitles">04</em></strong></div><div class="metric"><div class="label">Categoria</div><strong>LMP2</strong></div><div class="metric"><div class="label">Liga</div><strong style="font-size:18px">ROOKIE</strong></div></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Temporadas</th></tr></thead><tbody id="hallRows"></tbody></table></div><p class="hint">Empates são mantidos na mesma posição. As temporadas podem ser informadas no cadastro de títulos.</p></section>
@@ -911,19 +911,23 @@ function renderCalendar(){
   const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();
   const prevDays=new Date(y,m,0).getDate();
   const today=new Date();
+  const calendarEvents=[
+    ...db.races.filter(r=>r.date).map(r=>({date:r.date,type:'race',title:`${champName(r.champId)}: ${r.name}`,time:r.time||'',track:db.tracks.find(t=>String(t.id)===String(r.trackId))?.name||'Pista a definir',label:champName(r.champId)})),
+    ...(db.funEvents||[]).filter(e=>e.date).map(e=>({date:e.date,type:'fun',title:`4FUN: ${e.name}`,time:e.time||'',track:e.trackName||'Pista a definir',label:'4FUN'}))
+  ];
   for(let i=0;i<42;i++){
-    let dayNum, dateObj, muted=false;
+    let dayNum,dateObj,muted=false;
     if(i<first){dayNum=prevDays-first+i+1;dateObj=new Date(y,m-1,dayNum);muted=true}
     else if(i>=first+days){dayNum=i-first-days+1;dateObj=new Date(y,m+1,dayNum);muted=true}
     else{dayNum=i-first+1;dateObj=new Date(y,m,dayNum)}
     const iso=[dateObj.getFullYear(),String(dateObj.getMonth()+1).padStart(2,'0'),String(dateObj.getDate()).padStart(2,'0')].join('-');
-    const events=db.races.filter(r=>r.date===iso);
+    const events=calendarEvents.filter(e=>e.date===iso);
     const isToday=dateObj.toDateString()===today.toDateString();
-    out+=`<div class="cal-day ${muted?'muted':''} ${isToday?'today':''}"><div class="cal-date">${dayNum}</div>${events.map(e=>`<span class="cal-event" title="${esc(champName(e.champId))} — ${esc(e.name)}">${esc(champName(e.champId))}: ${esc(e.name)}${e.time?' · '+esc(e.time):''}</span>`).join('')}${events.length?'':'<div class="cal-empty">—</div>'}</div>`;
+    out+=`<div class="cal-day ${muted?'muted':''} ${isToday?'today':''}"><div class="cal-date">${dayNum}</div>${events.map(e=>`<span class="cal-event" style="${e.type==='fun'?'background:#38bdf818;color:#7dd3fc;border:1px solid #38bdf833;':''}" title="${esc(e.title)}">${esc(e.title)}${e.time?' · '+esc(e.time):''}</span>`).join('')}${events.length?'':'<div class="cal-empty">—</div>'}</div>`;
   }
   grid.innerHTML=out;
-  const sorted=[...db.races].filter(r=>r.date).sort((a,b)=>a.date.localeCompare(b.date));
-  document.getElementById('calendarAgenda').innerHTML=sorted.map(r=>`<tr><td>${new Date(r.date+'T12:00:00').toLocaleDateString('pt-BR')}</td><td>${esc(champName(r.champId))}</td><td>${esc(r.name)}<div class="mutednote">${esc(db.tracks.find(t=>t.id===r.trackId)?.name||'Pista a definir')}${r.time?' · '+esc(r.time):''}</div></td><td><span class="pill">${r.date < new Date().toISOString().slice(0,10)?'DATA PASSADA':'AGENDADA'}</span></td></tr>`).join('')||'<tr><td colspan="4" class="empty">Nenhuma etapa com data cadastrada. Adicione uma etapa pela área de Administração.</td></tr>';
+  const sorted=calendarEvents.slice().sort((a,b)=>a.date.localeCompare(b.date)||(a.time||'').localeCompare(b.time||''));
+  document.getElementById('calendarAgenda').innerHTML=sorted.map(e=>`<tr><td>${new Date(e.date+'T12:00:00').toLocaleDateString('pt-BR')}</td><td>${esc(e.label)}</td><td>${esc(e.title.replace(/^(4FUN: |.*?: )/,''))}<div class="mutednote">${esc(e.track)}${e.time?' · '+esc(e.time):''}</div></td><td><span class="pill">${e.date < new Date().toISOString().slice(0,10)?'DATA PASSADA':'AGENDADO'}</span></td></tr>`).join('')||'<tr><td colspan="4" class="empty">Nenhuma etapa ou evento 4FUN com data cadastrada. Adicione um evento pela área de Administração.</td></tr>';
 }
 
 renderAll();
