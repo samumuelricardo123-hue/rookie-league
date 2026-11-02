@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rookie League Motorsport — Portal V26 — Supabase</title>
+<title>Rookie League Motorsport — Portal V68 — Comunidade e Garagem</title>
 <style>
 :root{--bg:#080d0b;--panel:#111916;--panel2:#17211c;--line:#29372f;--green:#a6ff00;--green2:#65c900;--text:#f2f7f1;--muted:#9aa99e;--red:#ff5757;--gold:#ffc857}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1d351f 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif}
@@ -173,6 +173,41 @@ input[type=file]{max-width:0}
 .badgeWallSummary{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin:8px 0}
 .badgeWallSummary b{color:var(--green)}
 
+
+/* V68 — comunidade, uploads e garagem responsiva */
+.uploadRow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.uploadButton{display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid var(--green);border-radius:8px;color:var(--green);font-weight:800;cursor:pointer}
+.communityMediaGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:12px}
+.communityMediaGrid img,.communityMediaGrid video{width:100%;max-height:360px;object-fit:cover;border-radius:10px;background:#080d0b}
+.socialActions{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.socialActions button{background:#17221b;border:1px solid var(--line);color:var(--text);padding:8px 12px;border-radius:8px;cursor:pointer}
+.socialActions button.liked{color:var(--green);border-color:var(--green)}
+.commentList{display:grid;gap:8px;margin-top:12px}
+.commentItem{padding:9px 11px;background:#0c140f;border:1px solid var(--line);border-radius:9px}
+.commentItem strong{font-size:12px;color:var(--green)}
+.commentItem p{margin:3px 0 0;font-size:13px}
+.commentComposer{display:flex;gap:8px;margin-top:10px}
+.commentComposer input{flex:1;min-width:0;background:#0c140f;border:1px solid var(--line);color:var(--text);padding:10px;border-radius:8px}
+.garageGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.garageCard{overflow:hidden;border:1px solid var(--line);border-radius:13px;background:var(--panel)}
+.garageCard img{width:100%;height:190px;object-fit:cover;background:#0c140f}
+.garageCardBody{padding:14px}
+.garageCardBody h3{margin:0 0 4px;font-size:18px}
+.garageCardBody p{margin:7px 0;color:var(--muted);font-size:13px}
+.garageMeta{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.garageMeta span{font-size:10px;padding:4px 7px;border-radius:5px;background:#a6ff0015;color:var(--green);font-weight:800}
+@media(max-width:850px){.garageGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){
+ header{position:sticky}.nav{gap:7px}.logo{font-size:16px}
+ nav{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}
+ nav button{font-size:12px;padding:9px 10px}
+ .status{display:none}.garageGrid{grid-template-columns:1fr}
+ .communityMediaGrid{grid-template-columns:1fr}
+ .communityMediaGrid img,.communityMediaGrid video{max-height:300px}
+ .commentComposer{flex-direction:column}.commentComposer .btn{width:100%}
+ .uploadRow{align-items:flex-start;flex-direction:column}
+}
+
 </style></head>
 <body>
 
@@ -201,7 +236,7 @@ input[type=file]{max-width:0}
 
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • SUPABASE</span>
+<nav><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • V68</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
@@ -250,9 +285,30 @@ input[type=file]{max-width:0}
  <div class="subhead"><div class="kicker">COMUNIDADE • ROOKIE LEAGUE</div><h1>Mural da comunidade</h1><p>Compartilhe novidades, fotos por link e momentos da sua carreira com os outros pilotos.</p></div>
  <div class="panel" style="margin-top:13px">
   <h2>Nova publicação</h2><div id="communityLoginHint" class="empty">Entre na sua conta para publicar no mural.</div>
-  <div id="communityComposer" style="display:none"><textarea id="communityBody" rows="4" maxlength="2000" placeholder="O que está acontecendo na pista?"></textarea><div class="formgrid"><div class="field full"><label>Link de imagem ou vídeo (opcional)</label><input id="communityMedia" type="url" placeholder="https://..."></div></div><div class="formactions"><button class="btn" onclick="submitCommunityPost()">PUBLICAR</button></div></div>
+  <div id="communityComposer" style="display:none;padding:0 17px 17px"><textarea id="communityBody" rows="4" maxlength="2000" placeholder="O que está acontecendo na pista?"></textarea><div class="uploadRow"><label class="uploadButton">📷 Adicionar foto/vídeo<input id="communityFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" hidden></label><span id="communityFileNames" class="hint">1 foto ou vídeo · até 8 MB</span></div><div class="field" style="margin-top:10px"><label>Ou link externo (opcional)</label><input id="communityMedia" type="url" placeholder="https://..."></div><div class="formactions" style="padding:12px 0 0"><button class="btn" onclick="submitCommunityPost()">PUBLICAR</button></div></div>
  </div>
  <div id="communityWall" class="tracklist" style="margin-top:13px"><p class="empty">Carregando publicações...</p></div>
+</section>
+<section id="garage" class="page">
+ <div class="subhead"><div class="kicker">BOXES • ROOKIE LEAGUE</div><h1>Garagem virtual</h1><p>Apresente seus carros, pinturas e máquinas favoritas da liga.</p></div>
+ <div class="panel garageComposer" style="margin-top:13px">
+  <h2 style="padding:17px 17px 0">Adicionar carro à garagem</h2>
+  <div id="garageLoginHint" class="empty">Entre na sua conta vinculada a um piloto para cadastrar seus carros.</div>
+  <div id="garageForm" style="display:none">
+   <div class="formgrid">
+    <div class="field"><label>Nome do carro</label><input id="garageName" maxlength="80" placeholder="Ex.: Protótipo #07"></div>
+    <div class="field"><label>Modelo</label><input id="garageModel" maxlength="80" placeholder="Ex.: Oreca 07"></div>
+    <div class="field"><label>Categoria</label><select id="garageCategory"><option value="">Selecione</option><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select></div>
+    <div class="field"><label>Número</label><input id="garageNumber" maxlength="8" placeholder="07"></div>
+    <div class="field"><label>Campeonato/equipe</label><input id="garageChampionship" maxlength="100" placeholder="Opcional"></div>
+    <div class="field"><label>Foto do carro</label><input id="garagePhoto" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
+    <div class="field full"><label>Descrição</label><input id="garageDescription" maxlength="500" placeholder="Conte um pouco sobre a máquina..."></div>
+   </div>
+   <div class="formactions"><button class="btn" onclick="submitGarageCar()">SALVAR NA GARAGEM</button></div>
+  </div>
+ </div>
+ <div class="sectionHead"><div><h2>Garagens dos pilotos</h2><p>Carros cadastrados pela comunidade.</p></div></div>
+ <div id="garageWall" class="garageGrid"><p class="empty">Carregando garagens...</p></div>
 </section>
 <section id="awards" class="page">
  <div class="subhead"><div class="kicker">ROOKIE LEAGUE AWARDS</div><h1>Premiação de fim de temporada</h1><p>Reconhecendo os destaques, campeões e momentos marcantes de cada temporada.</p></div>
@@ -353,9 +409,10 @@ input[type=file]{max-width:0}
 <div class="formactions"><button class="btn" id="authSubmit" onclick="submitAuth()">ENTRAR</button><button class="btn secondary" onclick="logoutPilot()" id="logoutBtn" style="display:none">SAIR</button></div>
 <p class="mutednote" id="cloudStatus">Conectando ao banco de dados seguro…</p>
 <div id="pilotProfile"></div></div></section>
-<footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • SUPABASE • ACESSO DE PILOTOS</span></footer>
+<footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • V68 • ACESSO DE PILOTOS</span></footer>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">document.addEventListener('change',e=>{if(e.target&&e.target.id==='communityFile'){const fs=[...(e.target.files||[])];const label=document.getElementById('communityFileNames');if(label)label.textContent=fs.length?fs.map(f=>f.name).join(', '):'1 foto ou vídeo · até 8 MB';}});
+</script>
 <script>
 const SUPABASE_URL="https://lxformxabgtgafykvhkw.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY="sb_publishable_eRVk8_-1vNP3XyMA_02d4w_OF03caaA";
@@ -400,7 +457,7 @@ function switchAdminTab(targetId,button){
  });
  try{refreshSelects()}catch(error){console.error('Falha ao atualizar listas da administração:',error)}
 }
-function showPage(id){if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');if(id==='account'&&cloudUser){const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;markPilotProfileNotificationsSeen()}renderAll()}
+function showPage(id){if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');if(id==='garage')loadGarage();if(id==='account'&&cloudUser){const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;markPilotProfileNotificationsSeen()}renderAll()}
 document.addEventListener('click',function(event){
  const button=event.target.closest('nav [data-page]');
  if(!button)return;
@@ -833,11 +890,11 @@ async function loadCommunityAwards(){
  if(!cloudReady)return;
  try{
   const [posts,awards]=await Promise.all([
-   supabaseClient.from('community_posts').select('id,user_id,pilot_name,body,media_url,created_at').order('created_at',{ascending:false}),
+   supabaseClient.from('community_posts').select('id,user_id,pilot_name,body,media_url,media_path,media_type,created_at').order('created_at',{ascending:false}),
    supabaseClient.from('season_awards').select('id,season,category,driver_id,winner_name,description,created_at').order('created_at',{ascending:false})
   ]);
   if(posts.error)throw posts.error;if(awards.error)throw awards.error;
-  db.communityPosts=(posts.data||[]).map(r=>({id:String(r.id),userId:r.user_id,pilotName:r.pilot_name,body:r.body,mediaUrl:r.media_url||'',createdAt:r.created_at}));
+  db.communityPosts=(posts.data||[]).map(r=>({id:String(r.id),userId:r.user_id,pilotName:r.pilot_name,body:r.body,mediaUrl:r.media_url||'',mediaPath:r.media_path||'',mediaType:r.media_type||'',createdAt:r.created_at}));
   db.seasonAwards=(awards.data||[]).map(r=>({id:String(r.id),season:r.season,category:r.category,driverId:String(r.driver_id||''),winnerName:r.winner_name,description:r.description||'',createdAt:r.created_at}));
   renderCommunityAwards();
  }catch(e){console.error('Comunidade/premiações:',e);const w=document.getElementById('communityWall');if(w)w.innerHTML='<p class="empty">Não foi possível carregar o mural: '+esc(e.message)+'</p>'}
@@ -847,24 +904,78 @@ function renderCommunityAwards(){
  const hint=document.getElementById('communityLoginHint'),composer=document.getElementById('communityComposer');
  if(hint)hint.style.display=logged?'none':'block';if(composer)composer.style.display=logged?'block':'none';
  const wall=document.getElementById('communityWall');
- if(wall)wall.innerHTML=(db.communityPosts||[]).map(p=>`<article class="newsCard"><div class="newsMeta"><span class="newsCategory">PILOTO</span><time>${p.createdAt?new Date(p.createdAt).toLocaleString('pt-BR'):'Agora'}</time></div><h2>${esc(p.pilotName)}</h2><p>${esc(p.body).replace(/\n/g,'<br>')}</p>${p.mediaUrl?(/\\.(mp4|webm)(\\?|$)/i.test(p.mediaUrl)?`<a href="${esc(p.mediaUrl)}" target="_blank" rel="noopener">Abrir vídeo</a>`:`<a href="${esc(p.mediaUrl)}" target="_blank" rel="noopener">Abrir imagem/mídia</a>`):''}${cloudIsAdmin?`<div class="formactions"><button class="btn danger small" onclick="deleteCommunityPost('${esc(p.id)}')">REMOVER</button></div>`:''}</article>`).join('')||'<p class="empty">Ainda não há publicações. Seja o primeiro a participar!</p>';
+ if(wall)wall.innerHTML=(db.communityPosts||[]).map(p=>{
+  const media=p.mediaPath?`<div class="communityMediaGrid">${(p.mediaType||'').startsWith('video/')?`<video controls preload="metadata" src="${supabaseClient.storage.from('rookie-media').getPublicUrl(p.mediaPath).data.publicUrl}"></video>`:`<img loading="lazy" src="${supabaseClient.storage.from('rookie-media').getPublicUrl(p.mediaPath).data.publicUrl}" alt="Mídia publicada por ${esc(p.pilotName)}">`}</div>`:(p.mediaUrl?`<p><a href="${esc(p.mediaUrl)}" target="_blank" rel="noopener">Abrir mídia externa ↗</a></p>`:'');
+  return `<article class="newsCard"><div class="newsMeta"><span class="newsCategory">PILOTO</span><time>${p.createdAt?new Date(p.createdAt).toLocaleString('pt-BR'):'Agora'}</time></div><h2>${esc(p.pilotName)}</h2><p>${esc(p.body).replace(/\n/g,'<br>')}</p>${media}<div class="socialActions"><button id="like-${esc(p.id)}" onclick="togglePostLike('${esc(p.id)}')">♥ <span id="likeCount-${esc(p.id)}">0</span> Curtir</button><span class="hint" id="commentCount-${esc(p.id)}">Comentários</span>${cloudIsAdmin?`<button class="btn danger small" onclick="deleteCommunityPost('${esc(p.id)}')">REMOVER</button>`:''}</div><div id="comments-${esc(p.id)}" class="commentList"></div>${logged?`<div class="commentComposer"><input id="commentInput-${esc(p.id)}" maxlength="500" placeholder="Escreva um comentário..."><button class="btn small" onclick="submitPostComment('${esc(p.id)}')">ENVIAR</button></div>`:''}</article>`;
+ }).join('')||'<p class="empty">Ainda não há publicações. Seja o primeiro a participar!</p>';
+ (db.communityPosts||[]).forEach(p=>loadPostSocial(p.id));
  const awards=document.getElementById('seasonAwardsWall');
  if(awards){const groups={};(db.seasonAwards||[]).forEach(a=>(groups[a.season]??=[]).push(a));awards.innerHTML=Object.entries(groups).map(([season,items])=>`<div class="panel" style="margin-bottom:12px"><h2>🏆 ${esc(season)}</h2><div class="badgeWall">${items.map(a=>`<div class="badgeMedal"><span class="badgeMedalIcon">🏅</span><div><strong>${esc(a.category)}</strong><small>${esc(a.winnerName)}${a.description?' · '+esc(a.description):''}</small></div></div>`).join('')}</div></div>`).join('')||'<p class="empty">As premiações oficiais aparecerão aqui após serem publicadas pela administração.</p>'}
  const mod=document.getElementById('communityModeration');if(mod&&cloudIsAdmin)mod.innerHTML=(db.communityPosts||[]).map(p=>`<div class="trackrow"><span><strong>${esc(p.pilotName)}</strong><small>${esc(p.body)}</small></span><button class="btn danger small" onclick="deleteCommunityPost('${esc(p.id)}')">REMOVER</button></div>`).join('')||'<p class="empty">Nenhuma publicação.</p>';
  const driverSelect=document.getElementById('awardDriver');if(driverSelect){const old=driverSelect.value;driverSelect.innerHTML=db.drivers.map(d=>`<option value="${esc(d.id)}">${esc(d.name)}</option>`).join('');driverSelect.value=old}
  const adminAwards=document.getElementById('adminAwards');if(adminAwards&&cloudIsAdmin)adminAwards.innerHTML=(db.seasonAwards||[]).map(a=>`<div class="trackrow"><span><strong>${esc(a.season)} · ${esc(a.category)}</strong><small>${esc(a.winnerName)} · ${esc(a.description)}</small></span><button class="btn danger small" onclick="deleteSeasonAward('${esc(a.id)}')">EXCLUIR</button></div>`).join('')||'<p class="empty">Nenhuma premiação cadastrada.</p>';
 }
+async function loadPostSocial(postId){
+ try{
+  const [likes,comments]=await Promise.all([
+   supabaseClient.from('community_post_likes').select('user_id').eq('post_id',postId),
+   supabaseClient.from('community_post_comments').select('id,user_id,pilot_name,body,created_at').eq('post_id',postId).order('created_at')
+  ]);
+  if(likes.error||comments.error)return;
+  const liked=(likes.data||[]).some(x=>x.user_id===cloudUser?.id);
+  const b=document.getElementById('like-'+postId),n=document.getElementById('likeCount-'+postId),c=document.getElementById('commentCount-'+postId),list=document.getElementById('comments-'+postId);
+  if(b)b.classList.toggle('liked',liked);if(n)n.textContent=(likes.data||[]).length;if(c)c.textContent=(comments.data||[]).length+' comentário(s)';
+  if(list)list.innerHTML=(comments.data||[]).map(x=>`<div class="commentItem"><strong>${esc(x.pilot_name)}</strong><p>${esc(x.body)}</p></div>`).join('');
+ }catch(e){console.warn('Interações da publicação:',e)}
+}
+async function togglePostLike(postId){
+ if(!cloudUser)return alert('Entre na sua conta para curtir.');
+ const {data}=await supabaseClient.from('community_post_likes').select('id').eq('post_id',postId).eq('user_id',cloudUser.id).maybeSingle();
+ const result=data?await supabaseClient.from('community_post_likes').delete().eq('id',data.id):await supabaseClient.from('community_post_likes').insert({post_id:postId,user_id:cloudUser.id});
+ if(result.error)return alert(result.error.message);await loadPostSocial(postId);
+}
+async function submitPostComment(postId){
+ if(!cloudUser)return alert('Entre na sua conta para comentar.');
+ const input=document.getElementById('commentInput-'+postId),body=input?.value.trim();if(!body)return;
+ const {data:driver,error:de}=await supabaseClient.from('drivers').select('id,name').eq('user_id',cloudUser.id).maybeSingle();
+ if(de||!driver)return alert(de?.message||'Sua conta não está vinculada a um piloto.');
+ const {error}=await supabaseClient.from('community_post_comments').insert({post_id:postId,user_id:cloudUser.id,driver_id:String(driver.id),pilot_name:driver.name,body});
+ if(error)return alert(error.message);input.value='';await loadPostSocial(postId);
+}
 async function submitCommunityPost(){
  if(!cloudUser)return alert('Entre na sua conta para publicar.');
- const body=document.getElementById('communityBody').value.trim(),media=document.getElementById('communityMedia').value.trim();
- if(!body)return alert('Escreva uma mensagem antes de publicar.');
+ const body=document.getElementById('communityBody').value.trim(),media=document.getElementById('communityMedia').value.trim(),files=[...(document.getElementById('communityFile')?.files||[])];
+ if(!body&&!files.length&&!media)return alert('Escreva uma mensagem ou adicione uma mídia.');
+ if(files.length>1)return alert('Adicione apenas 1 foto ou vídeo por publicação.');
+ for(const f of files)if(!/^(image\/(jpeg|png|webp|gif)|video\/(mp4|webm))$/.test(f.type)||f.size>8*1024*1024)return alert('Use imagens ou vídeos MP4/WebM de até 8 MB cada.');
  if(media&&!/^https?:\/\//i.test(media))return alert('O link deve começar com http:// ou https://.');
  const {data:driver,error:de}=await supabaseClient.from('drivers').select('id,name').eq('user_id',cloudUser.id).maybeSingle();
  if(de)return alert(de.message);if(!driver)return alert('Sua conta não está vinculada a um piloto.');
- const {error}=await supabaseClient.from('community_posts').insert({user_id:cloudUser.id,driver_id:String(driver.id),pilot_name:driver.name,body,media_url:media||null});
+ let paths=[];
+ for(const f of files){const ext=f.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'');const path=`${cloudUser.id}/posts/${crypto.randomUUID()}.${ext}`;const up=await supabaseClient.storage.from('rookie-media').upload(path,f,{contentType:f.type,cacheControl:'3600',upsert:false});if(up.error)return alert('Falha no upload: '+up.error.message);paths.push({path,type:f.type});}
+ const {data:post,error}=await supabaseClient.from('community_posts').insert({user_id:cloudUser.id,driver_id:String(driver.id),pilot_name:driver.name,body:body||'📷',media_url:media||null,media_path:paths[0]?.path||null,media_type:paths[0]?.type||null}).select('id').single();
  if(error)return alert('Não foi possível publicar: '+error.message);
- document.getElementById('communityBody').value='';document.getElementById('communityMedia').value='';await loadCommunityAwards();alert('Publicação enviada ao mural!');
+ document.getElementById('communityBody').value='';document.getElementById('communityMedia').value='';document.getElementById('communityFile').value='';document.getElementById('communityFileNames').textContent='1 foto ou vídeo · até 8 MB';
+ await loadCommunityAwards();alert('Publicação enviada ao mural!');
 }
+async function loadGarage(){
+ const wall=document.getElementById('garageWall');if(!wall||!cloudReady)return;
+ const {data,error}=await supabaseClient.from('garage_cars').select('id,user_id,pilot_name,car_name,model,category,car_number,championship,description,image_path,created_at').order('created_at',{ascending:false});
+ if(error){wall.innerHTML=`<p class="empty">Não foi possível carregar a garagem: ${esc(error.message)}</p>`;return;}
+ wall.innerHTML=(data||[]).map(c=>`<article class="garageCard">${c.image_path?`<img loading="lazy" src="${supabaseClient.storage.from('rookie-media').getPublicUrl(c.image_path).data.publicUrl}" alt="${esc(c.car_name)}">`:`<div style="height:190px;display:grid;place-items:center;background:#101a14;font-size:48px">🏎️</div>`}<div class="garageCardBody"><h3>${esc(c.car_name)}</h3><strong>${esc(c.pilot_name)}</strong><div class="garageMeta">${[c.model,c.category,c.car_number?'#'+c.car_number:'',c.championship].filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join('')}</div>${c.description?`<p>${esc(c.description)}</p>`:''}${(cloudUser?.id===c.user_id||cloudIsAdmin)?`<button class="btn danger small" onclick="deleteGarageCar('${esc(c.id)}')">EXCLUIR</button>`:''}</div></article>`).join('')||'<p class="empty">Ainda não há carros cadastrados. Adicione o primeiro!</p>';
+ const form=document.getElementById('garageForm'),hint=document.getElementById('garageLoginHint');if(form)form.style.display=cloudUser?'block':'none';if(hint)hint.style.display=cloudUser?'none':'block';
+}
+async function submitGarageCar(){
+ if(!cloudUser)return alert('Entre na sua conta.');
+ const name=document.getElementById('garageName').value.trim(),model=document.getElementById('garageModel').value.trim(),category=document.getElementById('garageCategory').value,file=document.getElementById('garagePhoto').files[0];
+ if(!name)return alert('Informe o nome do carro.');
+ if(file&&(!/^image\/(jpeg|png|webp|gif)$/.test(file.type)||file.size>8*1024*1024))return alert('A foto deve ser JPG, PNG, WEBP ou GIF de até 8 MB.');
+ const {data:driver,error:de}=await supabaseClient.from('drivers').select('id,name').eq('user_id',cloudUser.id).maybeSingle();if(de||!driver)return alert(de?.message||'Sua conta não está vinculada a um piloto.');
+ let imagePath=null;if(file){const ext=file.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g,'');imagePath=`${cloudUser.id}/garage/${crypto.randomUUID()}.${ext}`;const up=await supabaseClient.storage.from('rookie-media').upload(imagePath,file,{contentType:file.type,cacheControl:'3600',upsert:false});if(up.error)return alert(up.error.message);}
+ const {error}=await supabaseClient.from('garage_cars').insert({user_id:cloudUser.id,driver_id:String(driver.id),pilot_name:driver.name,car_name:name,model:model||null,category:category||null,car_number:document.getElementById('garageNumber').value.trim()||null,championship:document.getElementById('garageChampionship').value.trim()||null,description:document.getElementById('garageDescription').value.trim()||null,image_path:imagePath});
+ if(error)return alert(error.message);['garageName','garageModel','garageCategory','garageNumber','garageChampionship','garagePhoto','garageDescription'].forEach(id=>document.getElementById(id).value='');await loadGarage();alert('Carro adicionado à garagem!');
+}
+async function deleteGarageCar(id){if(!confirm('Excluir este carro da garagem?'))return;const {error}=await supabaseClient.from('garage_cars').delete().eq('id',id);if(error)return alert(error.message);await loadGarage();}
 async function deleteCommunityPost(id){if(!cloudIsAdmin||!confirm('Remover esta publicação?'))return;const {error}=await supabaseClient.from('community_posts').delete().eq('id',id);if(error)return alert(error.message);await loadCommunityAwards()}
 async function publishSeasonAward(){
  if(!cloudIsAdmin)return alert('Apenas o administrador pode publicar premiações.');
@@ -926,7 +1037,7 @@ async function submitEntryAuth(){
   else result=await supabaseClient.auth.signInWithPassword({email,password:pass});
   if(result.error)throw result.error;
   if(authMode==='register'&&!result.data.session){document.getElementById('entryMessage').textContent='Cadastro de piloto criado! Seu perfil de piloto e carteira R (SR 2,50) já foram provisionados. Confirme seu e-mail pelo link enviado e depois entre.';return}
-  cloudUser=result.data.user;await refreshCloudRole();await loadCloudData();await afterCloudLogin();
+  cloudUser=result.data.user;await refreshCloudRole();await loadCloudData();await afterCloudLogin();await loadGarage();
  }catch(e){document.getElementById('entryMessage').textContent='Não foi possível autenticar: '+(e.message||e)}
  finally{btn.disabled=false;btn.textContent=authMode==='register'?'CRIAR CONTA':'ENTRAR'}
 }
@@ -942,7 +1053,7 @@ async function refreshCloudRole(){
 }
 async function loadCloudData(){
  const specs={
-  community_posts:{select:'id,user_id,pilot_name,body,media_url,created_at',map:r=>({id:String(r.id),userId:r.user_id,pilotName:r.pilot_name,body:r.body,mediaUrl:r.media_url||'',createdAt:r.created_at})},
+  community_posts:{select:'id,user_id,pilot_name,body,media_url,created_at',map:r=>({id:String(r.id),userId:r.user_id,pilotName:r.pilot_name,body:r.body,mediaUrl:r.media_url||'',mediaPath:r.media_path||'',mediaType:r.media_type||'',createdAt:r.created_at})},
   season_awards:{select:'id,season,category,driver_id,winner_name,description,created_at',map:r=>({id:String(r.id),season:r.season,category:r.category,driverId:String(r.driver_id||''),winnerName:r.winner_name,description:r.description||'',createdAt:r.created_at})},
   news_posts:{select:'id,title,category,body,created_at,author_name,is_published,requires_approval,event_key,source_type',map:r=>({id:String(r.id),title:r.title,category:r.category||'Comunicado',body:r.body,createdAt:r.created_at,authorName:r.author_name||'Administração',isPublished:r.is_published!==false,requiresApproval:!!r.requires_approval,eventKey:r.event_key||'',sourceType:r.source_type||'manual'})},
   fun_events:{select:'id,name,event_date,event_time,track_name,description,server_url',map:r=>({id:String(r.id),name:r.name,date:r.event_date||'',time:r.event_time||'',trackName:r.track_name||'',description:r.description||'',serverUrl:r.server_url||''})},
