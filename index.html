@@ -281,6 +281,11 @@ input[type=file]{max-width:0}
 
 /* V78 — transmissão realmente ocupa a tela inteira */
 .rv-media-card{position:relative;min-width:0}
+.rv-pilot-card{min-height:150px;display:flex;flex-direction:column}
+.rv-pilot-avatar{width:100%;min-height:105px;flex:1;display:grid;place-items:center;overflow:hidden;border-radius:9px;background:#080e0b;color:#8ca895;font-size:34px}
+.rv-pilot-photo{width:88px;height:88px;object-fit:cover;border-radius:50%;border:2px solid var(--line);display:block}
+.rv-pilot-card video{margin-top:4px}
+
 .rv-media-card .rv-fullscreen-btn{
  display:block;margin:8px 0 0 auto;padding:9px 14px;
  border:1px solid #527047;border-radius:8px;
@@ -618,15 +623,45 @@ let rookieVoiceRoom=null, rookieVoiceSdk=null, rookieVoiceMicOn=false, rookieVoi
 const rvEl=id=>document.getElementById(id);
 function rvMessage(message,isError=false){const el=rvEl('rvMessage');if(el){el.textContent=message;el.style.color=isError?'#ff7777':'var(--muted)';}}
 function rvState(message){const el=rvEl('rvConnectionState');if(el)el.textContent=message;}
+function rvParticipantCard(participant,isLocal=false){
+ const grid=rvEl('rvMediaGrid');if(!grid)return null;
+ const key=String(participant.identity||participant.sid||participant.name||'pilot').replace(/[^a-zA-Z0-9_-]/g,'_');
+ const id='rvpilot-'+key;
+ let card=document.getElementById(id);
+ if(card)return card;
+ card=document.createElement('div');card.className='rv-media-card rv-pilot-card';card.id=id;
+ const label=document.createElement('b');label.className='rv-pilot-name';
+ label.textContent=(participant.name||participant.identity||'Piloto')+(isLocal?' (Você)':'');
+ card.appendChild(label);
+ const avatar=document.createElement('div');avatar.className='rv-pilot-avatar';avatar.textContent='🏎️';avatar.setAttribute('aria-label','Foto do piloto');
+ card.appendChild(avatar);
+ grid.appendChild(card);
+ // A foto oficial vem do perfil aprovado do piloto na tabela drivers.
+ const pilotName=String(participant.name||'').trim();
+ if(pilotName){
+  supabaseClient.from('drivers').select('profile_photo_url').ilike('name',pilotName).limit(1).maybeSingle()
+   .then(({data,error})=>{
+    if(error||!data?.profile_photo_url||!card.isConnected)return;
+    const photo=document.createElement('img');photo.className='rv-pilot-photo';
+    photo.src=data.profile_photo_url;photo.alt='Foto de '+pilotName;
+    photo.onerror=()=>photo.remove();
+    avatar.textContent='';avatar.appendChild(photo);
+   }).catch(()=>{});
+ }
+ return card;
+}
 function rvAddMedia(track,participant,isLocal=false){
- const grid=rvEl('rvMediaGrid');if(!grid)return;
+ const card=rvParticipantCard(participant,isLocal);if(!card)return;
  const id='rvtrack-'+track.sid;
  if(document.getElementById(id))return;
- const card=document.createElement('div');card.className='rv-media-card';card.id=id;
- const label=document.createElement('b');label.textContent=(participant.name||participant.identity||'Piloto')+(isLocal?' (Você)':'');
- card.appendChild(label);
  const element=track.attach();
- if(element.tagName==='VIDEO'){element.autoplay=true;element.playsInline=true;element.controls=false;element.muted=true;element.preload='auto';element.style.width='100%';element.style.objectFit='contain';element.addEventListener('loadedmetadata',()=>{element.play().catch(()=>{});},{once:true});}
+ if(element.tagName==='VIDEO'){
+  element.autoplay=true;element.playsInline=true;element.controls=false;element.muted=true;element.preload='auto';
+  element.style.width='100%';element.style.objectFit='contain';
+  element.addEventListener('loadedmetadata',()=>{element.play().catch(()=>{});},{once:true});
+  const avatar=card.querySelector('.rv-pilot-avatar');if(avatar)avatar.style.display='none';
+ }
+ element.id=id;
  card.appendChild(element);
  if(track.source===rookieVoiceSdk.Track.Source.ScreenShare || track.kind===rookieVoiceSdk.Track.Kind.Video){
    const fullBtn=document.createElement('button');
@@ -641,9 +676,13 @@ function rvAddMedia(track,participant,isLocal=false){
    });
    card.appendChild(fullBtn);
  }
- grid.appendChild(card);
 }
-function rvRemoveMedia(track){const card=document.getElementById('rvtrack-'+track.sid);if(card){track.detach().forEach(el=>el.remove());card.remove();}}
+function rvRemoveMedia(track){
+ const element=document.getElementById('rvtrack-'+track.sid);
+ if(element){const card=element.closest('.rv-media-card');track.detach().forEach(el=>el.remove());
+  if(card&&!card.querySelector('video')){const avatar=card.querySelector('.rv-pilot-avatar');if(avatar)avatar.style.display='grid';}
+ }
+}
 function rvUpdateParticipants(){
  if(!rookieVoiceRoom)return;
  const el=rvEl('rvParticipants');if(!el)return;
@@ -666,12 +705,12 @@ async function rookieVoiceJoin(){
     rvAddMedia(track,participant,false);rvUpdateParticipants();
   });
   room.on(rookieVoiceSdk.RoomEvent.TrackUnsubscribed,(track)=>rvRemoveMedia(track));
-  room.on(rookieVoiceSdk.RoomEvent.ParticipantConnected,rvUpdateParticipants);
+  room.on(rookieVoiceSdk.RoomEvent.ParticipantConnected,(p)=>{rvParticipantCard(p,false);rvUpdateParticipants();});
   room.on(rookieVoiceSdk.RoomEvent.ParticipantDisconnected,rvUpdateParticipants);
   room.on(rookieVoiceSdk.RoomEvent.Disconnected,()=>{rvState('Desconectado');rvMessage('Você saiu da Sala Geral.');rvResetControls();});
   rvState('Conectando...');
   await room.connect(data.serverUrl,data.token);
-  rvState('Conectado à Sala Geral');
+  rvState('Conectado à Sala Geral');\n  rvParticipantCard(room.localParticipant,true);\n  room.remoteParticipants.forEach(p=>rvParticipantCard(p,false));
   rvEl('rvRoomTitle').textContent='🌐 Rookie League — Sala Geral';
   rvEl('rvMicBtn').disabled=false;rvEl('rvScreenBtn').disabled=false;rvEl('rvLeaveBtn').disabled=false;if(rvEl('rvScreenQuality'))rvEl('rvScreenQuality').disabled=false;
   if(btn)btn.textContent='Conectado';
