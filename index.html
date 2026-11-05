@@ -278,6 +278,13 @@ input[type=file]{max-width:0}
 #rvMediaGrid video{width:100%;max-height:360px;background:#050807;border-radius:10px}
 .rv-media-card{padding:8px;background:#0b130f;border:1px solid var(--line);border-radius:10px;min-width:0}
 .rv-media-card b{display:block;margin-bottom:6px;font-size:12px}
+
+/* V77 — controle de tela cheia para transmissões recebidas */
+.rv-media-card{position:relative}
+.rv-media-card .rv-fullscreen-btn{display:block;margin:6px 0 0 auto;padding:7px 11px;border:1px solid #527047;border-radius:8px;background:#17251b;color:#eaffdf;font-weight:700;cursor:pointer}
+.rv-media-card .rv-fullscreen-btn:hover{background:#263b29}
+.rv-media-card:fullscreen{width:100vw;height:100vh;max-width:none;max-height:none;margin:0;padding:12px;border:0;border-radius:0;background:#050807;display:flex;flex-direction:column;justify-content:center}
+.rv-media-card:fullscreen video{width:100%;height:calc(100vh - 64px);max-height:none;object-fit:contain}
 </style></head>
 <body>
 
@@ -587,7 +594,21 @@ function rvAddMedia(track,participant,isLocal=false){
  card.appendChild(label);
  const element=track.attach();
  if(element.tagName==='VIDEO'){element.autoplay=true;element.playsInline=true;element.controls=false;}
- card.appendChild(element);grid.appendChild(card);
+ card.appendChild(element);
+ if(track.source===rookieVoiceSdk.Track.Source.ScreenShare || track.kind===rookieVoiceSdk.Track.Kind.Video){
+   const fullBtn=document.createElement('button');
+   fullBtn.type='button';fullBtn.className='rv-fullscreen-btn';
+   fullBtn.textContent='⛶ Maximizar transmissão';
+   fullBtn.addEventListener('click',async()=>{
+     try{
+       if(document.fullscreenElement){await document.exitFullscreen();}
+       else if(card.requestFullscreen){await card.requestFullscreen();}
+       else if(element.requestFullscreen){await element.requestFullscreen();}
+     }catch(err){rvMessage('O navegador não permitiu maximizar a transmissão: '+err.message,true);}
+   });
+   card.appendChild(fullBtn);
+ }
+ grid.appendChild(card);
 }
 function rvRemoveMedia(track){const card=document.getElementById('rvtrack-'+track.sid);if(card){track.detach().forEach(el=>el.remove());card.remove();}}
 function rvUpdateParticipants(){
