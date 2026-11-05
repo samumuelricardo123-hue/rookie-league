@@ -563,7 +563,7 @@ input[type=file]{max-width:0}
 <div class="formactions"><button class="btn" id="authSubmit" onclick="submitAuth()">ENTRAR</button><button class="btn secondary" onclick="logoutPilot()" id="logoutBtn" style="display:none">SAIR</button></div>
 <p class="mutednote" id="cloudStatus">Conectando ao banco de dados seguro…</p>
 <div id="pilotProfile"></div></div></section>
-<footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • V69 • ACESSO DE PILOTOS</span></footer>
+<footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • V80 • ACESSO DE PILOTOS</span></footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">document.addEventListener('change',e=>{if(e.target&&e.target.id==='communityFile'){const fs=[...(e.target.files||[])];const label=document.getElementById('communityFileNames');if(label)label.textContent=fs.length?fs.map(f=>f.name).join(', '):'1 foto ou vídeo · até 8 MB';}});
 </script>
@@ -626,7 +626,7 @@ function rvAddMedia(track,participant,isLocal=false){
  const label=document.createElement('b');label.textContent=(participant.name||participant.identity||'Piloto')+(isLocal?' (Você)':'');
  card.appendChild(label);
  const element=track.attach();
- if(element.tagName==='VIDEO'){element.autoplay=true;element.playsInline=true;element.controls=false;}
+ if(element.tagName==='VIDEO'){element.autoplay=true;element.playsInline=true;element.controls=false;element.muted=true;element.preload='auto';element.style.width='100%';element.style.objectFit='contain';element.addEventListener('loadedmetadata',()=>{element.play().catch(()=>{});},{once:true});}
  card.appendChild(element);
  if(track.source===rookieVoiceSdk.Track.Source.ScreenShare || track.kind===rookieVoiceSdk.Track.Kind.Video){
    const fullBtn=document.createElement('button');
@@ -658,7 +658,9 @@ async function rookieVoiceJoin(){
   const {data,error}=await supabaseClient.functions.invoke('rookie-voice-token',{body:{roomName:'rookie-general'}});
   if(error)throw new Error(error.message||'Não foi possível obter o token de acesso.');
   if(!data?.token||!data?.serverUrl)throw new Error(data?.error||'Resposta de conexão inválida.');
-  const room=new rookieVoiceSdk.Room({adaptiveStream:true,dynacast:true});
+  // Para quem assiste: desativa o ajuste automático por tamanho do elemento.
+  // A prévia em cartão é pequena e pode fazer o Adaptive Stream solicitar uma camada de baixa resolução.
+  const room=new rookieVoiceSdk.Room({adaptiveStream:false,dynacast:true});
   rookieVoiceRoom=room;
   room.on(rookieVoiceSdk.RoomEvent.TrackSubscribed,(track,publication,participant)=>{
     rvAddMedia(track,participant,false);rvUpdateParticipants();
