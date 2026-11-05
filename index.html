@@ -410,6 +410,14 @@ input[type=file]{max-width:0}
    <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn secondary" id="rvMicBtn" type="button" disabled>🎙 Ativar microfone</button>
     <button class="btn secondary" id="rvScreenBtn" type="button" disabled>🖥 Compartilhar tela</button>
+    <label for="rvScreenQuality" style="display:flex;align-items:center;gap:7px;color:var(--muted);font-size:13px">
+      Qualidade
+      <select id="rvScreenQuality" disabled style="background:#0b130f;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:9px">
+       <option value="1080p60" selected>1080p · 60 FPS</option>
+       <option value="1080p30">1080p · 30 FPS</option>
+       <option value="720p30">720p · 30 FPS</option>
+      </select>
+    </label>
     <button class="btn secondary" id="rvLeaveBtn" type="button" disabled>☎ Sair da sala</button>
    </div>
    <p class="mutednote" id="rvMessage" style="margin-top:14px">Entre com sua conta de piloto para iniciar.</p>
@@ -663,7 +671,7 @@ async function rookieVoiceJoin(){
   await room.connect(data.serverUrl,data.token);
   rvState('Conectado à Sala Geral');
   rvEl('rvRoomTitle').textContent='🌐 Rookie League — Sala Geral';
-  rvEl('rvMicBtn').disabled=false;rvEl('rvScreenBtn').disabled=false;rvEl('rvLeaveBtn').disabled=false;
+  rvEl('rvMicBtn').disabled=false;rvEl('rvScreenBtn').disabled=false;rvEl('rvLeaveBtn').disabled=false;if(rvEl('rvScreenQuality'))rvEl('rvScreenQuality').disabled=false;
   if(btn)btn.textContent='Conectado';
   rvMessage('Conectado! Ative o microfone ou compartilhe sua tela quando quiser.');
   rvUpdateParticipants();
@@ -674,7 +682,7 @@ function rvResetControls(){
  rookieVoiceMicOn=false;rookieVoiceScreenOn=false;
  if(rvEl('rvMicBtn')){rvEl('rvMicBtn').disabled=true;rvEl('rvMicBtn').textContent='🎙 Ativar microfone';}
  if(rvEl('rvScreenBtn')){rvEl('rvScreenBtn').disabled=true;rvEl('rvScreenBtn').textContent='🖥 Compartilhar tela';}
- if(rvEl('rvLeaveBtn'))rvEl('rvLeaveBtn').disabled=true;
+ if(rvEl('rvLeaveBtn'))rvEl('rvLeaveBtn').disabled=true;if(rvEl('rvScreenQuality'))rvEl('rvScreenQuality').disabled=true;
  if(rvEl('rvJoinBtn')){rvEl('rvJoinBtn').disabled=false;rvEl('rvJoinBtn').textContent='Entrar novamente';}
  if(rvEl('rvMediaGrid'))rvEl('rvMediaGrid').innerHTML='';
  if(rvEl('rvParticipants'))rvEl('rvParticipants').textContent='Nenhum participante conectado.';
@@ -687,7 +695,23 @@ async function rookieVoiceToggleMic(){
 }
 async function rookieVoiceToggleScreen(){
  if(!rookieVoiceRoom)return;
- try{rookieVoiceScreenOn=!rookieVoiceScreenOn;await rookieVoiceRoom.localParticipant.setScreenShareEnabled(rookieVoiceScreenOn,{audio:true});rvEl('rvScreenBtn').textContent=rookieVoiceScreenOn?'🛑 Parar transmissão':'🖥 Compartilhar tela';}
+ try{
+  rookieVoiceScreenOn=!rookieVoiceScreenOn;
+  const quality=rvEl('rvScreenQuality')?.value||'1080p60';
+  const presets={
+   '1080p60':{width:1920,height:1080,frameRate:60,bitrate:8000000,fps:60},
+   '1080p30':{width:1920,height:1080,frameRate:30,bitrate:5000000,fps:30},
+   '720p30':{width:1280,height:720,frameRate:30,bitrate:2500000,fps:30}
+  };
+  const preset=presets[quality]||presets['1080p60'];
+  await rookieVoiceRoom.localParticipant.setScreenShareEnabled(
+   rookieVoiceScreenOn,
+   {audio:true,resolution:{width:preset.width,height:preset.height,frameRate:preset.fps},contentHint:'motion'},
+   {screenShareEncoding:{maxBitrate:preset.bitrate,maxFramerate:preset.fps},degradationPreference:'maintain-resolution'}
+  );
+  rvEl('rvScreenBtn').textContent=rookieVoiceScreenOn?'🛑 Parar transmissão':'🖥 Compartilhar tela';
+  if(rookieVoiceScreenOn)rvMessage('Transmissão iniciada com qualidade solicitada '+quality.replace('p','p · ').replace('60','60 FPS').replace('30','30 FPS')+'. O navegador e a conexão podem ajustar a qualidade real.');
+ }
  catch(e){rookieVoiceScreenOn=false;rvEl('rvScreenBtn').textContent='🖥 Compartilhar tela';rvMessage('Não foi possível compartilhar a tela: '+e.message,true);}
 }
 async function rookieVoiceLeave(){
