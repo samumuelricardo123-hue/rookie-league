@@ -315,6 +315,37 @@ input[type=file]{max-width:0}
 .rv-media-card:-webkit-full-screen b{position:absolute;top:12px;left:16px;z-index:2;background:#0009;padding:8px 12px;border-radius:6px}
 .rv-media-card:fullscreen .rv-fullscreen-btn,
 .rv-media-card:-webkit-full-screen .rv-fullscreen-btn{position:absolute;top:12px;right:16px;z-index:3;margin:0;background:#111c}
+
+/* Race Chat — interface renovada */
+.rv-hero{border:1px solid #3c5629!important;border-radius:18px!important;background:radial-gradient(circle at 90% 0%,#a6ff0018,transparent 36%),linear-gradient(120deg,#17251b,#0b120f)!important;padding:25px!important}
+.rv-grid{align-items:start;gap:16px!important;margin-top:16px!important}
+.rv-panel{border:1px solid #2b3b30!important;border-radius:16px!important;background:linear-gradient(155deg,#131d17,#0d1410)!important;padding:20px!important;box-shadow:0 12px 35px #0003}
+.rv-panel h3{font-size:17px;letter-spacing:.2px}
+.rv-room{border:1px solid #2b3b30!important;border-radius:12px!important;background:#0c140f!important;padding:13px!important;margin:9px 0 17px!important}
+.rv-room button{border-radius:9px!important;font-weight:900!important;padding:9px 15px!important}
+.rv-feature{border:1px solid #2b3b30!important;border-radius:13px!important;background:linear-gradient(145deg,#111b15,#0b120e)!important;padding:16px!important}
+.rv-controls-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:22px 0 13px}
+.rv-controls-head h3{margin:3px 0 0;font-size:19px}
+.rv-eyebrow{font-size:9px;letter-spacing:2px;color:var(--green);font-weight:1000}
+.rv-audio-state{display:flex;align-items:center;gap:8px;color:#b9d69d;font-size:11px;font-weight:800;background:#a6ff0010;border:1px solid #a6ff0035;padding:8px 11px;border-radius:30px;white-space:nowrap}
+.rv-audio-pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px #a6ff0020}
+.rv-control-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.rv-control-btn{display:flex;align-items:center;gap:12px;text-align:left;padding:13px 14px;border:1px solid #344638;border-radius:12px;background:#101a14;color:var(--text);cursor:pointer;transition:.18s ease;min-height:66px}
+.rv-control-btn:hover:not(:disabled){border-color:var(--green);background:#a6ff000d;transform:translateY(-1px)}
+.rv-control-btn:disabled{opacity:.42;cursor:not-allowed}
+.rv-control-btn b,.rv-control-btn small{display:block}.rv-control-btn b{font-size:12px}.rv-control-btn small{font-size:10px;color:var(--muted);margin-top:2px}
+.rv-control-icon{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#a6ff0014;color:var(--green);font-size:18px;flex:none}
+.rv-control-exit .rv-control-icon{background:#ff575714;color:#ff8585}
+.rv-quality-control{display:flex;flex-direction:column;justify-content:center;gap:5px;padding:10px 13px;border:1px solid #344638;border-radius:12px;background:#101a14;color:var(--muted);font-size:10px;font-weight:800}
+.rv-quality-control select{width:100%;background:#0b130f;color:var(--text);border:1px solid #344638;border-radius:7px;padding:7px;font-size:12px}
+.rv-online-list{display:grid;gap:7px}.rv-online-pilot{border:1px solid #29392e!important;border-radius:9px!important;background:#0d1611!important;padding:9px 11px!important}
+@media(max-width:650px){.rv-grid{grid-template-columns:1fr!important}.rv-controls-head{align-items:flex-start;flex-direction:column}.rv-control-grid{grid-template-columns:1fr}.rv-panel{padding:15px!important}}
+
+
+/* Central de DLCs */
+.dlcFile{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:15px;border:1px solid var(--line);border-radius:11px;background:#0c140f;margin:10px 0;flex-wrap:wrap}
+.dlcFile h3{margin:0 0 4px;font-size:16px}.dlcFile p{margin:0;color:var(--muted);font-size:12px}
+@media(max-width:620px){.dlcFile .btn{width:100%;text-align:center}}
 </style></head>
 <body>
 
@@ -362,10 +393,11 @@ input[type=file]{max-width:0}
 <section id="championships" class="page"><div class="subhead"><div class="kicker">COMPETIÇÕES OFICIAIS</div><h1>Campeonatos</h1><p>Visão geral das categorias e temporadas.</p></div><div class="sectionHead"><div><h2>Todos os campeonatos</h2><p>Dados iniciais importados do painel enviado.</p></div><div class="tools champTools"><select id="champCategoryFilter" onchange="renderAll()"><option value="">Todas as categorias</option><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select><select id="champStatusFilter" onchange="renderAll()"><option value="">Todos os status</option><option value="active">Em andamento</option><option value="done">Concluídos</option></select><input id="champSearch" placeholder="Buscar campeonato..." oninput="renderAll()"></div></div><div class="cards" id="allCards"></div></section>
 <section id="fun" class="page"><div class="subhead"><div class="kicker">EVENTOS LIVRES • SEM CAMPEONATO</div><h1>4FUN</h1><p>Encontros, treinos e corridas especiais para diversão. Não contam como etapas de campeonato.</p></div><div class="cards" id="funCards"></div></section>
 <section id="champDetail" class="page"><div class="detailBack"><button class="btn secondary small" onclick="showPage('championships')">← TODOS OS CAMPEONATOS</button></div><div id="champDetailContent"></div></section>
+<section id="dlcCenter" class="page"><div class="subhead"><div class="kicker">DOWNLOADS OFICIAIS</div><h1>Central de DLCs</h1><p id="dlcChampSubtitle">Arquivos disponibilizados para este campeonato.</p></div><div class="detailActions"><button class="btn secondary small" type="button" onclick="showPage('championships')">← VOLTAR AOS CAMPEONATOS</button></div><div id="dlcFilesList" class="panel" style="padding:16px"><p class="empty">Selecione um campeonato para consultar os downloads.</p></div></section>
 <section id="results"  class="page"><div class="subhead"><div class="kicker">CLASSIFICAÇÃO OFICIAL</div><h1>Resultados</h1><p>Resultados por etapa e classificação acumulada.</p></div><div class="sectionHead"><div><h2>Classificação oficial importada</h2><p>Tabela de pilotos e pontuação dos campeonatos recebidos do Emperor Servers.</p></div><div class="tools"><select id="officialResultChamp" onchange="renderOfficialResults()"></select></div></div>
 <div class="panel tableWrap officialResultsPanel"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Pontos</th></tr></thead><tbody id="officialStandings"></tbody></table></div>
 <p class="hint" style="margin-top:9px">Os resultados são exibidos diretamente nesta página. A tabela é uma cópia importada e precisa ser atualizada quando houver novas pontuações no servidor.</p>
-<div class="sectionHead"><div><h2>Resultados registrados no portal</h2><p>Classificação calculada automaticamente a partir das etapas lançadas aqui.</p></div><div class="tools"><select id="resultChamp" onchange="renderAll()"></select></div></div><div class="panel tableWrap"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th><th>Resultados</th></tr></thead><tbody id="standings"></tbody></table></div><div class="sectionHead"><div><h2>Etapas lançadas</h2><p>Histórico de resultados registrados.</p></div></div><div class="panel tableWrap"><table><thead><tr><th>Campeonato / Tipo</th><th>Etapa / Evento</th><th>Data</th><th>Vencedor</th><th>Participantes</th><th>Ação</th></tr></thead><tbody id="raceRows"></tbody></table></div></section>
+<div class="sectionHead"><div><h2>Resultados registrados no portal</h2><p>Classificação calculada automaticamente a partir das etapas lançadas aqui.</p></div><div class="tools"><select id="resultChamp" onchange="renderAll()"></select></div></div><div class="panel tableWrap"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th><th>Resultados</th></tr></thead><tbody id="standings"></tbody></table></div><div class="sectionHead"><div><h2>Etapas lançadas</h2><p>Histórico de resultados registrados.</p></div></div><div class="panel tableWrap"><table><thead><tr><th>Campeonato / Tipo</th><th>Etapa / Evento</th><th>Data</th><th>Vencedor</th><th>Participantes</th><th id="raceActionHead">Ação</th></tr></thead><tbody id="raceRows"></tbody></table></div></section>
 
 <section id="calendar" class="page">
   <div class="subhead"><div class="kicker">AGENDA DA TEMPORADA</div><h1>Calendário</h1><p>Veja as próximas corridas, datas e etapas da Rookie League Motorsport.</p></div>
@@ -415,19 +447,12 @@ input[type=file]{max-width:0}
     <div id="rvOnlinePilots" class="rv-online-list" style="margin-top:9px">Entre na sala para ver quem está online.</div>
    </div>
    <div id="rvMediaGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px"></div>
-   <h3>Controles</h3>
-   <div style="display:flex;gap:8px;flex-wrap:wrap">
-    <button class="btn secondary" id="rvMicBtn" type="button" disabled>🎙 Ativar microfone</button>
-    <button class="btn secondary" id="rvScreenBtn" type="button" disabled>🖥 Compartilhar tela</button>
-    <label for="rvScreenQuality" style="display:flex;align-items:center;gap:7px;color:var(--muted);font-size:13px">
-      Qualidade
-      <select id="rvScreenQuality" disabled style="background:#0b130f;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:9px">
-       <option value="1080p60" selected>1080p · 60 FPS</option>
-       <option value="1080p30">1080p · 30 FPS</option>
-       <option value="720p30">720p · 30 FPS</option>
-      </select>
-    </label>
-    <button class="btn secondary" id="rvLeaveBtn" type="button" disabled>☎ Sair da sala</button>
+   <div class="rv-controls-head"><div><span class="rv-eyebrow">PAINEL DE CONTROLE</span><h3>Controles da sala</h3></div><div class="rv-audio-state"><span class="rv-audio-pulse"></span> Avisos sonoros ligados</div></div>
+   <div class="rv-control-grid">
+    <button class="rv-control-btn" id="rvMicBtn" type="button" disabled><span class="rv-control-icon">🎙</span><span><b>Microfone</b><small>Ativar áudio</small></span></button>
+    <button class="rv-control-btn" id="rvScreenBtn" type="button" disabled><span class="rv-control-icon">▣</span><span><b>Compartilhar tela</b><small>Transmitir ao grupo</small></span></button>
+    <label class="rv-quality-control" for="rvScreenQuality"><span>Qualidade da transmissão</span><select id="rvScreenQuality" disabled><option value="1080p60" selected>1080p · 60 FPS</option><option value="1080p30">1080p · 30 FPS</option><option value="720p30">720p · 30 FPS</option></select></label>
+    <button class="rv-control-btn rv-control-exit" id="rvLeaveBtn" type="button" disabled><span class="rv-control-icon">↗</span><span><b>Sair da sala</b><small>Encerrar conexão</small></span></button>
    </div>
    <p class="mutednote" id="rvMessage" style="margin-top:14px">Entre com sua conta de piloto para iniciar.</p>
   </div>
@@ -620,7 +645,7 @@ function switchAdminTab(targetId,button){
  });
  try{refreshSelects()}catch(error){console.error('Falha ao atualizar listas da administração:',error)}
 }
-function showPage(id){if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>{const active=p.id===id;p.classList.toggle('active',active);p.hidden=!active;});document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');if(id==='garage')loadGarage();if(id==='account'&&cloudUser){const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;markPilotProfileNotificationsSeen()}renderAll()}
+function showPage(id){if(id==='dlcCenter'&&!cloudUser){alert('Entre na sua conta para acessar os downloads.');showPage('account');return}if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>{const active=p.id===id;p.classList.toggle('active',active);p.hidden=!active;});document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');if(id==='garage')loadGarage();if(id==='dlcCenter')loadPilotDlcFiles();if(id==='account'&&cloudUser){const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;markPilotProfileNotificationsSeen()}renderAll()}
 document.querySelectorAll('.page').forEach(p=>{p.hidden=!p.classList.contains('active')});
 
 let rookieVoiceRoom=null, rookieVoiceSdk=null, rookieVoiceMicOn=false, rookieVoiceScreenOn=false;
@@ -688,16 +713,40 @@ function rvRemoveMedia(track){
  }
 }
 let rvAudioContext=null;
+let rvPresenceSoundsEnabled=true;
+let rvAudioUnlocked=false;
+async function rvUnlockPresenceAudio(){
+ try{
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx)return;
+  if(!rvAudioContext)rvAudioContext=new AudioCtx();
+  if(rvAudioContext.state==='suspended')await rvAudioContext.resume();
+  rvAudioUnlocked=rvAudioContext.state==='running';
+ }catch(e){console.warn('O navegador ainda não liberou o áudio:',e);}
+}
+// Os sons ficam ligados por padrão. O primeiro gesto na página libera o áudio, conforme a política do navegador.
+document.addEventListener('pointerdown',rvUnlockPresenceAudio,{once:true,capture:true});
+document.addEventListener('keydown',rvUnlockPresenceAudio,{once:true,capture:true});
 function rvPlayPresenceSound(joined){
+ if(!rvPresenceSoundsEnabled)return;
  try{
   const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx)return;
   if(!rvAudioContext)rvAudioContext=new AudioCtx();
-  if(rvAudioContext.state==='suspended')rvAudioContext.resume();
-  const ctx=rvAudioContext,osc=ctx.createOscillator(),gain=ctx.createGain();
-  osc.type='sine';osc.frequency.setValueAtTime(joined?880:440,ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(joined?1175:330,ctx.currentTime+0.12);
-  gain.gain.setValueAtTime(0.0001,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(0.12,ctx.currentTime+0.015);gain.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.24);
-  osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+0.25);
+  if(rvAudioContext.state!=='running'){
+   rvAudioContext.resume().then(()=>{if(rvAudioContext.state==='running')rvPlayPresenceSound(joined);}).catch(()=>{});
+   return;
+  }
+  const ctx=rvAudioContext;
+  const notes=joined?[880,1174.66]:[587.33,440];
+  notes.forEach((frequency,index)=>{
+   const osc=ctx.createOscillator(),gain=ctx.createGain();
+   const start=ctx.currentTime+index*0.13;
+   osc.type='sine';osc.frequency.setValueAtTime(frequency,start);
+   gain.gain.setValueAtTime(0.0001,start);
+   gain.gain.exponentialRampToValueAtTime(0.22,start+0.025);
+   gain.gain.exponentialRampToValueAtTime(0.0001,start+0.32);
+   osc.connect(gain);gain.connect(ctx.destination);osc.start(start);osc.stop(start+0.34);
+  });
  }catch(e){console.warn('Som de presença indisponível:',e);}
 }
 function rvRenderOnlinePilots(){
@@ -733,10 +782,11 @@ async function rookieVoiceJoin(){
   room.on(rookieVoiceSdk.RoomEvent.TrackUnsubscribed,(track)=>rvRemoveMedia(track));
   room.on(rookieVoiceSdk.RoomEvent.ParticipantConnected,(p)=>{rvParticipantCard(p,false);rvPlayPresenceSound(true);rvMessage((p.name||p.identity||'Um piloto')+' entrou na sala.');rvUpdateParticipants();});
   room.on(rookieVoiceSdk.RoomEvent.ParticipantDisconnected,(p)=>{rvPlayPresenceSound(false);rvMessage((p.name||p.identity||'Um piloto')+' saiu da sala.');rvUpdateParticipants();});
-  room.on(rookieVoiceSdk.RoomEvent.Disconnected,()=>{rvState('Desconectado');rvMessage('Você saiu da Sala Geral.');rvResetControls();});
+  room.on(rookieVoiceSdk.RoomEvent.Disconnected,()=>{rvPlayPresenceSound(false);rvState('Desconectado');rvMessage('Você saiu da Sala Geral.');rvResetControls();});
   rvState('Conectando...');
   await room.connect(data.serverUrl,data.token);
   rvState('Conectado à Sala Geral');
+  rvPlayPresenceSound(true);
   rvParticipantCard(room.localParticipant,true);
   room.remoteParticipants.forEach(p=>rvParticipantCard(p,false));
   rvEl('rvRoomTitle').textContent='🌐 Rookie League — Sala Geral';
@@ -785,7 +835,7 @@ async function rookieVoiceToggleScreen(){
  catch(e){rookieVoiceScreenOn=false;rvEl('rvScreenBtn').textContent='🖥 Compartilhar tela';rvMessage('Não foi possível compartilhar a tela: '+e.message,true);}
 }
 async function rookieVoiceLeave(){
- if(rookieVoiceRoom){await rookieVoiceRoom.disconnect();rookieVoiceRoom=null;}
+ if(rookieVoiceRoom){rvPlayPresenceSound(false);await rookieVoiceRoom.disconnect();rookieVoiceRoom=null;}
  rvResetControls();rvState('Desconectado');rvMessage('Você saiu da Sala Geral.');
 }
 rvEl('rvJoinBtn')?.addEventListener('click',rookieVoiceJoin);
@@ -960,7 +1010,7 @@ async function refreshPilotChampionshipActions(){
    const champ=db.championships.find(c=>String(c.id)===champId);if(!champ)return;
    const status=registrations.get(champId);
    if(status==='approved'){
-    box.innerHTML=champ.carSelectionUrl?`<a class="btn" href="${esc(champ.carSelectionUrl)}" target="_blank" rel="noopener noreferrer">ESCOLHER MEU CARRO ↗</a>`:'<button class="btn secondary" type="button" disabled>ESCOLHA DE CARRO EM BREVE</button>';
+    box.innerHTML=`<button class="btn" type="button" onclick="openDlcCenter('${esc(champId)}')">BAIXAR DLCs ↓</button>`+(champ.carSelectionUrl?` <a class="btn secondary" href="${esc(champ.carSelectionUrl)}" target="_blank" rel="noopener noreferrer">ESCOLHER MEU CARRO ↗</a>`:'');
    }else if(status==='pending'){
     box.innerHTML='<button class="btn secondary" type="button" disabled>INSCRIÇÃO EM ANÁLISE</button>';
    }else if(status==='rejected'){
@@ -970,6 +1020,26 @@ async function refreshPilotChampionshipActions(){
    }
   });
  }catch(e){console.error('Não foi possível consultar as inscrições do piloto:',e);}
+}
+
+let activeDlcChampionshipId=null;
+function openDlcCenter(champId){
+ const id=String(champId);activeDlcChampionshipId=id;
+ const champ=db.championships.find(c=>String(c.id)===id);
+ const subtitle=document.getElementById('dlcChampSubtitle');
+ if(subtitle)subtitle.textContent='Downloads disponíveis para '+(champ?.name||'este campeonato')+'.';
+ showPage('dlcCenter');
+}
+async function loadPilotDlcFiles(){
+ const box=document.getElementById('dlcFilesList');if(!box)return;
+ if(!cloudUser||!activeDlcChampionshipId){box.innerHTML='<p class="empty">Acesse pelo botão Baixar DLCs de um campeonato com inscrição aprovada.</p>';return;}
+ box.innerHTML='<p class="empty">Carregando arquivos…</p>';
+ try{
+  const {data,error}=await supabaseClient.from('championship_dlc_files').select('id,championship_id,package_name,file_name,category,drive_url,version,file_size,description,created_at').eq('championship_id',activeDlcChampionshipId).eq('is_active',true).order('sort_order').order('created_at');
+  if(error)throw error;
+  const labels={cars:'Carros',tracks:'Pistas',complete:'Pacote completo',other:'Outros'};
+  box.innerHTML=(data||[]).length?(data||[]).map(f=>`<article class="dlcFile"><div><h3>${esc(f.file_name)}</h3><p>${esc(f.package_name)} · ${labels[f.category]||'Outros'} · v${esc(f.version||'1.0')}${f.file_size?' · '+esc(f.file_size):''}</p>${f.description?`<p style="margin-top:5px">${esc(f.description)}</p>`:''}</div><a class="btn" href="${esc(f.drive_url)}" target="_blank" rel="noopener noreferrer">BAIXAR ↗</a></article>`).join(''):'<p class="empty">Ainda não há DLCs cadastrados para este campeonato.</p>';
+ }catch(e){box.innerHTML='<p class="empty">Não foi possível carregar os downloads: '+esc(e.message||e)+'</p>';}
 }
 
 function card(c){
@@ -1371,7 +1441,8 @@ document.getElementById('homeHall').innerHTML=hall;document.getElementById('hall
 let dq=(document.getElementById('driverSearch')?.value||'').toLowerCase();document.getElementById('driverRows').innerHTML=db.drivers.filter(d=>d.name.toLowerCase().includes(dq)).map(d=>`<tr><td class="driver">${esc(d.name)}</td><td>${esc(d.team||'—')}</td><td class="count">${titleCount(d.id)}</td><td>${db.results.filter(r=>r.driverId===d.id).reduce((s,r)=>s+Number(r.points||0),0)}</td></tr>`).join('')||'<tr><td colspan="4">Nenhum piloto cadastrado.</td></tr>';
 let selected=document.getElementById('resultChamp').value||db.championships[0]?.id;document.getElementById('resultChamp').innerHTML=db.championships.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');if(db.championships.some(c=>c.id===selected))document.getElementById('resultChamp').value=selected;else selected=db.championships[0]?.id;
 let st=standings(selected);document.getElementById('standings').innerHTML=st.map((x,i)=>`<tr><td class="rank">${podium(i+1)}</td><td class="driver">${esc(x.name)}</td><td>${x.starts}</td><td class="count">${x.points}</td><td><button class="textLink" onclick="showPage('admin');document.querySelector('[data-tab=resultForm]').click()">LANÇAR / AJUSTAR →</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Ainda não há resultados lançados para este campeonato.</td></tr>';
-document.getElementById('raceRows').innerHTML=db.races.map(r=>{let res=db.results.filter(x=>x.raceId===r.id).sort((a,b)=>a.position-b.position);return `<tr><td>${esc(champName(r.champId))}</td><td>${esc(r.name)}</td><td>${esc(r.date||'—')} ${r.time?' · '+esc(r.time):''}<div class="mutednote">${esc(db.tracks.find(t=>t.id===r.trackId)?.name||'')}</div></td><td>${res.length?esc(driverName(res[0].driverId)):'Aguardando resultados'}</td><td>${res.length}</td><td><button class="btn danger small" onclick="deleteRace('${r.id}')">EXCLUIR</button></td></tr>`}).join('')||'<tr><td colspan="6" class="empty">Nenhuma etapa cadastrada ainda.</td></tr>';
+const raceActionHead=document.getElementById('raceActionHead');if(raceActionHead)raceActionHead.style.display=cloudIsAdmin?'':'none';
+document.getElementById('raceRows').innerHTML=db.races.map(r=>{let res=db.results.filter(x=>x.raceId===r.id).sort((a,b)=>a.position-b.position);return `<tr><td>${esc(champName(r.champId))}</td><td>${esc(r.name)}</td><td>${esc(r.date||'—')} ${r.time?' · '+esc(r.time):''}<div class="mutednote">${esc(db.tracks.find(t=>t.id===r.trackId)?.name||'')}</div></td><td>${res.length?esc(driverName(res[0].driverId)):'Aguardando resultados'}</td><td>${res.length}</td>${cloudIsAdmin?`<td><button class="btn danger small" onclick="deleteRace('${r.id}')">EXCLUIR</button></td>`:''}</tr>`}).join('')||`<tr><td colspan="${cloudIsAdmin?6:5}" class="empty">Nenhuma etapa cadastrada ainda.</td></tr>`;
 document.getElementById('metricChamps').textContent=String(db.championships.length).padStart(2,'0');document.getElementById('metricDrivers').textContent=String(db.drivers.length).padStart(2,'0');document.getElementById('metricRaces').textContent=String(db.races.length).padStart(2,'0');document.getElementById('metricTitles').textContent=db.titles.length;document.getElementById('hallDrivers').textContent=ranks.length;document.getElementById('hallTitles').textContent=db.titles.length;
 document.getElementById('dataSummary').textContent=`${db.drivers.length} pilotos · ${db.races.length} etapas · ${db.results.length} resultados · ${db.titles.length} títulos`;
 refreshSelects();
