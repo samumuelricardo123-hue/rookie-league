@@ -532,6 +532,7 @@ input[type=file]{max-width:0}
 <div class="field"><label>Campeonato para configurar</label><select id="carUrlChamp" onchange="loadSelectedChampionshipCarUrl()"></select></div>
 <div class="field full champUrlField"><label>Link de escolha de carro</label><input id="carSelectionUrl" type="url" placeholder="https://site.com/escolher-carro"><small>O ADM pode alterar esse endereço a qualquer momento.</small></div>
 </div><div class="formactions"><button class="btn" onclick="saveChampionshipCarUrl()">SALVAR LINK DE ESCOLHA DE CARRO</button><span class="hint" id="carUrlStatus">Configure o endereço que será aberto pelo botão do piloto.</span></div></div>
+<div id="dlcAdmin" class="panel" style="display:none;margin-top:13px"><h2 style="padding:16px 16px 0">Gerenciar arquivos de DLC</h2><p class="hint" style="padding:0 16px">Somente administradores podem cadastrar, editar ou remover links. Cole um link compartilhável do Google Drive.</p><div class="formgrid"><div class="field"><label>Campeonato</label><select id="dlcChampSelect" onchange="loadDlcAdminList()"></select></div><div class="field"><label>Nome do pacote</label><input id="dlcPackageName" maxlength="120" placeholder="Ex.: Pacote GT3 — Temporada 2026"></div><div class="field"><label>Categoria</label><select id="dlcCategory"><option value="cars">Carros</option><option value="tracks">Pistas</option><option value="complete">Pacote completo</option><option value="other">Outros</option></select></div><div class="field"><label>Nome do arquivo</label><input id="dlcFileName" maxlength="180" placeholder="Ex.: carros_gt3.7z"></div><div class="field"><label>Versão</label><input id="dlcVersion" maxlength="30" value="1.0"></div><div class="field"><label>Tamanho (opcional)</label><input id="dlcFileSize" maxlength="40" placeholder="Ex.: 2,5 GB"></div><div class="field full"><label>Link compartilhável do Google Drive</label><input id="dlcDriveUrl" type="url" placeholder="https://drive.google.com/file/d/.../view"><small class="hint">Configure o compartilhamento do arquivo no Drive para que os pilotos autorizados tenham acesso.</small></div><div class="field full"><label>Descrição (opcional)</label><textarea id="dlcDescription" rows="2" maxlength="500" placeholder="Informações sobre o conteúdo..."></textarea></div></div><div class="formactions"><button class="btn" type="button" onclick="saveDlcFile()">SALVAR ARQUIVO DLC</button><span id="dlcAdminStatus" class="hint"></span></div><div id="dlcAdminList" style="padding:0 16px 16px"></div></div>
 <div id="pilotForm" class="panel" style="margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do piloto</label><input id="pilotName" placeholder="Ex.: Maria Silva"></div><div class="field"><label>Equipe (opcional)</label><input id="pilotTeam" placeholder="Nome da equipe"></div><div class="field"><label>E-mail da conta do piloto</label><input id="pilotEmail" type="email" placeholder="email usado no login"></div><div class="field"><label>Categoria principal</label><select id="pilotClass"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Outra</option></select></div></div><div class="formactions"><button class="btn" onclick="addDriver()">SALVAR PILOTO</button><span class="hint">Não duplique pilotos; confira a lista antes de salvar.</span></div></div>
 <div id="funForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do evento 4FUN</label><input id="funName" placeholder="Ex.: Noite de Drift / Track Day"></div><div class="field"><label>Data</label><input id="funDate" type="date"></div><div class="field"><label>Horário</label><input id="funTime" type="time"></div><div class="field"><label>Pista</label><select id="funTrack"></select></div><div class="field full"><label>Descrição / informações</label><textarea id="funDescription" rows="3" placeholder="Formato livre, carros permitidos, orientações..."></textarea></div><div class="field full"><label>Link para entrar no servidor (opcional)</label><input id="funServerUrl" type="url" placeholder="https://... ou ac://..."></div></div><div class="formactions"><button class="btn" onclick="addFunEvent()">CADASTRAR EVENTO 4FUN</button></div><div id="funAdminList" class="tracklist"></div></div>
 <div id="trackForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome da pista / circuito</label><input id="trackName" placeholder="Ex.: Autódromo de Interlagos"></div><div class="field"><label>País</label><input id="trackCountry" placeholder="Brasil"></div><div class="field"><label>Traçado / configuração (opcional)</label><input id="trackLayout" placeholder="Ex.: GP — 4,3 km"></div></div><div class="formactions"><button class="btn" onclick="addTrack()">CADASTRAR PISTA</button></div><div id="trackList" class="tracklist"></div></div>
@@ -1041,6 +1042,32 @@ async function loadPilotDlcFiles(){
   box.innerHTML=(data||[]).length?(data||[]).map(f=>`<article class="dlcFile"><div><h3>${esc(f.file_name)}</h3><p>${esc(f.package_name)} · ${labels[f.category]||'Outros'} · v${esc(f.version||'1.0')}${f.file_size?' · '+esc(f.file_size):''}</p>${f.description?`<p style="margin-top:5px">${esc(f.description)}</p>`:''}</div><a class="btn" href="${esc(f.drive_url)}" target="_blank" rel="noopener noreferrer">BAIXAR ↗</a></article>`).join(''):'<p class="empty">Ainda não há DLCs cadastrados para este campeonato.</p>';
  }catch(e){box.innerHTML='<p class="empty">Não foi possível carregar os downloads: '+esc(e.message||e)+'</p>';}
 }
+
+function refreshDlcAdminChampionships(){
+ const sel=document.getElementById('dlcChampSelect');if(!sel)return;
+ const current=sel.value;sel.innerHTML='<option value="">Selecione o campeonato</option>'+db.championships.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+ if(db.championships.some(c=>String(c.id)===String(current)))sel.value=current;
+ loadDlcAdminList();
+}
+async function saveDlcFile(){
+ if(!cloudIsAdmin)return alert('Somente administradores podem cadastrar DLCs.');
+ const champId=document.getElementById('dlcChampSelect').value,packageName=document.getElementById('dlcPackageName').value.trim(),fileName=document.getElementById('dlcFileName').value.trim(),category=document.getElementById('dlcCategory').value,driveUrl=document.getElementById('dlcDriveUrl').value.trim(),version=document.getElementById('dlcVersion').value.trim()||'1.0',fileSize=document.getElementById('dlcFileSize').value.trim(),description=document.getElementById('dlcDescription').value.trim();
+ if(!champId||!packageName||!fileName||!driveUrl)return alert('Preencha campeonato, pacote, nome do arquivo e link do Google Drive.');
+ if(!/^https:\/\/drive\.google\.com\//i.test(driveUrl))return alert('Cole um link HTTPS do Google Drive.');
+ const status=document.getElementById('dlcAdminStatus');status.textContent='Salvando…';
+ const {error}=await supabaseClient.from('championship_dlc_files').insert({championship_id:String(champId),package_name:packageName,file_name:fileName,category,drive_url:driveUrl,version,file_size:fileSize||null,description:description||null,is_active:true});
+ if(error){status.textContent='Erro: '+error.message;return;}
+ ['dlcPackageName','dlcFileName','dlcDriveUrl','dlcFileSize','dlcDescription'].forEach(id=>document.getElementById(id).value='');document.getElementById('dlcVersion').value='1.0';status.textContent='Arquivo cadastrado com sucesso.';await loadDlcAdminList();
+}
+async function loadDlcAdminList(){
+ const box=document.getElementById('dlcAdminList');if(!box||!cloudIsAdmin)return;
+ const champId=document.getElementById('dlcChampSelect')?.value;if(!champId){box.innerHTML='<p class="empty">Selecione um campeonato para listar os arquivos cadastrados.</p>';return;}
+ const {data,error}=await supabaseClient.from('championship_dlc_files').select('id,file_name,package_name,category,version,file_size,is_active').eq('championship_id',String(champId)).order('created_at',{ascending:false});
+ if(error){box.innerHTML='<p class="hint">Erro ao carregar: '+esc(error.message)+'</p>';return;}
+ box.innerHTML=(data||[]).map(f=>`<div class="dlcFile"><div><b>${esc(f.file_name)}</b><p>${esc(f.package_name)} · ${esc(f.category)} · v${esc(f.version||'1.0')} · ${f.is_active?'Ativo':'Inativo'}</p></div><button class="btn danger small" type="button" onclick="deleteDlcFile('${esc(f.id)}')">EXCLUIR</button></div>`).join('')||'<p class="empty">Nenhum arquivo cadastrado neste campeonato.</p>';
+}
+async function deleteDlcFile(id){if(!cloudIsAdmin||!confirm('Excluir este arquivo da Central de DLCs?'))return;const {error}=await supabaseClient.from('championship_dlc_files').delete().eq('id',id);if(error)return alert('Não foi possível excluir: '+error.message);await loadDlcAdminList();}
+
 
 function card(c){
  let stages=db.races.filter(r=>r.champId===c.id).sort((a,b)=>(a.date||'9999-99-99').localeCompare(b.date||'9999-99-99'));
@@ -1555,9 +1582,9 @@ async function afterCloudLogin(){
  const profileBox=document.getElementById('pilotProfile');if(profileBox)profileBox.innerHTML='';
  document.getElementById('entryGate').classList.add('hidden');
  document.getElementById('accountNav').textContent=cloudIsAdmin?'♙ Minha conta • Admin':'♙ Minha conta';
- document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#funForm,#trackForm,#raceForm,#resultForm,#titleForm,#newsForm').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
+ document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#funForm,#trackForm,#raceForm,#resultForm,#titleForm,#newsForm,#dlcAdmin').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
  document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';const pc=document.getElementById('profileChangeAdmin');if(pc)pc.style.display=cloudIsAdmin?'':'none';if(cloudIsAdmin)loadProfileChangeRequests();loadRaceControl();loadCommunityAwards();document.getElementById('licenseAdmin').style.display=cloudIsAdmin?'':'none';
- if(cloudIsAdmin){startRegistrationPolling();loadLicenseAdmin();}
+ if(cloudIsAdmin){startRegistrationPolling();loadLicenseAdmin();refreshDlcAdminChampionships();}
  loggedPilotId=null;await renderProfile();showPage('home');await refreshPilotChampionshipActions();
 }
 
