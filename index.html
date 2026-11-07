@@ -1023,6 +1023,28 @@ async function refreshPilotChampionshipActions(){
  }catch(e){console.error('Não foi possível consultar as inscrições do piloto:',e);}
 }
 
+async function openDlcDownload(url){
+ if(!url)return;
+ try{
+  // Tauri v2: abrir o link no navegador externo do sistema.
+  if(window.__TAURI__?.opener?.openUrl){
+   await window.__TAURI__.opener.openUrl(url);
+   return;
+  }
+  if(window.__TAURI_INTERNALS__?.invoke){
+   await window.__TAURI_INTERNALS__.invoke('plugin:opener|open_url',{url});
+   return;
+  }
+  // Navegador comum: manter o comportamento de abrir em nova aba.
+  const tab=window.open(url,'_blank','noopener,noreferrer');
+  if(!tab)window.location.href=url;
+ }catch(error){
+  console.error('Falha ao abrir o download:',error);
+  // Último recurso dentro do WebView.
+  try{window.location.href=url;}catch(_){}
+ }
+}
+
 let activeDlcChampionshipId=null;
 function openDlcCenter(champId){
  const id=String(champId);activeDlcChampionshipId=id;
@@ -1039,7 +1061,7 @@ async function loadPilotDlcFiles(){
   const {data,error}=await supabaseClient.from('championship_dlc_files').select('id,championship_id,package_name,file_name,category,drive_url,version,file_size,description,created_at').eq('championship_id',activeDlcChampionshipId).eq('is_active',true).order('sort_order').order('created_at');
   if(error)throw error;
   const labels={cars:'Carros',tracks:'Pistas',complete:'Pacote completo',other:'Outros'};
-  box.innerHTML=(data||[]).length?(data||[]).map(f=>`<article class="dlcFile"><div><h3>${esc(f.file_name)}</h3><p>${esc(f.package_name)} · ${labels[f.category]||'Outros'} · v${esc(f.version||'1.0')}${f.file_size?' · '+esc(f.file_size):''}</p>${f.description?`<p style="margin-top:5px">${esc(f.description)}</p>`:''}</div><a class="btn" href="${esc(f.drive_url)}" target="_blank" rel="noopener noreferrer">BAIXAR ↗</a></article>`).join(''):'<p class="empty">Ainda não há DLCs cadastrados para este campeonato.</p>';
+  box.innerHTML=(data||[]).length?(data||[]).map(f=>`<article class="dlcFile"><div><h3>${esc(f.file_name)}</h3><p>${esc(f.package_name)} · ${labels[f.category]||'Outros'} · v${esc(f.version||'1.0')}${f.file_size?' · '+esc(f.file_size):''}</p>${f.description?`<p style="margin-top:5px">${esc(f.description)}</p>`:''}</div><button class="btn" type="button" data-url="${esc(f.drive_url)}" onclick="openDlcDownload(this.dataset.url)">BAIXAR ↗</button></article>`).join(''):'<p class="empty">Ainda não há DLCs cadastrados para este campeonato.</p>';
  }catch(e){box.innerHTML='<p class="empty">Não foi possível carregar os downloads: '+esc(e.message||e)+'</p>';}
 }
 
