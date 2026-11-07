@@ -1025,23 +1025,30 @@ async function refreshPilotChampionshipActions(){
 
 async function openDlcDownload(url){
  if(!url)return;
- try{
-  // Tauri v2: abrir o link no navegador externo do sistema.
-  if(window.__TAURI__?.opener?.openUrl){
-   await window.__TAURI__.opener.openUrl(url);
+ // No Tauri, nunca navegar com o WebView para o link externo:
+ // isso pode deixar a janela do aplicativo preta.
+ if(window.__TAURI__?.opener?.openUrl){
+  try{await window.__TAURI__.opener.openUrl(url);return;}
+  catch(error){
+   console.error('Falha ao abrir o navegador externo:',error);
+   alert('Não foi possível abrir o navegador externo. Verifique se o plugin Opener está instalado e autorizado no aplicativo.');
    return;
   }
-  if(window.__TAURI_INTERNALS__?.invoke){
-   await window.__TAURI_INTERNALS__.invoke('plugin:opener|open_url',{url});
+ }
+ if(window.__TAURI_INTERNALS__?.invoke){
+  try{await window.__TAURI_INTERNALS__.invoke('plugin:opener|open_url',{url});return;}
+  catch(error){
+   console.error('Plugin Opener indisponível:',error);
+   alert('O aplicativo ainda não tem o plugin Opener configurado. Feche esta janela e atualize o aplicativo.');
    return;
   }
-  // Navegador comum: manter o comportamento de abrir em nova aba.
-  const tab=window.open(url,'_blank','noopener,noreferrer');
-  if(!tab)window.location.href=url;
- }catch(error){
-  console.error('Falha ao abrir o download:',error);
-  // Último recurso dentro do WebView.
-  try{window.location.href=url;}catch(_){}
+ }
+ // Navegador comum: abrir nova aba; se bloqueada, manter a página atual
+ // e oferecer o endereço para o usuário abrir manualmente.
+ const tab=window.open(url,'_blank','noopener,noreferrer');
+ if(!tab){
+  const confirmed=confirm('O navegador bloqueou a nova aba. Deseja abrir o link nesta mesma aba?');
+  if(confirmed)window.location.assign(url);
  }
 }
 
