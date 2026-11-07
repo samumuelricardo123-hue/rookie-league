@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rookie League Motorsport — Portal V75 — Rookie Voice</title>
+<title>Rookie League Motorsport — Race Chat</title>
 <style>
 :root{--bg:#080d0b;--panel:#111916;--panel2:#17211c;--line:#29372f;--green:#a6ff00;--green2:#65c900;--text:#f2f7f1;--muted:#9aa99e;--red:#ff5757;--gold:#ffc857}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1d351f 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif}
@@ -262,7 +262,7 @@ input[type=file]{max-width:0}
 .page.active{display:block!important}
 .page[hidden]{display:none!important}
 
-/* Rookie Voice */
+/* Race Chat */
 .rv-hero{padding:24px;border:1px solid #30422c;border-radius:16px;background:linear-gradient(135deg,#17251b,#0d1511);margin:18px 0}
 .rv-grid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:16px}
 .rv-panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
@@ -315,11 +315,6 @@ input[type=file]{max-width:0}
 .rv-media-card:-webkit-full-screen b{position:absolute;top:12px;left:16px;z-index:2;background:#0009;padding:8px 12px;border-radius:6px}
 .rv-media-card:fullscreen .rv-fullscreen-btn,
 .rv-media-card:-webkit-full-screen .rv-fullscreen-btn{position:absolute;top:12px;right:16px;z-index:3;margin:0;background:#111c}
-
-/* Central de DLCs */
-.dlcFile{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:15px;border:1px solid var(--line);border-radius:11px;background:#0c140f;margin:10px 0;flex-wrap:wrap}
-.dlcFile h3{margin:0 0 4px;font-size:16px}.dlcFile p{margin:0;color:var(--muted);font-size:12px}.dlcGroup{margin:18px 0}.dlcGroup h2{font-size:18px;color:var(--green)}
-@media(max-width:620px){.dlcFile .btn{width:100%;text-align:center}}
 </style></head>
 <body>
 
@@ -348,7 +343,7 @@ input[type=file]{max-width:0}
 
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<button class="menuToggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav">☰ MENU</button><nav id="mainNav" hidden><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="rookievoice">🎙 Rookie Voice</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • V75</span>
+<button class="menuToggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav">☰ MENU</button><nav id="mainNav" hidden><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="rookievoice">🏁 Race Chat</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • V75</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
@@ -367,7 +362,6 @@ input[type=file]{max-width:0}
 <section id="championships" class="page"><div class="subhead"><div class="kicker">COMPETIÇÕES OFICIAIS</div><h1>Campeonatos</h1><p>Visão geral das categorias e temporadas.</p></div><div class="sectionHead"><div><h2>Todos os campeonatos</h2><p>Dados iniciais importados do painel enviado.</p></div><div class="tools champTools"><select id="champCategoryFilter" onchange="renderAll()"><option value="">Todas as categorias</option><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select><select id="champStatusFilter" onchange="renderAll()"><option value="">Todos os status</option><option value="active">Em andamento</option><option value="done">Concluídos</option></select><input id="champSearch" placeholder="Buscar campeonato..." oninput="renderAll()"></div></div><div class="cards" id="allCards"></div></section>
 <section id="fun" class="page"><div class="subhead"><div class="kicker">EVENTOS LIVRES • SEM CAMPEONATO</div><h1>4FUN</h1><p>Encontros, treinos e corridas especiais para diversão. Não contam como etapas de campeonato.</p></div><div class="cards" id="funCards"></div></section>
 <section id="champDetail" class="page"><div class="detailBack"><button class="btn secondary small" onclick="showPage('championships')">← TODOS OS CAMPEONATOS</button></div><div id="champDetailContent"></div></section>
-<section id="dlcCenter" class="page"><div class="subhead"><div class="kicker">DOWNLOADS OFICIAIS</div><h1>Central de DLCs</h1><p id="dlcChampSubtitle">Arquivos disponibilizados para este campeonato.</p></div><div class="detailActions"><button class="btn secondary small" type="button" onclick="showPage('championships')">← VOLTAR AOS CAMPEONATOS</button></div><div id="dlcFilesList" class="panel" style="padding:16px"><p class="empty">Selecione um campeonato para consultar os downloads.</p></div></section>
 <section id="results"  class="page"><div class="subhead"><div class="kicker">CLASSIFICAÇÃO OFICIAL</div><h1>Resultados</h1><p>Resultados por etapa e classificação acumulada.</p></div><div class="sectionHead"><div><h2>Classificação oficial importada</h2><p>Tabela de pilotos e pontuação dos campeonatos recebidos do Emperor Servers.</p></div><div class="tools"><select id="officialResultChamp" onchange="renderOfficialResults()"></select></div></div>
 <div class="panel tableWrap officialResultsPanel"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Pontos</th></tr></thead><tbody id="officialStandings"></tbody></table></div>
 <p class="hint" style="margin-top:9px">Os resultados são exibidos diretamente nesta página. A tabela é uma cópia importada e precisa ser atualizada quando houver novas pontuações no servidor.</p>
@@ -392,7 +386,7 @@ input[type=file]{max-width:0}
 
 
 <section id="rookievoice" class="page">
- <div class="subhead"><h1>🎙 Rookie Voice</h1><p>Comunicação por voz e transmissão de tela da Rookie League Motorsport.</p></div>
+ <div class="subhead"><h1>🏁 Race Chat</h1><p>Chat de voz, transmissão de tela e pilotos online na Rookie League Motorsport.</p></div>
  <div class="rv-hero">
   <div class="rv-state" id="rvConnectionState">Desconectado</div>
   <h2 style="margin:10px 0 6px">Entre no Paddock. Fale com sua equipe.</h2>
@@ -415,6 +409,10 @@ input[type=file]{max-width:0}
    <div class="rv-feature" style="min-height:120px">
     <b id="rvRoomTitle" style="color:var(--text)">Você ainda não entrou na sala.</b>
     <div id="rvParticipants" style="margin-top:10px;color:var(--muted)">Nenhum participante conectado.</div>
+   </div>
+   <div class="rv-feature" style="margin-top:12px">
+    <b style="color:var(--green)">🟢 Pilotos online na sala</b>
+    <div id="rvOnlinePilots" class="rv-online-list" style="margin-top:9px">Entre na sala para ver quem está online.</div>
    </div>
    <div id="rvMediaGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px"></div>
    <h3>Controles</h3>
@@ -501,7 +499,7 @@ input[type=file]{max-width:0}
  <div class="panel" style="margin-top:13px"><h2>Decisões publicadas</h2><p class="hint">Decisões oficiais e penalidades divulgadas pela direção de prova.</p><div id="publishedPenalties" class="tracklist"><p class="empty">Carregando decisões...</p></div></div>
 </section>
 
-<section id="admin" class="page"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button type="button" class="active"  onclick="switchAdminTab('pilotForm',this)"data-tab="pilotForm">＋ Cadastrar piloto</button><button type="button"  onclick="switchAdminTab('champForm',this)"data-tab="champForm">＋ Cadastrar campeonato</button><button type="button" onclick="switchAdminTab('newsForm',this)" data-tab="newsForm">▤ Publicar notícia</button><button type="button" onclick="switchAdminTab('communityAdmin',this)" data-tab="communityAdmin">▧ Comunidade</button><button type="button" onclick="switchAdminTab('awardsAdmin',this)" data-tab="awardsAdmin">🏆 Premiações</button><button type="button" onclick="switchAdminTab('raceControlAdmin',this)" data-tab="raceControlAdmin">⚑ Direção de prova</button><button type="button" onclick="switchAdminTab('dlcAdmin',this)" data-tab="dlcAdmin">⬇ Central de DLCs</button><button type="button" onclick="switchAdminTab('funForm',this)" data-tab="funForm">★ Cadastrar 4FUN</button><button type="button"  onclick="switchAdminTab('trackForm',this)"data-tab="trackForm">＋ Cadastrar pista</button><button type="button"  onclick="switchAdminTab('raceForm',this)"data-tab="raceForm">＋ Criar etapa</button><button type="button"  onclick="switchAdminTab('resultForm',this)"data-tab="resultForm">＋ Lançar resultado</button><button type="button"  onclick="switchAdminTab('titleForm',this)"data-tab="titleForm">♛ Registrar título</button></div>
+<section id="admin" class="page"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button type="button" class="active"  onclick="switchAdminTab('pilotForm',this)"data-tab="pilotForm">＋ Cadastrar piloto</button><button type="button"  onclick="switchAdminTab('champForm',this)"data-tab="champForm">＋ Cadastrar campeonato</button><button type="button" onclick="switchAdminTab('newsForm',this)" data-tab="newsForm">▤ Publicar notícia</button><button type="button" onclick="switchAdminTab('communityAdmin',this)" data-tab="communityAdmin">▧ Comunidade</button><button type="button" onclick="switchAdminTab('awardsAdmin',this)" data-tab="awardsAdmin">🏆 Premiações</button><button type="button" onclick="switchAdminTab('raceControlAdmin',this)" data-tab="raceControlAdmin">⚑ Direção de prova</button><button type="button" onclick="switchAdminTab('funForm',this)" data-tab="funForm">★ Cadastrar 4FUN</button><button type="button"  onclick="switchAdminTab('trackForm',this)"data-tab="trackForm">＋ Cadastrar pista</button><button type="button"  onclick="switchAdminTab('raceForm',this)"data-tab="raceForm">＋ Criar etapa</button><button type="button"  onclick="switchAdminTab('resultForm',this)"data-tab="resultForm">＋ Lançar resultado</button><button type="button"  onclick="switchAdminTab('titleForm',this)"data-tab="titleForm">♛ Registrar título</button></div>
 <div id="newsForm" class="panel" style="display:none;margin-top:13px"><h3>Publicar no mural</h3><div class="formgrid"><div class="field"><label>Título</label><input id="newsTitle" maxlength="120" placeholder="Ex.: Inscrições abertas para a nova temporada"></div><div class="field"><label>Categoria</label><select id="newsCategory"><option>Comunicado</option><option>Campeonato</option><option>Resultado</option><option>Evento 4FUN</option><option>Atualização</option></select></div><div class="field full"><label>Notícia</label><textarea id="newsBody" rows="5" maxlength="5000" placeholder="Escreva o comunicado oficial..."></textarea></div></div><div class="formactions"><button class="btn" onclick="publishNews()">PUBLICAR NOTÍCIA</button></div><div id="adminNewsList" class="tracklist"></div></div>
 <div class="formactions" style="margin-top:12px"><a class="btn" href="https://supabase.com/dashboard/project/lxformxabgtgafykvhkw/editor/17649?schema=public" target="_blank" rel="noopener noreferrer">↗ ABRIR SUPABASE — GERENCIAR INSCRIÇÕES</a></div>
 <div id="champForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do campeonato</label><input id="newChampName" placeholder="Ex.: Rookie League GT3"></div><div class="field"><label>Temporada / ano</label><input id="newChampSeason" placeholder="Ex.: Temporada 2026"></div><div class="field"><label>Categoria</label><select id="newChampCategory"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select></div><div class="field full champUrlField"><label>URL para escolha de carro (opcional)</label><input id="newChampCarUrl" type="url" placeholder="https://site.com/escolher-carro"><small>O link aparecerá para os pilotos com inscrição aprovada.</small></div><div class="formactions"><button class="btn" onclick="addChampionship()">CADASTRAR CAMPEONATO</button><span class="hint">Depois de cadastrar, crie as etapas e defina pista, data e horário de cada corrida.</span></div></div></div>
@@ -509,7 +507,6 @@ input[type=file]{max-width:0}
 <div class="field"><label>Campeonato para configurar</label><select id="carUrlChamp" onchange="loadSelectedChampionshipCarUrl()"></select></div>
 <div class="field full champUrlField"><label>Link de escolha de carro</label><input id="carSelectionUrl" type="url" placeholder="https://site.com/escolher-carro"><small>O ADM pode alterar esse endereço a qualquer momento.</small></div>
 </div><div class="formactions"><button class="btn" onclick="saveChampionshipCarUrl()">SALVAR LINK DE ESCOLHA DE CARRO</button><span class="hint" id="carUrlStatus">Configure o endereço que será aberto pelo botão do piloto.</span></div></div>
-<div id="dlcAdmin" class="panel" style="display:none;margin-top:13px"><h2 style="padding:16px 16px 0">Gerenciar arquivos de DLC</h2><p class="hint" style="padding:0 16px">Somente administradores podem cadastrar, editar ou remover links. Cole um link compartilhável do Google Drive.</p><div class="formgrid"><div class="field"><label>Campeonato</label><select id="dlcChampSelect" onchange="loadDlcAdminList()"></select></div><div class="field"><label>Nome do pacote</label><input id="dlcPackageName" maxlength="120" placeholder="Ex.: Pacote GT3 — Temporada 2026"></div><div class="field"><label>Categoria</label><select id="dlcCategory"><option value="cars">Carros</option><option value="tracks">Pistas</option><option value="complete">Pacote completo</option><option value="other">Outros</option></select></div><div class="field"><label>Nome do arquivo</label><input id="dlcFileName" maxlength="180" placeholder="Ex.: carros_gt3.7z"></div><div class="field"><label>Versão</label><input id="dlcVersion" maxlength="30" value="1.0"></div><div class="field"><label>Tamanho (opcional)</label><input id="dlcFileSize" maxlength="40" placeholder="Ex.: 2,5 GB"></div><div class="field full"><label>Link compartilhável do Google Drive</label><input id="dlcDriveUrl" type="url" placeholder="https://drive.google.com/file/d/.../view"><small class="hint">Configure o compartilhamento do arquivo no Drive para que os pilotos autorizados tenham acesso.</small></div><div class="field full"><label>Descrição (opcional)</label><textarea id="dlcDescription" rows="2" maxlength="500" placeholder="Informações sobre o conteúdo..."></textarea></div></div><div class="formactions"><button class="btn" type="button" onclick="saveDlcFile()">SALVAR ARQUIVO DLC</button><span id="dlcAdminStatus" class="hint"></span></div><div id="dlcAdminList" style="padding:0 16px 16px"></div></div>
 <div id="pilotForm" class="panel" style="margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do piloto</label><input id="pilotName" placeholder="Ex.: Maria Silva"></div><div class="field"><label>Equipe (opcional)</label><input id="pilotTeam" placeholder="Nome da equipe"></div><div class="field"><label>E-mail da conta do piloto</label><input id="pilotEmail" type="email" placeholder="email usado no login"></div><div class="field"><label>Categoria principal</label><select id="pilotClass"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Outra</option></select></div></div><div class="formactions"><button class="btn" onclick="addDriver()">SALVAR PILOTO</button><span class="hint">Não duplique pilotos; confira a lista antes de salvar.</span></div></div>
 <div id="funForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do evento 4FUN</label><input id="funName" placeholder="Ex.: Noite de Drift / Track Day"></div><div class="field"><label>Data</label><input id="funDate" type="date"></div><div class="field"><label>Horário</label><input id="funTime" type="time"></div><div class="field"><label>Pista</label><select id="funTrack"></select></div><div class="field full"><label>Descrição / informações</label><textarea id="funDescription" rows="3" placeholder="Formato livre, carros permitidos, orientações..."></textarea></div><div class="field full"><label>Link para entrar no servidor (opcional)</label><input id="funServerUrl" type="url" placeholder="https://... ou ac://..."></div></div><div class="formactions"><button class="btn" onclick="addFunEvent()">CADASTRAR EVENTO 4FUN</button></div><div id="funAdminList" class="tracklist"></div></div>
 <div id="trackForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome da pista / circuito</label><input id="trackName" placeholder="Ex.: Autódromo de Interlagos"></div><div class="field"><label>País</label><input id="trackCountry" placeholder="Brasil"></div><div class="field"><label>Traçado / configuração (opcional)</label><input id="trackLayout" placeholder="Ex.: GP — 4,3 km"></div></div><div class="formactions"><button class="btn" onclick="addTrack()">CADASTRAR PISTA</button></div><div id="trackList" class="tracklist"></div></div>
@@ -609,7 +606,7 @@ let authMode='login',loggedPilotId=null;
 function save(){localStorage.setItem('rlm_portal_v2',JSON.stringify(db));renderAll();if(cloudReady&&cloudIsAdmin)syncChangedDataToCloud().catch(e=>console.error('Falha ao sincronizar:',e))}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function switchAdminTab(targetId,button){
- const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm','communityAdmin','awardsAdmin','raceControlAdmin','dlcAdmin'];
+ const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm','communityAdmin','awardsAdmin','raceControlAdmin'];
  if(!allowed.includes(targetId))return;
  const admin=document.getElementById('admin');
  if(!admin)return;
@@ -621,9 +618,9 @@ function switchAdminTab(targetId,button){
    const panel=document.getElementById(id);
    if(panel)panel.style.display=(id===targetId?'block':'none');
  });
- try{refreshSelects();if(targetId==='dlcAdmin')refreshDlcAdminChampionships()}catch(error){console.error('Falha ao atualizar listas da administração:',error)}
+ try{refreshSelects()}catch(error){console.error('Falha ao atualizar listas da administração:',error)}
 }
-function showPage(id){if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}if(id==='dlcCenter'&&!cloudUser){alert('Entre na sua conta para acessar os downloads.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>{const active=p.id===id;p.classList.toggle('active',active);p.hidden=!active;});document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');if(id==='garage')loadGarage();if(id==='dlcCenter')loadPilotDlcFiles();if(id==='account'&&cloudUser){const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;markPilotProfileNotificationsSeen()}renderAll()}
+function showPage(id){if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>{const active=p.id===id;p.classList.toggle('active',active);p.hidden=!active;});document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');if(id==='garage')loadGarage();if(id==='account'&&cloudUser){const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;markPilotProfileNotificationsSeen()}renderAll()}
 document.querySelectorAll('.page').forEach(p=>{p.hidden=!p.classList.contains('active')});
 
 let rookieVoiceRoom=null, rookieVoiceSdk=null, rookieVoiceMicOn=false, rookieVoiceScreenOn=false;
@@ -690,13 +687,35 @@ function rvRemoveMedia(track){
   if(card&&!card.querySelector('video')){const avatar=card.querySelector('.rv-pilot-avatar');if(avatar)avatar.style.display='grid';}
  }
 }
-function rvUpdateParticipants(){
- if(!rookieVoiceRoom)return;
- const el=rvEl('rvParticipants');if(!el)return;
+let rvAudioContext=null;
+function rvPlayPresenceSound(joined){
+ try{
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx)return;
+  if(!rvAudioContext)rvAudioContext=new AudioCtx();
+  if(rvAudioContext.state==='suspended')rvAudioContext.resume();
+  const ctx=rvAudioContext,osc=ctx.createOscillator(),gain=ctx.createGain();
+  osc.type='sine';osc.frequency.setValueAtTime(joined?880:440,ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(joined?1175:330,ctx.currentTime+0.12);
+  gain.gain.setValueAtTime(0.0001,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(0.12,ctx.currentTime+0.015);gain.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.24);
+  osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+0.25);
+ }catch(e){console.warn('Som de presença indisponível:',e);}
+}
+function rvRenderOnlinePilots(){
+ const box=rvEl('rvOnlinePilots');if(!box)return;
+ if(!rookieVoiceRoom){box.innerHTML='<span class="rv-online-empty">Entre na sala para ver quem está online.</span>';return;}
  const people=[rookieVoiceRoom.localParticipant,...rookieVoiceRoom.remoteParticipants.values()];
- el.textContent=people.length+' participante(s): '+people.map(p=>p.name||p.identity).join(', ');
+ if(!people.length){box.innerHTML='<span class="rv-online-empty">Nenhum piloto online nesta sala.</span>';return;}
+ box.innerHTML=people.map(p=>`<div class="rv-online-pilot"><span class="rv-online-dot"></span><span>${esc(p.name||p.identity||'Piloto')}${p===rookieVoiceRoom.localParticipant?' (Você)':''}</span><span style="margin-left:auto;color:var(--green);font-size:10px;font-weight:900">ONLINE</span></div>`).join('');
+}
+function rvUpdateParticipants(){
+ const el=rvEl('rvParticipants');
+ if(!rookieVoiceRoom){if(el)el.textContent='Nenhum participante conectado.';rvRenderOnlinePilots();return;}
+ const people=[rookieVoiceRoom.localParticipant,...rookieVoiceRoom.remoteParticipants.values()];
+ if(el)el.textContent=people.length+' participante(s): '+people.map(p=>p.name||p.identity).join(', ');
+ rvRenderOnlinePilots();
 }
 async function rookieVoiceJoin(){
+ try{const AudioCtx=window.AudioContext||window.webkitAudioContext;if(AudioCtx){if(!rvAudioContext)rvAudioContext=new AudioCtx();if(rvAudioContext.state==='suspended')await rvAudioContext.resume();}}catch(e){}
  const btn=rvEl('rvJoinBtn');if(btn)btn.disabled=true;
  try{
   if(!cloudUser)throw new Error('Entre na sua conta de piloto antes de acessar a Sala Geral.');
@@ -712,8 +731,8 @@ async function rookieVoiceJoin(){
     rvAddMedia(track,participant,false);rvUpdateParticipants();
   });
   room.on(rookieVoiceSdk.RoomEvent.TrackUnsubscribed,(track)=>rvRemoveMedia(track));
-  room.on(rookieVoiceSdk.RoomEvent.ParticipantConnected,(p)=>{rvParticipantCard(p,false);rvUpdateParticipants();});
-  room.on(rookieVoiceSdk.RoomEvent.ParticipantDisconnected,rvUpdateParticipants);
+  room.on(rookieVoiceSdk.RoomEvent.ParticipantConnected,(p)=>{rvParticipantCard(p,false);rvPlayPresenceSound(true);rvMessage((p.name||p.identity||'Um piloto')+' entrou na sala.');rvUpdateParticipants();});
+  room.on(rookieVoiceSdk.RoomEvent.ParticipantDisconnected,(p)=>{rvPlayPresenceSound(false);rvMessage((p.name||p.identity||'Um piloto')+' saiu da sala.');rvUpdateParticipants();});
   room.on(rookieVoiceSdk.RoomEvent.Disconnected,()=>{rvState('Desconectado');rvMessage('Você saiu da Sala Geral.');rvResetControls();});
   rvState('Conectando...');
   await room.connect(data.serverUrl,data.token);
@@ -736,6 +755,7 @@ function rvResetControls(){
  if(rvEl('rvJoinBtn')){rvEl('rvJoinBtn').disabled=false;rvEl('rvJoinBtn').textContent='Entrar novamente';}
  if(rvEl('rvMediaGrid'))rvEl('rvMediaGrid').innerHTML='';
  if(rvEl('rvParticipants'))rvEl('rvParticipants').textContent='Nenhum participante conectado.';
+ rvRenderOnlinePilots();
  if(rvEl('rvRoomTitle'))rvEl('rvRoomTitle').textContent='Você ainda não entrou na sala.';
 }
 async function rookieVoiceToggleMic(){
@@ -799,7 +819,7 @@ document.addEventListener('click',function(event){
  event.preventDefault();
  event.stopPropagation();
  const targetId=tab.getAttribute('data-tab');
- const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm','communityAdmin','awardsAdmin','raceControlAdmin','dlcAdmin'];
+ const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','newsForm','communityAdmin','awardsAdmin','raceControlAdmin'];
  if(!allowed.includes(targetId))return;
  const admin=document.getElementById('admin');
  if(!admin)return;
@@ -940,7 +960,7 @@ async function refreshPilotChampionshipActions(){
    const champ=db.championships.find(c=>String(c.id)===champId);if(!champ)return;
    const status=registrations.get(champId);
    if(status==='approved'){
-    box.innerHTML=`<button class="btn" type="button" onclick="openDlcCenter('${esc(champId)}')">BAIXAR DLCs ↓</button>`+(champ.carSelectionUrl?` <a class="btn secondary" href="${esc(champ.carSelectionUrl)}" target="_blank" rel="noopener noreferrer">ESCOLHER MEU CARRO ↗</a>`:'');
+    box.innerHTML=champ.carSelectionUrl?`<a class="btn" href="${esc(champ.carSelectionUrl)}" target="_blank" rel="noopener noreferrer">ESCOLHER MEU CARRO ↗</a>`:'<button class="btn secondary" type="button" disabled>ESCOLHA DE CARRO EM BREVE</button>';
    }else if(status==='pending'){
     box.innerHTML='<button class="btn secondary" type="button" disabled>INSCRIÇÃO EM ANÁLISE</button>';
    }else if(status==='rejected'){
@@ -951,50 +971,6 @@ async function refreshPilotChampionshipActions(){
   });
  }catch(e){console.error('Não foi possível consultar as inscrições do piloto:',e);}
 }
-
-let activeDlcChampionshipId=null;
-function openDlcCenter(champId){
- const id=String(champId);activeDlcChampionshipId=id;
- const champ=db.championships.find(c=>String(c.id)===id);
- if(!champ)return alert('Campeonato não encontrado.');
- document.getElementById('dlcChampSubtitle').textContent='Downloads disponíveis para '+champ.name+'.';
- showPage('dlcCenter');
-}
-async function loadPilotDlcFiles(){
- const box=document.getElementById('dlcFilesList');if(!box)return;
- if(!cloudUser||!activeDlcChampionshipId){box.innerHTML='<p class="empty">Acesse pelo botão Baixar DLCs de um campeonato com inscrição aprovada.</p>';return;}
- box.innerHTML='<p class="empty">Carregando arquivos…</p>';
- try{
-  const {data,error}=await supabaseClient.from('championship_dlc_files').select('id,championship_id,package_name,file_name,category,drive_url,version,file_size,description,created_at').eq('championship_id',activeDlcChampionshipId).eq('is_active',true).order('sort_order').order('created_at');
-  if(error)throw error;
-  const labels={cars:'Carros',tracks:'Pistas',complete:'Pacote completo',other:'Outros'};
-  box.innerHTML=(data||[]).length?(data||[]).map(f=>`<article class="dlcFile"><div><h3>${esc(f.file_name)}</h3><p>${esc(f.package_name)} · ${labels[f.category]||'Outros'} · v${esc(f.version||'1.0')}${f.file_size?' · '+esc(f.file_size):''}</p>${f.description?`<p style="margin-top:5px">${esc(f.description)}</p>`:''}</div><a class="btn" href="${esc(f.drive_url)}" target="_blank" rel="noopener noreferrer">BAIXAR ↗</a></article>`).join(''):'<p class="empty">Ainda não há DLCs cadastrados para este campeonato.</p>';
- }catch(e){box.innerHTML='<p class="empty">Não foi possível carregar os downloads: '+esc(e.message||e)+'</p>';}
-}
-function refreshDlcAdminChampionships(){
- const sel=document.getElementById('dlcChampSelect');if(!sel)return;
- const current=sel.value;sel.innerHTML='<option value="">Selecione o campeonato</option>'+db.championships.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
- if(db.championships.some(c=>String(c.id)===String(current)))sel.value=current;
- loadDlcAdminList();
-}
-async function saveDlcFile(){
- if(!cloudIsAdmin)return alert('Somente administradores podem cadastrar DLCs.');
- const champId=document.getElementById('dlcChampSelect').value,packageName=document.getElementById('dlcPackageName').value.trim(),fileName=document.getElementById('dlcFileName').value.trim(),category=document.getElementById('dlcCategory').value,driveUrl=document.getElementById('dlcDriveUrl').value.trim(),version=document.getElementById('dlcVersion').value.trim()||'1.0',fileSize=document.getElementById('dlcFileSize').value.trim(),description=document.getElementById('dlcDescription').value.trim();
- if(!champId||!packageName||!fileName||!driveUrl)return alert('Preencha campeonato, pacote, nome do arquivo e link do Google Drive.');
- if(!/^https:\/\/drive\.google\.com\//i.test(driveUrl))return alert('Cole um link HTTPS do Google Drive.');
- const status=document.getElementById('dlcAdminStatus');status.textContent='Salvando…';
- const {error}=await supabaseClient.from('championship_dlc_files').insert({championship_id:String(champId),package_name:packageName,file_name:fileName,category,drive_url:driveUrl,version,file_size:fileSize||null,description:description||null,is_active:true});
- if(error){status.textContent='Erro: '+error.message;return;}
- ['dlcPackageName','dlcFileName','dlcDriveUrl','dlcFileSize','dlcDescription'].forEach(id=>document.getElementById(id).value='');document.getElementById('dlcVersion').value='1.0';status.textContent='Arquivo cadastrado com sucesso.';await loadDlcAdminList();
-}
-async function loadDlcAdminList(){
- const box=document.getElementById('dlcAdminList');if(!box||!cloudIsAdmin)return;
- const champId=document.getElementById('dlcChampSelect')?.value;if(!champId){box.innerHTML='<p class="empty">Selecione um campeonato para listar os arquivos cadastrados.</p>';return;}
- const {data,error}=await supabaseClient.from('championship_dlc_files').select('id,file_name,package_name,category,version,file_size,is_active').eq('championship_id',String(champId)).order('created_at',{ascending:false});
- if(error){box.innerHTML='<p class="hint">Erro ao carregar: '+esc(error.message)+'</p>';return;}
- box.innerHTML=(data||[]).map(f=>`<div class="dlcFile"><div><b>${esc(f.file_name)}</b><p>${esc(f.package_name)} · ${esc(f.category)} · v${esc(f.version||'1.0')} · ${f.is_active?'Ativo':'Inativo'}</p></div><button class="btn danger small" type="button" onclick="deleteDlcFile('${esc(f.id)}')">EXCLUIR</button></div>`).join('')||'<p class="empty">Nenhum arquivo cadastrado neste campeonato.</p>';
-}
-async function deleteDlcFile(id){if(!cloudIsAdmin||!confirm('Excluir este arquivo da Central de DLCs?'))return;const {error}=await supabaseClient.from('championship_dlc_files').delete().eq('id',id);if(error)return alert('Não foi possível excluir: '+error.message);await loadDlcAdminList();}
 
 function card(c){
  let stages=db.races.filter(r=>r.champId===c.id).sort((a,b)=>(a.date||'9999-99-99').localeCompare(b.date||'9999-99-99'));
@@ -1395,7 +1371,7 @@ document.getElementById('homeHall').innerHTML=hall;document.getElementById('hall
 let dq=(document.getElementById('driverSearch')?.value||'').toLowerCase();document.getElementById('driverRows').innerHTML=db.drivers.filter(d=>d.name.toLowerCase().includes(dq)).map(d=>`<tr><td class="driver">${esc(d.name)}</td><td>${esc(d.team||'—')}</td><td class="count">${titleCount(d.id)}</td><td>${db.results.filter(r=>r.driverId===d.id).reduce((s,r)=>s+Number(r.points||0),0)}</td></tr>`).join('')||'<tr><td colspan="4">Nenhum piloto cadastrado.</td></tr>';
 let selected=document.getElementById('resultChamp').value||db.championships[0]?.id;document.getElementById('resultChamp').innerHTML=db.championships.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');if(db.championships.some(c=>c.id===selected))document.getElementById('resultChamp').value=selected;else selected=db.championships[0]?.id;
 let st=standings(selected);document.getElementById('standings').innerHTML=st.map((x,i)=>`<tr><td class="rank">${podium(i+1)}</td><td class="driver">${esc(x.name)}</td><td>${x.starts}</td><td class="count">${x.points}</td><td><button class="textLink" onclick="showPage('admin');document.querySelector('[data-tab=resultForm]').click()">LANÇAR / AJUSTAR →</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Ainda não há resultados lançados para este campeonato.</td></tr>';
-const raceRowsTable=document.getElementById('raceRows');const raceActionHead=raceRowsTable?.closest('table')?.querySelector('thead th:last-child');if(raceActionHead)raceActionHead.hidden=!cloudIsAdmin;raceRowsTable.innerHTML=db.races.map(r=>{let res=db.results.filter(x=>x.raceId===r.id).sort((a,b)=>a.position-b.position);return `<tr><td>${esc(champName(r.champId))}</td><td>${esc(r.name)}</td><td>${esc(r.date||'—')} ${r.time?' · '+esc(r.time):''}<div class="mutednote">${esc(db.tracks.find(t=>t.id===r.trackId)?.name||'')}</div></td><td>${res.length?esc(driverName(res[0].driverId)):'Aguardando resultados'}</td><td>${res.length}</td>${cloudIsAdmin?`<td><button class="btn danger small" onclick="deleteRace('${r.id}')">EXCLUIR</button></td>`:''}</tr>`}).join('')||`<tr><td colspan="${cloudIsAdmin?6:5}" class="empty">Nenhuma etapa cadastrada ainda.</td></tr>`;
+document.getElementById('raceRows').innerHTML=db.races.map(r=>{let res=db.results.filter(x=>x.raceId===r.id).sort((a,b)=>a.position-b.position);return `<tr><td>${esc(champName(r.champId))}</td><td>${esc(r.name)}</td><td>${esc(r.date||'—')} ${r.time?' · '+esc(r.time):''}<div class="mutednote">${esc(db.tracks.find(t=>t.id===r.trackId)?.name||'')}</div></td><td>${res.length?esc(driverName(res[0].driverId)):'Aguardando resultados'}</td><td>${res.length}</td><td><button class="btn danger small" onclick="deleteRace('${r.id}')">EXCLUIR</button></td></tr>`}).join('')||'<tr><td colspan="6" class="empty">Nenhuma etapa cadastrada ainda.</td></tr>';
 document.getElementById('metricChamps').textContent=String(db.championships.length).padStart(2,'0');document.getElementById('metricDrivers').textContent=String(db.drivers.length).padStart(2,'0');document.getElementById('metricRaces').textContent=String(db.races.length).padStart(2,'0');document.getElementById('metricTitles').textContent=db.titles.length;document.getElementById('hallDrivers').textContent=ranks.length;document.getElementById('hallTitles').textContent=db.titles.length;
 document.getElementById('dataSummary').textContent=`${db.drivers.length} pilotos · ${db.races.length} etapas · ${db.results.length} resultados · ${db.titles.length} títulos`;
 refreshSelects();
@@ -1508,9 +1484,9 @@ async function afterCloudLogin(){
  const profileBox=document.getElementById('pilotProfile');if(profileBox)profileBox.innerHTML='';
  document.getElementById('entryGate').classList.add('hidden');
  document.getElementById('accountNav').textContent=cloudIsAdmin?'♙ Minha conta • Admin':'♙ Minha conta';
- document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#funForm,#trackForm,#raceForm,#resultForm,#titleForm,#newsForm,#dlcAdmin').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
+ document.getElementById('admin').querySelectorAll('[data-tab],#pilotForm,#champForm,#funForm,#trackForm,#raceForm,#resultForm,#titleForm,#newsForm').forEach(el=>el.style.display=cloudIsAdmin?'':'none');
  document.getElementById('registrationAdmin').style.display=cloudIsAdmin?'':'none';const pc=document.getElementById('profileChangeAdmin');if(pc)pc.style.display=cloudIsAdmin?'':'none';if(cloudIsAdmin)loadProfileChangeRequests();loadRaceControl();loadCommunityAwards();document.getElementById('licenseAdmin').style.display=cloudIsAdmin?'':'none';
- if(cloudIsAdmin){startRegistrationPolling();loadLicenseAdmin();refreshDlcAdminChampionships();}
+ if(cloudIsAdmin){startRegistrationPolling();loadLicenseAdmin();}
  loggedPilotId=null;await renderProfile();showPage('home');await refreshPilotChampionshipActions();
 }
 
@@ -1752,7 +1728,6 @@ function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'appli
 function resetData(){if(!confirm('Isso apagará todos os cadastros e resultados adicionados neste navegador. Continuar?'))return;db=JSON.parse(JSON.stringify(seed));save()}
 
 function deleteRace(id){
-  if(!cloudIsAdmin)return alert('Apenas administradores podem excluir etapas.');
   const race=db.races.find(r=>r.id===id);if(!race)return;
   if(!confirm(`Excluir "${race.name}" e todos os resultados desta etapa?`))return;
   db.races=db.races.filter(r=>r.id!==id);db.results=db.results.filter(r=>r.raceId!==id);save();
