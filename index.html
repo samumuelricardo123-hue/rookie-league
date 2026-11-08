@@ -1995,7 +1995,7 @@ initializeCloud();
         let sampleFilePath=null;
         if(lapSamples.length){
           const driver=await getDriver();
-          const fileBody=lapSamples.map(sample=>JSON.stringify(sample)).join('\\n')+'\\n';
+          const fileBody=lapSamples.map(sample=>JSON.stringify(sample)).join('\n')+'\n';
           const filePath=driver.user_id
             ? driver.user_id+'/'+telemetrySessionId+'/lap_'+String(completedLap).padStart(3,'0')+'.jsonl'
             : cloudUser.id+'/'+telemetrySessionId+'/lap_'+String(completedLap).padStart(3,'0')+'.jsonl';
