@@ -13,7 +13,7 @@ except ImportError:
 APP_NAME = "Rookie Flags"
 state_url = "https://lxformxabgtgafykvhkw.supabase.co/functions/v1/race-control-flags"
 poll_seconds = 2.0
-state = {"mode": "OFFLINE", "version": -1}
+state = {"mode": "OFFLINE", "version": -1, "error": "Aguardando resposta"}
 lock = threading.Lock()
 running = True
 app = None
@@ -34,12 +34,17 @@ def fetch_loop():
             finally:
                 response.close()
             if data.get("mode") not in ("GREEN", "VSC", "RED"):
-                raise ValueError("Invalid flag")
+                raise ValueError("Resposta inesperada: " + str(data.get("error", data.get("mode", "sem modo"))))
             with lock:
                 state = {"mode": data["mode"], "version": data.get("version", 0)}
-        except Exception:
+        except Exception as exc:
+            reason = str(exc)[:150] or type(exc).__name__
+            try:
+                ac.log("[RookiePortalFlags] Consulta falhou: " + reason)
+            except Exception:
+                pass
             with lock:
-                state = {"mode": "OFFLINE", "version": -1}
+                state = {"mode": "OFFLINE", "version": -1, "error": reason}
         time.sleep(poll_seconds)
 
 def acMain(ac_version):
@@ -67,8 +72,9 @@ def acUpdate(delta_t):
         snapshot = dict(state)
     mode = snapshot.get("mode", "OFFLINE")
     version = snapshot.get("version")
-    if mode == last_mode and version == last_version:
+    if mode == last_mode and version == last_version and (mode != "OFFLINE" or snapshot.get("error") == getattr(acUpdate, "_last_error", None)):
         return
+    acUpdate._last_error = snapshot.get("error")
     last_mode, last_version = mode, version
     if mode == "RED":
         heading, detail, color = "BANDEIRA VERMELHA", "Corrida interrompida. Aguarde instrucoes.", (1.0, 0.2, 0.2, 1)
@@ -77,7 +83,7 @@ def acUpdate(delta_t):
     elif mode == "GREEN":
         heading, detail, color = "BANDEIRA VERDE", "Pista liberada. Corrida retomada.", (0.65, 1.0, 0.1, 1)
     else:
-        heading, detail, color = "SEM CONEXAO", "Nao foi possivel consultar o portal.", (0.75, 0.75, 0.75, 1)
+        heading, detail, color = "SEM CONEXAO", "Erro: " + str(snapshot.get("error", "Sem resposta"))[:60], (0.75, 0.75, 0.75, 1)
     ac.setText(title, heading)
     ac.setFontColor(title, *color)
     ac.setText(subtitle, detail)
