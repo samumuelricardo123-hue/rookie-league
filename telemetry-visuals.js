@@ -124,9 +124,11 @@
  function referenceOptions(){
    if(!referenceSel)return;
    const last=referenceSel.value;
-   const sessions=(typeof telemetrySessionsCache!=="undefined"?telemetrySessionsCache:[]).filter(s=>s.status==="completed"&&s.track_name&&s.car_name);
-   referenceSel.innerHTML=sessions.length?sessions.map(s=>'<option value="'+safe(s.id)+'">'+safe(s.track_name||"Pista")+' · '+safe(s.car_name||"Carro")+' · '+safe(new Date(s.started_at).toLocaleDateString("pt-BR"))+'</option>').join(""):'<option value="">Nenhuma sessão concluída</option>';
-   if(sessions.some(s=>s.id===last))referenceSel.value=last;
+   // A interface seleciona a pista; o servidor escolhe as voltas compatíveis.
+   const sessions=(typeof telemetrySessionsCache!=="undefined"?telemetrySessionsCache:[]).filter(s=>s.track_name);
+   const tracks=[...new Set(sessions.map(s=>String(s.track_name).trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+   referenceSel.innerHTML=tracks.length?tracks.map(track=>'<option value="'+safe(track)+'">'+safe(track)+'</option>').join(""):'<option value="">Nenhuma pista gravada</option>';
+   if(tracks.includes(last))referenceSel.value=last;
  }
  async function loadCompareAccess(){
    if(!champSel||!cloudUser){approvedChamps=[];currentShares.clear();approvedOptions();referenceOptions();status("telemetryCompareStatus","Entre na sua conta para acessar a comparação.");return;}
@@ -139,7 +141,7 @@
      if(regs.error)throw regs.error;if(shares.error)throw shares.error;
      approvedChamps=regs.data||[];currentShares=new Map((shares.data||[]).map(x=>[String(x.championship_id),x.enabled===true]));
      approvedOptions();referenceOptions();shareUI();
-     status("telemetryCompareStatus",approvedChamps.length?"Selecione uma sessão e clique em COMPARAR.":"Nenhuma inscrição aprovada encontrada na sua conta.");
+     status("telemetryCompareStatus",approvedChamps.length?"Selecione uma pista e clique em COMPARAR.":"Nenhuma inscrição aprovada encontrada na sua conta.");
    }catch(e){status("telemetryCompareStatus","Falha ao consultar permissões: "+(e.message||e));}
  }
  async function changeShare(enabled){
@@ -179,11 +181,11 @@
    const champ=champSel?.value,reference=referenceSel?.value;
    if(!cloudUser)return status("telemetryCompareStatus","Faça login primeiro.");
    if(!approvedChamps.some(x=>String(x.championship_id)===champ))return status("telemetryCompareStatus","Sua inscrição precisa estar aprovada.");
-   if(!reference)return status("telemetryCompareStatus","Selecione uma sessão concluída.");
+   if(!reference)return status("telemetryCompareStatus","Selecione uma pista gravada.");
    const btn=$("telemetryCompareRun");if(btn)btn.disabled=true;
    status("telemetryCompareStatus","Consultando análise autorizada…");
    try{
-     const {data,error}=await supabaseClient.functions.invoke("telemetry-championship-analysis",{body:{championship_id:champ,reference_session_id:reference}});
+     const {data,error}=await supabaseClient.functions.invoke("telemetry-championship-analysis",{body:{championship_id:champ,track_name:reference}});
      if(error)throw error;
      if(data?.error)throw new Error(data.error);
      compareData=data;renderCompare(data);
