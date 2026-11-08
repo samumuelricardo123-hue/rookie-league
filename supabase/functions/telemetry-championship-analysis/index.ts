@@ -27,8 +27,8 @@ Deno.serve(async (req) => {
 
     const body = await req.json();
     const championshipId = typeof body?.championship_id === "string" ? body.championship_id.trim() : "";
-    const referenceSessionId = typeof body?.reference_session_id === "string" ? body.reference_session_id.trim() : "";
-    if (!championshipId || !referenceSessionId) return json({ error: "championship_id and reference_session_id are required" }, 400);
+    const trackName = typeof body?.track_name === "string" ? body.track_name.trim() : "";
+    if (!championshipId || !trackName) return json({ error: "championship_id and track_name are required" }, 400);
 
     // Caller must be an approved entrant in this championship.
     const { data: callerRegistration, error: callerRegError } = await admin
@@ -44,18 +44,24 @@ Deno.serve(async (req) => {
     const callerDriverIds = (callerDrivers || []).map((d) => d.id);
     if (!callerDriverIds.length) return json({ error: "No driver profile linked to this account" }, 403);
 
-    const { data: reference, error: referenceError } = await admin
+    // The pilot selects a track, not a session. Pick their most recent session
+    // with a valid lap as the reference car/layout. Never trust arbitrary IDs.
+    const { data: ownSessions, error: referenceError } = await admin
       .from("telemetry_sessions")
       .select("id,user_id,driver_id,track_name,track_config,car_name,status,started_at")
-      .eq("id", referenceSessionId).eq("user_id", userId).in("driver_id", callerDriverIds)
-      .eq("status", "completed").maybeSingle();
-    if (referenceError) return json({ error: "Could not load reference session" }, 500);
-    if (!reference) return json({ error: "Completed reference session not found" }, 404);
-    if (!reference.track_name || !reference.car_name) {
-      return json({ error: "Reference session needs track and car metadata" }, 422);
-    }
-    // Assetto Corsa may send an empty track_config for the default layout.
-    // Empty and null are valid default-layout identifiers when comparing sessions.
+      .eq("user_id", userId).in("driver_id", callerDriverIds)
+      .eq("track_name", trackName).not("car_name", "is", null)
+      .order("started_at", { ascending: false }).limit(100);
+    if (referenceError) return json({ error: "Could not load sessions for this track" }, 500);
+    const ownIds = (ownSessions || []).map((s) => s.id);
+    if (!ownIds.length) return json({ error: "No recorded session for this track" }, 404);
+    const { data: ownLaps, error: ownLapsError } = await admin
+      .from("telemetry_laps").select("session_id,lap_time_ms")
+      .in("session_id", ownIds).eq("valid", true).gte("lap_time_ms", 30000).limit(1000);
+    if (ownLapsError) return json({ error: "Could not verify recorded laps" }, 500);
+    const eligibleIds = new Set((ownLaps || []).map((l) => l.session_id));
+    const reference = (ownSessions || []).find((s) => s.car_name && eligibleIds.has(s.id));
+    if (!reference) return json({ error: "Record a valid lap on this track before comparing" }, 422);
     const layout = reference.track_config || "";
 
     // Only accounts that explicitly enabled sharing for this championship are eligible.
@@ -82,7 +88,7 @@ Deno.serve(async (req) => {
     const { data: sessions, error: sessionsError } = await admin
       .from("telemetry_sessions")
       .select("id,user_id,driver_id,track_name,track_config,car_name,session_mode,started_at,best_lap_ms,total_laps")
-      .in("user_id", approvedUsers).in("driver_id", driverIds).eq("status", "completed")
+      .in("user_id", approvedUsers).in("driver_id", driverIds)
       .eq("track_name", reference.track_name).eq("car_name", reference.car_name)
       .order("started_at", { ascending: false }).limit(300);
     if (sessionsError) return json({ error: "Could not load comparable sessions" }, 500);
