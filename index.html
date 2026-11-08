@@ -638,6 +638,14 @@ input[type=file]{max-width:0}
  <div class="sectionHead"><div><h2>Histórico de sessões</h2><p>Escolha uma sessão e uma volta gravada.</p></div><button class="btn secondary small" type="button" onclick="loadTelemetrySessions(true)">ATUALIZAR</button></div>
  <div class="panel"><div class="telemetryControls"><div><label for="telemetrySessionSelect">Sessão</label><select id="telemetrySessionSelect"><option value="">Carregando sessões…</option></select></div><div><label for="telemetryLapSelect">Volta</label><select id="telemetryLapSelect" disabled><option value="">Selecione uma sessão</option></select></div><button class="btn" id="telemetryLoadLap" type="button" onclick="loadTelemetryLap()" disabled>ANALISAR VOLTA</button></div><div id="telemetryHistoryStatus" class="telemetryStatus">Entre na sua conta para consultar seu histórico.</div></div>
  <div class="telemetryGrid"><div class="metric"><div class="label">Voltas na sessão</div><strong id="telemetryLapCount">—</strong></div><div class="metric"><div class="label">Melhor volta</div><strong id="telemetryBestLap">—</strong></div><div class="metric"><div class="label">Amostras</div><strong id="telemetrySampleCount">—</strong></div><div class="metric"><div class="label">Pista</div><strong id="telemetryTrack" style="font-size:16px">—</strong></div></div>
+ <div class="panel telemetryTrackPanel" id="telemetryReplayPanel">
+  <div class="sectionHead" style="margin-top:0"><div><h2>Replay de telemetria · volta animada</h2><p>Reproduza o carro percorrendo a pista com velocidade, freio, acelerador e marcha sincronizados.</p></div><span class="pill">REPLAY</span></div>
+  <canvas id="telemetryReplayCanvas" class="telemetryTrackCanvas" style="height:420px" role="img" aria-label="Replay animado da volta no mapa da pista"></canvas>
+  <div class="telemetryTrackLegend" style="justify-content:space-between"><strong id="telemetryReplayTime">0:00.000 / 0:00.000</strong><span>Velocidade: <b id="telemetryReplaySpeed">—</b></span><span>Marcha: <b id="telemetryReplayGear">—</b></span><span>Freio: <b id="telemetryReplayBrake">—</b></span><span>Acelerador: <b id="telemetryReplayThrottle">—</b></span><span>Posição: <b id="telemetryReplayPosition">—</b></span></div>
+  <input id="telemetryReplaySeek" type="range" min="0" max="1000" value="0" disabled style="width:100%;margin:18px 0 8px;accent-color:#a6ff00" aria-label="Avançar ou retroceder na volta">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button id="telemetryReplayPlay" class="btn" type="button" disabled>▶ Reproduzir</button><button id="telemetryReplayReset" class="btn secondary" type="button">↺ Reiniciar</button><label for="telemetryReplayRate" style="font-size:13px">Velocidade</label><select id="telemetryReplayRate" style="padding:9px;background:#0c140f;color:#fff;border:1px solid #365040;border-radius:8px"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></div>
+  <p class="telemetryStatus" id="telemetryReplayStatus" role="status">Carregue uma volta na aba Análise de Voltas para iniciar.</p>
+ </div>
  <div class="panel telemetryTrackPanel">
   <div class="sectionHead" style="margin-top:0"><div><h2>Mapa da pista · traçado real</h2><p id="telemetryTrackInfo">Desenho pelas coordenadas do simulador.</p></div></div>
   <canvas id="telemetryTrackCanvas" class="telemetryTrackCanvas" role="img" aria-label="Traçado da pista com cores de velocidade e marcadores de freio"></canvas>
@@ -2191,6 +2199,7 @@ async function loadTelemetryLap(){
   telemetryDrawChart('telemetryThrottleChart',values('throttle').map(v=>v<=1?v*100:v),'Acelerador','%');
   telemetryDrawChart('telemetryBrakeChart',values('brake').map(v=>v<=1?v*100:v),'Freio','%');
   if(typeof window.telemetryRenderTrack==='function')window.telemetryRenderTrack(samples,lap);
+  if(typeof window.telemetryLoadReplay==='function')window.telemetryLoadReplay(samples,lap);
   document.getElementById('telemetrySampleCount').textContent=samples.length.toLocaleString('pt-BR');
   document.getElementById('telemetryLapCount').textContent=telemetryLapsCache.length;
   telemetrySetStatus('Volta '+lap.lap_number+' carregada · '+samples.length.toLocaleString('pt-BR')+' amostras · tempo '+telemetryFmtMs(lap.lap_time_ms)+'.');
@@ -2216,4 +2225,4 @@ showPage=function(id){telemetryOriginalShowPage(id);if(id==='telemetry'){loadTel
 supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user&&document.getElementById('telemetry')?.classList.contains('active')){loadTelemetrySessions();refreshTelemetryLive()}});
 
 startLiveTimingPolling();
-</script><script src="telemetry-visuals.js" defer></script><script src="telemetry-compare-visual.js" defer></script></body></html>
+</script><script src="telemetry-visuals.js" defer></script><script src="telemetry-compare-visual.js" defer></script><script src="telemetry-replay.js" defer></script></body></html>
