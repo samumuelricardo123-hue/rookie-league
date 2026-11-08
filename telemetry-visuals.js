@@ -32,7 +32,7 @@
    const minX=Math.min(...xs),maxX=Math.max(...xs),minZ=Math.min(...zs),maxZ=Math.max(...zs);
    const padding=35,scale=Math.min((w-2*padding)/Math.max(maxX-minX,1),(h-2*padding)/Math.max(maxZ-minZ,1));
    const shiftX=(w-(maxX-minX)*scale)/2,shiftY=(h-(maxZ-minZ)*scale)/2;
-   for(const p of points){p.px=shiftX+(p._x-minX)*scale;p.py=h-shiftY-(p._z-minZ)*scale;}
+   for(const p of points){p.px=shiftX+(p._x-minX)*scale;p.py=shiftY+(p._z-minZ)*scale;}
    return {ctx,points,w,h};
  }
  function drawTrack(){
