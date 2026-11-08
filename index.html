@@ -1918,6 +1918,8 @@ initializeCloud();
   if(!window.rookieTelemetry || window.__rookieTelemetryCloudBound) return;
   window.__rookieTelemetryCloudBound=true;
   let telemetrySessionId=null, telemetryDriver=null, lastLiveSent=0, activeSourceMode='singleplayer';
+  // Amostras agrupadas por volta (o agente usa completedLaps como índice da volta em andamento).
+  const samplesByLap=new Map();
   const panel=document.createElement('div');
   panel.id='rookieTelemetryCloudStatus';
   panel.style.cssText='position:fixed;right:14px;bottom:14px;z-index:99999;background:#101915;color:#d7e7dc;border:1px solid #31523e;border-radius:10px;padding:9px 12px;font:12px Arial;box-shadow:0 4px 18px #0008;max-width:300px';
@@ -1966,24 +1968,52 @@ initializeCloud();
         return;
       }
       if(msg?.type==='sample' && telemetrySessionId){
-        const now=Date.now(); if(now-lastLiveSent<750)return; lastLiveSent=now;
         const d=msg.data||{};
-        await invoke({
-          action:'live_update',driver_id:String((await getDriver()).id),session_id:telemetrySessionId,
-          current_lap:Number(d.lap)||0,current_lap_time_ms:Number(d.lap_time_ms)||null,
-          speed_kmh:Number(d.speed_kmh)||0,rpm:Math.max(0,Number(d.rpm)||0),gear:Number(d.gear)||0,
-          throttle:Number(d.throttle)||0,brake:Number(d.brake)||0,clutch:Number(d.clutch)||0,
-          position_x:Number(d.position_x)||0,position_y:Number(d.position_y)||0,position_z:Number(d.position_z)||0,
-          payload:{track:d.track,car:d.car,fuel_l:d.fuel_l,sector:d.sector,normalized_position:d.normalized_position}
-        });
+        // Guarda TODAS as amostras antes de limitar a frequência do Live Timing.
+        const sampleLap=Number(d.lap);
+        if(Number.isInteger(sampleLap) && sampleLap>=0){
+          if(!samplesByLap.has(sampleLap)) samplesByLap.set(sampleLap,[]);
+          samplesByLap.get(sampleLap).push(msg);
+        }
+        const now=Date.now();
+        if(now-lastLiveSent>=750){
+          lastLiveSent=now;
+          await invoke({
+            action:'live_update',driver_id:String((await getDriver()).id),session_id:telemetrySessionId,
+            current_lap:sampleLap||0,current_lap_time_ms:Number(d.lap_time_ms)||null,
+            speed_kmh:Number(d.speed_kmh)||0,rpm:Math.max(0,Number(d.rpm)||0),gear:Number(d.gear)||0,
+            throttle:Number(d.throttle)||0,brake:Number(d.brake)||0,clutch:Number(d.clutch)||0,
+            position_x:Number(d.position_x)||0,position_y:Number(d.position_y)||0,position_z:Number(d.position_z)||0,
+            payload:{track:d.track,car:d.car,fuel_l:d.fuel_l,sector:d.sector,normalized_position:d.normalized_position}
+          });
+        }
       }
       if(msg?.type==='lap' && telemetrySessionId){
+        const completedLap=Number(msg.lap);
+        const completedIndex=completedLap-1;
+        const lapSamples=samplesByLap.get(completedIndex)||[];
+        let sampleFilePath=null;
+        if(lapSamples.length){
+          const driver=await getDriver();
+          const fileBody=lapSamples.map(sample=>JSON.stringify(sample)).join('\n')+'\n';
+          const filePath=driver.user_id
+            ? driver.user_id+'/'+telemetrySessionId+'/lap_'+String(completedLap).padStart(3,'0')+'.jsonl'
+            : cloudUser.id+'/'+telemetrySessionId+'/lap_'+String(completedLap).padStart(3,'0')+'.jsonl';
+          const blob=new Blob([fileBody],{type:'application/x-ndjson'});
+          const {error:uploadError}=await supabaseClient.storage.from('rookie-telemetry').upload(filePath,blob,{
+            contentType:'application/x-ndjson',cacheControl:'3600',upsert:false
+          });
+          if(uploadError) throw new Error('Falha ao enviar arquivo da volta: '+uploadError.message);
+          sampleFilePath=filePath;
+        }
+        samplesByLap.delete(completedIndex);
         await invoke({
           action:'lap_complete',driver_id:String((await getDriver()).id),session_id:telemetrySessionId,
-          lap_number:Number(msg.lap),lap_time_ms:Number(msg.lap_time_ms),
-          valid:true,summary:{track:'Assetto Corsa',local_recording:true,file:msg.file||null}
+          lap_number:completedLap,lap_time_ms:Number(msg.lap_time_ms),
+          sample_file_path:sampleFilePath,
+          valid:true,summary:{track:'Assetto Corsa',local_recording:true,sample_count:lapSamples.length}
         });
-        setStatus('Volta '+msg.lap+' salva no Supabase');
+        setStatus('Volta '+msg.lap+' salva · '+lapSamples.length+' amostras enviadas');
       }
     }catch(e){
       console.error('[Rookie Telemetry cloud]',e);
