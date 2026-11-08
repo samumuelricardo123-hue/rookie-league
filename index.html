@@ -346,6 +346,23 @@ input[type=file]{max-width:0}
 .dlcFile{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:15px;border:1px solid var(--line);border-radius:11px;background:#0c140f;margin:10px 0;flex-wrap:wrap}
 .dlcFile h3{margin:0 0 4px;font-size:16px}.dlcFile p{margin:0;color:var(--muted);font-size:12px}
 @media(max-width:620px){.dlcFile .btn{width:100%;text-align:center}}
+
+/* Rookie League Telemetria */
+.telemetryHero{padding:24px;border:1px solid #405b2e;border-radius:15px;background:radial-gradient(ellipse at 90% 10%,#a6ff0018,transparent 45%),linear-gradient(130deg,#142019,#0b120e);margin:15px 0}
+.telemetryGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:15px 0}
+.telemetryControls{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;padding:15px}
+.telemetryControls label{display:block;color:var(--muted);font-size:11px;font-weight:800;margin-bottom:5px;text-transform:uppercase}
+.telemetryControls select{width:100%;background:#0c140f;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:11px}
+.telemetryChart{padding:15px;margin-bottom:14px}
+.telemetryChart canvas{width:100%;height:210px;display:block}
+.telemetryLiveGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.telemetryLiveValue{padding:14px;border:1px solid var(--line);border-radius:10px;background:#0c140f}
+.telemetryLiveValue small{display:block;color:var(--muted);font-size:10px;font-weight:800;text-transform:uppercase}
+.telemetryLiveValue b{display:block;font-size:23px;color:var(--green);margin-top:3px}
+.telemetryStatus{padding:12px 15px;color:var(--muted);font-size:12px}
+@media(max-width:850px){.telemetryGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.telemetryLiveGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){.telemetryControls{grid-template-columns:1fr}.telemetryLiveGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.telemetryChart canvas{height:170px}}
+
 </style></head>
 <body>
 
@@ -374,7 +391,7 @@ input[type=file]{max-width:0}
 
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<button class="menuToggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav">☰ MENU</button><nav id="mainNav" hidden><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="rookievoice">🏁 Race Chat</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • V75</span>
+<button class="menuToggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav">☰ MENU</button><nav id="mainNav" hidden><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="rookievoice">🏁 Race Chat</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="telemetry">📈 Telemetria</button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • V75</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
@@ -598,6 +615,22 @@ input[type=file]{max-width:0}
 <div class="formactions"><button class="btn" id="authSubmit" onclick="submitAuth()">ENTRAR</button><button class="btn secondary" onclick="logoutPilot()" id="logoutBtn" style="display:none">SAIR</button></div>
 <p class="mutednote" id="cloudStatus">Conectando ao banco de dados seguro…</p>
 <div id="pilotProfile"></div></div></section>
+
+<section id="telemetry" class="page">
+ <div class="subhead"><div class="kicker">ROOKIE LEAGUE MOTORSPORT · DADOS DE PISTA</div><h1>Telemetria</h1><p>Dados ao vivo, histórico de sessões e análise detalhada das voltas do Assetto Corsa.</p></div>
+ <div class="telemetryHero"><div class="kicker">ANÁLISE DE DESEMPENHO</div><h2 style="margin:8px 0">Cada volta conta.</h2><p style="color:var(--muted);margin:0">Selecione uma sessão e uma volta para visualizar os dados gravados pelo Rookie League Telemetry Agent.</p></div>
+ <div class="sectionHead"><div><h2>Ao vivo</h2><p>Última leitura recebida do simulador.</p></div><span id="telemetryLiveState" class="pill">AGUARDANDO DADOS</span></div>
+ <div class="panel quick"><div class="telemetryLiveGrid">
+  <div class="telemetryLiveValue"><small>Velocidade</small><b id="tlSpeed">— km/h</b></div><div class="telemetryLiveValue"><small>RPM</small><b id="tlRpm">—</b></div><div class="telemetryLiveValue"><small>Marcha</small><b id="tlGear">—</b></div><div class="telemetryLiveValue"><small>Acelerador</small><b id="tlThrottle">—%</b></div><div class="telemetryLiveValue"><small>Freio</small><b id="tlBrake">—%</b></div>
+ </div><div class="telemetryStatus" id="telemetryLiveUpdated">Os dados serão atualizados automaticamente enquanto houver uma sessão ativa.</div></div>
+ <div class="sectionHead"><div><h2>Histórico de sessões</h2><p>Escolha uma sessão e uma volta gravada.</p></div><button class="btn secondary small" type="button" onclick="loadTelemetrySessions(true)">ATUALIZAR</button></div>
+ <div class="panel"><div class="telemetryControls"><div><label for="telemetrySessionSelect">Sessão</label><select id="telemetrySessionSelect"><option value="">Carregando sessões…</option></select></div><div><label for="telemetryLapSelect">Volta</label><select id="telemetryLapSelect" disabled><option value="">Selecione uma sessão</option></select></div><button class="btn" id="telemetryLoadLap" type="button" onclick="loadTelemetryLap()" disabled>ANALISAR VOLTA</button></div><div id="telemetryHistoryStatus" class="telemetryStatus">Entre na sua conta para consultar seu histórico.</div></div>
+ <div class="telemetryGrid"><div class="metric"><div class="label">Voltas na sessão</div><strong id="telemetryLapCount">—</strong></div><div class="metric"><div class="label">Melhor volta</div><strong id="telemetryBestLap">—</strong></div><div class="metric"><div class="label">Amostras</div><strong id="telemetrySampleCount">—</strong></div><div class="metric"><div class="label">Pista</div><strong id="telemetryTrack" style="font-size:16px">—</strong></div></div>
+ <div class="sectionHead"><div><h2>Gráficos da volta</h2><p>Valores registrados ao longo das amostras disponíveis.</p></div></div>
+ <div class="panel telemetryChart"><h3>Velocidade (km/h)</h3><canvas id="telemetrySpeedChart" width="1000" height="240"></canvas></div>
+ <div class="twoCol"><div class="panel telemetryChart"><h3>RPM</h3><canvas id="telemetryRpmChart" width="700" height="240"></canvas></div><div class="panel telemetryChart"><h3>Acelerador (%)</h3><canvas id="telemetryThrottleChart" width="700" height="240"></canvas></div></div>
+ <div class="panel telemetryChart"><h3>Freio (%)</h3><canvas id="telemetryBrakeChart" width="1000" height="240"></canvas></div>
+</section>
 <footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • V80 • ACESSO DE PILOTOS</span></footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">document.addEventListener('change',e=>{if(e.target&&e.target.id==='communityFile'){const fs=[...(e.target.files||[])];const label=document.getElementById('communityFileNames');if(label)label.textContent=fs.length?fs.map(f=>f.name).join(', '):'1 foto ou vídeo · até 8 MB';}});
@@ -2037,6 +2070,83 @@ initializeCloud();
     }
   });
 })();
+
+
+// Rookie League Telemetry dashboard
+let telemetrySessionsCache=[], telemetryLapsCache=[], telemetryRefreshTimer=null;
+const telemetryFmtMs=v=>{const n=Number(v);if(!Number.isFinite(n)||n<=0)return '—';const m=Math.floor(n/60000),s=((n%60000)/1000).toFixed(3).padStart(6,'0');return m?m+':'+s:s+' s'};
+function telemetrySetStatus(t){const e=document.getElementById('telemetryHistoryStatus');if(e)e.textContent=t}
+function telemetryDrawChart(id,values,label,suffix=''){
+ const canvas=document.getElementById(id);if(!canvas)return;const ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
+ const nums=values.map(v=>Number(v)||0);if(!nums.length){ctx.fillStyle='#9aa99e';ctx.font='16px Segoe UI';ctx.fillText('Sem amostras para este gráfico',24,42);return}
+ const max=Math.max(1,...nums)*1.08,min=Math.min(0,...nums),left=48,right=16,top=16,bottom=30,gw=w-left-right,gh=h-top-bottom;
+ ctx.strokeStyle='#29372f';ctx.lineWidth=1;ctx.fillStyle='#9aa99e';ctx.font='12px Segoe UI';
+ for(let i=0;i<=4;i++){const y=top+gh*i/4;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(w-right,y);ctx.stroke();ctx.fillText((max-(max-min)*i/4).toFixed(0)+suffix,4,y+4)}
+ ctx.strokeStyle='#a6ff00';ctx.lineWidth=3;ctx.beginPath();nums.forEach((v,i)=>{const x=left+(nums.length===1?0:i/(nums.length-1))*gw,y=top+gh-(v-min)/(max-min||1)*gh;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y)});ctx.stroke();
+ ctx.fillStyle='#9aa99e';ctx.fillText('Início da volta',left,h-7);ctx.textAlign='right';ctx.fillText('Fim da volta',w-right,h-7);ctx.textAlign='left';
+}
+function telemetrySampleData(row){const d=row?.data&&typeof row.data==='object'?row.data:row;return d||{}}
+async function loadTelemetrySessions(manual=false){
+ const sel=document.getElementById('telemetrySessionSelect'),lapSel=document.getElementById('telemetryLapSelect'),btn=document.getElementById('telemetryLoadLap');
+ if(!cloudUser){telemetrySetStatus('Entre na sua conta para consultar sua telemetria.');if(sel)sel.innerHTML='<option value="">Faça login para continuar</option>';return}
+ telemetrySetStatus('Buscando suas sessões…');
+ try{
+  const {data,error}=await supabaseClient.from('telemetry_sessions').select('id,track_name,car_name,session_mode,source_mode,status,started_at,best_lap_ms,total_laps').eq('user_id',cloudUser.id).order('started_at',{ascending:false}).limit(50);
+  if(error)throw error;telemetrySessionsCache=data||[];
+  const previous=sel.value;sel.innerHTML=telemetrySessionsCache.length?telemetrySessionsCache.map(s=>'<option value="'+esc(s.id)+'">'+esc(new Date(s.started_at).toLocaleString('pt-BR'))+' · '+esc(s.track_name||'Pista não identificada')+' · '+esc(s.car_name||'Carro não identificado')+'</option>').join(''):'<option value="">Nenhuma sessão encontrada</option>';
+  if(previous&&telemetrySessionsCache.some(s=>s.id===previous))sel.value=previous;
+  await loadTelemetryLaps();
+  telemetrySetStatus(telemetrySessionsCache.length?'Encontradas '+telemetrySessionsCache.length+' sessões. Os dados são privados da sua conta.':'Ainda não há sessões gravadas para esta conta.');
+ }catch(e){console.error('[Telemetria] sessões',e);telemetrySetStatus('Não foi possível carregar as sessões: '+(e.message||e))}
+}
+async function loadTelemetryLaps(){
+ const sessionId=document.getElementById('telemetrySessionSelect')?.value,sel=document.getElementById('telemetryLapSelect'),btn=document.getElementById('telemetryLoadLap');
+ if(!sessionId){sel.innerHTML='<option value="">Nenhuma sessão</option>';sel.disabled=true;btn.disabled=true;return}
+ telemetrySetStatus('Carregando voltas da sessão…');
+ try{
+  const {data,error}=await supabaseClient.from('telemetry_laps').select('id,lap_number,lap_time_ms,valid,sample_file_path,summary,created_at').eq('session_id',sessionId).eq('user_id',cloudUser.id).order('lap_number',{ascending:true});
+  if(error)throw error;telemetryLapsCache=data||[];
+  sel.innerHTML=telemetryLapsCache.length?telemetryLapsCache.map(l=>'<option value="'+esc(l.id)+'">Volta '+l.lap_number+' · '+telemetryFmtMs(l.lap_time_ms)+(l.sample_file_path?' · gravada':' · sem arquivo')+'</option>').join(''):'<option value="">Nenhuma volta registrada</option>';
+  sel.disabled=!telemetryLapsCache.length;btn.disabled=!telemetryLapsCache.some(l=>l.sample_file_path);
+  const s=telemetrySessionsCache.find(x=>x.id===sessionId);document.getElementById('telemetryLapCount').textContent=telemetryLapsCache.length;document.getElementById('telemetryBestLap').textContent=telemetryFmtMs(s?.best_lap_ms);document.getElementById('telemetryTrack').textContent=s?.track_name||'—';
+  if(telemetryLapsCache.length)await loadTelemetryLap();else telemetrySetStatus('Esta sessão ainda não possui voltas registradas.');
+ }catch(e){console.error('[Telemetria] voltas',e);telemetrySetStatus('Não foi possível carregar as voltas: '+(e.message||e))}
+}
+async function loadTelemetryLap(){
+ const id=document.getElementById('telemetryLapSelect')?.value,lap=telemetryLapsCache.find(x=>x.id===id);
+ if(!lap||!lap.sample_file_path){telemetrySetStatus('Esta volta não possui arquivo de amostras salvo.');return}
+ telemetrySetStatus('Baixando e analisando as amostras da volta '+lap.lap_number+'…');
+ try{
+  const {data,error}=await supabaseClient.storage.from('rookie-telemetry').download(lap.sample_file_path);
+  if(error)throw error;const text=await data.text();const rows=text.split(/\r?\n/).filter(Boolean).map(line=>JSON.parse(line));const samples=rows.map(telemetrySampleData);
+  const values=key=>samples.map(x=>Number(x[key])||0);
+  telemetryDrawChart('telemetrySpeedChart',values('speed_kmh'),'Velocidade',' km/h');
+  telemetryDrawChart('telemetryRpmChart',values('rpm'),'RPM');
+  telemetryDrawChart('telemetryThrottleChart',values('throttle').map(v=>v<=1?v*100:v),'Acelerador','%');
+  telemetryDrawChart('telemetryBrakeChart',values('brake').map(v=>v<=1?v*100:v),'Freio','%');
+  document.getElementById('telemetrySampleCount').textContent=samples.length.toLocaleString('pt-BR');
+  document.getElementById('telemetryLapCount').textContent=telemetryLapsCache.length;
+  telemetrySetStatus('Volta '+lap.lap_number+' carregada · '+samples.length.toLocaleString('pt-BR')+' amostras · tempo '+telemetryFmtMs(lap.lap_time_ms)+'.');
+ }catch(e){console.error('[Telemetria] arquivo da volta',e);telemetrySetStatus('Erro ao abrir o arquivo desta volta: '+(e.message||e))}
+}
+async function refreshTelemetryLive(){
+ if(!cloudUser)return;try{
+  const {data,error}=await supabaseClient.from('telemetry_live').select('speed_kmh,rpm,gear,throttle,brake,updated_at').eq('user_id',cloudUser.id).maybeSingle();
+  if(error)throw error;
+  const active=!!data;document.getElementById('telemetryLiveState').textContent=active?'AO VIVO':'SEM SESSÃO ATIVA';
+  document.getElementById('tlSpeed').textContent=active?Math.round(Number(data.speed_kmh)||0)+' km/h':'— km/h';
+  document.getElementById('tlRpm').textContent=active?Math.round(Number(data.rpm)||0).toLocaleString('pt-BR'):'—';
+  document.getElementById('tlGear').textContent=active?(Number(data.gear)===0?'N':Number(data.gear)<0?'R':data.gear):'—';
+  document.getElementById('tlThrottle').textContent=active?Math.round((Number(data.throttle)||0)*100)+'%':'—%';
+  document.getElementById('tlBrake').textContent=active?Math.round((Number(data.brake)||0)*100)+'%':'—%';
+  document.getElementById('telemetryLiveUpdated').textContent=active?'Última atualização: '+new Date(data.updated_at).toLocaleTimeString('pt-BR'):'Nenhum dado ao vivo neste momento.';
+ }catch(e){console.warn('[Telemetria] live',e)}
+}
+document.getElementById('telemetrySessionSelect')?.addEventListener('change',loadTelemetryLaps);
+document.getElementById('telemetryLapSelect')?.addEventListener('change',()=>{const l=telemetryLapsCache.find(x=>x.id===document.getElementById('telemetryLapSelect').value);document.getElementById('telemetryLoadLap').disabled=!l?.sample_file_path});
+const telemetryOriginalShowPage=showPage;
+showPage=function(id){telemetryOriginalShowPage(id);if(id==='telemetry'){loadTelemetrySessions();refreshTelemetryLive();if(telemetryRefreshTimer)clearInterval(telemetryRefreshTimer);telemetryRefreshTimer=setInterval(refreshTelemetryLive,3000)}else if(telemetryRefreshTimer){clearInterval(telemetryRefreshTimer);telemetryRefreshTimer=null}};
+supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user&&document.getElementById('telemetry')?.classList.contains('active')){loadTelemetrySessions();refreshTelemetryLive()}});
 
 startLiveTimingPolling();
 </script></body></html>
