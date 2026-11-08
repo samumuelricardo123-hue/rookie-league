@@ -24,6 +24,26 @@ function interp(a,pos,key){
  const t=span>0?(pos-x.p)/span:0;
  return number(x[key])+(number(y[key])-number(x[key]))*t;
 }
+
+function renderInsights(){
+ const target=$("telemetryDrivingInsights");if(!target)return;
+ if(!active.length){target.textContent="Carregue suas voltas para ver o diagnóstico de pilotagem.";return;}
+ const rows=active.map(a=>{
+   const samples=a.samples, speeds=samples.map(s=>Number(s.speed_kmh)).filter(Number.isFinite);
+   const braking=samples.filter(s=>Number(s.brake)>=0.15);
+   const fullThrottle=samples.filter(s=>Number(s.throttle)>=0.9);
+   const total=samples.length||1;
+   return {lap:a.lap.lap_number,time:a.lap.lap_time_ms,
+     top:speeds.length?Math.max(...speeds):null,
+     min:speeds.length?Math.min(...speeds):null,
+     brake:100*braking.length/total,throttle:100*fullThrottle.length/total};
+ });
+ const fmt=v=>v===null?"—":v.toFixed(1);
+ target.innerHTML='<h3>Diagnóstico de pilotagem · suas voltas</h3>'+
+ '<div class="tableWrap"><table><thead><tr><th>Volta</th><th>Tempo</th><th>Velocidade máx.</th><th>Velocidade mín.</th><th>Amostras com freio</th><th>Amostras com acelerador ≥90%</th></tr></thead><tbody>'+
+ rows.map(r=>'<tr><td>'+r.lap+'</td><td>'+(r.time/1000).toFixed(3)+' s</td><td>'+fmt(r.top)+' km/h</td><td>'+fmt(r.min)+' km/h</td><td>'+fmt(r.brake)+'%</td><td>'+fmt(r.throttle)+'%</td></tr>').join("")+'</tbody></table></div>'+
+ '<p class="telemetryStatus">Percentuais calculados sobre amostras registradas, não sobre o tempo de volta. Servem como indicadores, não como recomendações automáticas de pilotagem.</p>';
+}
 function draw(){
  const canvas=$("telemetryCompareVisualCanvas");if(!canvas)return;
  const width=Math.max(320,Math.round(canvas.getBoundingClientRect().width||900)),height=380;
@@ -76,7 +96,7 @@ async function load(){
 }
 async function compare(){
  const ids=[...($("telemetryVisualLaps")?.selectedOptions||[])].map(o=>o.value).slice(0,4);
- active=[];if(!ids.length){draw();return;}
+ active=[];if(!ids.length){draw();renderInsights();return;}
  say("Carregando amostras privadas das suas voltas…");
  try{
   for(const id of ids){
@@ -86,7 +106,7 @@ async function compare(){
    const samples=sampled(await parse(data));
    if(samples.length>20)active.push({lap,samples});
   }
-  draw();say(active.length+" volta(s) exibida(s). Delta relativo à primeira volta selecionada; valores estimados pelas amostras.");
+  draw();renderInsights();say(active.length+" volta(s) exibida(s). Delta relativo à primeira volta selecionada; valores estimados pelas amostras.");
  }catch(e){say("Falha ao abrir amostras: "+(e.message||e));}
 }
 $("telemetryVisualLoad")?.addEventListener("click",load);
