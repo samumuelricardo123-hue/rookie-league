@@ -24,7 +24,7 @@ function resize(){
  const minX=Math.min(...xs),maxX=Math.max(...xs),minZ=Math.min(...zs),maxZ=Math.max(...zs);
  const pad=32,scale=Math.min((w-pad*2)/Math.max(1,maxX-minX),(h-pad*2)/Math.max(1,maxZ-minZ));
  const left=(w-(maxX-minX)*scale)/2,top=(h-(maxZ-minZ)*scale)/2;
- geometry={w,h,points:frames.map(s=>({x:left+(num(s.position_x)-minX)*scale,y:h-top-(num(s.position_z)-minZ)*scale}))};
+ geometry={w,h,points:frames.map(s=>({x:left+(num(s.position_x)-minX)*scale,y:top+(num(s.position_z)-minZ)*scale}))};
 }
 function locate(ms){
  let lo=0,hi=frames.length-1;
