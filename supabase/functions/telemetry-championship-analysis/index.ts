@@ -135,6 +135,61 @@ Deno.serve(async (req) => {
         valid_laps: plausible.length,
       };
     }).filter(Boolean);
+
+    // Return only 40 derived distance bins for the fastest lap per authorized pilot.
+    // Files and exact samples never leave this server-side function.
+    const bestByDriver = new Map<string, { session_id: string; lap_number: number; lap_time_ms: number }>();
+    for (const pilot of pilots) {
+      const best = pilot.laps.reduce((a: any, b: any) => a.lap_time_ms <= b.lap_time_ms ? a : b);
+      bestByDriver.set(pilot.driver_id, best);
+    }
+    const { data: samplePaths, error: pathError } = await admin.from("telemetry_laps")
+      .select("driver_id,session_id,lap_number,lap_time_ms,sample_file_path")
+      .in("session_id", sessionIds).not("sample_file_path", "is", null)
+      .eq("valid", true).limit(2000);
+    if (pathError) return json({ error: "Could not load telemetry references" }, 500);
+    const pathByDriver = new Map<string, string>();
+    for (const lap of (samplePaths || [])) {
+      const best = bestByDriver.get(lap.driver_id);
+      if (best && lap.session_id === best.session_id && lap.lap_number === best.lap_number &&
+          lap.lap_time_ms === best.lap_time_ms && lap.sample_file_path &&
+          sessionById.get(lap.session_id)?.driver_id === lap.driver_id) {
+        pathByDriver.set(lap.driver_id, lap.sample_file_path);
+      }
+    }
+    await Promise.all(pilots.map(async (pilot: any) => {
+      const path = pathByDriver.get(pilot.driver_id);
+      if (!path) return;
+      try {
+        const { data: file, error: fileError } = await admin.storage.from("rookie-telemetry").download(path);
+        if (fileError || !file) return;
+        // Cap work per request; do not return any raw points or exact coordinates.
+        if (file.size > 8_000_000) return;
+        const text = await file.text();
+        const bins = Array.from({ length: 40 }, () => ({ count: 0, speed: 0, brake: 0, throttle: 0, time: 0 }));
+        for (const line of text.split(/\r?\n/)) {
+          if (!line) continue;
+          let sample: any;
+          try { sample = JSON.parse(line)?.data; } catch { continue; }
+          if (!sample) continue;
+          const p = Number(sample.normalized_position), speed = Number(sample.speed_kmh);
+          const brake = Number(sample.brake), throttle = Number(sample.throttle), time = Number(sample.lap_time_ms);
+          if (![p, speed, brake, throttle, time].every(Number.isFinite) || p < 0 || p > 1) continue;
+          const b = bins[Math.min(39, Math.floor(p * 40))];
+          b.count++; b.speed += speed; b.brake += brake; b.throttle += throttle; b.time = Math.max(b.time, time);
+        }
+        pilot.profile = bins.map((b, i) => ({
+          segment: i + 1, position: Number(((i + 0.5) / 40).toFixed(4)),
+          speed_kmh: b.count ? Math.round(b.speed / b.count * 10) / 10 : null,
+          brake: b.count ? Math.round(b.brake / b.count * 1000) / 1000 : null,
+          throttle: b.count ? Math.round(b.throttle / b.count * 1000) / 1000 : null,
+          // Approximate cumulative lap time, quantized to 0.1 s.
+          time_ms: b.count ? Math.round(b.time / 100) * 100 : null,
+        }));
+      } catch (error) {
+        console.warn("Derived profile unavailable for driver", pilot.driver_id, error);
+      }
+    }));
     return json({
       ok: true,
       championship_id: championshipId,
