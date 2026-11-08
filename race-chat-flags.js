@@ -44,16 +44,61 @@
     if (el('rvFlagMessage')) el('rvFlagMessage').textContent = message || '';
   }
 
-  function speak(mode) {
-    if (!voiceUnlocked || !window.speechSynthesis || !messages[mode]) return;
-    window.speechSynthesis.cancel();
+  // Prefer a consistent, professionally recorded Portuguese announcement when available.
+  // Optional files: race-chat-audio/red.mp3, vsc.mp3, green.mp3.
+  let activeAudio = null;
+  let announcementId = 0;
+  const audioPaths = {
+    RED: 'race-chat-audio/red.mp3',
+    VSC: 'race-chat-audio/vsc.mp3',
+    GREEN: 'race-chat-audio/green.mp3'
+  };
+  function chooseBrazilianVoice() {
+    const voices = window.speechSynthesis?.getVoices() || [];
+    const ptbr = voices.filter(v => /^pt[-_]BR$/i.test(v.lang));
+    return ptbr.find(v => /natural|neural|online/i.test(v.name)) ||
+      ptbr.find(v => /male|masculin|daniel|antonio|ant[oô]nio/i.test(v.name)) ||
+      ptbr.find(v => !v.localService) ||
+      ptbr[0] ||
+      voices.find(v => /^pt/i.test(v.lang)) || null;
+  }
+  function speakFallback(mode, id) {
+    if (id !== announcementId || !window.speechSynthesis) return;
     const utterance = new SpeechSynthesisUtterance(messages[mode]);
     utterance.lang = 'pt-BR';
-    utterance.rate = 0.92;
+    utterance.rate = 0.97;
+    utterance.pitch = 0.93;
     utterance.volume = 1;
+    const voice = chooseBrazilianVoice();
+    if (voice) utterance.voice = voice;
     speaking = true;
-    utterance.onend = utterance.onerror = () => { speaking = false; };
+    utterance.onend = utterance.onerror = () => { if (id === announcementId) speaking = false; };
     window.speechSynthesis.speak(utterance);
+  }
+  function speak(mode) {
+    if (!voiceUnlocked || !messages[mode]) return;
+    const id = ++announcementId;
+    if (activeAudio) {
+      activeAudio.pause();
+      activeAudio = null;
+    }
+    window.speechSynthesis?.cancel();
+    const audio = new Audio(audioPaths[mode]);
+    audio.preload = 'auto';
+    activeAudio = audio;
+    speaking = true;
+    let fallbackUsed = false;
+    function fallback() {
+      if (fallbackUsed || id !== announcementId) return;
+      fallbackUsed = true;
+      activeAudio = null;
+      speakFallback(mode, id);
+    }
+    audio.addEventListener('error', fallback, { once: true });
+    audio.addEventListener('ended', () => {
+      if (id === announcementId) { speaking = false; activeAudio = null; }
+    }, { once: true });
+    audio.play().catch(fallback);
   }
 
   async function refresh() {
