@@ -664,6 +664,18 @@ input[type=file]{max-width:0}
    <div class="telemetryStatus" id="telemetryCompareStatus" role="status">Entre na sua conta e selecione esta aba.</div>
   </div>
   <div class="panel" id="telemetryCompareResults" style="margin-top:14px"><p class="empty">As análises autorizadas aparecerão aqui.</p></div>
+  <div class="panel quick" style="margin-top:14px">
+   <div class="sectionHead"><div><h2>Telemetria visual · comparação de voltas</h2><p>Velocidade, freio, acelerador e delta por posição na pista. Os gráficos detalhados usam suas próprias voltas gravadas.</p></div></div>
+   <div class="telemetryCompareSelectors" style="grid-template-columns:1fr 1fr auto">
+    <div><label for="telemetryVisualLaps">Suas voltas (Ctrl para selecionar várias)</label><select id="telemetryVisualLaps" multiple size="3" style="min-height:85px"><option>Carregue as voltas</option></select></div>
+    <div><label for="telemetryVisualMode">Dado para comparar</label><select id="telemetryVisualMode"><option value="speed_kmh">Velocidade (km/h)</option><option value="brake">Freio</option><option value="throttle">Acelerador</option><option value="delta">Delta de tempo</option></select></div>
+    <button class="btn" id="telemetryVisualLoad" type="button">CARREGAR TELEMETRIA</button>
+   </div>
+   <div class="telemetryStatus" id="telemetryVisualStatus" role="status">Selecione Mugello ou outra pista e carregue as voltas.</div>
+   <canvas id="telemetryCompareVisualCanvas" class="telemetryTrackCanvas" style="height:380px;margin-top:12px" role="img" aria-label="Comparação gráfica das voltas selecionadas"></canvas>
+   <div id="telemetryVisualLegend" class="telemetryTrackLegend"></div>
+   <p class="telemetryStatus">A comparação gráfica entre pilotos diferentes exigirá dados derivados autorizados no servidor; os arquivos privados dos outros pilotos não são acessados.</p>
+  </div>
   <div class="panel quick" style="margin-top:14px"><h3>Volta por volta · piloto selecionado</h3><div class="field"><label for="telemetryComparePilot">Piloto</label><select id="telemetryComparePilot" style="max-width:360px"><option>Realize uma comparação primeiro</option></select></div><div id="telemetryComparePilotLaps" style="margin-top:12px"></div></div>
  </div>
 </section>
@@ -2195,4 +2207,4 @@ showPage=function(id){telemetryOriginalShowPage(id);if(id==='telemetry'){loadTel
 supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user&&document.getElementById('telemetry')?.classList.contains('active')){loadTelemetrySessions();refreshTelemetryLive()}});
 
 startLiveTimingPolling();
-</script><script src="telemetry-visuals.js" defer></script></body></html>
+</script><script src="telemetry-visuals.js" defer></script><script src="telemetry-compare-visual.js" defer></script></body></html>
