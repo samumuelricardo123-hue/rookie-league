@@ -30,7 +30,7 @@
   function updateAdmin() {
     const panel = el('rvFlagAdmin');
     if (!panel) return;
-    const allowed = !!window.cloudUser && !!window.cloudIsAdmin;
+    const allowed = !!(typeof cloudUser !== 'undefined' && cloudUser) && !!(typeof cloudIsAdmin !== 'undefined' && cloudIsAdmin);
     panel.hidden = !allowed;
     panel.style.display = allowed ? 'flex' : 'none';
   }
@@ -58,7 +58,7 @@
 
   async function refresh() {
     updateAdmin();
-    if (!window.cloudUser || !window.supabaseClient) return;
+    if (!(typeof cloudUser !== 'undefined' && cloudUser) || !(typeof supabaseClient !== 'undefined' && supabaseClient)) return;
     if (polling) return;
     polling = true;
     try {
@@ -70,14 +70,14 @@
       lastVersion = Number(data.version);
       lastMode = data.mode;
       setStatus(data.mode, 'Estado atual da corrida. Áudio disponível para pilotos conectados à Sala Geral.');
-      if (changed && window.rookieVoiceRoom && voiceUnlocked) speak(data.mode);
+      if (changed && (typeof rookieVoiceRoom !== 'undefined' && rookieVoiceRoom) && voiceUnlocked) speak(data.mode);
     } catch (e) {
       setStatus(null, 'Falha ao consultar bandeiras: ' + (e.message || e));
     } finally { polling = false; }
   }
 
   async function send(mode) {
-    if (!window.cloudUser || !window.cloudIsAdmin) return;
+    if (!(typeof cloudUser !== 'undefined' && cloudUser) || !(typeof cloudIsAdmin !== 'undefined' && cloudIsAdmin)) return;
     if (!confirm('Confirmar ' + ({RED:'BANDEIRA VERMELHA',VSC:'VSC',GREEN:'BANDEIRA VERDE'})[mode] + ' para todos os pilotos do Race Chat?')) return;
     const buttons = el('rvFlagAdmin')?.querySelectorAll('button') || [];
     buttons.forEach(b => b.disabled = true);
