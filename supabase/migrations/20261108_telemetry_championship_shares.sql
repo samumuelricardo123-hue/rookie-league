@@ -29,7 +29,7 @@ create policy telemetry_championship_shares_insert_approved
     and exists (
       select 1 from public.championship_registrations r
       where r.user_id = auth.uid()
-        and r.championship_id = championship_id
+        and r.championship_id = telemetry_championship_shares.championship_id
         and r.status = 'approved'
     )
   );
@@ -42,7 +42,7 @@ create policy telemetry_championship_shares_update_approved
     and exists (
       select 1 from public.championship_registrations r
       where r.user_id = auth.uid()
-        and r.championship_id = championship_id
+        and r.championship_id = telemetry_championship_shares.championship_id
         and r.status = 'approved'
     )
   )
@@ -51,7 +51,7 @@ create policy telemetry_championship_shares_update_approved
     and exists (
       select 1 from public.championship_registrations r
       where r.user_id = auth.uid()
-        and r.championship_id = championship_id
+        and r.championship_id = telemetry_championship_shares.championship_id
         and r.status = 'approved'
     )
   );
