@@ -51,9 +51,12 @@ Deno.serve(async (req) => {
       .eq("status", "completed").maybeSingle();
     if (referenceError) return json({ error: "Could not load reference session" }, 500);
     if (!reference) return json({ error: "Completed reference session not found" }, 404);
-    if (!reference.track_name || !reference.track_config || !reference.car_name) {
-      return json({ error: "Reference session needs track, track configuration and car metadata" }, 422);
+    if (!reference.track_name || !reference.car_name) {
+      return json({ error: "Reference session needs track and car metadata" }, 422);
     }
+    // Assetto Corsa may send an empty track_config for the default layout.
+    // Empty and null are valid default-layout identifiers when comparing sessions.
+    const layout = reference.track_config || "";
 
     // Only accounts that explicitly enabled sharing for this championship are eligible.
     const { data: shares, error: sharesError } = await admin
@@ -80,22 +83,24 @@ Deno.serve(async (req) => {
       .from("telemetry_sessions")
       .select("id,user_id,driver_id,track_name,track_config,car_name,session_mode,started_at,best_lap_ms,total_laps")
       .in("user_id", approvedUsers).in("driver_id", driverIds).eq("status", "completed")
-      .eq("track_name", reference.track_name).eq("track_config", reference.track_config).eq("car_name", reference.car_name)
+      .eq("track_name", reference.track_name).eq("car_name", reference.car_name)
       .order("started_at", { ascending: false }).limit(300);
     if (sessionsError) return json({ error: "Could not load comparable sessions" }, 500);
-    const sessionIds = (sessions || []).map((s) => s.id);
+    // Treat null/empty configuration as the same default layout, but never mix named layouts.
+    const matchingSessions = (sessions || []).filter((s) => (s.track_config || "") === layout);
+    const sessionIds = matchingSessions.map((s) => s.id);
     if (!sessionIds.length) return json({ reference, pilots: [] });
 
     // Never return Storage paths, signed URLs, or raw JSONL samples from this endpoint.
     const { data: laps, error: lapsError } = await admin
       .from("telemetry_laps")
-      .select("session_id,driver_id,lap_number,lap_time_ms,sector1_ms,sector2_ms,sector3_ms,valid,summary,created_at")
+      .select("session_id,driver_id,lap_number,lap_time_ms,sector1_ms,sector2_ms,sector3_ms,valid,created_at")
       .in("session_id", sessionIds).eq("valid", true).not("lap_time_ms", "is", null)
       .order("lap_time_ms", { ascending: true }).limit(2000);
     if (lapsError) return json({ error: "Could not load valid lap summaries" }, 500);
 
     const driverById = new Map((drivers || []).map((d) => [d.id, d]));
-    const sessionById = new Map((sessions || []).map((s) => [s.id, s]));
+    const sessionById = new Map(matchingSessions.map((s) => [s.id, s]));
     const grouped = new Map();
     for (const lap of (laps || [])) {
       const session = sessionById.get(lap.session_id);
@@ -107,15 +112,23 @@ Deno.serve(async (req) => {
         session_id: session.id, session_started_at: session.started_at,
         lap_number: lap.lap_number, lap_time_ms: lap.lap_time_ms,
         sector1_ms: lap.sector1_ms, sector2_ms: lap.sector2_ms, sector3_ms: lap.sector3_ms,
-        valid: lap.valid, summary: lap.summary || {},
+        valid: lap.valid,
       });
     }
-    const pilots = [...grouped.values()].map((pilot) => ({
-      ...pilot,
-      best_lap_ms: Math.min(...pilot.laps.map((lap) => lap.lap_time_ms)),
-      average_lap_ms: Math.round(pilot.laps.reduce((sum, lap) => sum + lap.lap_time_ms, 0) / pilot.laps.length),
-      valid_laps: pilot.laps.length,
-    }));
+    // Ignore obvious partial/disconnected recordings still marked valid by older agents.
+    // Use the fastest recorded lap as reference, keeping only plausible complete laps.
+    const pilots = [...grouped.values()].map((pilot) => {
+      const fastest = Math.min(...pilot.laps.map((lap) => lap.lap_time_ms));
+      const plausible = pilot.laps.filter((lap) => Number.isFinite(lap.lap_time_ms) &&
+        lap.lap_time_ms >= 30000 && lap.lap_time_ms <= fastest * 1.65);
+      if (!plausible.length) return null;
+      return {
+        ...pilot, laps: plausible,
+        best_lap_ms: Math.min(...plausible.map((lap) => lap.lap_time_ms)),
+        average_lap_ms: Math.round(plausible.reduce((sum, lap) => sum + lap.lap_time_ms, 0) / plausible.length),
+        valid_laps: plausible.length,
+      };
+    }).filter(Boolean);
     return json({
       ok: true,
       championship_id: championshipId,
