@@ -1911,5 +1911,92 @@ function renderCalendar(){
 renderAll();
 supabaseClient.auth.onAuthStateChange(async (_event, session)=>{if(!session){if(registrationPollTimer)clearInterval(registrationPollTimer);registrationPollTimer=null;lastPendingRegistrationIds=new Set();registrationNotificationPrimed=false;cloudUser=null;cloudIsAdmin=false;cloudReady=false;document.getElementById('adminNav').hidden=true;document.getElementById('entryGate').classList.remove('hidden')} });
 initializeCloud();
+
+
+// Rookie League Telemetry bridge — integra o agente Electron ao Supabase usando a sessão do portal.
+(function setupRookieTelemetryCloud(){
+  if(!window.rookieTelemetry || window.__rookieTelemetryCloudBound) return;
+  window.__rookieTelemetryCloudBound=true;
+  let telemetrySessionId=null, telemetryDriver=null, lastLiveSent=0, activeSourceMode='singleplayer';
+  const panel=document.createElement('div');
+  panel.id='rookieTelemetryCloudStatus';
+  panel.style.cssText='position:fixed;right:14px;bottom:14px;z-index:99999;background:#101915;color:#d7e7dc;border:1px solid #31523e;border-radius:10px;padding:9px 12px;font:12px Arial;box-shadow:0 4px 18px #0008;max-width:300px';
+  panel.innerHTML='<b>ROOKIE TELEMETRY</b><div id="rookieTelemetryCloudText">Agente aguardando o Assetto Corsa</div><label style="display:block;margin-top:7px">Tipo de sessão: <select id="rookieTelemetrySourceMode" style="background:#17251d;color:#fff;border:1px solid #46624f;border-radius:5px;padding:3px"><option value="singleplayer">Solo</option><option value="multiplayer">Multiplayer / servidor</option></select></label>';
+  document.body.appendChild(panel);
+  const statusText=()=>document.getElementById('rookieTelemetryCloudText');
+  const setStatus=(s)=>{if(statusText())statusText().textContent=s};
+  const invoke=async(body)=>{
+    const {data,error}=await supabaseClient.functions.invoke('telemetry-ingest',{body});
+    if(error) throw error;
+    if(data?.error) throw new Error(data.error);
+    return data;
+  };
+  const getDriver=async()=>{
+    if(!cloudUser) throw new Error('Entre no portal Rookie League para enviar telemetria.');
+    if(telemetryDriver) return telemetryDriver;
+    const {data,error}=await supabaseClient.from('drivers').select('id,name').eq('user_id',cloudUser.id).maybeSingle();
+    if(error) throw error;
+    if(!data) throw new Error('Sua conta não está vinculada a um piloto aprovado na tabela drivers.');
+    telemetryDriver=data; return data;
+  };
+  const sessionMode=(n)=>{
+    const map={0:'practice',1:'qualifying',2:'race',3:'hotlap'};
+    return map[Number(n)]||'unknown';
+  };
+  const onMessage=async(msg)=>{
+    try{
+      if(msg?.type==='status'){
+        if(msg.status==='gravando' && !telemetrySessionId){
+          setStatus('Assetto Corsa conectado. Criando sessão cloud…');
+          const driver=await getDriver();
+          activeSourceMode=document.getElementById('rookieTelemetrySourceMode')?.value||'singleplayer';
+          const created=await invoke({
+            action:'session_start',driver_id:String(driver.id),
+            session_mode:'unknown',source_mode:activeSourceMode,
+            track_name:msg.track||null,car_name:msg.car||null,
+            metadata:{source:'assetto_corsa_shared_memory',local_file:msg.file||null}
+          });
+          telemetrySessionId=created.session_id;
+          setStatus('Conectado ao Supabase · sessão '+telemetrySessionId.slice(0,8));
+        } else if(msg.status==='aguardando') {
+          setStatus('Aguardando Assetto Corsa…');
+        } else if(msg.status==='conectado') {
+          setStatus('Assetto Corsa detectado');
+        }
+        return;
+      }
+      if(msg?.type==='sample' && telemetrySessionId){
+        const now=Date.now(); if(now-lastLiveSent<750)return; lastLiveSent=now;
+        const d=msg.data||{};
+        await invoke({
+          action:'live_update',driver_id:String((await getDriver()).id),session_id:telemetrySessionId,
+          current_lap:Number(d.lap)||0,current_lap_time_ms:Number(d.lap_time_ms)||null,
+          speed_kmh:Number(d.speed_kmh)||0,rpm:Math.max(0,Number(d.rpm)||0),gear:Number(d.gear)||0,
+          throttle:Number(d.throttle)||0,brake:Number(d.brake)||0,clutch:Number(d.clutch)||0,
+          position_x:Number(d.position_x)||0,position_y:Number(d.position_y)||0,position_z:Number(d.position_z)||0,
+          payload:{track:d.track,car:d.car,fuel_l:d.fuel_l,sector:d.sector,normalized_position:d.normalized_position}
+        });
+      }
+      if(msg?.type==='lap' && telemetrySessionId){
+        await invoke({
+          action:'lap_complete',driver_id:String((await getDriver()).id),session_id:telemetrySessionId,
+          lap_number:Number(msg.lap),lap_time_ms:Number(msg.lap_time_ms),
+          valid:true,summary:{track:'Assetto Corsa',local_recording:true,file:msg.file||null}
+        });
+        setStatus('Volta '+msg.lap+' salva no Supabase');
+      }
+    }catch(e){
+      console.error('[Rookie Telemetry cloud]',e);
+      setStatus('Erro: '+(e.message||String(e)));
+    }
+  };
+  window.rookieTelemetry.onUpdate(onMessage);
+  window.rookieTelemetry.getStatus().then(s=>{if(s?.status)setStatus('Agente: '+s.status)}).catch(()=>{});
+  supabaseClient.auth.onAuthStateChange((_event,session)=>{
+    if(!session){telemetryDriver=null;setStatus('Entre no portal para enviar telemetria.');}
+    else {telemetryDriver=null;setStatus('Login reconhecido. Aguardando sessão do simulador.');}
+  });
+})();
+
 startLiveTimingPolling();
 </script></body></html>
