@@ -202,7 +202,9 @@
    legend.innerHTML=withProfiles.map((p,i)=>'<span style="color:'+colors[i%colors.length]+'">● '+safe(p.pilot_name)+'</span>').join(" &nbsp; ");
    // Ten 10%-distance mini-sectors, estimated using sampled cumulative time.
    const mini=withProfiles.map(p=>({name:p.pilot_name,values:Array.from({length:10},(_,i)=>{
-     const a=i===0?0:Number(p.profile[i*4-1]?.time_ms),b=Number(p.profile[Math.min(39,i*4+3)]?.time_ms);
+     const start=i===0?0:p.profile[i*4-1]?.time_ms, end=p.profile[Math.min(39,i*4+3)]?.time_ms;
+     if(start===null||start===undefined||end===null||end===undefined)return null;
+     const a=Number(start),b=Number(end);
      return Number.isFinite(a)&&Number.isFinite(b)&&b>=a?b-a:null;
    })}));
    sectors.innerHTML='<h3>Mini-setores estimados (10 trechos)</h3><div class="tableWrap"><table><thead><tr><th>Piloto</th>'+Array.from({length:10},(_,i)=>'<th>T'+(i+1)+'</th>').join("")+'</tr></thead><tbody>'+mini.map(p=>'<tr><td>'+safe(p.name)+'</td>'+p.values.map(v=>'<td>'+(v===null?"—":(v/1000).toFixed(2)+"s")+'</td>').join("")+'</tr>').join("")+'</tbody></table></div>';
