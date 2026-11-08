@@ -1992,9 +1992,19 @@ initializeCloud();
   };
   window.rookieTelemetry.onUpdate(onMessage);
   window.rookieTelemetry.getStatus().then(s=>{if(s?.status)setStatus('Agente: '+s.status)}).catch(()=>{});
-  supabaseClient.auth.onAuthStateChange((_event,session)=>{
-    if(!session){telemetryDriver=null;setStatus('Entre no portal para enviar telemetria.');}
-    else {telemetryDriver=null;setStatus('Login reconhecido. Aguardando sessão do simulador.');}
+  supabaseClient.auth.onAuthStateChange((event,session)=>{
+    // TOKEN_REFRESHED / INITIAL_SESSION são eventos normais do Supabase.
+    // Não devem apagar o estado de uma sessão de telemetria já iniciada.
+    if(event==='SIGNED_OUT'){
+      telemetryDriver=null;
+      telemetrySessionId=null;
+      setStatus('Login encerrado. Entre novamente para enviar telemetria.');
+      return;
+    }
+    if(event==='SIGNED_IN'){
+      telemetryDriver=null;
+      if(!telemetrySessionId) setStatus('Login reconhecido. Aguardando sessão do simulador.');
+    }
   });
 })();
 
