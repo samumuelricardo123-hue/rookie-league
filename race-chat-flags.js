@@ -66,7 +66,7 @@
     if (id !== announcementId || !window.speechSynthesis) return;
     const utterance = new SpeechSynthesisUtterance(messages[mode]);
     utterance.lang = 'pt-BR';
-    utterance.rate = 0.97;
+    utterance.rate = 1.12;
     utterance.pitch = 0.93;
     utterance.volume = 1;
     const voice = chooseBrazilianVoice();
@@ -85,6 +85,7 @@
     window.speechSynthesis?.cancel();
     const audio = new Audio(audioPaths[mode]);
     audio.preload = 'auto';
+    audio.playbackRate = 1.12;
     activeAudio = audio;
     speaking = true;
     let fallbackUsed = false;
