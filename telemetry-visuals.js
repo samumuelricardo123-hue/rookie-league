@@ -157,9 +157,62 @@
    }catch(e){if(checkbox)checkbox.checked=!enabled;status("telemetryShareStatus","Não foi possível alterar a permissão: "+(e.message||e));}
    finally{if(checkbox)checkbox.disabled=false;}
  }
+
+ function renderChampionshipProfiles(pilots){
+   const canvas=$("telemetryChampionshipChart"),legend=$("telemetryChampionshipLegend"),sectors=$("telemetryChampionshipSectors");
+   if(!canvas||!legend||!sectors)return;
+   const withProfiles=pilots.filter(p=>Array.isArray(p.profile)&&p.profile.some(b=>b.speed_kmh!==null)).slice(0,8);
+   legend.textContent=withProfiles.length?withProfiles.length+" piloto(s) com dados derivados disponíveis.":"Ainda não há amostras compartilháveis para esta pista.";
+   sectors.innerHTML="";
+   const rect=canvas.getBoundingClientRect(),w=Math.max(320,Math.round(rect.width||900)),h=330,dpr=Math.min(window.devicePixelRatio||1,2);
+   canvas.width=w*dpr;canvas.height=h*dpr;
+   const ctx=canvas.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);
+   ctx.fillStyle="#09130e";ctx.fillRect(0,0,w,h);
+   if(!withProfiles.length)return;
+   const metric=$("telemetryChampionshipMetric")?.value||"speed_kmh";
+   const colors=["#a6ff00","#ffca4a","#5ecbff","#fc7caa","#caa6ff","#ff9868","#9fe3ca","#f5f5f5"];
+   const pad={l:55,r:20,t:22,b:34},pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+   const base=withProfiles[0].profile;
+   const value=(p,i)=>{
+     const b=p.profile[i];
+     if(!b)return NaN;
+     if(metric==="delta"){
+       const t=Number(b.time_ms),ref=Number(base[i]?.time_ms);
+       return b.time_ms===null||base[i]?.time_ms===null?NaN:(t-ref)/1000;
+     }
+     return b[metric]===null?NaN:Number(b[metric]);
+   };
+   const values=withProfiles.flatMap(p=>p.profile.map((_,i)=>value(p,i))).filter(Number.isFinite);
+   if(!values.length)return;
+   let lo=Math.min(...values),hi=Math.max(...values);
+   if(metric==="brake"||metric==="throttle"){lo=0;hi=Math.max(1,hi);}
+   if(hi-lo<0.001){lo-=1;hi+=1;}
+   const x=i=>pad.l+i/39*pw,y=v=>pad.t+ph-(v-lo)/(hi-lo)*ph;
+   ctx.font="12px sans-serif";ctx.lineWidth=1;
+   for(let j=0;j<=4;j++){
+     const v=lo+(hi-lo)*j/4;ctx.strokeStyle="#284035";ctx.beginPath();ctx.moveTo(pad.l,y(v));ctx.lineTo(w-pad.r,y(v));ctx.stroke();
+     ctx.fillStyle="#b5c6b8";ctx.fillText(metric==="delta"?v.toFixed(2)+"s":v.toFixed(metric==="speed_kmh"?0:2),4,y(v)+4);
+     ctx.fillText(j*25+"%",pad.l+j*pw/4-10,h-9);
+   }
+   withProfiles.forEach((p,j)=>{
+     ctx.strokeStyle=colors[j%colors.length];ctx.lineWidth=2.5;ctx.beginPath();let drawing=false;
+     for(let i=0;i<40;i++){const v=value(p,i);if(!Number.isFinite(v)){drawing=false;continue;}if(!drawing)ctx.moveTo(x(i),y(v));else ctx.lineTo(x(i),y(v));drawing=true;}
+     ctx.stroke();
+   });
+   legend.innerHTML=withProfiles.map((p,i)=>'<span style="color:'+colors[i%colors.length]+'">● '+safe(p.pilot_name)+'</span>').join(" &nbsp; ");
+   // Ten 10%-distance mini-sectors, estimated using sampled cumulative time.
+   const mini=withProfiles.map(p=>({name:p.pilot_name,values:Array.from({length:10},(_,i)=>{
+     const start=i===0?0:p.profile[i*4-1]?.time_ms, end=p.profile[Math.min(39,i*4+3)]?.time_ms;
+     if(start===null||start===undefined||end===null||end===undefined)return null;
+     const a=Number(start),b=Number(end);
+     return Number.isFinite(a)&&Number.isFinite(b)&&b>=a?b-a:null;
+   })}));
+   sectors.innerHTML='<h3>Mini-setores estimados (10 trechos)</h3><div class="tableWrap"><table><thead><tr><th>Piloto</th>'+Array.from({length:10},(_,i)=>'<th>T'+(i+1)+'</th>').join("")+'</tr></thead><tbody>'+mini.map(p=>'<tr><td>'+safe(p.name)+'</td>'+p.values.map(v=>'<td>'+(v===null?"—":(v/1000).toFixed(2)+"s")+'</td>').join("")+'</tr>').join("")+'</tbody></table></div>';
+ }
  function renderCompare(data){
    const out=$("telemetryCompareResults");if(!out)return;
    const pilots=Array.isArray(data?.pilots)?data.pilots:[];
+   renderChampionshipProfiles(pilots);
    if(!pilots.length){out.innerHTML='<p class="empty">Nenhuma volta comparável disponível. Outros pilotos precisam estar aprovados e autorizar o compartilhamento. A pista e o carro devem coincidir.</p>';return;}
    const sorted=[...pilots].sort((a,b)=>n(a.best_lap_ms,Infinity)-n(b.best_lap_ms,Infinity));
    const leader=Math.min(...sorted.map(p=>n(p.best_lap_ms,Infinity)));
@@ -199,6 +252,7 @@
  $("telemetryCompareShare")?.addEventListener("change",e=>changeShare(e.target.checked));
  $("telemetryCompareRun")?.addEventListener("click",runComparison);
  $("telemetryComparePilot")?.addEventListener("change",showPilotLaps);
+ $("telemetryChampionshipMetric")?.addEventListener("change",()=>renderChampionshipProfiles(compareData?.pilots||[]));
  // Carregar opções somente quando a aba é aberta, após autenticação.
  const originalSwitch=window.switchTelemetryTab;
  if(typeof originalSwitch==="function")window.switchTelemetryTab=function(tab){originalSwitch(tab);if(tab==="compare"){loadTelemetrySessions().then(loadCompareAccess).catch(()=>loadCompareAccess());}};

@@ -665,6 +665,14 @@ input[type=file]{max-width:0}
   </div>
   <div class="panel" id="telemetryCompareResults" style="margin-top:14px"><p class="empty">As análises autorizadas aparecerão aqui.</p></div>
   <div class="panel quick" style="margin-top:14px">
+   <div class="sectionHead"><div><h2>Telemetria visual · pilotos do campeonato</h2><p>Dados derivados das voltas autorizadas: velocidade, frenagem, aceleração e delta estimado.</p></div></div>
+   <div class="field"><label for="telemetryChampionshipMetric">Comparar</label><select id="telemetryChampionshipMetric" style="max-width:320px"><option value="speed_kmh">Velocidade</option><option value="brake">Freio</option><option value="throttle">Acelerador</option><option value="delta">Delta de tempo</option></select></div>
+   <canvas id="telemetryChampionshipChart" class="telemetryTrackCanvas" style="height:330px;margin-top:12px" role="img" aria-label="Gráficos comparativos de pilotos autorizados"></canvas>
+   <div id="telemetryChampionshipLegend" class="telemetryTrackLegend">Clique em COMPARAR PILOTOS para carregar.</div>
+   <div id="telemetryChampionshipSectors" style="margin-top:15px"></div>
+   <p class="telemetryStatus">Curvas agregadas em 40 trechos da pista; mini-setores e delta são estimativas, não cronometragem oficial. Os arquivos brutos continuam privados.</p>
+  </div>
+  <div class="panel quick" style="margin-top:14px">
    <div class="sectionHead"><div><h2>Telemetria visual · comparação de voltas</h2><p>Velocidade, freio, acelerador e delta por posição na pista. Os gráficos detalhados usam suas próprias voltas gravadas.</p></div></div>
    <div class="telemetryCompareSelectors" style="grid-template-columns:1fr 1fr auto">
     <div><label for="telemetryVisualLaps">Suas voltas (Ctrl para selecionar várias)</label><select id="telemetryVisualLaps" multiple size="3" style="min-height:85px"><option>Carregue as voltas</option></select></div>
