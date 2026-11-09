@@ -37,7 +37,7 @@ as $$
       when mode = 'VSC' and seconds >= 120 and seconds < 123 then 3 else 0 end,
     'lights_on', case
       when mode = 'RED' and seconds >= 630 and seconds < 635 then least(5, floor(seconds - 630)::int + 1)
-      when mode = 'VSC' and seconds >= 120 and seconds < 123 then greatest(0, 3 - floor(seconds - 120)::int - 1)
+      when mode = 'VSC' and seconds >= 120 and seconds < 123 then greatest(0, 3 - floor(seconds - 120)::int)
       else 0 end,
     'message', case
       when mode = 'RED' and seconds < 420 then 'BANDEIRA VERMELHA: corrida interrompida. Aguarde a direcao de prova.'
