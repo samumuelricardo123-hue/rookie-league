@@ -33,10 +33,10 @@ def fetch_loop():
                 data = json.loads(response.read().decode("utf-8"))
             finally:
                 response.close()
-            if data.get("mode") not in ("GREEN", "VSC", "RED"):
+            if data.get("mode") not in ("GREEN", "VSC", "RED", "YELLOW", "START", "VSC_END"):
                 raise ValueError("Resposta inesperada: " + str(data.get("error", data.get("mode", "sem modo"))))
             with lock:
-                state = {"mode": data["mode"], "version": data.get("version", 0)}
+                state = {"mode": data["mode"], "version": data.get("version", 0), "remaining_seconds": data.get("remaining_seconds", 0), "lights_total": data.get("lights_total", 0), "lights_on": data.get("lights_on", 0), "message": data.get("message", "")}
         except Exception as exc:
             reason = str(exc)[:150] or type(exc).__name__
             try:
@@ -72,18 +72,29 @@ def acUpdate(delta_t):
         snapshot = dict(state)
     mode = snapshot.get("mode", "OFFLINE")
     version = snapshot.get("version")
-    if mode == last_mode and version == last_version and (mode != "OFFLINE" or snapshot.get("error") == getattr(acUpdate, "_last_error", None)):
+    phase = (mode, version, snapshot.get("remaining_seconds"), snapshot.get("lights_on"))
+    if phase == getattr(acUpdate, "_last_phase", None) and (mode != "OFFLINE" or snapshot.get("error") == getattr(acUpdate, "_last_error", None)):
         return
+    acUpdate._last_phase = phase
     acUpdate._last_error = snapshot.get("error")
     last_mode, last_version = mode, version
     if mode == "RED":
         heading, detail, color = "BANDEIRA VERMELHA", "Corrida interrompida. Aguarde instrucoes.", (1.0, 0.2, 0.2, 1)
+    elif mode == "YELLOW":
+        heading, detail, color = "BANDEIRA AMARELA", "Procedimento de relargada. Nao ultrapasse.", (1.0, 0.85, 0.1, 1)
+    elif mode == "START":
+        heading, detail, color = "LUZES DE RELARGADA", "Luzes: %s de 5. Aguarde apagar." % snapshot.get("lights_on", 0), (1.0, 0.2, 0.2, 1)
+    elif mode == "VSC_END":
+        heading, detail, color = "FINAL DO VSC", "Luzes acesas: %s de 3. Aguarde verde." % snapshot.get("lights_on", 0), (1.0, 0.85, 0.1, 1)
     elif mode == "VSC":
         heading, detail, color = "VSC ATIVO", "Reduza a velocidade. Nao ultrapasse.", (1.0, 0.85, 0.1, 1)
     elif mode == "GREEN":
         heading, detail, color = "BANDEIRA VERDE", "Pista liberada. Corrida retomada.", (0.65, 1.0, 0.1, 1)
     else:
         heading, detail, color = "SEM CONEXAO", "Erro: " + str(snapshot.get("error", "Sem resposta"))[:60], (0.75, 0.75, 0.75, 1)
+    remaining = int(snapshot.get("remaining_seconds") or 0)
+    if remaining > 0:
+        heading += "  %02d:%02d" % (remaining // 60, remaining % 60)
     ac.setText(title, heading)
     ac.setFontColor(title, *color)
     ac.setText(subtitle, detail)
