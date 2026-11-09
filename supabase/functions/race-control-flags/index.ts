@@ -17,15 +17,10 @@ Deno.serve(async (request) => {
     const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!url || !key) throw new Error("Server configuration missing");
     const supabase = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
-    const { data, error } = await supabase.from("race_chat_flags")
-      .select("mode,version,updated_at").eq("room_name", "rookie-general").maybeSingle();
+    const { data, error } = await supabase.rpc("race_chat_flag_state");
     if (error) throw error;
     if (!data) return new Response(JSON.stringify({ mode: "OFFLINE", version: 0 }), { headers: cors });
-    return new Response(JSON.stringify({
-      mode: ["GREEN", "VSC", "RED"].includes(data.mode) ? data.mode : "OFFLINE",
-      version: Number(data.version) || 0,
-      updated_at: data.updated_at,
-    }), { headers: cors });
+    return new Response(JSON.stringify(data), { headers: cors });
   } catch (_error) {
     return new Response(JSON.stringify({ error: "Flag service unavailable" }), { status: 503, headers: cors });
   }
