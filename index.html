@@ -472,7 +472,7 @@ input[type=file]{max-width:0}
    <div class="rv-control-grid">
     <button class="rv-control-btn" id="rvMicBtn" type="button" disabled><span class="rv-control-icon">🎙</span><span><b>Microfone</b><small>Ativar áudio</small></span></button>
     <button class="rv-control-btn" id="rvScreenBtn" type="button" disabled><span class="rv-control-icon">▣</span><span><b>Compartilhar tela</b><small>Transmitir ao grupo</small></span></button>
-    <label class="rv-quality-control" for="rvScreenQuality"><span>Qualidade da transmissão</span><select id="rvScreenQuality" disabled><option value="1080p60" selected>1080p · 60 FPS</option><option value="1080p30">1080p · 30 FPS</option><option value="720p30">720p · 30 FPS</option></select></label>
+    <label class="rv-quality-control" for="rvScreenQuality"><span>Qualidade da transmissão</span><select id="rvScreenQuality" disabled><option value="720p30" selected>720p · 30 FPS (economia de banda)</option></select></label>
     <button class="rv-control-btn rv-control-exit" id="rvLeaveBtn" type="button" disabled><span class="rv-control-icon">↗</span><span><b>Sair da sala</b><small>Encerrar conexão</small></span></button>
    </div>
    <p class="mutednote" id="rvMessage" style="margin-top:14px">Entre com sua conta de piloto para iniciar.</p>
@@ -927,13 +927,13 @@ async function rookieVoiceToggleScreen(){
  if(!rookieVoiceRoom)return;
  try{
   rookieVoiceScreenOn=!rookieVoiceScreenOn;
-  const quality=rvEl('rvScreenQuality')?.value||'1080p60';
+  const quality=rvEl('rvScreenQuality')?.value||'720p30';
   const presets={
    '1080p60':{width:1920,height:1080,frameRate:60,bitrate:8000000,fps:60},
    '1080p30':{width:1920,height:1080,frameRate:30,bitrate:5000000,fps:30},
    '720p30':{width:1280,height:720,frameRate:30,bitrate:2500000,fps:30}
   };
-  const preset=presets[quality]||presets['1080p60'];
+  const preset=presets[quality]||presets['720p30'];
   await rookieVoiceRoom.localParticipant.setScreenShareEnabled(
    rookieVoiceScreenOn,
    {audio:true,resolution:{width:preset.width,height:preset.height,frameRate:preset.fps},contentHint:'motion'},
