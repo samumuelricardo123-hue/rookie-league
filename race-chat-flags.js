@@ -1,4 +1,4 @@
-/* Rookie League Race Chat — audio flags. Requires Supabase SQL migration. */
+/* Rookie League Direção de Prova — flags independent of Race Chat/LiveKit. */
 (function () {
   'use strict';
   const messages = {
@@ -22,7 +22,7 @@
     if (!root) return;
     root.innerHTML = '<div style="font-size:12px;letter-spacing:1px;font-weight:900;color:#a6ff00">DIREÇÃO DE PROVA · BANDEIRAS</div>' +
       '<div id="rvFlagStatus" role="status" aria-live="polite" style="font-size:20px;font-weight:900;margin:10px 0">Aguardando conexão</div>' +
-      '<div id="rvFlagMessage" style="font-size:13px;color:#9aa99e">Entre na Sala Geral para receber os avisos por áudio.</div>' +
+      '<div id="rvFlagMessage" style="font-size:13px;color:#9aa99e">Sinalização oficial sincronizada com a Direção de Prova.</div>' +
       '<div id="rvFlagTimer" style="font-size:28px;font-weight:900;margin-top:8px;font-variant-numeric:tabular-nums" aria-label="Tempo restante"></div>' +
       '<div id="rvFlagLights" style="font-size:26px;letter-spacing:8px;margin-top:6px" aria-label="Luzes de largada"></div>' +
       '<div id="rvFlagAdmin" hidden style="display:none;gap:8px;flex-wrap:wrap;margin-top:15px">' +
@@ -166,7 +166,7 @@
 
   async function send(mode) {
     if (!(typeof cloudUser !== 'undefined' && cloudUser) || !(typeof cloudIsAdmin !== 'undefined' && cloudIsAdmin)) return;
-    if (!confirm('Confirmar ' + ({RED:'BANDEIRA VERMELHA',VSC:'VSC',GREEN:'BANDEIRA VERDE'})[mode] + ' para todos os pilotos do Race Chat?')) return;
+    if (!confirm('Confirmar ' + ({RED:'BANDEIRA VERMELHA',VSC:'VSC',GREEN:'BANDEIRA VERDE'})[mode] + ' para todos os pilotos da Rookie League?')) return;
     const buttons = el('rvFlagAdmin')?.querySelectorAll('button') || [];
     buttons.forEach(b => b.disabled = true);
     try {
@@ -192,12 +192,12 @@
   }, true);
 
   function start() {
-    const anchor = el('rvMediaGrid');
+    const anchor = el('raceControlFlagsMount');
     if (!anchor || el('rvFlagPanel')) return;
     const root = document.createElement('section');
     root.id = 'rvFlagPanel';
     root.style.cssText = 'border:1px solid #30422c;border-radius:14px;padding:18px;margin:18px 0;background:#101a13';
-    anchor.parentNode.insertBefore(root, anchor);
+    anchor.appendChild(root);
     render();
     refresh();
     setInterval(refresh, 2000);
