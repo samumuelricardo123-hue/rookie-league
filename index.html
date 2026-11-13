@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rookie League Motorsport — Race Chat</title>
+<title>Rookie League Motorsport — Portal Oficial V77</title>
 <style>
 :root{--bg:#080d0b;--panel:#111916;--panel2:#17211c;--line:#29372f;--green:#a6ff00;--green2:#65c900;--text:#f2f7f1;--muted:#9aa99e;--red:#ff5757;--gold:#ffc857}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1d351f 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif}
@@ -396,7 +396,219 @@ nav button.active{box-shadow:inset 3px 0 var(--green)}
 .rlSoundToggle[aria-pressed="true"] .rlSoundLed{background:var(--green);box-shadow:0 0 9px var(--green)}
 @media(max-width:760px){.rlSoundToggle{padding:9px;font-size:10px}.status{display:none}.hero h1{letter-spacing:-.035em}}
 @media(prefers-reduced-motion:reduce){.page.active{animation:none!important}.metric,.panel,.champ,.heroAside,.btn{transition:none!important}html{scroll-behavior:auto!important}}
-</style></head>
+
+/* ROOKIE LEAGUE V77 | RACING EXPERIENCE | visual-only layer */
+:root{--rl-glass:rgba(13,23,18,.92);--rl-stroke:rgba(166,255,0,.22);--rl-shadow:0 18px 55px rgba(0,0,0,.36)}
+html{scroll-padding-top:94px}body{background:radial-gradient(ellipse at 70% -8%,rgba(91,151,0,.15),transparent 37%),radial-gradient(ellipse at 0% 42%,rgba(19,65,37,.18),transparent 42%),#070b09;background-attachment:fixed}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.16;background-image:linear-gradient(90deg,transparent 97%,#b7ff541c 100%),linear-gradient(0deg,transparent 97%,#b7ff5415 100%);background-size:64px 64px;mask-image:linear-gradient(to bottom,black,transparent 80%)}
+header{background:rgba(6,12,9,.94);border-bottom:1px solid #a6ff002e;box-shadow:0 12px 40px #0007}.logo{letter-spacing:1.5px}.logo .flag{filter:drop-shadow(0 0 10px #a6ff0070)}
+.menuToggle,.rlSoundToggle{border-radius:6px!important;letter-spacing:.045em}.menuToggle:hover,.rlSoundToggle:hover{box-shadow:0 0 0 2px #a6ff0020}
+.nav.menu-open nav{background:linear-gradient(150deg,#14221a,#080e0a);border:1px solid #a6ff0045;box-shadow:0 28px 70px #000c;border-radius:14px;backdrop-filter:blur(20px)}
+nav button{border-left:2px solid transparent!important;border-radius:6px!important}nav button:hover{border-left-color:#a6ff0066!important;transform:translateX(3px)}nav button.active{border-left-color:var(--green)!important;background:linear-gradient(90deg,#a6ff0020,transparent)!important}
+.hero{grid-template-columns:minmax(0,1.5fr) minmax(290px,.65fr);gap:16px;padding-top:30px}.heroMain{min-height:420px;padding:clamp(25px,4vw,54px)!important;border-radius:18px!important;border:1px solid #a6ff0045!important;background:radial-gradient(circle at 80% 15%,#9dff0020,transparent 36%),linear-gradient(112deg,#15251a 0%,#0b150f 70%,#101e13 100%)!important;isolation:isolate}
+.heroMain:after{font-size:clamp(140px,18vw,280px)!important;right:12px!important;bottom:-55px!important;color:#a6ff000a!important}.heroMain .kicker{position:relative;z-index:2}.heroMain h1{font-size:clamp(38px,5.4vw,78px);max-width:780px;line-height:.97;letter-spacing:-.06em!important;position:relative;z-index:2;text-transform:uppercase}.heroMain h1 span{filter:drop-shadow(0 0 16px #a6ff0030)}.heroMain p{position:relative;z-index:2;max-width:510px;font-size:14px;line-height:1.75}.heroMain .actions{position:relative;z-index:3}
+.rl77-track{position:absolute;right:-42px;top:36px;width:48%;height:76%;z-index:1;opacity:.3;pointer-events:none;filter:drop-shadow(0 0 17px #a6ff0033)}.rl77-track svg{width:100%;height:100%}.rl77-track path{stroke:#baff51;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}.rl77-track .rl77-track-shadow{stroke:#a6ff0020;stroke-width:19}
+.rl77-hero-strip{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:24px;position:relative;z-index:2}.rl77-hero-strip span{font-size:10px;font-weight:900;letter-spacing:1.6px;color:#d6e8d1;padding:6px 10px;border:1px solid #a6ff0037;background:#0c170fc9;border-radius:3px}.rl77-hero-strip span:first-child{color:var(--green)}
+.rl77-hero-foot{position:relative;z-index:2;display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;padding-top:14px;border-top:1px solid #a6ff0025;color:#a6bca9;font-size:10px;font-weight:800;letter-spacing:1.5px}.rl77-hero-foot b{color:var(--green)}
+.heroAside{border:1px solid #a6ff003a!important;border-radius:18px!important;background:radial-gradient(circle at 100% 0%,#a6ff0023,transparent 60%),linear-gradient(145deg,#15261b,#0b130e)!important;position:relative;overflow:hidden;min-height:420px}.heroAside::before{content:'NEXT / RACE';position:absolute;right:-17px;bottom:110px;transform:rotate(-90deg);color:#a6ff001e;font-weight:1000;font-size:30px;letter-spacing:4px;pointer-events:none}.heroAside .bigNum{text-shadow:0 0 35px #a6ff0044}.asideTop{border-bottom:1px solid #a6ff0023;padding-bottom:15px}
+.metrics{gap:12px}.metric{position:relative;overflow:hidden;padding:19px 18px!important;background:linear-gradient(140deg,#14221a,#0b130f)!important;border:1px solid #ffffff14!important;border-radius:12px!important;box-shadow:inset 0 1px #ffffff08}.metric:before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(var(--green),#a6ff0008)}.metric strong{font-size:clamp(26px,2.6vw,37px)!important;letter-spacing:-.06em}.metric:hover{border-color:#a6ff0055!important}
+.sectionHead{border-bottom:1px solid #ffffff15;padding-bottom:12px;margin-top:33px}.sectionHead h2{font-size:clamp(21px,2.2vw,28px);letter-spacing:-.04em}.sectionHead h2:before{content:'//';color:var(--green);font-size:14px;margin-right:10px;letter-spacing:0}
+.champ,.panel,.license-card,.newsCard{box-shadow:var(--rl-shadow);border-color:#ffffff1b!important}.champ{position:relative;overflow:hidden;background:linear-gradient(145deg,#14231a,#0a120e)!important;border-radius:14px!important}.champ:before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),transparent 85%)}.champ:hover{border-color:#a6ff0055!important;transform:translateY(-4px)}.champ h3{letter-spacing:-.035em}.pill{border:1px solid #a6ff002e}.progress{height:5px!important;background:#2a3b2d!important}.progress span{box-shadow:0 0 15px #a6ff0066}
+.btn{border-radius:5px!important;letter-spacing:.025em;box-shadow:inset 0 1px #ffffff33}.btn:hover{box-shadow:0 0 22px #a6ff0035;transform:translateY(-2px)}.btn.secondary{box-shadow:inset 0 1px #a6ff0011}.btn:active{transform:translateY(0) scale(.985)}
+.tableWrap{scrollbar-color:#4b6e30 #101813}th{background:#15241b!important;color:#c6e0b5!important}td{border-top-color:#ffffff10!important}tbody tr:hover{background:#a6ff000b!important}.subhead h1{letter-spacing:-.045em}.page.active{animation:rl77-enter .3s ease-out both}@keyframes rl77-enter{from{opacity:.6;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+:where(button,a,input,select,textarea):focus-visible{outline:2px solid #b6ff3e!important;outline-offset:3px!important}
+.rl77-utility{display:flex;align-items:center;gap:7px;color:#b3c9b4;font-size:10px;letter-spacing:1.2px;font-weight:900;white-space:nowrap}.rl77-utility i{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 12px #a6ff0080}
+@media(max-width:980px){.hero{grid-template-columns:1fr}.heroMain,.heroAside{min-height:unset}.heroAside{gap:20px}.rl77-track{width:45%}.rl77-utility{display:none}}
+@media(max-width:620px){.heroMain{padding:26px 21px!important}.heroMain h1{font-size:clamp(35px,10vw,54px)}.rl77-track{width:58%;right:-55px;opacity:.15}.rl77-hero-strip{gap:5px}.rl77-hero-strip span{font-size:8px;padding:5px}.rl77-hero-foot{font-size:9px}.metric{padding:15px!important}.metrics{gap:9px}.hero{padding-top:18px}}
+@media(prefers-reduced-motion:reduce){.page.active{animation:none!important}.champ:hover,.btn:hover{transform:none!important}}
+
+/* V78: ferramentas de telemetria */
+.rl78Tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.rl78Tool{padding:15px;border:1px solid #344a37;border-radius:12px;background:linear-gradient(135deg,#14241b,#0b120e)}
+.rl78Tool small{display:block;color:#9fb5a5;text-transform:uppercase;font-size:10px;font-weight:800;letter-spacing:1px}
+.rl78Tool strong{display:block;color:#b7ff35;font-size:21px;margin-top:7px}
+.rl78Controls{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+.rl78Controls label{display:block;font-size:12px;color:#b7c7b9}
+.rl78Controls select{display:block;width:100%;padding:11px;margin-top:5px;background:#0c140f;color:white;border:1px solid #46624f;border-radius:8px}
+.rl78Canvas{width:100%;height:260px;display:block}
+.rl78Hint{color:#a7b9ad;font-size:12px;line-height:1.6}
+@media(max-width:760px){.rl78Tools,.rl78Controls{grid-template-columns:1fr}.rl78Canvas{height:210px}}
+
+/* V79 — Interface cockpit, sem alterar a lógica do portal */
+:root{--rl79-edge:#35493a;--rl79-glow:rgba(166,255,0,.12)}
+body{background:radial-gradient(ellipse at 10% 0%,#18301c 0,transparent 37%),radial-gradient(ellipse at 95% 70%,#0f2219 0,transparent 40%),#070b09}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.17;background-image:linear-gradient(#8bc94a0c 1px,transparent 1px),linear-gradient(90deg,#8bc94a0c 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#000,transparent 78%)}
+main,header,footer{position:relative}
+#telemetry{--panel:#101b15;--line:#304637}
+#telemetry .subhead{padding:32px 0 14px;border-bottom:1px solid #a6ff0025;margin-bottom:18px}
+#telemetry .subhead h1{font-size:clamp(32px,4vw,48px);font-weight:950;letter-spacing:-1.6px}
+#telemetry .subhead .kicker{letter-spacing:2px}
+#telemetry .telemetryHero{position:relative;isolation:isolate;overflow:hidden;min-height:158px;padding:27px 30px;background:linear-gradient(112deg,#1b301d,#0b1410 76%);border:1px solid #5c803d;border-radius:18px;box-shadow:0 18px 55px #0007}
+#telemetry .telemetryHero:before{content:"TELEMETRY / RL";position:absolute;right:23px;bottom:-10px;font-size:clamp(28px,6vw,78px);font-weight:1000;letter-spacing:-4px;color:#a6ff000b;white-space:nowrap;pointer-events:none;z-index:-1}
+#telemetry .telemetryHero h2{font-size:clamp(24px,3vw,36px);letter-spacing:-1px}
+#telemetry .telemetryTabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;padding:7px;border:1px solid #344a39;border-radius:15px;background:#0c1510;margin:20px 0 22px}
+#telemetry .telemetryTabs button{width:100%;min-height:49px;border-radius:10px;font-size:11px;letter-spacing:.65px;text-align:center;transition:background .2s,border-color .2s,transform .2s}
+#telemetry .telemetryTabs button.active{box-shadow:0 0 22px #a6ff0020}
+#telemetry .telemetryTabPanel{animation:rl79Enter .24s ease-out}
+@keyframes rl79Enter{from{opacity:.65;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+#telemetry .sectionHead{margin:24px 0 13px}
+#telemetry .sectionHead h2{font-size:21px;letter-spacing:-.4px}
+#telemetry .panel{border:1px solid #314738;border-radius:15px;background:linear-gradient(150deg,#15231a,#0d1611);box-shadow:0 15px 36px #0004}
+#telemetry .telemetryLiveGrid{grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+#telemetry .telemetryLiveValue{position:relative;overflow:hidden;min-height:106px;padding:17px;border:1px solid #3b523f;border-radius:12px;background:linear-gradient(145deg,#1a2a1d,#0b140e)}
+#telemetry .telemetryLiveValue:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green)}
+#telemetry .telemetryLiveValue small{letter-spacing:1.2px;font-size:10px}
+#telemetry .telemetryLiveValue b{font-size:clamp(19px,2.1vw,31px);font-variant-numeric:tabular-nums;letter-spacing:-.5px;margin-top:12px;overflow-wrap:anywhere}
+#telemetry .telemetryStatus{padding:15px 18px;border-top:1px solid #ffffff10;line-height:1.6}
+#telemetry .telemetryControls,#telemetry .rl78Controls{gap:13px}
+#telemetry select{min-height:44px;border-radius:9px;background:#09130d;border:1px solid #405746;color:#f1f7ef}
+#telemetry select:focus-visible,#telemetry button:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+#telemetry .telemetryGrid .metric{background:linear-gradient(145deg,#17251b,#0d1710);border-color:#344a38;min-height:104px}
+#telemetry .metric strong{font-variant-numeric:tabular-nums;color:var(--green)}
+#telemetry .telemetryChart{padding:20px;margin-bottom:17px}
+#telemetry .telemetryChart h3{margin:0 0 16px;font-size:15px;letter-spacing:.3px}
+#telemetry .telemetryChart canvas{height:clamp(195px,23vw,285px);border-radius:8px;background:linear-gradient(180deg,#08120c,#0b1510)}
+#telemetry #rl78TrackMap{height:clamp(290px,42vw,480px)}
+#telemetry .rl78Tools{gap:12px}
+#telemetry .rl78Tool{border-radius:12px;border-color:#344a38;background:linear-gradient(145deg,#19281c,#0c1710)}
+#telemetry .rl78Hint{line-height:1.65}
+#telemetry .pill{border:1px solid #a6ff003a}
+@media(max-width:900px){#telemetry .telemetryLiveGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){#telemetry .telemetryHero{padding:22px 18px;min-height:140px}#telemetry .telemetryTabs{grid-template-columns:repeat(2,minmax(0,1fr))}#telemetry .telemetryTabs button{min-height:46px}#telemetry .telemetryLiveGrid{grid-template-columns:repeat(2,minmax(0,1fr))}#telemetry .telemetryLiveValue{min-height:93px;padding:13px}#telemetry .telemetryChart{padding:12px}#telemetry .telemetryControls{padding:13px}}
+@media(prefers-reduced-motion:reduce){#telemetry .telemetryTabPanel{animation:none}#telemetry .telemetryTabs button{transition:none}}
+
+
+
+/* V81: replay de comparação de pilotos */
+.rl81Panel{margin-top:20px}.rl81Toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:12px 0}.rl81Toolbar button,.rl81Toolbar select{min-height:38px}.rl81Toolbar input[type=range]{flex:1;min-width:160px}.rl81MapWrap{position:relative;overflow:hidden;border:1px solid #34463b;border-radius:16px;background:#07110e;touch-action:none}.rl81MapWrap canvas{display:block;width:100%;height:auto;cursor:grab}.rl81MapWrap canvas:active{cursor:grabbing}.rl81Overlay{position:absolute;left:12px;top:12px;background:#07110edb;border:1px solid #45624c;border-radius:10px;padding:7px 11px;font-size:12px;pointer-events:none}.rl81Drivers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.rl81Driver{border:1px solid #344a3b;border-radius:12px;padding:12px;background:#101b17}.rl81Driver b{font-size:20px}.rl81Driver small{display:block;opacity:.7}.rl81Driver .bar{height:6px;background:#2a352f;border-radius:6px;overflow:hidden;margin-top:7px}.rl81Driver .bar i{display:block;height:100%;width:0;background:#a6ff00}.rl81Driver.b .bar i{background:#42b8ff}.rl81Status{margin:10px 0;color:#b8c7bd;font-size:13px}.rl81Legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px}.rl81Legend span:first-child{color:#a6ff00}.rl81Legend span:nth-child(2){color:#42b8ff}@media(max-width:600px){.rl81Drivers{grid-template-columns:1fr}}
+
+
+/* V83 — Calendário dinâmico */
+.rlCalToolbar{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin:12px 0 14px}
+.rlCalToolbar label{font-size:10px;font-weight:900;letter-spacing:.07em;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.rlCalToolbar select{min-width:155px;max-width:260px;background:#101b14;color:#e5f1e6;border:1px solid #37523c;border-radius:9px;padding:10px}
+.rlCalMetrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:10px 0 15px}
+.rlCalMetrics>div{background:linear-gradient(135deg,#15241a,#0c130f);border:1px solid #304b35;border-radius:12px;padding:15px}
+.rlCalMetrics small{display:block;font-size:10px;color:#a7b8a9;font-weight:800;letter-spacing:.08em}
+.rlCalMetrics strong{display:block;font-size:23px;color:var(--green);margin-top:7px}
+.rlCalLayout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:start}
+.rlCalMain{min-width:0}.rlCalSide{padding:16px;position:sticky;top:85px}.rlCalSide h3{margin:0 0 15px;text-transform:capitalize;font-size:16px}
+.rlCalDayEvents{display:grid;gap:10px}.rlCalEventCard{background:#122018;border:1px solid #3b5b40;border-left:3px solid var(--green);border-radius:10px;padding:12px;font-size:12px;color:#c4d2c7}
+.rlCalEventCard.isFun{border-left-color:#38bdf8}.rlCalEventCard strong{display:block;color:#f1f7f2;margin:6px 0}.rlCalEventCard small{display:block;margin-top:8px}
+.rlCalEventMeta{font-size:10px;color:var(--green);font-weight:900;letter-spacing:.07em}
+.cal-day{width:100%;text-align:left;cursor:pointer;font:inherit;min-height:112px;transition:border-color .18s,background .18s,transform .18s}
+.cal-day:hover{background:#19291d;border-color:#7aa83e;transform:translateY(-2px)}
+.cal-day.rlCalSelected{border-color:var(--green);background:#1a2a1d;box-shadow:inset 0 0 0 1px #a6ff0055}
+.rlCalDots{display:flex;gap:3px;margin-top:5px;min-height:5px}.rlCalDots i{display:block;width:6px;height:6px;border-radius:50%;background:var(--green)}.rlCalDots i.isFun{background:#38bdf8}
+.cal-event.rlCalFun{background:#38bdf81a;color:#7dd3fc}.rlCalMore{font-size:10px;color:#9ea9a0;display:block;margin-top:5px}
+.rlCalListItem{display:grid;grid-template-columns:100px 1fr;gap:4px 12px;width:100%;text-align:left;background:#101b14;border:1px solid #304b35;color:#e5f1e6;border-radius:10px;padding:14px;margin-bottom:8px;cursor:pointer}
+.rlCalListItem:hover{border-color:var(--green)}.rlCalListItem span{color:var(--green);font-weight:900}.rlCalListItem small{grid-column:2;color:#9faf9f}
+@media(max-width:1050px){.rlCalLayout{grid-template-columns:1fr}.rlCalSide{position:static}}
+@media(max-width:700px){.rlCalMetrics{grid-template-columns:repeat(2,1fr)}.rlCalToolbar label{flex:1;min-width:125px}.rlCalToolbar select{width:100%;min-width:0}.cal-day{min-height:65px;padding:5px}.cal-event{display:none}.rlCalMore{display:none}.rlCalListItem{grid-template-columns:1fr}.rlCalListItem small{grid-column:1}}
+
+
+/* V84 - Minha Conta / Driver Hub */
+#account{--rl84-line:#334a38;--rl84-panel:#111c16}
+#account>.subhead{margin-bottom:16px}
+.rl84AccountIntro{position:relative;display:flex;align-items:center;gap:18px;overflow:hidden;padding:24px 26px;border:1px solid #496b3d;border-radius:17px;background:radial-gradient(ellipse at 88% 8%,#6ba60026,transparent 43%),linear-gradient(125deg,#172b1b,#0c1510 75%);margin-bottom:18px}
+.rl84AccountIntro:after{content:"";position:absolute;right:-60px;bottom:-125px;width:320px;height:320px;border:34px solid #a6ff0008;border-radius:50%;pointer-events:none}
+.rl84AccountIcon{width:64px;height:64px;flex:none;border-radius:15px;display:grid;place-items:center;font-size:29px;background:#a6ff0017;border:1px solid #a6ff0040}
+.rl84AccountIntro h2{font-size:clamp(23px,3vw,34px);line-height:1.1;margin:6px 0}
+.rl84AccountIntro p{margin:0;color:#afc1b1;font-size:13px}
+.rl84AccountTag{margin-left:auto;white-space:nowrap;font-size:10px;letter-spacing:.12em;color:#c9f47c;border:1px solid #719d35;border-radius:7px;padding:9px 11px;font-weight:900}
+#account .authbox{max-width:1180px;margin:0 auto 28px;padding:22px;background:linear-gradient(150deg,#121d17,#0b120e);border:1px solid #334d37;border-radius:16px}
+#account .authbox>.field,#account .authbox>.authswitch,#account .authbox>.formactions,#account .authbox>.mutednote,#account .rl84AuthHeading{max-width:520px}
+.rl84AuthHeading{display:flex;justify-content:space-between;gap:10px;color:#e8f8e4;font-size:11px;font-weight:900;letter-spacing:.1em}
+.rl84AuthHeading small{font-size:10px;color:#8caa91;font-weight:500;letter-spacing:0}
+#account .authswitch{margin-top:15px}
+#account .authbox>.field input{border-radius:9px;min-height:43px}
+#account #pilotProfile{margin-top:18px}
+#account .pilotProfileTabs{display:flex;gap:9px;flex-wrap:wrap;border-bottom:1px solid #36523a;padding:0 0 15px;margin-bottom:18px}
+#account .pilotProfileTabs .btn{border-radius:9px;min-height:40px}
+#account .license-card{border-radius:15px;border:1px solid #34503a;background:linear-gradient(140deg,#15231a,#0d1711);padding:23px}
+#account .rl84DriverCard{overflow:hidden;position:relative}
+.rl84DriverTop{margin:-23px -23px 22px;padding:18px 23px 22px;background:linear-gradient(120deg,#213c25,#111e16 70%);border-bottom:1px solid #405d3d}
+.rl84DriverStripe{font-size:10px;font-weight:900;letter-spacing:.15em;color:#b9ed72;margin-bottom:14px}
+.rl84DriverIdentity{display:flex;align-items:center;gap:17px}
+#account .rl84DriverIdentity h2{font-size:clamp(21px,3vw,32px);margin:3px 0 7px;line-height:1.1}
+#account .profileAvatar{width:94px;height:94px;flex:none;border:3px solid #a6ff00;box-shadow:0 0 0 6px #a6ff0010,0 0 25px #a6ff0025}
+#account .license-grid{gap:12px;margin:13px 0}
+#account .license-stat{min-height:90px;border:1px solid #39553c;border-radius:12px;background:linear-gradient(135deg,#19291d,#101a14);padding:17px}
+#account .license-stat small{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#a6bda7}
+#account .license-stat strong{font-size:clamp(22px,2.5vw,30px);color:#eaffd4}
+#account .rl84LicenseGrid .license-stat:nth-child(2){border-color:#79a632;background:linear-gradient(135deg,#263b1d,#122015)}
+#account .rl84LicenseGrid .license-stat:nth-child(2) strong{color:#a6ff00}
+.rl84SectionLabel{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:26px;padding:12px 0;border-top:1px solid #34503a;color:#bfff7a;font-weight:900;letter-spacing:.08em;font-size:11px}
+.rl84SectionLabel small{font-size:11px;letter-spacing:0;font-weight:400;color:#9daf9e}
+#account .profileEditGrid{gap:13px}
+#account .profileEditGrid .field{padding:12px;border-radius:10px;background:#111f16;border:1px solid #304b36}
+#account .profileEditGrid input{background:#0b140f;border-radius:8px}
+#account .tableWrap{border-radius:12px;border:1px solid #35503a;overflow:auto}
+#account .tableWrap table{margin:0}
+#account .profileNoticeItem{border:1px solid #334b38;border-radius:11px;padding:13px;background:#121f17}
+#account .careerCard{border:1px solid #38533b}
+@media(max-width:700px){.rl84AccountIntro{padding:16px;gap:12px}.rl84AccountIcon{width:48px;height:48px;font-size:22px}.rl84AccountTag{display:none}#account .authbox{padding:14px}#account .license-card{padding:15px}.rl84DriverTop{margin:-15px -15px 17px;padding:16px}.rl84DriverIdentity{gap:11px}#account .profileAvatar{width:68px;height:68px}#account .license-stat{min-height:78px;padding:11px}.rl84SectionLabel{display:block}.rl84SectionLabel small{display:block;margin-top:5px}}
+
+
+/* V85 - Driver Hub: refinamento da experiência */
+#account .rl85Dashboard{border:1px solid #42613e;border-radius:14px;background:radial-gradient(circle at 85% 0%,#a6ff0014,transparent 45%),linear-gradient(135deg,#15251a,#0c1610);padding:18px;margin:0 0 18px}
+#account .rl85DashHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+#account .rl85DashHead h3{font-size:18px;margin:5px 0 0}
+#account .rl85Eyebrow{color:#a6ff00;font-size:10px;letter-spacing:.15em;font-weight:900}
+#account .rl85Status{border:1px solid #6f993d;border-radius:99px;padding:7px 11px;font-size:10px;letter-spacing:.07em;color:#b7ec7c;white-space:nowrap}
+#account .rl85DashGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#account .rl85DashGrid>div{padding:16px;border-radius:11px;background:#0d1711;border:1px solid #304b35}
+#account .rl85DashGrid small{display:block;color:#a8b8aa;font-size:10px;letter-spacing:.08em;font-weight:800}
+#account .rl85DashGrid strong{display:block;font-size:27px;color:#f1f9e9;margin-top:7px;font-variant-numeric:tabular-nums}
+#account .rl85DashGrid strong.rl85Positive{color:#a6ff00}
+#account .rl85DashGrid strong.rl85Negative{color:#ff7777}
+#account .rl85QuickActions{display:flex;gap:10px;flex-wrap:wrap;margin:17px 0}
+#account .rl85QuickActions button{border-radius:9px}
+#account .rl85PhotoUpload{display:flex;align-items:center;gap:15px;margin-top:10px}
+#account .rl85PhotoPreview{height:84px;width:84px;flex:none;display:grid;place-items:center;border:2px dashed #719f45;border-radius:13px;background:#19291d;font-size:28px;overflow:hidden}
+#account .rl85PhotoPreview img{width:100%;height:100%;object-fit:cover}
+#account .rl85PhotoControl{flex:1;min-width:0}
+#account .rl85PhotoControl small{display:block;margin-top:6px;color:#a9b7aa}
+#account .pilotProfileTabs{position:sticky;top:0;z-index:5;padding:10px;background:#0c1510ee;border-radius:10px;backdrop-filter:blur(8px)}
+#account .careerCareerStats>div,#account .careerSeasonCard{background:linear-gradient(140deg,#1a2b1e,#101a13);border-color:#3a543d}
+#account .careerChart{background:#0c160f;border-color:#3b5c40}
+#account .careerChart svg{height:170px}
+@media(max-width:700px){#account .rl85DashGrid{gap:7px}#account .rl85DashGrid>div{padding:10px}#account .rl85DashGrid strong{font-size:20px}#account .rl85DashGrid small{font-size:9px}#account .rl85Status{display:none}#account .rl85QuickActions button{flex:1}#account .rl85PhotoUpload{align-items:flex-start;flex-direction:column}#account .pilotProfileTabs{top:0}}
+
+/* V86 - Homepage Racing Command Center */
+#home .hero{gap:18px}#home .heroMain{position:relative;overflow:hidden;background:radial-gradient(circle at 80% 80%,#9fff0012,transparent 45%),linear-gradient(125deg,#16231a,#0a120e);border-color:#3d663d}
+#home .heroMain h1{font-size:clamp(42px,5.6vw,82px);letter-spacing:-.045em;line-height:1.03;max-width:790px}
+#home .heroMain .kicker{letter-spacing:.16em}#home .heroMain .actions{position:relative;z-index:2}
+#home .nextRaceAside{background:radial-gradient(circle at 80% 20%,#a6ff001d,transparent 55%),linear-gradient(140deg,#1a2b18,#0d170e);border-color:#608b36}
+#home .nextRaceDate{font-size:clamp(44px,5vw,70px);line-height:1.1;text-shadow:0 0 28px #a6ff0030}
+.rl86CommandBar{display:grid;grid-template-columns:1.3fr repeat(4,1fr);gap:8px;margin:16px 0 18px}
+.rl86CommandTitle{display:flex;align-items:center;gap:11px;padding:12px 15px;background:#132218;border:1px solid #35563b;border-radius:11px}
+.rl86CommandTitle strong,.rl86CommandTitle small{display:block}.rl86CommandTitle strong{font-size:12px;color:#e5f6dd;letter-spacing:.08em}.rl86CommandTitle small{font-size:9px;color:#8eac95;margin-top:4px;letter-spacing:.08em}
+.rl86Pulse{height:11px;width:11px;background:#a6ff00;border-radius:50%;box-shadow:0 0 0 5px #a6ff001b,0 0 14px #a6ff0066;flex:none}
+.rl86CommandBar>button{display:flex;align-items:center;justify-content:space-between;gap:8px;background:linear-gradient(130deg,#182a1c,#101a14);border:1px solid #36543a;color:#d7e8d5;border-radius:11px;padding:15px 13px;cursor:pointer;font-size:11px;font-weight:900;text-align:left;transition:background .18s,border-color .18s,transform .18s}
+.rl86CommandBar>button:hover{background:#243b25;border-color:#a6ff00;transform:translateY(-2px)}.rl86CommandBar>button span{color:#a6ff00}
+.rl86HomeOverview{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:14px;margin-bottom:19px}
+.rl86UpcomingPanel,.rl86CountdownPanel{border:1px solid #35583a;border-radius:15px;background:linear-gradient(145deg,#132019,#0c1510);padding:21px;min-width:0}
+.rl86PanelHeading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.rl86PanelHeading h2,.rl86CountdownPanel h2{margin:4px 0 0;font-size:20px}
+.rl86Eyebrow{font-size:10px;color:#a6ff00;font-weight:900;letter-spacing:.15em}
+.rl86UpcomingEvents{display:grid;gap:8px}.rl86EventRow{display:flex;align-items:center;gap:13px;background:#0b150f;border:1px solid #2e4732;border-radius:10px;padding:10px 12px}
+.rl86EventDate{width:53px;flex:none;text-align:center;border-right:1px solid #3d563c;padding-right:11px}.rl86EventDate strong{display:block;font-size:26px;line-height:1.1;color:#c5ff7a}.rl86EventDate small{font-size:10px;font-weight:800;color:#94a997}
+.rl86EventText{flex:1;min-width:0}.rl86EventText span,.rl86EventText small{display:block;font-size:10px;color:#9fb19e}.rl86EventText strong{display:block;margin:3px 0;color:#f1f6ed;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rl86EventRank{font-size:9px;color:#a6ff00;letter-spacing:.05em;font-weight:900;white-space:nowrap}
+.rl86CountdownPanel{background:radial-gradient(circle at 90% 10%,#a6ff001a,transparent 55%),linear-gradient(145deg,#16281a,#0c1510)}
+.rl86Countdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:24px 0 13px}.rl86Countdown>span{font-size:clamp(20px,3vw,37px);font-weight:900;color:#eaffd6;text-align:center;padding:12px 2px;background:#0a140d;border:1px solid #42633d;border-radius:9px;font-variant-numeric:tabular-nums}.rl86Countdown small{display:block;color:#95ac96;font-size:9px;letter-spacing:.08em;margin-top:6px}.rl86CountdownPanel p{color:#aab9a8;font-size:12px;min-height:28px}
+#home .metrics .metric{background:linear-gradient(135deg,#15251b,#0d1711);border:1px solid #3a533c;border-radius:12px;transition:transform .2s,border-color .2s}#home .metrics .metric:hover{transform:translateY(-3px);border-color:#83b84a}
+#home .sectionHead{margin-top:30px}#home .cards>*{transition:transform .2s,border-color .2s}#home .cards>*:hover{transform:translateY(-3px)}
+@media(max-width:1050px){.rl86CommandBar{grid-template-columns:repeat(4,minmax(0,1fr))}.rl86CommandTitle{grid-column:1/-1}.rl86HomeOverview{grid-template-columns:1fr}}
+@media(max-width:650px){.rl86CommandBar{grid-template-columns:repeat(2,minmax(0,1fr))}.rl86CommandBar>button{font-size:10px;padding:12px}.rl86HomeOverview{gap:10px}.rl86UpcomingPanel,.rl86CountdownPanel{padding:14px}.rl86EventRank{display:none}.rl86Countdown{margin:17px 0}.rl86Countdown>span{font-size:23px}.rl86PanelHeading h2{font-size:18px}}
+@media(prefers-reduced-motion:reduce){.rl86CommandBar>button,#home .metrics .metric,#home .cards>*{transition:none}}
+</style><style id="rl80ReplayStyle">
+.rl80ReplayPanel{background:linear-gradient(150deg,#101e17,#070c0a)!important;border:1px solid #31503c!important}.rl80ReplayHead,.rl80ReplayControls,.rl80Actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.rl80ReplayHead{justify-content:space-between;color:#b8ff72;letter-spacing:.13em}.rl80ReplayHead span{font-variant-numeric:tabular-nums;color:#fff;font-size:21px}.rl80ReplayControls{margin:12px 0}.rl80ReplayControls input[type=range]{flex:1;min-width:150px;accent-color:#a6ff00}.rl80ReplayControls select{width:auto;min-width:85px}.rl80ReplayMetrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:14px 0}.rl80ReplayMetrics>div{padding:12px;background:#101c15;border:1px solid #294034;border-radius:12px;min-width:0}.rl80ReplayMetrics small{display:block;font-size:10px;letter-spacing:.1em;color:#a6b6aa}.rl80ReplayMetrics strong{display:block;font-size:clamp(16px,2.2vw,25px);color:#f4fff5;margin:5px 0;font-variant-numeric:tabular-nums}.rl80Bar{height:6px;border-radius:6px;background:#29392e;overflow:hidden}.rl80Bar i{display:block;height:100%;width:0;background:#a6ff00;transition:width .1s}.rl80Bar.brake i{background:#ff665e}.rl80Legend{display:flex;flex-wrap:wrap;gap:18px;font-size:12px;color:#aabeb0}.rl80Legend span:nth-child(1){color:#a6ff00}.rl80Legend span:nth-child(2){color:#ff665e}.rl80Legend span:nth-child(3){color:#8ca9aa}.rl80Legend span:nth-child(4){color:#fff}.rl80Consent{display:flex;align-items:center;gap:9px;font-size:13px}.rl80Consent input{accent-color:#a6ff00}.rl80Actions{justify-content:space-between;margin-top:16px}@media(max-width:700px){.rl80ReplayMetrics{grid-template-columns:repeat(2,minmax(0,1fr))}.rl80ReplayControls button{flex:1}.rl80ReplayControls input[type=range]{order:3;flex-basis:100%}}
+</style>
+
+<style id="rl82Styles">
+.rl82Identity{display:flex;align-items:center;gap:13px;margin-bottom:10px;min-width:0}.rl82Portrait{height:66px;width:66px;flex:none;border:2px solid #49604e;border-radius:13px;object-fit:cover;background:#17241c}.rl81Driver.b .rl82Portrait{border-color:#42b8ff}.rl82PilotName{font-weight:900;font-size:18px;line-height:1.25;color:#f4fff5;overflow-wrap:anywhere}.rl82PilotDetails{font-size:12px;color:#b1c7b8;line-height:1.5}.rl82IdentityText{min-width:0}.rl82Orientation{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}.rl82Orientation button{min-height:36px}.rl82Orientation small{color:#9fb6a7}.rl82TrackNote{font-size:12px;color:#b5c8ba;margin:5px 0 12px}
+</style>
+</head>
 <body>
 
 <div id="entryGate" class="entryGate">
@@ -424,12 +636,14 @@ nav button.active{box-shadow:inset 3px 0 var(--green)}
 
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<button class="menuToggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav">☰ MENU</button><nav id="mainNav" hidden><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="rookievoice">🏁 Race Chat</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="telemetry">📈 Telemetria</button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><button type="button" class="rlSoundToggle" id="rlSoundToggle" aria-pressed="false" title="Ativar ou desativar sons de navegação"><span class="rlSoundLed" aria-hidden="true"></span><span id="rlSoundLabel">SOM OFF</span></button><span class="status">PORTAL OFICIAL • V76</span>
+<button class="menuToggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav">☰ MENU</button><nav id="mainNav" hidden><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="rookievoice">🏁 Race Chat</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="telemetry">📈 Telemetria</button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><button type="button" class="rlSoundToggle" id="rlSoundToggle" aria-pressed="false" title="Ativar ou desativar sons de navegação"><span class="rlSoundLed" aria-hidden="true"></span><span id="rlSoundLabel">SOM OFF</span></button><span class="rl77-utility" aria-label="Plataforma oficial"><i aria-hidden="true"></i> RACING EXPERIENCE</span><span class="status">PORTAL OFICIAL • V80</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
-<div class="hero"><div class="heroMain"><div class="kicker">● PORTAL OFICIAL • ROOKIE LEAGUE MOTORSPORT</div><h1>A CORRIDA<br>COMEÇA <span>AQUI.</span></h1><p>Campeonatos, resultados, pilotos e conquistas. Acompanhe a história da Rookie League Motorsport.</p><div class="actions"><button class="btn" onclick="showPage('championships')">VER CAMPEONATOS ↗</button><button class="btn secondary" onclick="showPage('hall')">HALL DA FAMA</button><a class="btn secondary" href="https://acstuff.ru/s/q:race/online/join?httpPort=9601&ip=172.233.26.106" target="_blank" rel="noopener noreferrer">JUNTAR AO SERVIDOR ↗</a></div></div>
+<div class="hero"><div class="heroMain"><div class="rl77-track" aria-hidden="true"><svg viewBox="0 0 330 310"><path class="rl77-track-shadow" d="M63 260 L44 215 Q35 183 73 166 L122 147 Q151 133 140 103 L126 75 Q118 55 140 41 Q167 22 193 47 L232 84 Q248 101 268 95 Q304 86 307 121 Q311 149 273 164 L240 175 Q211 188 217 214 L226 242 Q235 280 197 286 L142 290 Q95 296 63 260Z"/><path d="M63 260 L44 215 Q35 183 73 166 L122 147 Q151 133 140 103 L126 75 Q118 55 140 41 Q167 22 193 47 L232 84 Q248 101 268 95 Q304 86 307 121 Q311 149 273 164 L240 175 Q211 188 217 214 L226 242 Q235 280 197 286 L142 290 Q95 296 63 260Z"/></svg></div><div class="kicker">● PORTAL OFICIAL • ROOKIE LEAGUE MOTORSPORT</div><h1>A CORRIDA<br>COMEÇA <span>AQUI.</span></h1><p>Campeonatos, resultados, pilotos e conquistas. Acompanhe a história da Rookie League Motorsport.</p><div class="actions"><button class="btn" onclick="showPage('championships')">VER CAMPEONATOS ↗</button><button class="btn secondary" onclick="showPage('hall')">HALL DA FAMA</button><a class="btn secondary" href="https://acstuff.ru/s/q:race/online/join?httpPort=9601&ip=172.233.26.106" target="_blank" rel="noopener noreferrer">JUNTAR AO SERVIDOR ↗</a></div><div class="rl77-hero-foot"><b>RL / 77</b><span>PRECISÃO • COMPETIÇÃO • COMUNIDADE</span></div></div>
 <div class="heroAside nextRaceAside" id="homeNextRace"><div class="asideTop"><span>AGENDA DA LIGA</span><span>RL MOTORSPORT</span></div><div><div class="nextRaceKicker">PRÓXIMA CORRIDA</div><div class="bigNum nextRaceDate" id="homeNextRaceDate">--/--</div><h3 id="homeNextRaceName">Nenhuma corrida agendada</h3><p id="homeNextRaceInfo">Cadastre uma etapa com data para ela aparecer aqui.</p></div><button class="btn secondary small" onclick="showPage('calendar')">VER CALENDÁRIO →</button></div></div>
+<div class="rl86CommandBar" aria-label="Acesso rápido"><div class="rl86CommandTitle"><span class="rl86Pulse"></span><div><strong>CENTRAL DE CORRIDA</strong><small>ACESSO RÁPIDO À LIGA</small></div></div><button type="button" onclick="showPage('racecenter')">🏁 RACE CENTER <span>↗</span></button><button type="button" onclick="showPage('telemetry')">📈 TELEMETRIA <span>↗</span></button><button type="button" onclick="showPage('results')">🏆 RESULTADOS <span>↗</span></button><button type="button" onclick="showPage('account')">♙ MINHA CONTA <span>↗</span></button></div>
+<div class="rl86HomeOverview"><section class="rl86UpcomingPanel"><div class="rl86PanelHeading"><div><span class="rl86Eyebrow">RACE WEEK</span><h2>Próximos eventos</h2></div><button class="textLink" type="button" onclick="showPage('calendar')">AGENDA COMPLETA →</button></div><div id="rl86UpcomingEvents" class="rl86UpcomingEvents"><p class="hint">Carregando agenda…</p></div></section><section class="rl86CountdownPanel"><span class="rl86Eyebrow">LIGHTS OUT</span><h2>Contagem regressiva</h2><div class="rl86Countdown" id="rl86Countdown"><span>--<small>DIAS</small></span><span>--<small>HORAS</small></span><span>--<small>MIN</small></span><span>--<small>SEG</small></span></div><p id="rl86CountdownInfo">Aguardando próxima etapa</p><button class="btn secondary small" type="button" onclick="showPage('calendar')">VER PRÓXIMA CORRIDA →</button></section></div>
 <div class="metrics"><div class="metric"><div class="label">Campeonatos</div><strong id="metricChamps">05</strong></div><div class="metric"><div class="label">Pilotos cadastrados</div><strong id="metricDrivers">03</strong></div><div class="metric"><div class="label">Etapas lançadas</div><strong id="metricRaces">00</strong></div><div class="metric"><div class="label">Títulos no Hall</div><strong><em id="metricTitles">04</em></strong></div></div>
 <div class="sectionHead"><div><h2>Campeonatos</h2><p>Competições cadastradas na liga.</p></div><button class="textLink" onclick="showPage('championships')">VER TODOS →</button></div><div class="cards" id="homeCards"></div>
 <div class="sectionHead"><div><h2>Hall da Fama</h2><p>Os pilotos que já levantaram a taça.</p></div><button class="textLink" onclick="showPage('hall')">RANKING COMPLETO →</button></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Categoria</th></tr></thead><tbody id="homeHall"></tbody></table></div>
@@ -454,12 +668,24 @@ nav button.active{box-shadow:inset 3px 0 var(--green)}
   <div class="sectionHead">
     <div><h2 id="calendarMonthTitle">Calendário da temporada</h2><p>As etapas com data cadastrada aparecem automaticamente aqui.</p></div>
     <div class="tools">
-      <button class="btn secondary small" onclick="changeCalendarMonth(-1)">← MÊS ANTERIOR</button>
-      <button class="btn secondary small" onclick="changeCalendarMonth(1)">PRÓXIMO MÊS →</button>
+      <button class="btn secondary small" onclick="changeCalendarMonth(-1)" aria-label="Mês anterior">←</button>
+      <button class="btn secondary small" onclick="calendarGoToday()">HOJE</button>
+      <button class="btn secondary small" onclick="changeCalendarMonth(1)" aria-label="Próximo mês">→</button>
     </div>
   </div>
-  <div class="panel" style="padding:14px">
-    <div class="calendar-grid" id="calendarGrid"></div>
+  <div class="rlCalToolbar">
+    <label>Campeonato <select id="rlCalChampFilter" onchange="renderCalendar()"><option value="all">Todos os campeonatos</option></select></label>
+    <label>Eventos <select id="rlCalTypeFilter" onchange="renderCalendar()"><option value="all">Todos</option><option value="race">Campeonatos</option><option value="fun">4FUN</option></select></label>
+    <label>Visualização <select id="rlCalView" onchange="renderCalendar()"><option value="month">Mês</option><option value="list">Lista</option></select></label>
+    <button type="button" class="btn secondary small" onclick="calendarExportIcs()">↓ EXPORTAR .ICS</button>
+  </div>
+  <div class="rlCalMetrics" id="rlCalMetrics" aria-live="polite"></div>
+  <div class="rlCalLayout">
+    <div class="panel rlCalMain" style="padding:14px">
+      <div class="calendar-grid" id="calendarGrid"></div>
+      <div id="rlCalList" hidden></div>
+    </div>
+    <aside class="panel rlCalSide"><h3 id="rlCalDayTitle">Selecione um dia</h3><div id="rlCalDayEvents" class="rlCalDayEvents"><p class="hint">Clique em uma data para ver as corridas e horários.</p></div></aside>
   </div>
   <div class="sectionHead"><div><h2>Agenda de eventos</h2><p>Campeonatos e eventos 4FUN em ordem cronológica.</p></div></div>
   <div class="panel tableWrap"><table><thead><tr><th>Data</th><th>Campeonato / Tipo</th><th>Etapa / Evento</th><th>Status</th></tr></thead><tbody id="calendarAgenda"></tbody></table></div>
@@ -635,21 +861,23 @@ nav button.active{box-shadow:inset 3px 0 var(--green)}
 </div>\n<div class="sectionHead"><div><h2>Gerenciar dados</h2><p>Faça backup, restaure dados ou limpe registros.</p></div><div class="actions"><button class="btn secondary small" onclick="exportData()">↓ EXPORTAR BACKUP</button><label class="btn secondary small" style="cursor:pointer">↑ IMPORTAR BACKUP<input id="importFile" type="file" accept=".json,application/json" onchange="importData(event)" hidden></label></div></div><div class="panel quick"><div class="rowline"><div><b>Dados do portal</b><small id="dataSummary">Carregando…</small></div><button class="btn danger small" onclick="resetData()">RESTAURAR DADOS INICIAIS</button></div><div class="hint">A restauração apaga os dados adicionados neste navegador. Exporte um backup antes. A importação substitui os dados atuais pelo conteúdo do arquivo selecionado.</div></div>
 </section>
 <section id="account" class="page"><div class="subhead"><div class="kicker">ÁREA DO COMPETIDOR</div><h1>Conta do piloto</h1><p>Entre com sua conta segura para acessar seu perfil e as ferramentas autorizadas.</p></div>
-<div class="panel authbox"><div class="authswitch"><button class="btn small" id="loginMode" onclick="setAuthMode('login')">ENTRAR</button><button class="btn secondary small" id="registerMode" onclick="setAuthMode('register')">CRIAR CADASTRO</button></div>
+<div class="rl84AccountIntro"><div class="rl84AccountIcon">🏁</div><div><div class="kicker">DRIVER HUB · ROOKIE LEAGUE</div><h2>Seu espaço no grid.</h2><p>Perfil, licença, conquistas e evolução da sua carreira em um só lugar.</p></div><span class="rl84AccountTag">ÁREA DO PILOTO</span></div>
+<div class="panel authbox"><div class="rl84AuthHeading"><span>🔐 ACESSO À CONTA</span><small>Autenticação segura</small></div><div class="authswitch"><button class="btn small" id="loginMode" onclick="setAuthMode('login')">ENTRAR</button><button class="btn secondary small" id="registerMode" onclick="setAuthMode('register')">CRIAR CADASTRO</button></div>
 <div class="field" id="authNameField"><label>Nome completo do piloto</label><input id="authName" placeholder="Digite seu nome completo"></div>
 <div class="field" style="margin-top:12px"><label>E-mail</label><input id="authEmail" type="email" placeholder="voce@email.com"></div>
 <div class="field" style="margin-top:12px"><label>Senha</label><input id="authPassword" type="password" placeholder="Mínimo de 6 caracteres"></div>
 <div class="formactions"><button class="btn" id="authSubmit" onclick="submitAuth()">ENTRAR</button><button class="btn secondary" onclick="logoutPilot()" id="logoutBtn" style="display:none">SAIR</button></div>
 <p class="mutednote" id="cloudStatus">Conectando ao banco de dados seguro…</p>
-<div id="pilotProfile"></div></div></section>
+<div id="pilotProfile" aria-live="polite"></div></div></section>
 
 <section id="telemetry" class="page">
  <div class="subhead"><div class="kicker">ROOKIE LEAGUE MOTORSPORT · DADOS DE PISTA</div><h1>Telemetria</h1><p>Dados ao vivo, histórico de sessões e análise detalhada das voltas do Assetto Corsa.</p></div>
  <div class="telemetryHero"><div class="kicker">ANÁLISE DE DESEMPENHO</div><h2 style="margin:8px 0">Cada volta conta.</h2><p style="color:var(--muted);margin:0">Selecione uma sessão e uma volta para visualizar os dados gravados pelo Rookie League Telemetry Agent.</p></div>
- <div class="telemetryTabs" role="tablist" aria-label="Seções da telemetria">
+ <div class="telemetryTabs" role="group" aria-label="Seções da telemetria">
   <button class="btn small active" type="button" data-telemetry-tab="live" onclick="switchTelemetryTab('live')">AO VIVO</button>
   <button class="btn secondary small" type="button" data-telemetry-tab="analysis" onclick="switchTelemetryTab('analysis')">ANÁLISE DE VOLTAS</button>
-  <button class="btn secondary small" type="button" data-telemetry-tab="compare" onclick="switchTelemetryTab('compare')">COMPARAR PILOTOS</button>
+  <button class="btn secondary small" type="button" data-telemetry-tab="compare" onclick="switchTelemetryTab('compare')">COMPARAR VOLTAS</button>
+  <button class="btn secondary small" type="button" data-telemetry-tab="track" onclick="switchTelemetryTab('track')">MAPA DA PISTA</button>
  </div>
  <div id="telemetryTabLive" class="telemetryTabPanel">
  <div class="sectionHead"><div><h2>Ao vivo</h2><p>Última leitura recebida do simulador.</p></div><span id="telemetryLiveState" class="pill">AGUARDANDO DADOS</span></div>
@@ -667,21 +895,39 @@ nav button.active{box-shadow:inset 3px 0 var(--green)}
  <div class="panel telemetryChart"><h3>Freio (%)</h3><canvas id="telemetryBrakeChart" width="1000" height="240"></canvas></div>
  </div>
  <div id="telemetryTabCompare" class="telemetryTabPanel" hidden>
-  <div class="sectionHead"><div><h2>Comparação por campeonato</h2><p>Somente pilotos com inscrição aprovada no mesmo campeonato.</p></div><span class="pill">ACESSO CONTROLADO</span></div>
-  <div class="panel">
-   <h3>Comparação entre pilotos</h3>
-   <p class="telemetryStatus">A estrutura desta área está preparada. A comparação só será liberada depois da camada segura no Supabase, que verificará a inscrição aprovada, o campeonato, a pista/configuração e a compatibilidade do carro antes de compartilhar qualquer dado.</p>
-   <div class="telemetryGrid">
-    <div class="metric"><div class="label">Elegibilidade</div><strong style="font-size:16px">Inscrição aprovada</strong></div>
-    <div class="metric"><div class="label">Pista</div><strong style="font-size:16px">Mesma configuração</strong></div>
-    <div class="metric"><div class="label">Veículo</div><strong style="font-size:16px">Categoria compatível</strong></div>
-    <div class="metric"><div class="label">Voltas</div><strong style="font-size:16px">Válidas e completas</strong></div>
-   </div>
-   <p class="telemetryStatus">Os arquivos brutos continuarão privados. O portal receberá apenas os dados de análise autorizados para aquele campeonato.</p>
+  <div class="sectionHead"><div><h2>Comparador de voltas</h2><p>Compare duas voltas gravadas da sua conta, com análise de velocidade, aceleração e frenagem.</p></div><span class="pill">DADOS PRIVADOS</span></div>
+  <div class="panel"><div class="rl78Controls">
+   <label>Volta A<select id="rl78LapA"><option value="">Carregando…</option></select></label>
+   <label>Volta B<select id="rl78LapB"><option value="">Carregando…</option></select></label>
+   <button class="btn" type="button" onclick="rl78CompareLaps()">COMPARAR</button>
+  </div><p id="rl78CompareStatus" class="rl78Hint">Selecione duas voltas da mesma pista e do mesmo carro.</p></div>
+  <div class="rl78Tools"><div class="rl78Tool"><small>Volta A</small><strong id="rl78TimeA">—</strong></div><div class="rl78Tool"><small>Volta B</small><strong id="rl78TimeB">—</strong></div><div class="rl78Tool"><small>Diferença B − A</small><strong id="rl78TimeDelta">—</strong></div></div>
+  <div class="panel telemetryChart"><h3>Velocidade comparada (km/h)</h3><canvas class="rl78Canvas" id="rl78SpeedCompare" width="1000" height="270"></canvas><p class="rl78Hint">Verde: volta A · Azul: volta B. Eixo horizontal: progresso relativo da volta, não distância GPS.</p></div>
+  <div class="twoCol"><div class="panel telemetryChart"><h3>Acelerador comparado (%)</h3><canvas class="rl78Canvas" id="rl78ThrottleCompare" width="700" height="250"></canvas></div><div class="panel telemetryChart"><h3>Freio comparado (%)</h3><canvas class="rl78Canvas" id="rl78BrakeCompare" width="700" height="250"></canvas></div></div>
+
+  <div class="panel rl81Panel" id="rl81Panel">
+   <div class="sectionHead"><div><h2>Replay comparativo na pista</h2><p>Dois carros no mesmo mapa · freada, aceleração, marcha e zoom</p></div><span class="pill">V81 · DUAL REPLAY</span></div>
+   <div class="rl81Legend"><span>● Piloto A — verde</span><span>● Piloto B — azul</span><span>Vermelho: frenagem · Traçado: coordenadas da telemetria</span></div>
+   <div class="rl82Orientation"><strong>ORIENTAÇÃO DA PISTA</strong><button class="btn secondary small" type="button" onclick="rl82Rotate(-1)">↶ 90°</button><button class="btn secondary small" type="button" onclick="rl82Rotate(1)">↷ 90°</button><button class="btn secondary small" type="button" onclick="rl82Flip()">⇋ ESPELHAR</button><button class="btn secondary small" type="button" onclick="rl82ResetOrientation()">RESTAURAR</button><small id="rl82OrientationLabel">Rotação: 90°</small></div><p class="rl82TrackNote">A orientação das coordenadas do simulador pode diferir do mapa oficial. Ajuste a rotação ou o espelhamento para alinhar o traçado.</p><div class="rl81MapWrap" id="rl81MapWrap"><canvas id="rl81Map" width="1100" height="570" aria-label="Mapa de comparação com dois carros"></canvas><div class="rl81Overlay" id="rl81MapBadge">Aguardando duas voltas com GPS</div></div>
+   <div class="rl81Toolbar"><button class="btn small" type="button" id="rl81Play" onclick="rl81Toggle()">▶ REPRODUZIR</button><button class="btn secondary small" type="button" onclick="rl81Seek(0)">↺ INÍCIO</button><input id="rl81Seek" type="range" min="0" max="1000" value="0" oninput="rl81Seek(Number(this.value)/1000)" aria-label="Progresso da comparação"><select id="rl81Speed" aria-label="Velocidade do replay"><option value="0.25">0,25×</option><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select><button class="btn secondary small" type="button" onclick="rl81Zoom(1.3)">＋ ZOOM</button><button class="btn secondary small" type="button" onclick="rl81Zoom(1/1.3)">－ ZOOM</button><button class="btn secondary small" type="button" onclick="rl81ResetView()">CENTRALIZAR</button><label><input type="checkbox" id="rl81Follow" onchange="rl81Render()"> Seguir carros</label></div>
+   <div class="rl81Drivers"><div class="rl81Driver"><div class="rl82Identity"><img class="rl82Portrait" id="rl82PhotoA" alt="Foto do piloto A" hidden><div class="rl82IdentityText"><div class="rl82PilotName" id="rl82PilotNameA">Piloto A</div><div class="rl82PilotDetails" id="rl82PilotDetailsA">Equipe — · Carro —</div></div></div><small id="rl81NameA">PILOTO A · SUA VOLTA</small><b id="rl81MetricsA">—</b><div id="rl81ExtraA">Marcha — · RPM — · Tempo —</div><small>Acelerador <span id="rl81ThrottleA">—</span></small><div class="bar"><i id="rl81ThrottleBarA"></i></div><small>Freio <span id="rl81BrakeA">—</span></small><div class="bar"><i id="rl81BrakeBarA" style="background:#ff665e"></i></div></div><div class="rl81Driver b"><div class="rl82Identity"><img class="rl82Portrait" id="rl82PhotoB" alt="Foto do piloto B" hidden><div class="rl82IdentityText"><div class="rl82PilotName" id="rl82PilotNameB">Piloto B</div><div class="rl82PilotDetails" id="rl82PilotDetailsB">Equipe — · Carro —</div></div></div><small id="rl81NameB">PILOTO B · OUTRA VOLTA</small><b id="rl81MetricsB">—</b><div id="rl81ExtraB">Marcha — · RPM — · Tempo —</div><small>Acelerador <span id="rl81ThrottleB">—</span></small><div class="bar"><i id="rl81ThrottleBarB"></i></div><small>Freio <span id="rl81BrakeB">—</span></small><div class="bar"><i id="rl81BrakeBarB" style="background:#ff665e"></i></div></div></div>
+   <p class="rl81Status" id="rl81Status">Selecione duas voltas e clique em COMPARAR, ou use COMPARAR COM PILOTO. O replay sincroniza pelo percentual da volta, não pelo mesmo instante real.</p>
+  </div>
+  <div class="panel"><h3>Comparação oficial entre pilotos inscritos</h3><p class="rl78Hint">Selecione um campeonato em que sua inscrição foi aprovada. Cada piloto precisa autorizar o compartilhamento. Apenas voltas da mesma pista e carro podem ser comparadas.</p>
+   <div class="rl78Controls"><label>Campeonato<select id="rl80Champ" onchange="rl80LoadOfficial()"><option value="">Selecione</option></select></label><label>Piloto<select id="rl80Driver" onchange="rl80LoadOfficialLaps()"><option value="">Selecione</option></select></label><label>Volta do piloto<select id="rl80RemoteLap"><option value="">Selecione</option></select></label></div>
+   <div class="rl80Actions"><label class="rl80Consent"><input type="checkbox" id="rl80Consent" onchange="rl80SaveConsent()"> Autorizar compartilhar minhas voltas com inscritos deste campeonato</label><button type="button" class="btn" onclick="rl80CompareOfficial()">COMPARAR COM PILOTO</button></div><p id="rl80OfficialStatus" class="rl78Hint">A comparação exige a Edge Function telemetry-compare instalada.</p>
   </div>
  </div>
+ <div id="telemetryTabTrack" class="telemetryTabPanel" hidden>
+  <div class="sectionHead"><div><h2>Mapa da pista</h2><p>Traçado obtido das coordenadas registradas pelo simulador.</p></div></div>
+  <div class="panel rl80ReplayPanel"><div class="rl80ReplayHead"><strong>REPLAY DA VOLTA</strong><span id="rl80ReplayClock">00:00.000</span></div><div class="rl82Orientation"><strong>ORIENTAÇÃO DA PISTA</strong><button class="btn secondary small" type="button" onclick="rl82Rotate(-1)">↶ 90°</button><button class="btn secondary small" type="button" onclick="rl82Rotate(1)">↷ 90°</button><button class="btn secondary small" type="button" onclick="rl82Flip()">⇋ ESPELHAR</button><button class="btn secondary small" type="button" onclick="rl82ResetOrientation()">RESTAURAR</button><small>O ajuste também vale para o comparador</small></div><canvas class="rl78Canvas" id="rl78TrackMap" width="1000" height="450"></canvas>
+   <div class="rl80ReplayControls"><button type="button" class="btn small" id="rl80Play" onclick="rl80ToggleReplay()">▶ REPRODUZIR</button><button type="button" class="btn secondary small" onclick="rl80Seek(0)">↺ INÍCIO</button><input type="range" id="rl80Seek" min="0" max="1000" value="0" oninput="rl80Seek(Number(this.value)/1000)" aria-label="Progresso do replay"><select id="rl80Speed" aria-label="Velocidade de reprodução"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></div>
+   <div class="rl80ReplayMetrics"><div><small>VELOCIDADE</small><strong id="rl80SpeedVal">—</strong></div><div><small>MARCHA</small><strong id="rl80GearVal">—</strong></div><div><small>RPM</small><strong id="rl80RpmVal">—</strong></div><div><small>ACELERADOR</small><strong id="rl80ThrottleVal">—</strong><div class="rl80Bar"><i id="rl80ThrottleBar"></i></div></div><div><small>FREIO</small><strong id="rl80BrakeVal">—</strong><div class="rl80Bar brake"><i id="rl80BrakeBar"></i></div></div></div>
+   <div class="rl80Legend"><span>● Aceleração</span><span>● Frenagem</span><span>● Trecho neutro</span><span>● Carro em movimento</span></div><p id="rl78TrackStatus" class="rl78Hint">Abra uma volta em Análise de Voltas para desenhar o traçado. A disponibilidade depende das coordenadas gravadas pelo agente.</p></div>
+  <div class="rl78Tools"><div class="rl78Tool"><small>Pista</small><strong id="rl78TrackName" style="font-size:16px">—</strong></div><div class="rl78Tool"><small>Amostras de posição</small><strong id="rl78TrackPoints">—</strong></div><div class="rl78Tool"><small>Volta analisada</small><strong id="rl78TrackLap">—</strong></div></div>
+ </div>
 </section>
-<footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • V80 • ACESSO DE PILOTOS</span></footer>
+<footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • V81 • ACESSO DE PILOTOS</span></footer>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">document.addEventListener('change',e=>{if(e.target&&e.target.id==='communityFile'){const fs=[...(e.target.files||[])];const label=document.getElementById('communityFileNames');if(label)label.textContent=fs.length?fs.map(f=>f.name).join(', '):'1 foto ou vídeo · até 8 MB';}});
 </script>
@@ -730,7 +976,7 @@ function switchAdminTab(targetId,button){
  try{refreshSelects()}catch(error){console.error('Falha ao atualizar listas da administração:',error)}
 }
 function switchTelemetryTab(tab){
- const allowed=['live','analysis','compare'];if(!allowed.includes(tab))return;
+ const allowed=['live','analysis','compare','track'];if(!allowed.includes(tab))return;
  allowed.forEach(key=>{
   const panel=document.getElementById('telemetryTab'+key.charAt(0).toUpperCase()+key.slice(1));
   const button=document.querySelector('[data-telemetry-tab="'+key+'"]');
@@ -1315,6 +1561,25 @@ function toggleLiveTiming(){
  const expanded=panel.classList.toggle('expanded');
  btn.textContent=expanded?'REDUZIR −':'EXPANDIR ↗';
 }
+let rl86NextEvent=null;
+function rl86UpcomingData(){
+ const items=[...(db.races||[]).filter(x=>x.date).map(x=>({date:x.date,time:x.time||'',title:x.name||'Etapa',category:champName(x.champId),type:'race'})),...(db.funEvents||[]).filter(x=>x.date).map(x=>({date:x.date,time:x.time||'',title:x.name||'Evento 4FUN',category:'4FUN',type:'fun'}))];
+ const now=new Date();
+ return items.map(x=>{const date=String(x.date).slice(0,10);const rawTime=/^\d{1,2}:\d{2}$/.test(x.time)?x.time:'20:00';const when=new Date(date+'T'+rawTime+':00');return {...x,when}}).filter(x=>!isNaN(x.when)&&x.when>=now).sort((a,b)=>a.when-b.when);
+}
+function rl86RenderUpcoming(){
+ const box=document.getElementById('rl86UpcomingEvents');if(!box)return;
+ const events=rl86UpcomingData();rl86NextEvent=events[0]||null;
+ box.innerHTML=events.length?events.slice(0,3).map((e,i)=>`<div class="rl86EventRow"><div class="rl86EventDate"><strong>${String(e.when.getDate()).padStart(2,'0')}</strong><small>${e.when.toLocaleDateString('pt-BR',{month:'short'}).replace('.','').toUpperCase()}</small></div><div class="rl86EventText"><span>${esc(e.category)} · ${e.type==='fun'?'4FUN':'ETAPA OFICIAL'}</span><strong>${esc(e.title)}</strong><small>${esc(e.time||'Horário a confirmar')}</small></div><span class="rl86EventRank">${i===0?'PRÓXIMA':'EM BREVE'}</span></div>`).join(''):'<p class="hint">Nenhum evento futuro cadastrado. Consulte o calendário para mais informações.</p>';
+ rl86TickCountdown();
+}
+function rl86TickCountdown(){
+ const target=rl86NextEvent?.when;const box=document.getElementById('rl86Countdown'),info=document.getElementById('rl86CountdownInfo');if(!box||!info)return;
+ if(!target){box.innerHTML='<span>--<small>DIAS</small></span><span>--<small>HORAS</small></span><span>--<small>MIN</small></span><span>--<small>SEG</small></span>';info.textContent='Nenhum evento futuro agendado';return}
+ const diff=Math.max(0,target.getTime()-Date.now());const sec=Math.floor(diff/1000),vals=[Math.floor(sec/86400),Math.floor(sec%86400/3600),Math.floor(sec%3600/60),sec%60];
+ box.innerHTML=vals.map((v,i)=>`<span>${String(v).padStart(2,'0')}<small>${['DIAS','HORAS','MIN','SEG'][i]}</small></span>`).join('');info.textContent=diff===0?'Horário previsto da etapa atingido':rl86NextEvent.category+' · '+rl86NextEvent.title;
+}
+setInterval(()=>{if(document.getElementById('home')?.classList.contains('active'))rl86TickCountdown()},1000);
 function renderHomeNextRace(){
  const now=new Date();now.setHours(0,0,0,0);
  const upcomingRaces=(db.races||[]).filter(r=>r.date).map(r=>{
@@ -1582,7 +1847,7 @@ function renderRaceCenterDetail(id){
  ${e.type==='CHAMPIONSHIP'&&champ?`<div class="detailActions"><button class="btn secondary" onclick="openChampionship('${esc(champ.id)}')">VER CAMPEONATO</button><button class="btn secondary" onclick="document.getElementById('resultChamp').value='${esc(champ.id)}';showPage('results')">CLASSIFICAÇÃO GERAL</button></div>`:''}`;
 }
 function renderAll(){
-renderRaceControlGate();renderNews();renderCommunityAwards();renderFunEvents();renderTracks();renderRaceCenter();document.getElementById('homeCards').innerHTML=db.championships.slice(0,3).map(card).join('');renderHomeNextRace();
+renderRaceControlGate();renderNews();renderCommunityAwards();renderFunEvents();renderTracks();renderRaceCenter();document.getElementById('homeCards').innerHTML=db.championships.slice(0,3).map(card).join('');renderHomeNextRace();rl86RenderUpcoming();
 let q=(document.getElementById('champSearch')?.value||'').toLowerCase(),cat=document.getElementById('champCategoryFilter')?.value||'',status=document.getElementById('champStatusFilter')?.value||'';let filtered=db.championships.filter(c=>{let stages=db.races.filter(r=>r.champId===c.id),done=stages.length?stages.filter(r=>db.results.some(x=>x.raceId===r.id)).length>=stages.length:Number(c.progress||0)===100;return c.name.toLowerCase().includes(q)&&(!cat||c.category===cat)&&(!status||(status==='done'?done:!done))});document.getElementById('allCards').innerHTML=filtered.map(card).join('')||'<div class="empty">Nenhum campeonato encontrado com esses filtros.</div>';if(cloudUser)refreshPilotChampionshipActions();
 let ranks=rankDrivers().filter(d=>d.titles>0),position=0,last=-1;let hall=ranks.map((d,i)=>{if(d.titles!==last)position=i+1;last=d.titles;return `<tr><td class="rank">${podium(position)}</td><td class="driver">${esc(d.name)}</td><td class="count">${d.titles}</td><td>${esc(d.category||'—')}</td></tr>`}).join('')||'<tr><td colspan="4" class="empty">Nenhum piloto com título registrado ainda.</td></tr>';
 document.getElementById('homeHall').innerHTML=hall;document.getElementById('hallRows').innerHTML=ranks.map((d,i)=>`<tr><td class="rank">${podium(i===0?1:(d.titles===ranks[0]?.titles?1:i+1))}</td><td class="driver">${esc(d.name)}</td><td class="count">${d.titles}</td><td>${db.titles.filter(t=>t.driverId===d.id).map(t=>esc(t.season||champName(t.champId))).join(', ')||'—'}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">Nenhum piloto com título registrado ainda.</td></tr>';
@@ -1787,16 +2052,32 @@ async function renderProfile(){
   const {data:decided,error:de}=await supabaseClient.from('driver_profile_change_requests').select('id,status,reviewed_at').eq('driver_id',String(d.id)).in('status',['approved','rejected']).order('reviewed_at',{ascending:false});if(de)throw de;const seenKey='rookie_profile_seen_'+cloudUser.id;let seenIds=[];try{seenIds=JSON.parse(localStorage.getItem(seenKey)||'[]')}catch(e){}const unread=[...(decided||[]).map(x=>'profile:'+x.id),...(evals||[]).map(x=>'eval:'+x.id)].filter(x=>!seenIds.includes(String(x)));const pilotDot=document.getElementById('pilotAccountBadge');if(pilotDot)pilotDot.hidden=unread.length===0;
   const rs=db.results.filter(x=>String(x.driverId)===String(d.id)),wins=rs.filter(x=>Number(x.position)===1).length,podiums=rs.filter(x=>Number(x.position)<=3).length,titles=db.titles.filter(x=>String(x.driverId)===String(d.id)).length;
   const photo=d.profile_photo_url||'';
+  const careerPoints=rs.reduce((sum,r)=>sum+(Number(r.points)||0),0);
+  const bestFinish=rs.filter(r=>Number(r.position)>0).reduce((best,r)=>Math.min(best,Number(r.position)),Infinity);
+  const latestSR=(srHistory||[]).filter(r=>Number.isFinite(Number(r.delta))).sort((a,b)=>new Date(b.updated_at||0)-new Date(a.updated_at||0))[0];
+  const recentDelta=latestSR?Number(latestSR.delta):null;
   const evolutionNotices=[...(srHistory||[]).map(x=>({key:'sr:'+x.race_id,date:x.updated_at,title:'Resultado computado no Safety Rating',body:`${Number(x.position)}º lugar • SR ${Number(x.delta)>0?'+':''}${Number(x.delta).toFixed(2)}`,kind:'🏁'})),...(decided||[]).map(x=>({key:'profile:'+x.id,date:x.reviewed_at||x.created_at,title:x.status==='approved'?'Alteração do perfil aprovada':'Alteração do perfil recusada',body:x.status==='approved'?'O administrador aprovou as alterações do seu perfil.':'O administrador recusou as alterações solicitadas.',kind:x.status==='approved'?'✓':'!'})),...db.titles.filter(x=>String(x.driverId)===String(d.id)).map((x,i)=>({key:'title:'+x.id,date:x.created_at||null,title:'Título registrado',body:esc(x.season||champName(x.champId)),kind:'🏆'}))].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
   const notificationRows=evolutionNotices.map(n=>`<div class="profileNoticeItem"><div class="profileNoticeIcon">${n.kind}</div><div class="profileNoticeText"><strong>${esc(n.title)}</strong><p>${esc(n.body)}</p><small>${n.date?new Date(n.date).toLocaleString('pt-BR'):'Data não informada'}</small></div></div>`).join('')||'<p class="empty">Ainda não há notificações de evolução.</p>';
-  box.innerHTML=`<div class="pilotProfileTabs"><button class="btn small active" id="pilotProfileTabOverview" onclick="switchPilotProfileTab('overview',this)">MEU PERFIL</button><button class="btn small secondary" id="pilotProfileTabCareer" onclick="switchPilotProfileTab('career',this)">MINHA CARREIRA</button><button class="btn small secondary" id="pilotProfileTabNotices" onclick="switchPilotProfileTab('notices',this)">NOTIFICAÇÕES${unread.length?` • ${unread.length}`:''}</button></div><div id="pilotProfileOverview"><div class="license-card"><div style="display:flex;align-items:center;gap:15px;margin-bottom:16px">${photo?`<img class="profileAvatar" src="${esc(photo)}" alt="Foto">`:'<div class="profileAvatar" style="display:grid;place-items:center;font-size:28px">🏎</div>'}<div><div class="kicker">ROOKIE LEAGUE • DRIVER PROFILE</div><h2>${esc(d.name)}</h2><p class="hint">${esc(d.team||'Equipe não definida')} ${d.car_number?' • #'+esc(d.car_number):''}</p></div></div>
-  <div class="license-grid"><div class="license-stat"><small>Licença</small><strong>${esc(license.license_class||'R')}</strong></div><div class="license-stat"><small>Safety Rating</small><strong>${Number(license.safety_rating??2.5).toFixed(2)}</strong></div><div class="license-stat"><small>Próxima classe</small><strong>${esc(nextLicenseClass(license.license_class||'R'))}</strong></div></div>
+  box.innerHTML=`<div class="pilotProfileTabs"><button class="btn small active" id="pilotProfileTabOverview" onclick="switchPilotProfileTab('overview',this)">MEU PERFIL</button><button class="btn small secondary" id="pilotProfileTabCareer" onclick="switchPilotProfileTab('career',this)">MINHA CARREIRA</button><button class="btn small secondary" id="pilotProfileTabNotices" onclick="switchPilotProfileTab('notices',this)">NOTIFICAÇÕES${unread.length?` • ${unread.length}`:''}</button></div><div id="pilotProfileOverview"><div class="license-card rl84DriverCard"><div class="rl84DriverTop"><div class="rl84DriverStripe">PILOTO OFICIAL · ROOKIE LEAGUE MOTORSPORT</div><div class="rl84DriverIdentity">${photo?`<img class="profileAvatar" src="${esc(photo)}" alt="Foto">`:'<div class="profileAvatar" style="display:grid;place-items:center;font-size:28px">🏎</div>'}<div><div class="kicker">ROOKIE LEAGUE • DRIVER PROFILE</div><h2>${esc(d.name)}</h2><p class="hint">${esc(d.team||'Equipe não definida')} ${d.car_number?' • #'+esc(d.car_number):''}</p></div></div></div>
+  <div class="rl85Dashboard"><div class="rl85DashHead"><div><span class="rl85Eyebrow">DRIVER PERFORMANCE</span><h3>Resumo da temporada</h3></div><span class="rl85Status">● PERFIL OFICIAL</span></div><div class="rl85DashGrid"><div><small>PONTOS CONQUISTADOS</small><strong>${careerPoints.toLocaleString('pt-BR',{maximumFractionDigits:1})}</strong></div><div><small>MELHOR CHEGADA</small><strong>${Number.isFinite(bestFinish)?bestFinish+'º':'—'}</strong></div><div><small>ÚLTIMA VARIAÇÃO SR</small><strong class="${recentDelta===null?'':recentDelta>=0?'rl85Positive':'rl85Negative'}">${recentDelta===null?'—':(recentDelta>0?'+':'')+recentDelta.toFixed(2)}</strong></div></div></div>
+  <div class="license-grid rl84LicenseGrid"><div class="license-stat"><small>Licença</small><strong>${esc(license.license_class||'R')}</strong></div><div class="license-stat"><small>Safety Rating</small><strong>${Number(license.safety_rating??2.5).toFixed(2)}</strong></div><div class="license-stat"><small>Próxima classe</small><strong>${esc(nextLicenseClass(license.license_class||'R'))}</strong></div></div>
   <div class="license-grid"><div class="license-stat"><small>Corridas</small><strong>${rs.length}</strong></div><div class="license-stat"><small>Vitórias</small><strong>${wins}</strong></div><div class="license-stat"><small>Pódios</small><strong>${podiums}</strong></div><div class="license-stat"><small>Títulos</small><strong>${titles}</strong></div></div>
   ${pending?.length?'<div class="profilePending">Sua alteração está aguardando aprovação do administrador.</div>':''}
-  <h3 style="margin-top:18px">Solicitar alteração do perfil</h3><p class="hint">Equipe, número e foto só serão atualizados após aprovação do administrador.</p>
-  <div class="profileEditGrid"><div class="field"><label>Equipe</label><input id="profileTeamRequest" maxlength="80" value="${esc(d.team||'')}" placeholder="Nome da equipe"></div><div class="field"><label>Número do carro</label><input id="profileCarRequest" maxlength="8" value="${esc(d.car_number||'')}" placeholder="Ex.: 27"></div><div class="field" style="grid-column:1/-1"><label>Foto do piloto</label><input id="profilePhotoRequest" type="file" accept="image/png,image/jpeg,image/webp"><input id="profileCurrentPhoto" type="hidden" value="${esc(photo)}"><small class="hint">Selecione uma imagem JPG, PNG ou WEBP de até 5 MB. A foto só muda após aprovação.</small></div></div><div class="formactions"><button class="btn" onclick="submitDriverProfileChange('${String(d.id)}')">ENVIAR PARA APROVAÇÃO</button></div>
-  <h3 style="margin-top:18px">Evolução por resultados</h3><div class="tableWrap"><table><thead><tr><th>Etapa</th><th>Chegada</th><th>Variação SR</th></tr></thead><tbody>${(srHistory||[]).map(x=>`<tr><td>${esc(db.races.find(r=>String(r.id)===String(x.race_id))?.name||'Etapa')}</td><td>${Number(x.position)}º lugar</td><td>${Number(x.delta)>0?'+':''}${Number(x.delta).toFixed(2)}</td></tr>`).join('')||'<tr><td colspan="3">Nenhuma evolução registrada.</td></tr>'}</tbody></table></div></div></div><div id="pilotProfileNotices" class="license-card" style="display:none"><h3>Notificações da sua evolução</h3><p class="hint">Acompanhe avaliações, evolução do Safety Rating, decisões sobre seu perfil e títulos conquistados.</p><div class="profileNoticeList">${notificationRows}</div></div><div id="pilotProfileCareer" style="display:none">${(window.__rookieCareerLicense=license.license_class||'R',window.__rookieCareerSR=Number(license.safety_rating??2.5),buildPilotCareerMarkup(rs,evals||[],db.titles.filter(x=>String(x.driverId)===String(d.id)),srHistory||[],srBaseline?.starting_sr))}</div>`;
+  <div class="rl85QuickActions"><button type="button" onclick="switchPilotProfileTab('career')" class="btn secondary small">📈 VER MINHA CARREIRA</button><button type="button" onclick="switchPilotProfileTab('notices')" class="btn secondary small">🔔 VER NOTIFICAÇÕES</button><button type="button" onclick="document.getElementById('profileTeamRequest')?.focus()" class="btn secondary small">✎ EDITAR DADOS</button></div>
+  <div class="rl84SectionLabel"><span>⚙️ DADOS DO PILOTO</span><small>Alterações sujeitas à aprovação da administração</small></div><h3 style="margin-top:18px">Solicitar alteração do perfil</h3><p class="hint">Equipe, número e foto só serão atualizados após aprovação do administrador.</p>
+  <div class="profileEditGrid"><div class="field"><label>Equipe</label><input id="profileTeamRequest" maxlength="80" value="${esc(d.team||'')}" placeholder="Nome da equipe"></div><div class="field"><label>Número do carro</label><input id="profileCarRequest" maxlength="8" value="${esc(d.car_number||'')}" placeholder="Ex.: 27"></div><div class="field" style="grid-column:1/-1"><label>Foto do piloto</label><div class="rl85PhotoUpload"><div id="rl85PhotoPreview" class="rl85PhotoPreview">${photo?`<img src="${esc(photo)}" alt="Prévia da foto atual">`:'🏎'}</div><div class="rl85PhotoControl"><input id="profilePhotoRequest" type="file" accept="image/png,image/jpeg,image/webp" onchange="rl85PreviewPhoto(this)"><small>Pré-visualização antes de enviar para aprovação.</small></div></div><input id="profileCurrentPhoto" type="hidden" value="${esc(photo)}"><small class="hint">Selecione uma imagem JPG, PNG ou WEBP de até 5 MB. A foto só muda após aprovação.</small></div></div><div class="formactions"><button class="btn" onclick="submitDriverProfileChange('${String(d.id)}')">ENVIAR PARA APROVAÇÃO</button></div>
+  <div class="rl84SectionLabel"><span>📈 PERFORMANCE</span><small>Atualização após homologação dos resultados</small></div><h3 style="margin-top:18px">Evolução por resultados</h3><div class="tableWrap"><table><thead><tr><th>Etapa</th><th>Chegada</th><th>Variação SR</th></tr></thead><tbody>${(srHistory||[]).map(x=>`<tr><td>${esc(db.races.find(r=>String(r.id)===String(x.race_id))?.name||'Etapa')}</td><td>${Number(x.position)}º lugar</td><td>${Number(x.delta)>0?'+':''}${Number(x.delta).toFixed(2)}</td></tr>`).join('')||'<tr><td colspan="3">Nenhuma evolução registrada.</td></tr>'}</tbody></table></div></div></div><div id="pilotProfileNotices" class="license-card" style="display:none"><h3>Notificações da sua evolução</h3><p class="hint">Acompanhe avaliações, evolução do Safety Rating, decisões sobre seu perfil e títulos conquistados.</p><div class="profileNoticeList">${notificationRows}</div></div><div id="pilotProfileCareer" style="display:none">${(window.__rookieCareerLicense=license.license_class||'R',window.__rookieCareerSR=Number(license.safety_rating??2.5),buildPilotCareerMarkup(rs,evals||[],db.titles.filter(x=>String(x.driverId)===String(d.id)),srHistory||[],srBaseline?.starting_sr))}</div>`;
  }catch(e){box.innerHTML=`<div class="license-card"><h3>Perfil do piloto</h3><p>Falha ao carregar: ${esc(e.message||e)}. Confira se executou o SQL da atualização.</p></div>`}
+}
+function rl85PreviewPhoto(input){
+ const preview=document.getElementById('rl85PhotoPreview');
+ if(!preview)return;
+ const file=input?.files?.[0];
+ if(!file)return;
+ if(!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>5*1024*1024){alert('Selecione uma foto JPG, PNG ou WEBP de até 5 MB.');input.value='';return}
+ const reader=new FileReader();
+ reader.onload=()=>{preview.textContent='';const img=document.createElement('img');img.src=String(reader.result);img.alt='Prévia da nova foto';preview.appendChild(img)};
+ reader.readAsDataURL(file);
 }
 async function submitDriverProfileChange(driverId){
  const team=document.getElementById('profileTeamRequest').value.trim(),car=document.getElementById('profileCarRequest').value.trim();
@@ -1938,38 +2219,85 @@ function importData(event){
   reader.readAsText(file);
 }
 
-let calendarCursor = new Date();
-calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth(), 1);
-function changeCalendarMonth(delta){
-  calendarCursor = new Date(calendarCursor.getFullYear(), calendarCursor.getMonth()+delta, 1);
-  renderCalendar();
+let calendarCursor=new Date();
+calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth(),1);
+let rlCalSelectedDate='';
+function rlCalIso(d){return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')}
+function rlCalDate(iso){return new Date(String(iso).slice(0,10)+'T12:00:00')}
+function rlCalEvents(){
+ return [
+  ...db.races.filter(r=>r.date).map(r=>({date:String(r.date).slice(0,10),type:'race',champId:String(r.champId),title:`${champName(r.champId)}: ${r.name}`,time:r.time||'',track:db.tracks.find(t=>String(t.id)===String(r.trackId))?.name||'Pista a definir',label:champName(r.champId)})),
+  ...(db.funEvents||[]).filter(e=>e.date).map(e=>({date:String(e.date).slice(0,10),type:'fun',champId:'fun',title:`4FUN: ${e.name}`,time:e.time||'',track:e.trackName||'Pista a definir',label:'4FUN'}))
+ ].sort((a,b)=>a.date.localeCompare(b.date)||String(a.time).localeCompare(String(b.time)));
+}
+function rlCalFiltered(){
+ const c=document.getElementById('rlCalChampFilter')?.value||'all',t=document.getElementById('rlCalTypeFilter')?.value||'all';
+ return rlCalEvents().filter(e=>(c==='all'||e.champId===c)&&(t==='all'||e.type===t));
+}
+function changeCalendarMonth(delta){calendarCursor=new Date(calendarCursor.getFullYear(),calendarCursor.getMonth()+delta,1);rlCalSelectedDate='';renderCalendar()}
+function calendarGoToday(){const d=new Date();calendarCursor=new Date(d.getFullYear(),d.getMonth(),1);rlCalSelectedDate=rlCalIso(d);renderCalendar()}
+function rlCalSelectDate(iso){rlCalSelectedDate=iso;renderCalendar()}
+function rlCalEventCard(e){
+ const future=e.date>=rlCalIso(new Date());
+ return `<article class="rlCalEventCard ${e.type==='fun'?'isFun':''}"><div class="rlCalEventMeta">${e.type==='fun'?'4FUN':'CAMPEONATO'} · ${future?'AGENDADO':'DATA PASSADA'}</div><strong>${esc(e.title)}</strong><div>${esc(e.track)}</div><small>🕒 ${esc(e.time||'Horário a definir')}</small></article>`;
+}
+function rlCalDayDetail(events){
+ const iso=rlCalSelectedDate;
+ const title=document.getElementById('rlCalDayTitle'),box=document.getElementById('rlCalDayEvents');
+ if(!title||!box)return;
+ title.textContent=iso?new Intl.DateTimeFormat('pt-BR',{weekday:'long',day:'numeric',month:'long'}).format(rlCalDate(iso)):'Selecione um dia';
+ const list=events.filter(e=>e.date===iso);
+ box.innerHTML=iso?(list.length?list.map(rlCalEventCard).join(''):'<p class="hint">Nenhum evento nesta data.</p>'):'<p class="hint">Clique em uma data para consultar os detalhes.</p>';
 }
 function renderCalendar(){
-  const grid=document.getElementById('calendarGrid'); if(!grid)return;
-  const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth();
-  document.getElementById('calendarMonthTitle').textContent=new Intl.DateTimeFormat('pt-BR',{month:'long',year:'numeric'}).format(calendarCursor);
-  const weekdays=['DOM','SEG','TER','QUA','QUI','SEX','SÁB'];
-  let out=weekdays.map(d=>`<div class="cal-weekday">${d}</div>`).join('');
-  const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();
-  const prevDays=new Date(y,m,0).getDate();
-  const today=new Date();
-  const calendarEvents=[
-    ...db.races.filter(r=>r.date).map(r=>({date:r.date,type:'race',title:`${champName(r.champId)}: ${r.name}`,time:r.time||'',track:db.tracks.find(t=>String(t.id)===String(r.trackId))?.name||'Pista a definir',label:champName(r.champId)})),
-    ...(db.funEvents||[]).filter(e=>e.date).map(e=>({date:e.date,type:'fun',title:`4FUN: ${e.name}`,time:e.time||'',track:e.trackName||'Pista a definir',label:'4FUN'}))
-  ];
-  for(let i=0;i<42;i++){
-    let dayNum,dateObj,muted=false;
-    if(i<first){dayNum=prevDays-first+i+1;dateObj=new Date(y,m-1,dayNum);muted=true}
-    else if(i>=first+days){dayNum=i-first-days+1;dateObj=new Date(y,m+1,dayNum);muted=true}
-    else{dayNum=i-first+1;dateObj=new Date(y,m,dayNum)}
-    const iso=[dateObj.getFullYear(),String(dateObj.getMonth()+1).padStart(2,'0'),String(dateObj.getDate()).padStart(2,'0')].join('-');
-    const events=calendarEvents.filter(e=>e.date===iso);
-    const isToday=dateObj.toDateString()===today.toDateString();
-    out+=`<div class="cal-day ${muted?'muted':''} ${isToday?'today':''}"><div class="cal-date">${dayNum}</div>${events.map(e=>`<span class="cal-event" style="${e.type==='fun'?'background:#38bdf818;color:#7dd3fc;border:1px solid #38bdf833;':''}" title="${esc(e.title)}">${esc(e.title)}${e.time?' · '+esc(e.time):''}</span>`).join('')}${events.length?'':'<div class="cal-empty">—</div>'}</div>`;
-  }
-  grid.innerHTML=out;
-  const sorted=calendarEvents.slice().sort((a,b)=>a.date.localeCompare(b.date)||(a.time||'').localeCompare(b.time||''));
-  document.getElementById('calendarAgenda').innerHTML=sorted.map(e=>`<tr><td>${new Date(e.date+'T12:00:00').toLocaleDateString('pt-BR')}</td><td>${esc(e.label)}</td><td>${esc(e.title.replace(/^(4FUN: |.*?: )/,''))}<div class="mutednote">${esc(e.track)}${e.time?' · '+esc(e.time):''}</div></td><td><span class="pill">${e.date < new Date().toISOString().slice(0,10)?'DATA PASSADA':'AGENDADO'}</span></td></tr>`).join('')||'<tr><td colspan="4" class="empty">Nenhuma etapa ou evento 4FUN com data cadastrada. Adicione um evento pela área de Administração.</td></tr>';
+ const grid=document.getElementById('calendarGrid');if(!grid)return;
+ const filter=document.getElementById('rlCalChampFilter');
+ if(filter){
+  const prev=filter.value;
+  const champs=[...new Map(rlCalEvents().filter(e=>e.type==='race').map(e=>[e.champId,e.label])).entries()];
+  filter.innerHTML='<option value="all">Todos os campeonatos</option>'+champs.map(([id,name])=>`<option value="${esc(id)}">${esc(name)}</option>`).join('')+'<option value="fun">4FUN</option>';
+  filter.value=[...filter.options].some(o=>o.value===prev)?prev:'all';
+ }
+ const events=rlCalFiltered(),todayIso=rlCalIso(new Date());
+ const y=calendarCursor.getFullYear(),m=calendarCursor.getMonth(),monthPrefix=`${y}-${String(m+1).padStart(2,'0')}-`;
+ document.getElementById('calendarMonthTitle').textContent=new Intl.DateTimeFormat('pt-BR',{month:'long',year:'numeric'}).format(calendarCursor);
+ const monthEvents=events.filter(e=>e.date.startsWith(monthPrefix));
+ const next=events.find(e=>e.date>=todayIso);
+ const metrics=document.getElementById('rlCalMetrics');
+ if(metrics)metrics.innerHTML=`<div><small>EVENTOS NO MÊS</small><strong>${monthEvents.length}</strong></div><div><small>CAMPEONATOS</small><strong>${monthEvents.filter(e=>e.type==='race').length}</strong></div><div><small>4FUN</small><strong>${monthEvents.filter(e=>e.type==='fun').length}</strong></div><div><small>PRÓXIMO EVENTO</small><strong>${next?esc(rlCalDate(next.date).toLocaleDateString('pt-BR')):'—'}</strong></div>`;
+ const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();
+ let out=['DOM','SEG','TER','QUA','QUI','SEX','SÁB'].map(d=>`<div class="cal-weekday">${d}</div>`).join('');
+ const count=Math.ceil((first+days)/7)*7;
+ for(let i=0;i<count;i++){
+  const dateObj=new Date(y,m,1-first+i),iso=rlCalIso(dateObj),muted=dateObj.getMonth()!==m;
+  const dayEvents=events.filter(e=>e.date===iso);
+  out+=`<button type="button" class="cal-day ${muted?'muted':''} ${iso===todayIso?'today':''} ${iso===rlCalSelectedDate?'rlCalSelected':''}" onclick="rlCalSelectDate('${iso}')" aria-label="${esc(dateObj.toLocaleDateString('pt-BR'))}, ${dayEvents.length} eventos" aria-pressed="${iso===rlCalSelectedDate}"><span class="cal-date">${dateObj.getDate()}</span><span class="rlCalDots">${dayEvents.slice(0,4).map(e=>`<i class="${e.type==='fun'?'isFun':''}"></i>`).join('')}</span>${dayEvents.slice(0,2).map(e=>`<span class="cal-event ${e.type==='fun'?'rlCalFun':''}">${esc(e.title)}</span>`).join('')}${dayEvents.length>2?`<span class="rlCalMore">+${dayEvents.length-2} eventos</span>`:''}</button>`;
+ }
+ grid.innerHTML=out;
+ const view=document.getElementById('rlCalView')?.value||'month';
+ grid.hidden=view==='list';
+ const list=document.getElementById('rlCalList');
+ if(list){
+  list.hidden=view!=='list';
+  list.innerHTML=monthEvents.length?monthEvents.map(e=>`<button type="button" class="rlCalListItem" onclick="rlCalSelectDate('${e.date}')"><span>${rlCalDate(e.date).toLocaleDateString('pt-BR')}</span><strong>${esc(e.title)}</strong><small>${esc(e.track)} · ${esc(e.time||'Horário a definir')}</small></button>`).join(''):'<p class="hint">Nenhum evento neste mês com os filtros selecionados.</p>';
+ }
+ rlCalDayDetail(events);
+ const agenda=document.getElementById('calendarAgenda');
+ if(agenda)agenda.innerHTML=events.map(e=>`<tr><td>${rlCalDate(e.date).toLocaleDateString('pt-BR')}</td><td>${esc(e.label)}</td><td>${esc(e.title.replace(/^(4FUN: |.*?: )/,''))}<div class="mutednote">${esc(e.track)}${e.time?' · '+esc(e.time):''}</div></td><td><span class="pill">${e.date<todayIso?'DATA PASSADA':'AGENDADO'}</span></td></tr>`).join('')||'<tr><td colspan="4" class="empty">Nenhuma etapa ou evento com data cadastrada.</td></tr>';
+}
+function calendarExportIcs(){
+ const events=rlCalFiltered();
+ if(!events.length){alert('Não há eventos para exportar.');return}
+ const clean=s=>String(s||'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/,/g,'\\,').replace(/;/g,'\\;');
+ const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+ const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Rookie League//Calendario//PT-BR','CALSCALE:GREGORIAN'];
+ events.forEach((e,i)=>{
+  const day=e.date.replace(/-/g,'');
+  lines.push('BEGIN:VEVENT',`UID:rookie-${day}-${i}@rookieleague`,`DTSTAMP:${stamp}`,`DTSTART;VALUE=DATE:${day}`,`SUMMARY:${clean(e.title)}`,`DESCRIPTION:${clean(e.track+' | Horário informado no portal: '+(e.time||'a definir'))}`,'END:VEVENT');
+ });
+ lines.push('END:VCALENDAR');
+ const url=URL.createObjectURL(new Blob([lines.join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'}));
+ const a=document.createElement('a');a.href=url;a.download='rookie-league-calendario.ics';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
 renderAll();
@@ -2105,6 +2433,7 @@ initializeCloud();
 
 // Rookie League Telemetry dashboard
 let telemetrySessionsCache=[], telemetryLapsCache=[], telemetryRefreshTimer=null;
+let rl78CurrentSamples=[],rl78CurrentLap=null,rl78CompareCatalog=[];
 const telemetryFmtMs=v=>{const n=Number(v);if(!Number.isFinite(n)||n<=0)return '—';const m=Math.floor(n/60000),s=((n%60000)/1000).toFixed(3).padStart(6,'0');return m?m+':'+s:s+' s'};
 function telemetrySetStatus(t){const e=document.getElementById('telemetryHistoryStatus');if(e)e.textContent=t}
 function telemetryDrawChart(id,values,label,suffix=''){
@@ -2127,6 +2456,7 @@ async function loadTelemetrySessions(manual=false){
   const previous=sel.value;sel.innerHTML=telemetrySessionsCache.length?telemetrySessionsCache.map(s=>'<option value="'+esc(s.id)+'">'+esc(new Date(s.started_at).toLocaleString('pt-BR'))+' · '+esc(s.track_name||'Pista não identificada')+' · '+esc(s.car_name||'Carro não identificado')+'</option>').join(''):'<option value="">Nenhuma sessão encontrada</option>';
   if(previous&&telemetrySessionsCache.some(s=>s.id===previous))sel.value=previous;
   await loadTelemetryLaps();
+  await rl78LoadCatalog();
   telemetrySetStatus(telemetrySessionsCache.length?'Encontradas '+telemetrySessionsCache.length+' sessões. Os dados são privados da sua conta.':'Ainda não há sessões gravadas para esta conta.');
  }catch(e){console.error('[Telemetria] sessões',e);telemetrySetStatus('Não foi possível carregar as sessões: '+(e.message||e))}
 }
@@ -2150,6 +2480,7 @@ async function loadTelemetryLap(){
  try{
   const {data,error}=await supabaseClient.storage.from('rookie-telemetry').download(lap.sample_file_path);
   if(error)throw error;const text=await data.text();const rows=text.split(/\r?\n/).filter(Boolean).map(line=>JSON.parse(line));const samples=rows.map(telemetrySampleData);
+  rl80Pause();rl78CurrentSamples=samples;rl78CurrentLap=lap;rl80ReplayIndex=0;rl78DrawTrack(samples,lap);
   const values=key=>samples.map(x=>Number(x[key])||0);
   telemetryDrawChart('telemetrySpeedChart',values('speed_kmh'),'Velocidade',' km/h');
   telemetryDrawChart('telemetryRpmChart',values('rpm'),'RPM');
@@ -2173,10 +2504,177 @@ async function refreshTelemetryLive(){
   document.getElementById('telemetryLiveUpdated').textContent=active?'Última atualização: '+new Date(data.updated_at).toLocaleTimeString('pt-BR'):'Nenhum dado ao vivo neste momento.';
  }catch(e){console.warn('[Telemetria] live',e)}
 }
+
+// V78: apenas consultas de telemetria pertencente ao usuário autenticado.
+function rl78Status(message){const el=document.getElementById('rl78CompareStatus');if(el)el.textContent=message}
+function rl78Num(v){const n=Number(v);return Number.isFinite(n)?n:0}
+function rl78Percent(v){const n=rl78Num(v);return Math.max(0,Math.min(100,n<=1?n*100:n))}
+function rl78DrawDual(id,a,b,maxLabel){
+ const c=document.getElementById(id);if(!c)return;const ctx=c.getContext('2d'),w=c.width,h=c.height;
+ ctx.clearRect(0,0,w,h);ctx.fillStyle='#0b140f';ctx.fillRect(0,0,w,h);
+ const left=55,right=16,top=20,bottom=28,gw=w-left-right,gh=h-top-bottom;
+ const max=Math.max(1,...a,...b)*1.06;
+ ctx.font='12px Segoe UI';ctx.lineWidth=1;ctx.strokeStyle='#31463a';ctx.fillStyle='#a2b6a6';
+ for(let i=0;i<=4;i++){const y=top+i*gh/4;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(w-right,y);ctx.stroke();ctx.fillText(String(Math.round(max*(1-i/4))),8,y+4)}
+ for(const [arr,color] of [[a,'#a6ff00'],[b,'#4ab5ff']]){ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.beginPath();arr.forEach((v,i)=>{const x=left+(arr.length<2?0:i/(arr.length-1))*gw,y=top+gh-(v/max)*gh;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()}
+ ctx.fillStyle='#a2b6a6';ctx.fillText('Início',left,h-6);ctx.textAlign='right';ctx.fillText('Fim',w-right,h-6);ctx.textAlign='left';
+}
+function rl78Resample(rows,key,count=240){if(!rows.length)return[];return Array.from({length:count},(_,i)=>{const p=i*(rows.length-1)/(count-1),lo=Math.floor(p),hi=Math.min(rows.length-1,lo+1),a=key(rows[lo]),b=key(rows[hi]);return a+(b-a)*(p-lo)})}
+async function rl78LoadCatalog(){
+ const a=document.getElementById('rl78LapA'),b=document.getElementById('rl78LapB');if(!a||!b)return;
+ if(!cloudUser){a.innerHTML=b.innerHTML='<option value="">Faça login</option>';return}
+ try{
+  // Restringir as voltas às sessões do próprio usuário; nenhum compartilhamento implícito.
+  const ids=telemetrySessionsCache.map(s=>s.id);if(!ids.length){a.innerHTML=b.innerHTML='<option value="">Sem sessões</option>';return}
+  const {data,error}=await supabaseClient.from('telemetry_laps').select('id,session_id,lap_number,lap_time_ms,sample_file_path,valid').eq('user_id',cloudUser.id).in('session_id',ids).order('created_at',{ascending:false}).limit(200);
+  if(error)throw error;rl78CompareCatalog=(data||[]).filter(l=>l.sample_file_path).map(l=>({...l,session:telemetrySessionsCache.find(s=>s.id===l.session_id)}));
+  const opts=rl78CompareCatalog.map(l=>'<option value="'+esc(l.id)+'">'+esc(l.session?.track_name||'Pista')+' · '+esc(l.session?.car_name||'Carro')+' · Volta '+l.lap_number+' ('+telemetryFmtMs(l.lap_time_ms)+')</option>').join('');
+  a.innerHTML='<option value="">Escolha a volta A</option>'+opts;b.innerHTML='<option value="">Escolha a volta B</option>'+opts;
+  rl78Status(rl78CompareCatalog.length+' voltas com amostras disponíveis na sua conta.');
+ }catch(e){rl78Status('Falha ao listar voltas: '+(e.message||e))}
+}
+async function rl78DownloadLap(lap){
+ const {data,error}=await supabaseClient.storage.from('rookie-telemetry').download(lap.sample_file_path);if(error)throw error;
+ const text=await data.text();return text.split(/\r?\n/).filter(Boolean).map(line=>telemetrySampleData(JSON.parse(line)));
+}
+async function rl78CompareLaps(){
+ const idA=document.getElementById('rl78LapA')?.value,idB=document.getElementById('rl78LapB')?.value;
+ const a=rl78CompareCatalog.find(x=>x.id===idA),b=rl78CompareCatalog.find(x=>x.id===idB);
+ if(!a||!b){rl78Status('Selecione duas voltas.');return}
+ if(a.id===b.id){rl78Status('Escolha duas voltas diferentes.');return}
+ const track=x=>String(x.session?.track_name||'').trim().toLowerCase(),car=x=>String(x.session?.car_name||'').trim().toLowerCase();
+ if(!track(a)||!track(b)||track(a)!==track(b)||!car(a)||!car(b)||car(a)!==car(b)){rl78Status('Comparação bloqueada: selecione voltas da mesma pista e do mesmo carro.');return}
+ rl78Status('Carregando os dois arquivos privados de telemetria…');
+ try{
+  const [sa,sb]=await Promise.all([rl78DownloadLap(a),rl78DownloadLap(b)]);if(sa.length<2||sb.length<2)throw Error('Amostras insuficientes.');
+  const get=(rows,key)=>rl78Resample(rows,key);
+  rl78DrawDual('rl78SpeedCompare',get(sa,x=>rl78Num(x.speed_kmh)),get(sb,x=>rl78Num(x.speed_kmh)));
+  rl78DrawDual('rl78ThrottleCompare',get(sa,x=>rl78Percent(x.throttle)),get(sb,x=>rl78Percent(x.throttle)));
+  rl78DrawDual('rl78BrakeCompare',get(sa,x=>rl78Percent(x.brake)),get(sb,x=>rl78Percent(x.brake)));
+  document.getElementById('rl78TimeA').textContent=telemetryFmtMs(a.lap_time_ms);
+  document.getElementById('rl78TimeB').textContent=telemetryFmtMs(b.lap_time_ms);
+  const diff=rl78Num(b.lap_time_ms)-rl78Num(a.lap_time_ms);
+  document.getElementById('rl78TimeDelta').textContent=(diff>=0?'+':'−')+(Math.abs(diff)/1000).toFixed(3)+' s';
+  const me=await rl82LoadOwnPilot();rl81Load(sa,sb,a.lap_time_ms,b.lap_time_ms,me?.name||'Minha volta A',me?.name||'Minha volta B',me,me);rl78Status('Comparação concluída: '+sa.length+' amostras na volta A e '+sb.length+' na volta B. Os gráficos usam progresso relativo da volta.');
+ }catch(e){rl78Status('Não foi possível comparar: '+(e.message||e))}
+}
+let rl80ReplayIndex=0,rl80Playing=false,rl80Frame=0,rl80LastTick=0,rl80ReplayPath=[],rl80ReplayScale=null;
+function rl80Pause(){rl80Playing=false;if(rl80Frame)cancelAnimationFrame(rl80Frame);rl80Frame=0;const b=document.getElementById('rl80Play');if(b)b.textContent='▶ REPRODUZIR'}
+function rl80GetTime(sample,i,total,lapMs){
+ const candidates=[sample?.elapsed_ms,sample?.lap_elapsed_ms,sample?.lap_time_ms,sample?.time_ms];
+ for(const v of candidates){const n=Number(v);if(v!==undefined&&v!==null&&Number.isFinite(n)&&n>=0)return n}
+ return total>1?i/(total-1)*lapMs:0;
+}
+function rl80DrawFrame(){
+ const canvas=document.getElementById('rl78TrackMap');if(!canvas)return;
+ const ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);ctx.fillStyle='#09120e';ctx.fillRect(0,0,w,h);
+ const path=rl80ReplayPath;if(path.length<2)return;
+ ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=7;ctx.strokeStyle='#243b2c';ctx.beginPath();path.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.stroke();
+ for(let i=1;i<path.length;i++){
+  const sample=rl78CurrentSamples[path[i].sampleIndex]||{},brake=rl78Percent(sample.brake),throttle=rl78Percent(sample.throttle);
+  ctx.strokeStyle=brake>12?'#ff665e':throttle>12?'#a6ff00':'#789b9d';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(path[i-1].x,path[i-1].y);ctx.lineTo(path[i].x,path[i].y);ctx.stroke();
+ }
+ const current=rl80ReplayIndex;let nearest=path[0];for(const p of path){if(p.sampleIndex<=current)nearest=p;else break}
+ ctx.fillStyle='#ffffff';ctx.shadowColor='#fff';ctx.shadowBlur=20;ctx.beginPath();ctx.arc(nearest.x,nearest.y,8,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+ const s=rl78CurrentSamples[current]||{},total=rl78CurrentSamples.length,ms=rl80GetTime(s,current,total,Number(rl78CurrentLap?.lap_time_ms)||total*100);
+ const write=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
+ write('rl80ReplayClock',telemetryFmtMs(ms));write('rl80SpeedVal',Math.round(rl78Num(s.speed_kmh))+' km/h');write('rl80GearVal',s.gear===0?'N':String(s.gear??'—'));write('rl80RpmVal',Math.round(rl78Num(s.rpm)).toLocaleString('pt-BR'));
+ const th=rl78Percent(s.throttle),br=rl78Percent(s.brake);write('rl80ThrottleVal',Math.round(th)+'%');write('rl80BrakeVal',Math.round(br)+'%');document.getElementById('rl80ThrottleBar').style.width=th+'%';document.getElementById('rl80BrakeBar').style.width=br+'%';document.getElementById('rl80Seek').value=total>1?Math.round(current/(total-1)*1000):0;
+}
+function rl78DrawTrack(samples,lap){
+ rl80Pause();rl80ReplayIndex=0;rl80ReplayPath=[];const canvas=document.getElementById('rl78TrackMap'),status=document.getElementById('rl78TrackStatus');if(!canvas)return;
+ const coords=samples.map((s,i)=>({...rl82Transform(s.position_x,s.position_z),sampleIndex:i})).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.z)&&!(p.x===0&&p.z===0));
+ document.getElementById('rl78TrackPoints').textContent=coords.length.toLocaleString('pt-BR');document.getElementById('rl78TrackLap').textContent=lap?'Volta '+lap.lap_number:'—';
+ const sess=telemetrySessionsCache.find(s=>s.id===document.getElementById('telemetrySessionSelect')?.value);document.getElementById('rl78TrackName').textContent=sess?.track_name||'—';
+ if(coords.length<10){status.textContent='Não há coordenadas válidas suficientes nesta volta. O agente precisa registrar position_x e position_z.';return}
+ const xs=coords.map(p=>p.x),zs=coords.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minZ=Math.min(...zs),maxZ=Math.max(...zs);
+ if(maxX-minX<5||maxZ-minZ<5){status.textContent='Coordenadas sem deslocamento suficiente. Verifique a gravação de posição X/Z do agente.';return}
+ const w=canvas.width,h=canvas.height,pad=40,scale=Math.min((w-pad*2)/(maxX-minX),(h-pad*2)/(maxZ-minZ)),ox=(w-(maxX-minX)*scale)/2,oy=(h-(maxZ-minZ)*scale)/2;
+ rl80ReplayPath=coords.map(p=>({...p,x:ox+(p.x-minX)*scale,y:h-(oy+(p.y-minZ)*scale)}));
+ status.textContent='Verde: aceleração · vermelho: frenagem · cinza: neutro. Ponto branco: carro no replay. O traçado representa a trajetória gravada, não um mapa oficial da pista.';
+ rl80DrawFrame();
+}
+function rl80Seek(fraction){if(!rl78CurrentSamples.length)return;rl80ReplayIndex=Math.max(0,Math.min(rl78CurrentSamples.length-1,Math.round(fraction*(rl78CurrentSamples.length-1))));rl80DrawFrame()}
+function rl80ToggleReplay(){if(rl80Playing){rl80Pause();return}if(!rl80ReplayPath.length){document.getElementById('rl78TrackStatus').textContent='Carregue uma volta com coordenadas válidas antes de iniciar o replay.';return}if(rl80ReplayIndex>=rl78CurrentSamples.length-1)rl80ReplayIndex=0;rl80Playing=true;rl80LastTick=performance.now();document.getElementById('rl80Play').textContent='❚❚ PAUSAR';rl80Frame=requestAnimationFrame(rl80Tick)}
+function rl80Tick(now){if(!rl80Playing)return;const delta=Math.min(200,now-rl80LastTick);rl80LastTick=now;const samples=rl78CurrentSamples,n=samples.length,lapMs=Number(rl78CurrentLap?.lap_time_ms)||n*100,speed=Number(document.getElementById('rl80Speed').value)||1;let budget=delta*speed;
+ while(budget>0&&rl80ReplayIndex<n-1){const i=rl80ReplayIndex,dt=rl80GetTime(samples[i+1],i+1,n,lapMs)-rl80GetTime(samples[i],i,n,lapMs);const step=dt>0&&dt<10000?dt:lapMs/Math.max(1,n-1);if(step>budget)break;budget-=step;rl80ReplayIndex++}
+ // Accumulate fractional time between frames for high sample-rate recordings.
+ rl80ReplayCarry=(rl80ReplayCarry||0)+budget;while(rl80ReplayIndex<n-1){const i=rl80ReplayIndex,dt=rl80GetTime(samples[i+1],i+1,n,lapMs)-rl80GetTime(samples[i],i,n,lapMs),step=dt>0&&dt<10000?dt:lapMs/Math.max(1,n-1);if(rl80ReplayCarry<step)break;rl80ReplayCarry-=step;rl80ReplayIndex++}
+ rl80DrawFrame();if(rl80ReplayIndex>=n-1){rl80Pause();rl80ReplayCarry=0;return}rl80Frame=requestAnimationFrame(rl80Tick)
+}
+let rl80ReplayCarry=0,rl80OfficialLaps=[];
+function rl80Status(t){const el=document.getElementById('rl80OfficialStatus');if(el)el.textContent=t}
+async function rl80Call(action,params={}){
+ const {data:auth,error:authErr}=await supabaseClient.auth.getSession();if(authErr||!auth?.session?.access_token)throw Error('Entre na sua conta para continuar.');
+ const res=await fetch(SUPABASE_URL+'/functions/v1/telemetry-compare',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+auth.session.access_token,'apikey':SUPABASE_PUBLISHABLE_KEY},body:JSON.stringify({action,...params})});const json=await res.json().catch(()=>({}));if(!res.ok)throw Error(json.error||'Falha na função segura de comparação.');return json;
+}
+async function rl80LoadChampionships(){if(!cloudUser)return;const el=document.getElementById('rl80Champ');if(!el)return;try{const data=await rl80Call('championships');el.innerHTML='<option value="">Selecione o campeonato</option>'+(data.championships||[]).map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('');rl80Status('Escolha um campeonato com inscrição aprovada.')}catch(e){rl80Status(e.message)}}
+async function rl80LoadOfficial(){const championship_id=document.getElementById('rl80Champ').value,driver=document.getElementById('rl80Driver');driver.innerHTML='<option value="">Selecione o piloto</option>';document.getElementById('rl80RemoteLap').innerHTML='<option value="">Selecione a volta</option>';document.getElementById('rl80Consent').checked=false;if(!championship_id)return;try{const data=await rl80Call('drivers',{championship_id});driver.innerHTML='<option value="">Selecione o piloto</option>'+(data.drivers||[]).map(d=>'<option value="'+esc(d.user_id)+'">'+esc(d.pilot_name)+'</option>').join('');document.getElementById('rl80Consent').checked=!!data.my_consent;rl80Status('Pilotos listados: somente inscritos aprovados que autorizaram compartilhamento.')}catch(e){rl80Status(e.message)}}
+async function rl80SaveConsent(){const championship_id=document.getElementById('rl80Champ').value,enabled=document.getElementById('rl80Consent').checked;if(!championship_id){rl80Status('Escolha o campeonato primeiro.');document.getElementById('rl80Consent').checked=false;return}try{await rl80Call('consent',{championship_id,enabled});rl80Status(enabled?'Compartilhamento autorizado para este campeonato.':'Compartilhamento desativado.');await rl80LoadOfficial()}catch(e){document.getElementById('rl80Consent').checked=!enabled;rl80Status(e.message)}}
+async function rl80LoadOfficialLaps(){const championship_id=document.getElementById('rl80Champ').value,user_id=document.getElementById('rl80Driver').value,sel=document.getElementById('rl80RemoteLap');sel.innerHTML='<option value="">Selecione a volta</option>';if(!user_id)return;try{const data=await rl80Call('laps',{championship_id,user_id});rl80OfficialLaps=data.laps||[];rl82RemotePilot=data.pilot||{name:document.getElementById('rl80Driver')?.selectedOptions?.[0]?.textContent||'Piloto comparado'};sel.innerHTML='<option value="">Selecione a volta</option>'+rl80OfficialLaps.map(l=>'<option value="'+esc(l.id)+'">'+esc(l.track_name)+' · '+esc(l.car_name)+' · Volta '+l.lap_number+' ('+telemetryFmtMs(l.lap_time_ms)+')</option>').join('');rl80Status(rl80OfficialLaps.length+' voltas compartilhadas disponíveis.')}catch(e){rl80Status(e.message)}}
+async function rl80CompareOfficial(){const championship_id=document.getElementById('rl80Champ').value,lap_id=document.getElementById('rl80RemoteLap').value,own=rl78CompareCatalog.find(x=>x.id===document.getElementById('rl78LapA').value),remote=rl80OfficialLaps.find(x=>x.id===lap_id);if(!own||!remote){rl80Status('Selecione sua volta A no comparador acima e uma volta do outro piloto.');return}const same=(a,b)=>String(a||'').trim().toLowerCase()===String(b||'').trim().toLowerCase();if(!same(own.session?.track_name,remote.track_name)||!same(own.session?.car_name,remote.car_name)){rl80Status('Escolha voltas da mesma pista e do mesmo carro.');return}try{rl80Status('Baixando voltas autorizadas…');const data=await rl80Call('lap',{championship_id,lap_id});const [sa,res]=await Promise.all([rl78DownloadLap(own),fetch(data.signed_url)]);if(!res.ok)throw Error('Não foi possível baixar a volta compartilhada.');const sb=(await res.text()).split(/\r?\n/).filter(Boolean).map(line=>telemetrySampleData(JSON.parse(line)));if(sa.length<2||sb.length<2)throw Error('Amostras insuficientes.');rl78DrawDual('rl78SpeedCompare',rl78Resample(sa,x=>rl78Num(x.speed_kmh)),rl78Resample(sb,x=>rl78Num(x.speed_kmh)));rl78DrawDual('rl78ThrottleCompare',rl78Resample(sa,x=>rl78Percent(x.throttle)),rl78Resample(sb,x=>rl78Percent(x.throttle)));rl78DrawDual('rl78BrakeCompare',rl78Resample(sa,x=>rl78Percent(x.brake)),rl78Resample(sb,x=>rl78Percent(x.brake)));document.getElementById('rl78TimeA').textContent=telemetryFmtMs(own.lap_time_ms);document.getElementById('rl78TimeB').textContent=telemetryFmtMs(remote.lap_time_ms);const diff=Number(remote.lap_time_ms)-Number(own.lap_time_ms);document.getElementById('rl78TimeDelta').textContent=(diff>=0?'+':'−')+(Math.abs(diff)/1000).toFixed(3)+' s';const me=await rl82LoadOwnPilot();rl81Load(sa,sb,own.lap_time_ms,remote.lap_time_ms,me?.name||'Minha volta',rl82RemotePilot?.name||'Piloto comparado',me,rl82RemotePilot);rl80Status('Comparação oficial concluída. Verde: você · azul: outro piloto. Alinhamento por progresso relativo, não por distância.')}catch(e){rl80Status(e.message)}}
+
+
+// V82 — orientação compartilhada dos mapas (ajustável pelo piloto).
+let rl82Rotation=1,rl82Mirrored=false;
+function rl82Transform(x,y){let a=Number(x),b=Number(y);if(rl82Mirrored)a=-a;for(let k=0;k<rl82Rotation;k++){const t=a;a=-b;b=t}return {x:a,y:b}}
+function rl82UpdateOrientation(){const el=document.getElementById('rl82OrientationLabel');if(el)el.textContent='Rotação: '+(rl82Rotation*90)+'°'+(rl82Mirrored?' · espelhado':'');if(rl78CurrentSamples.length&&rl78CurrentLap)rl78DrawTrack(rl78CurrentSamples,rl78CurrentLap);if(rl81Data)rl81Load(rl81Data.a,rl81Data.b,rl81Data.msA,rl81Data.msB,rl81Data.nameA,rl81Data.nameB,rl81Data.pilotA,rl81Data.pilotB);}
+function rl82Rotate(step){rl82Rotation=(rl82Rotation+step+4)%4;rl82UpdateOrientation()}
+function rl82Flip(){rl82Mirrored=!rl82Mirrored;rl82UpdateOrientation()}
+function rl82ResetOrientation(){rl82Rotation=1;rl82Mirrored=false;rl82UpdateOrientation()}
+function rl82SafePhoto(url){try{const u=new URL(url);return u.protocol==='https:'?u.href:''}catch{return ''}}
+function rl82DisplayPilot(letter,pilot,fallback){const name=document.getElementById('rl82PilotName'+letter),details=document.getElementById('rl82PilotDetails'+letter),img=document.getElementById('rl82Photo'+letter);if(name)name.textContent=pilot?.name||fallback||'Piloto '+letter;if(details)details.textContent='Equipe: '+(pilot?.team||'Não informada')+' · Nº '+(pilot?.car_number??'—');if(img){const photo=rl82SafePhoto(pilot?.profile_photo_url);img.hidden=!photo;if(photo)img.src=photo;else img.removeAttribute('src')}}
+let rl82OwnPilot=null,rl82RemotePilot=null;
+async function rl82LoadOwnPilot(){if(!cloudUser?.email)return null;try{const {data,error}=await supabaseClient.from('drivers').select('name,team,car_number,profile_photo_url').ilike('email',cloudUser.email).limit(1);if(error)throw error;rl82OwnPilot=data?.[0]||null;return rl82OwnPilot}catch(e){console.warn('[V82] Perfil do piloto indisponível',e);return null}}
+// V81 — mapa duplo, pan/zoom, replay alinhado por progresso relativo.
+let rl81Data=null,rl81Progress=0,rl81Playing=false,rl81Raf=0,rl81Last=0,rl81ZoomLevel=1,rl81PanX=0,rl81PanY=0;
+function rl81El(id){return document.getElementById(id)}
+function rl81Coords(samples){return samples.map((s,i)=>({...rl82Transform(s.position_x,s.position_z),i})).filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y)&&!(p.x===0&&p.y===0))}
+function rl81Load(a,b,msA,msB,nameA,nameB,pilotA=null,pilotB=null){
+ rl81Pause();rl81Progress=0;rl81ZoomLevel=1;rl81PanX=0;rl81PanY=0;
+ const ca=rl81Coords(a),cb=rl81Coords(b),all=[...ca,...cb];
+ if(ca.length<10||cb.length<10){rl81Data=null;rl81El('rl81Status').textContent='Replay indisponível: uma ou ambas as voltas não têm coordenadas position_x / position_z suficientes. Os gráficos de comparação continuam disponíveis.';rl81Render();return}
+ const xs=all.map(p=>p.x),ys=all.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+ if(maxX-minX<5||maxY-minY<5){rl81Data=null;rl81El('rl81Status').textContent='Trajeto insuficiente nas coordenadas gravadas.';rl81Render();return}
+ rl81Data={a,b,ca,cb,msA:Number(msA)||a.length*100,msB:Number(msB)||b.length*100,minX,maxX,minY,maxY,nameA,nameB,pilotA,pilotB};
+ rl82DisplayPilot('A',pilotA,nameA);rl82DisplayPilot('B',pilotB,nameB);
+ rl81El('rl81NameA').textContent=nameA.toUpperCase();rl81El('rl81NameB').textContent=nameB.toUpperCase();
+ rl81El('rl81Status').textContent='Replay pronto. Arraste o mapa para mover, use a roda do mouse ou os botões para ampliar. Sincronização por progresso relativo da volta; não é comparação por distância percorrida.';rl81Render();
+}
+function rl81Zoom(f){rl81ZoomLevel=Math.max(0.6,Math.min(12,rl81ZoomLevel*f));rl81Render()}
+function rl81ResetView(){rl81ZoomLevel=1;rl81PanX=0;rl81PanY=0;rl81Render()}
+function rl81Pause(){rl81Playing=false;if(rl81Raf)cancelAnimationFrame(rl81Raf);rl81Raf=0;const b=rl81El('rl81Play');if(b)b.textContent='▶ REPRODUZIR'}
+function rl81Seek(v){rl81Progress=Math.max(0,Math.min(1,v));rl81Render()}
+function rl81Toggle(){if(rl81Playing){rl81Pause();return}if(!rl81Data){rl81El('rl81Status').textContent='Carregue duas voltas com coordenadas para iniciar.';return}if(rl81Progress>=1)rl81Progress=0;rl81Playing=true;rl81Last=performance.now();rl81El('rl81Play').textContent='❚❚ PAUSAR';rl81Raf=requestAnimationFrame(rl81Tick)}
+function rl81Tick(now){if(!rl81Playing||!rl81Data)return;const dt=Math.min(150,now-rl81Last);rl81Last=now;const speed=Number(rl81El('rl81Speed').value)||1;const duration=Math.max(1000,rl81Data.msA,rl81Data.msB);rl81Progress=Math.min(1,rl81Progress+dt*speed/duration);rl81Render();if(rl81Progress>=1){rl81Pause();return}rl81Raf=requestAnimationFrame(rl81Tick)}
+function rl81At(arr){return arr[Math.min(arr.length-1,Math.round(rl81Progress*(arr.length-1)))]||{}}
+function rl81Point(coords,arr){const idx=Math.round(rl81Progress*(arr.length-1));let best=coords[0];for(const p of coords){if(Math.abs(p.i-idx)<Math.abs(best.i-idx))best=p}return best}
+function rl81Render(){
+ const c=rl81El('rl81Map');if(!c)return;const ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.fillStyle='#07110e';ctx.fillRect(0,0,w,h);
+ if(!rl81Data){ctx.fillStyle='#c2d3c8';ctx.font='22px sans-serif';ctx.textAlign='center';ctx.fillText('Aguardando comparação com coordenadas de pista',w/2,h/2);rl81El('rl81MapBadge').textContent='SEM DADOS GPS';return}
+ const d=rl81Data,dx=d.maxX-d.minX,dy=d.maxY-d.minY,scale=Math.min((w-100)/dx,(h-100)/dy)*rl81ZoomLevel;
+ let cx=(d.minX+d.maxX)/2,cy=(d.minY+d.maxY)/2;
+ if(rl81El('rl81Follow')?.checked){const pa=rl81Point(d.ca,d.a),pb=rl81Point(d.cb,d.b);cx=(pa.x+pb.x)/2;cy=(pa.y+pb.y)/2}
+ const xy=p=>({x:w/2+(p.x-cx)*scale+rl81PanX,y:h/2-(p.y-cy)*scale+rl81PanY});
+ ctx.lineJoin='round';ctx.lineCap='round';
+ for(const [coords,samples,color] of [[d.ca,d.a,'#a6ff00'],[d.cb,d.b,'#42b8ff']]){
+  ctx.strokeStyle='#2a4035';ctx.lineWidth=10;ctx.beginPath();coords.forEach((p,i)=>{const q=xy(p);i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.stroke();
+  for(let i=1;i<coords.length;i++){const p=xy(coords[i-1]),q=xy(coords[i]),s=samples[coords[i].i]||{},br=rl78Percent(s.brake);ctx.strokeStyle=br>15?'#ff665e':color;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke()}
+  const pos=xy(rl81Point(coords,samples));ctx.shadowColor=color;ctx.shadowBlur=20;ctx.fillStyle=color;ctx.beginPath();ctx.arc(pos.x,pos.y,9,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
+ }
+ for(const [letter,samples,ms] of [['A',d.a,d.msA],['B',d.b,d.msB]]){
+  const sample=rl81At(samples),speed=Math.round(rl78Num(sample.speed_kmh)),th=Math.round(rl78Percent(sample.throttle)),br=Math.round(rl78Percent(sample.brake)),gear=Number(sample.gear)===0?'N':Number(sample.gear)<0?'R':String(sample.gear??'—');
+  rl81El('rl81Metrics'+letter).textContent=speed+' km/h';rl81El('rl81Extra'+letter).textContent='Marcha '+gear+' · RPM '+Math.round(rl78Num(sample.rpm))+' · '+telemetryFmtMs(ms*rl81Progress);
+  rl81El('rl81Throttle'+letter).textContent=th+'%';rl81El('rl81Brake'+letter).textContent=br+'%';rl81El('rl81ThrottleBar'+letter).style.width=th+'%';rl81El('rl81BrakeBar'+letter).style.width=br+'%';
+ }
+ rl81El('rl81Seek').value=Math.round(rl81Progress*1000);rl81El('rl81MapBadge').textContent='PROGRESSO '+(rl81Progress*100).toFixed(1)+'% · ZOOM '+rl81ZoomLevel.toFixed(1)+'×';
+}
+(function(){const canvas=rl81El('rl81Map');if(!canvas)return;let drag=null;canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(!drag)return;const rect=canvas.getBoundingClientRect();rl81PanX+=(e.clientX-drag.x)*canvas.width/rect.width;rl81PanY+=(e.clientY-drag.y)*canvas.height/rect.height;drag={x:e.clientX,y:e.clientY};rl81Render()});canvas.addEventListener('pointerup',()=>drag=null);canvas.addEventListener('pointercancel',()=>drag=null);canvas.addEventListener('wheel',e=>{e.preventDefault();rl81Zoom(e.deltaY<0?1.15:1/1.15)},{passive:false});rl81Render()})();
+
 document.getElementById('telemetrySessionSelect')?.addEventListener('change',loadTelemetryLaps);
 document.getElementById('telemetryLapSelect')?.addEventListener('change',()=>{const l=telemetryLapsCache.find(x=>x.id===document.getElementById('telemetryLapSelect').value);document.getElementById('telemetryLoadLap').disabled=!l?.sample_file_path});
 const telemetryOriginalShowPage=showPage;
-showPage=function(id){telemetryOriginalShowPage(id);if(id==='telemetry'){loadTelemetrySessions();refreshTelemetryLive();if(telemetryRefreshTimer)clearInterval(telemetryRefreshTimer);telemetryRefreshTimer=setInterval(refreshTelemetryLive,3000)}else if(telemetryRefreshTimer){clearInterval(telemetryRefreshTimer);telemetryRefreshTimer=null}};
+showPage=function(id){telemetryOriginalShowPage(id);if(id==='telemetry'){loadTelemetrySessions();rl80LoadChampionships();refreshTelemetryLive();if(telemetryRefreshTimer)clearInterval(telemetryRefreshTimer);telemetryRefreshTimer=setInterval(refreshTelemetryLive,3000)}else{rl80Pause();rl81Pause();if(telemetryRefreshTimer){clearInterval(telemetryRefreshTimer);telemetryRefreshTimer=null}}};
 supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user&&document.getElementById('telemetry')?.classList.contains('active')){loadTelemetrySessions();refreshTelemetryLive()}});
 
 startLiveTimingPolling();
