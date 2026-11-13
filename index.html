@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rookie League Motorsport — Portal Oficial V77</title>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Rookie League Motorsport — Racing Experience V106</title>
 <style>
 :root{--bg:#080d0b;--panel:#111916;--panel2:#17211c;--line:#29372f;--green:#a6ff00;--green2:#65c900;--text:#f2f7f1;--muted:#9aa99e;--red:#ff5757;--gold:#ffc857}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1d351f 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif}
@@ -773,337 +774,464 @@ body.rl88ReaderOpen{overflow:hidden}
 .rl97TableScroll{scrollbar-color:#68993c #101a13}
 
 .rl99Offline{opacity:.55}.rl99Offline td{filter:saturate(.65)}
+
+/* V107 · LOGIN & BRANDED PAGE TRANSITIONS */
+.entryGate{background:radial-gradient(circle at 50% 20%,rgba(137,255,42,.14),transparent 43%),linear-gradient(145deg,#050b08,#0c1811 58%,#040807);overflow-y:auto}
+.entryGate:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.23;background:repeating-linear-gradient(125deg,transparent 0 90px,rgba(174,255,48,.06) 91px 92px)}
+.entryCard{position:relative;isolation:isolate;width:min(100%,490px);border:1px solid rgba(175,255,78,.3);border-radius:26px;background:linear-gradient(155deg,rgba(23,37,28,.97),rgba(9,17,13,.98));padding:clamp(22px,5vw,38px);box-shadow:0 35px 100px #000c,0 0 55px #91ff2112;animation:rl107LoginIn .55s ease both}
+.rl107LoginBrand{display:flex;align-items:center;gap:13px;margin-bottom:25px;padding-bottom:22px;border-bottom:1px solid #ffffff18}
+.rl107BrandMark{display:grid;place-items:center;width:60px;height:60px;border-radius:17px;border:1px solid #a6ff0070;background:linear-gradient(145deg,#273b1e,#101b12);font-size:33px;font-weight:1000;color:#b6ff49;box-shadow:0 0 32px #a6ff0025;transform:skew(-6deg)}
+.rl107LoginBrand strong{display:block;color:#fff;font-size:21px;letter-spacing:.08em;line-height:1.1}.rl107LoginBrand strong b{color:#b6ff49}.rl107LoginBrand small{display:block;color:#a9c2a5;font-size:10px;letter-spacing:.28em;margin-top:5px}
+.entryCard .kicker{color:#b6ff49;font-size:10px;letter-spacing:.23em}.entryCard h1{font-size:clamp(28px,6vw,38px);letter-spacing:-.045em;margin:8px 0}.entryCard>p{line-height:1.6;font-size:13px}
+.entryModes{padding:5px;background:#050b08;border:1px solid #ffffff16;border-radius:13px;gap:5px}.entryModes button{flex:1;justify-content:center;border-radius:9px!important;min-height:41px}
+.entryField{letter-spacing:.13em}.entryField input{border-radius:12px;min-height:49px;background:#07100b;border-color:#ffffff25;transition:border-color .2s,box-shadow .2s}.entryField input:focus{outline:none;border-color:#b6ff49;box-shadow:0 0 0 3px #a6ff0025}
+.entrySubmit{min-height:51px;border-radius:12px;font-size:13px;letter-spacing:.1em;font-weight:900}.entryMessage{margin-top:16px;line-height:1.5}
+#account .authbox{max-width:720px;margin-inline:auto;border:1px solid #a6ff0038;border-radius:22px;background:linear-gradient(145deg,#16241a,#0b130e);box-shadow:0 18px 60px #0005;padding:clamp(18px,4vw,30px)}
+#account .authbox input{min-height:46px;border-radius:10px}
+.rl107Transition{position:fixed;inset:0;z-index:8500;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;visibility:hidden;background:radial-gradient(circle at center,#1a3020,#050b08 75%);transition:opacity .16s ease,visibility .16s}
+.rl107Transition.is-playing{opacity:1;visibility:visible;animation:rl107Flash 1.25s ease both}
+.rl107TransitionInner{text-align:center;transform:translateY(8px);animation:rl107Mark 1.25s ease both}
+.rl107TransitionMark{display:grid;place-items:center;margin:0 auto 16px;width:76px;height:76px;border:1px solid #b6ff4980;border-radius:22px;background:#182a1a;box-shadow:0 0 45px #a6ff0030;color:#b6ff49;font-size:43px;font-weight:1000;transform:skew(-7deg)}
+.rl107TransitionName{font-size:20px;font-weight:1000;letter-spacing:.15em;color:#fff}.rl107TransitionName b{color:#b6ff49}.rl107TransitionSub{font-size:10px;letter-spacing:.32em;color:#9fb6a0;margin-top:7px}
+.rl107TransitionLine{height:2px;width:120px;background:linear-gradient(90deg,transparent,#b6ff49,transparent);margin:22px auto 0}
+@keyframes rl107Flash{0%{opacity:0}15%{opacity:1}82%{opacity:1}100%{opacity:0}}
+@keyframes rl107Mark{0%{transform:translateY(16px) scale(.94);opacity:.4}40%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-5px) scale(1.02);opacity:1}}
+@keyframes rl107LoginIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.rl107Transition{display:none!important}.entryCard{animation:none!important}}
+@media(max-width:520px){.entryGate{padding:14px}.entryCard{padding:23px 19px}.rl107LoginBrand strong{font-size:18px}.rl107BrandMark{width:52px;height:52px}}
 </style><style id="rl102Style">
-.rl102RaceGrid{display:grid;grid-template-columns:1.1fr 1fr;gap:12px;padding:14px;background:#09130d}.rl102Card{border:1px solid #36553b;border-radius:13px;padding:16px;background:linear-gradient(135deg,#15291b,#0a140e)}.rl102CardTitle{font-size:12px;letter-spacing:.1em;color:#b7ff27;font-weight:800;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.rl102CardTitle span{color:#d4e7d1;font-size:11px;letter-spacing:0}.rl102Track svg{display:block;width:100%;max-height:230px}.rl102Track{padding:10px 0}.rl102Hint{color:#9aac9d;font-size:11px;line-height:1.5}.rl102Tags{display:flex;flex-wrap:wrap;gap:8px}.rl102Tags span{border:1px solid #3d633e;padding:5px 9px;border-radius:30px;font-size:11px}.rl102WeatherGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.rl102WeatherGrid>div{border:1px solid #304a36;border-radius:9px;padding:12px}.rl102WeatherGrid small{display:block;color:#9eaf9e;font-size:10px;letter-spacing:.09em}.rl102WeatherGrid strong{display:block;color:#f0f7ed;font-size:20px;margin-top:5px}.rl102Forecast{margin-top:16px;border-top:1px solid #38513b;padding-top:12px}.rl102Forecast strong{font-size:12px;color:#b7ff27}.rl102Forecast p{font-size:13px;margin:8px 0;color:#e5f3e4}.rl102Forecast small{font-size:10px;color:#92a795}.rl102CarLabel{font-size:10px;fill:white;paint-order:stroke;stroke:#07100a;stroke-width:3px}.rl102CarDot{fill:#b7ff27;stroke:#07140a;stroke-width:2px}@media(max-width:760px){.rl102RaceGrid{grid-template-columns:1fr}.rl102Card{padding:12px}.rl102WeatherGrid strong{font-size:17px}}
+.rl102RaceGrid{display:grid;grid-template-columns:1fr 1.5fr;gap:12px;padding:14px;background:#09130d}.rl102Card{border:1px solid #36553b;border-radius:13px;padding:16px;background:linear-gradient(135deg,#15291b,#0a140e)}.rl102CardTitle{font-size:12px;letter-spacing:.1em;color:#b7ff27;font-weight:800;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.rl102CardTitle span{color:#d4e7d1;font-size:11px;letter-spacing:0}.rl102Track svg{display:block;width:100%;max-height:230px}.rl102Track{padding:10px 0}.rl102Hint{color:#9aac9d;font-size:11px;line-height:1.5}.rl102Tags{display:flex;flex-wrap:wrap;gap:8px}.rl102Tags span{border:1px solid #3d633e;padding:5px 9px;border-radius:30px;font-size:11px}.rl102WeatherGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.rl102WeatherGrid>div{border:1px solid #304a36;border-radius:9px;padding:12px}.rl102WeatherGrid small{display:block;color:#9eaf9e;font-size:10px;letter-spacing:.09em}.rl102WeatherGrid strong{display:block;color:#f0f7ed;font-size:20px;margin-top:5px}.rl102Forecast{margin-top:16px;border-top:1px solid #38513b;padding-top:12px}.rl102Forecast strong{font-size:12px;color:#b7ff27}.rl102Forecast p{font-size:13px;margin:8px 0;color:#e5f3e4}.rl102Forecast small{font-size:10px;color:#92a795}.rl102CarLabel{font-size:10px;fill:white;paint-order:stroke;stroke:#07100a;stroke-width:3px}.rl102CarDot{fill:#b7ff27;stroke:#07140a;stroke-width:2px}@media(max-width:760px){.rl102RaceGrid{grid-template-columns:1fr}.rl102Card{padding:12px}.rl102WeatherGrid strong{font-size:17px}}
 </style><style id="rl80ReplayStyle">
 .rl80ReplayPanel{background:linear-gradient(150deg,#101e17,#070c0a)!important;border:1px solid #31503c!important}.rl80ReplayHead,.rl80ReplayControls,.rl80Actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.rl80ReplayHead{justify-content:space-between;color:#b8ff72;letter-spacing:.13em}.rl80ReplayHead span{font-variant-numeric:tabular-nums;color:#fff;font-size:21px}.rl80ReplayControls{margin:12px 0}.rl80ReplayControls input[type=range]{flex:1;min-width:150px;accent-color:#a6ff00}.rl80ReplayControls select{width:auto;min-width:85px}.rl80ReplayMetrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:14px 0}.rl80ReplayMetrics>div{padding:12px;background:#101c15;border:1px solid #294034;border-radius:12px;min-width:0}.rl80ReplayMetrics small{display:block;font-size:10px;letter-spacing:.1em;color:#a6b6aa}.rl80ReplayMetrics strong{display:block;font-size:clamp(16px,2.2vw,25px);color:#f4fff5;margin:5px 0;font-variant-numeric:tabular-nums}.rl80Bar{height:6px;border-radius:6px;background:#29392e;overflow:hidden}.rl80Bar i{display:block;height:100%;width:0;background:#a6ff00;transition:width .1s}.rl80Bar.brake i{background:#ff665e}.rl80Legend{display:flex;flex-wrap:wrap;gap:18px;font-size:12px;color:#aabeb0}.rl80Legend span:nth-child(1){color:#a6ff00}.rl80Legend span:nth-child(2){color:#ff665e}.rl80Legend span:nth-child(3){color:#8ca9aa}.rl80Legend span:nth-child(4){color:#fff}.rl80Consent{display:flex;align-items:center;gap:9px;font-size:13px}.rl80Consent input{accent-color:#a6ff00}.rl80Actions{justify-content:space-between;margin-top:16px}@media(max-width:700px){.rl80ReplayMetrics{grid-template-columns:repeat(2,minmax(0,1fr))}.rl80ReplayControls button{flex:1}.rl80ReplayControls input[type=range]{order:3;flex-basis:100%}}
 </style>
-
 <style id="rl82Styles">
 .rl82Identity{display:flex;align-items:center;gap:13px;margin-bottom:10px;min-width:0}.rl82Portrait{height:66px;width:66px;flex:none;border:2px solid #49604e;border-radius:13px;object-fit:cover;background:#17241c}.rl81Driver.b .rl82Portrait{border-color:#42b8ff}.rl82PilotName{font-weight:900;font-size:18px;line-height:1.25;color:#f4fff5;overflow-wrap:anywhere}.rl82PilotDetails{font-size:12px;color:#b1c7b8;line-height:1.5}.rl82IdentityText{min-width:0}.rl82Orientation{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0 12px}.rl82Orientation button{min-height:36px}.rl82Orientation small{color:#9fb6a7}.rl82TrackNote{font-size:12px;color:#b5c8ba;margin:5px 0 12px}
 </style>
-</head>
+<style>
+/* V105: Home Clean — somente página inicial */
+#home .rl105Intro{display:flex;justify-content:space-between;align-items:center;gap:20px;margin:0 0 22px;padding:12px 0 4px}
+#home .rl105Intro h1{font-size:clamp(34px,5vw,64px);line-height:1.05;margin:8px 0 10px;letter-spacing:-.055em;font-weight:900}
+#home .rl105Intro h1 em{color:var(--green);font-style:normal}
+#home .rl105Intro p{color:var(--muted,#a4b1a8);margin:0;max-width:620px}
+#home .rl105Eyebrow{font-size:11px;letter-spacing:.16em;color:var(--green);font-weight:800}
+#home .rl105IntroBadge{font-size:10px;letter-spacing:.1em;color:var(--green);border:1px solid var(--line);border-radius:100px;padding:10px 14px;white-space:nowrap}
+#home .rl105RaceHero{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;align-items:stretch}
+#home .rl105RaceHero>.nextRaceAside,#home .rl105RaceHero>.rl86CountdownPanel{min-width:0;width:auto;height:auto;margin:0;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line);border-radius:16px;padding:22px;background:var(--panel)}
+#home .rl105RaceHero .bigNum{font-size:clamp(32px,5vw,62px)}
+#home .rl105RaceHero .rl86Countdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:18px 0}
+#home .rl105RaceHero .rl86Countdown>span{min-width:0}
+#home .rl105Quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 24px}
+#home .rl105Quick button{cursor:pointer;text-align:left;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:17px 15px;font-weight:800;display:flex;align-items:center;gap:10px;min-height:62px;transition:border-color .2s,transform .2s}
+#home .rl105Quick button:hover{border-color:var(--green);transform:translateY(-2px)}
+#home .rl105Timing{margin-top:0}
+#home .rl105Bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding:24px 0;margin-top:24px}
+#home .rl105Bottom p{margin:5px 0 0;color:var(--muted,#a4b1a8);font-size:13px}
+@media(max-width:800px){#home .rl105RaceHero{grid-template-columns:1fr}#home .rl105Quick{grid-template-columns:repeat(2,minmax(0,1fr))}#home .rl105IntroBadge{display:none}}
+@media(max-width:480px){#home .rl105RaceHero>.nextRaceAside,#home .rl105RaceHero>.rl86CountdownPanel{padding:16px}#home .rl105Quick button{padding:12px;font-size:12px}#home .rl105Bottom{flex-direction:column;align-items:flex-start}}
+</style><style id="rl106-design-system">
+/* V106 — visual layer. Original IDs, events and data logic remain unchanged. */
+:root{--bg:#080d0b;--panel:#111b16;--panel2:#17251d;--line:#304337;--green:#b9ff4b;--green2:#73c934;--text:#f2f8f0;--muted:#a7b8aa;--rl106-radius:18px;--rl106-shadow:0 16px 44px #00000035;color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:96px}body{background:radial-gradient(ellipse 1100px 480px at 50% -120px,#23452a88,transparent 74%),#080d0b;letter-spacing:.003em}body,button,input,select,textarea{font-family:Inter,'Segoe UI',system-ui,Arial,sans-serif}
+::selection{background:#b9ff4b;color:#081009}:focus-visible{outline:2px solid var(--green)!important;outline-offset:3px!important}
+.shell{max-width:1480px;padding-left:clamp(14px,2.6vw,36px);padding-right:clamp(14px,2.6vw,36px)}
+body>header{min-height:76px;background:#0b120fef!important;border-bottom:1px solid #3d5540!important;box-shadow:0 8px 36px #0004;backdrop-filter:blur(18px)}
+body>header .nav{min-height:76px;gap:clamp(9px,1.6vw,20px);flex-wrap:nowrap!important}
+body>header .logo{font-size:clamp(14px,1.5vw,19px);letter-spacing:.055em;line-height:1.2;flex-shrink:0}
+body>header .logo small{letter-spacing:.28em!important;font-size:9px!important}
+body>header .flag{color:var(--green)}
+body>header .menuToggle{border-radius:12px!important;background:#1b2b20!important;border:1px solid #456549!important;min-height:43px;box-shadow:inset 0 1px #ffffff0b;transition:background .2s,border-color .2s,transform .2s}
+body>header .menuToggle:hover{background:#283b2b!important}
+body>header .status{background:#b9ff4b16;color:var(--green);border:1px solid #6a9e45;border-radius:99px;padding:9px 11px;white-space:nowrap;letter-spacing:.08em}
+body>header .rl77-utility{white-space:nowrap}
+body>header nav{display:none!important;position:absolute!important;left:auto!important;right:clamp(14px,2.6vw,36px)!important;top:calc(100% - 2px)!important;width:min(440px,calc(100vw - 28px));max-height:min(76vh,730px);overflow-y:auto!important;flex-direction:column!important;align-items:stretch!important;padding:12px!important;border-radius:18px!important;background:#111d16!important;border:1px solid #486048!important;box-shadow:0 28px 75px #000b!important;z-index:99}
+body>header .nav.menu-open nav{display:flex!important}
+body>header nav button{display:flex;align-items:center;min-height:43px;text-align:left!important;padding:10px 14px!important;border-radius:10px!important;font-size:13px;font-weight:700;white-space:normal!important;transition:background .15s,color .15s}
+body>header nav button.active{background:#b9ff4b1d!important;color:var(--green)!important}
+.page>.subhead,.page .subhead{padding-top:30px}.subhead h1{font-size:clamp(26px,3vw,40px);letter-spacing:-.035em;line-height:1.15}.subhead p{line-height:1.65}
+.sectionHead h2{font-size:clamp(19px,2.2vw,27px);letter-spacing:-.025em}.sectionHead p{line-height:1.6}
+.panel,.champ,.metric,.heroMain,.heroAside,.rl97Timing,.rl102Card{border-radius:var(--rl106-radius)!important;border-color:#344b3b!important;box-shadow:inset 0 1px #ffffff07,0 7px 25px #00000019}
+.champ,.metric,.panel{background:linear-gradient(150deg,#17231b,#101813)!important}
+.champ,.metric{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.champ:hover,.metric:hover{transform:translateY(-2px);border-color:#679153!important;box-shadow:var(--rl106-shadow)}
+.btn{border-radius:11px!important;min-height:40px;transition:filter .2s,transform .2s,box-shadow .2s!important}
+.btn:hover{filter:brightness(1.08);box-shadow:0 5px 19px #a6ff001b}.btn:active{transform:scale(.98)}
+.btn.secondary{background:#b9ff4b0c!important;border-color:#6b9d4b!important}
+.pill,.status,.badge{font-weight:850}
+input,textarea,select{border-radius:11px!important;max-width:100%}input:focus,textarea:focus,select:focus{outline:1px solid #a6ff0070;outline-offset:1px}
+.tableWrap,.rl97TableScroll{scrollbar-width:thin;scrollbar-color:#628a50 #101c14}table{font-variant-numeric:tabular-nums}table th{background:#1a2b20!important;color:#b9c9b9!important;font-size:10px!important;letter-spacing:.09em}table td{border-top-color:#2a3c2f!important}table tbody tr:hover{background:#b9ff4b0b!important}
+#home .rl105Intro{margin-top:14px;margin-bottom:24px}#home .rl105Intro h1{font-size:clamp(37px,5vw,68px);letter-spacing:-.055em}#home .rl105Intro p{font-size:clamp(13px,1.2vw,16px)}
+#home .rl105RaceHero>.nextRaceAside{background:radial-gradient(circle at 90% 0%,#315c2d75,transparent 55%),linear-gradient(145deg,#1a2c1e,#101912)!important;border-color:#567646!important}
+#home .rl105RaceHero>.rl86CountdownPanel{background:linear-gradient(145deg,#17251c,#101912)!important;border-color:#344b3b!important}
+#home .rl105RaceHero>.nextRaceAside,#home .rl105RaceHero>.rl86CountdownPanel{border-radius:20px!important;min-height:245px;padding:clamp(18px,2.6vw,30px)!important}
+#home .rl105Quick{gap:12px}#home .rl105Quick button{border-radius:16px!important;min-height:74px;gap:12px;padding:16px!important;background:linear-gradient(135deg,#1a2a20,#111c16)!important;border-color:#3c5541!important;box-shadow:inset 0 1px #ffffff0b;font-size:14px}
+#home .rl105Quick button:hover{background:#243a27!important;border-color:var(--green)!important;box-shadow:0 8px 30px #0003}
+#home .rl105Timing{border-radius:20px!important;overflow:hidden;background:#101a14!important}
+#home .rl97Top{background:linear-gradient(100deg,#203825,#111b15)!important}
+#home .rl97Summary{background:#142219!important}
+#home .rl102RaceGrid{background:#0d1710!important;gap:14px!important}
+#home .rl102Card{background:linear-gradient(145deg,#182a1e,#101b14)!important}
+#home .rl105Bottom{margin-bottom:22px}
+.rl106-mobile-dock{display:none}
+@media(max-width:1050px){body>header .rl77-utility{display:none!important}body>header .nav{gap:10px}}
+@media(max-width:760px){
+ body{padding-bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+ body>header{min-height:64px}body>header .nav{min-height:64px;justify-content:space-between}
+ body>header .logo{font-size:15px}body>header .logo small{font-size:8px!important;letter-spacing:.17em!important}
+ body>header .status,body>header .rlSoundToggle{display:none!important}
+ body>header .menuToggle{margin-left:auto;min-height:39px;padding:8px 11px!important;font-size:12px}
+ .rl106-mobile-dock{position:fixed;bottom:0;left:0;right:0;z-index:65;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:8px max(8px,env(safe-area-inset-right,8px)) calc(8px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,8px));background:#0d1712f5;border-top:1px solid #3c5741;backdrop-filter:blur(18px);box-shadow:0 -8px 24px #0006}
+ .rl106-mobile-dock button{appearance:none;border:0;border-radius:11px;background:transparent;color:#a4b9a8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:48px;min-width:0;padding:5px 2px;cursor:pointer;font-size:10px;font-weight:750}
+ .rl106-mobile-dock button .rl106-icon{font-size:19px;line-height:1.1}
+ .rl106-mobile-dock button.active{background:#b9ff4b19;color:var(--green)}
+ .rl106-mobile-dock button:focus-visible{outline-offset:-3px}
+ .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #home .rl105Intro{margin-top:7px}#home .rl105Intro h1{font-size:clamp(36px,9vw,52px)}
+ #home .rl105Quick button{min-height:64px;font-size:12px;padding:13px!important}
+ #home .rl97TopActions{flex-wrap:wrap}
+ .sectionHead{align-items:flex-start;flex-wrap:wrap}
+}
+@media(max-width:470px){.cards{grid-template-columns:1fr}#home .rl105Quick{gap:9px}#home .rl105Quick button{gap:7px;font-size:11px}#home .rl102WeatherGrid{gap:7px}#home .rl102WeatherGrid>div{padding:9px}#home .rl97Summary>div{min-width:0}#home .rl97Summary strong{overflow-wrap:anywhere}body>header .logo{font-size:13px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}}
+</style>
+<style id="rl111-left-drawer">
+/* V111 — painel lateral pela esquerda, sem escurecimento do restante da página. */
+body>header nav#mainNav{position:fixed!important;top:0!important;right:auto!important;left:0!important;bottom:0!important;width:min(380px,88vw)!important;height:100dvh!important;max-height:100dvh!important;margin:0!important;padding:82px 18px calc(24px + env(safe-area-inset-bottom,0px))!important;border-radius:0 20px 20px 0!important;background:#101b15!important;box-shadow:8px 0 22px #0004!important;overflow-y:auto!important;overscroll-behavior:contain;z-index:1002!important;transform:translateX(-104%);opacity:0;visibility:hidden;pointer-events:none;transition:transform .34s cubic-bezier(.2,.8,.2,1),opacity .24s ease,visibility .34s}
+body>header .nav.menu-open nav#mainNav:not([hidden]){display:flex!important;transform:translateX(0);opacity:1;visibility:visible;pointer-events:auto}
+body>header #menuToggle{position:relative;z-index:1004}
+/* A página permanece visível e sem bloqueio de rolagem. */
+
+@media(max-width:760px){body>header nav#mainNav{width:min(360px,90vw)!important;padding-top:76px!important}body>header #menuToggle{position:fixed;top:13px;right:14px;margin:0;z-index:1004}}
+@media(prefers-reduced-motion:reduce){body>header nav#mainNav{transition:none!important}}
+</style><style id="rl112Styles">
+#rl112TrophyNav[hidden],#trophies[hidden],#rl112VisibilityAdmin[hidden]{display:none!important}
+.rl112Switch{display:flex;align-items:center;gap:12px;padding:15px;border:1px solid #3e604e;border-radius:12px;cursor:pointer}.rl112Switch input{width:22px;height:22px;accent-color:#56e8a0}
+.rl112PodiumStage{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:10px;min-height:340px;padding:18px 6px 0;background:radial-gradient(ellipse at 50% 70%,#25563c55,transparent 65%);border-radius:16px;overflow:hidden}
+.rl112PodiumSlot{min-width:0;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:end;animation:rl112Rise .75s both;animation-delay:var(--delay)}
+.rl112Pilot{width:70px;height:105px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:end}
+.rl112Head{height:28px;width:28px;border-radius:50%;background:#d5a47d;border:2px solid #e8c49b;position:absolute;top:15px}
+.rl112Body{height:65px;width:49px;background:linear-gradient(130deg,#2e5e49,#0a1c17);border:2px solid #5bbf8d;border-radius:16px 16px 7px 7px;display:grid;place-items:center;color:#e9f7ef;font-weight:900}
+.rl112Cup{position:absolute;top:-3px;left:50%;font-size:35px;transform:translate(-50%,28px) rotate(-12deg);opacity:0;animation:rl112Lift 1.2s ease-out both;animation-delay:calc(var(--delay) + .7s);filter:drop-shadow(0 0 12px #ffdd7770)}
+.rl112PilotName{font-weight:800;font-size:clamp(11px,2.3vw,16px);padding:10px 2px;overflow-wrap:anywhere}
+.rl112Step{width:100%;display:flex;align-items:flex-start;justify-content:center;padding-top:13px;font-size:24px;font-weight:1000;color:#101c16;border-radius:8px 8px 0 0;box-shadow:inset 0 5px 0 #ffffff33}
+.rl112Step.pos1{height:130px;background:linear-gradient(#f8df85,#ad8d38)}.rl112Step.pos2{height:92px;background:linear-gradient(#e4ebee,#83939c)}.rl112Step.pos3{height:65px;background:linear-gradient(#d9a878,#8f5932)}
+@keyframes rl112Rise{from{opacity:0;transform:translateY(55px)}to{opacity:1;transform:translateY(0)}}
+@keyframes rl112Lift{0%{opacity:0;transform:translate(-50%,28px) rotate(-15deg)}45%{opacity:1}100%{opacity:1;transform:translate(-50%,-23px) rotate(0deg)}}
+@media(prefers-reduced-motion:reduce){.rl112PodiumSlot,.rl112Cup{animation:none;opacity:1}.rl112Cup{transform:translate(-50%,-23px)}}
+@media(max-width:500px){.rl112PodiumStage{gap:5px;padding:12px 2px 0}.rl112Pilot{transform:scale(.85);transform-origin:bottom}.rl112Step.pos1{height:100px}.rl112Step.pos2{height:74px}.rl112Step.pos3{height:55px}}
+</style></head>
 <body>
-
-<div id="entryGate" class="entryGate">
-  <div class="entryCard">
-    <div class="kicker">ROOKIE LEAGUE MOTORSPORT</div>
-    <h1 id="entryTitle">Entre no portal</h1>
-    <p id="entryDescription">Faça login ou crie sua conta de piloto para acessar campeonatos, resultados e calendário.</p>
-    <div class="entryModes">
-      <button type="button" id="entryLoginMode" class="btn small" onclick="setEntryMode('login')">ENTRAR</button>
-      <button type="button" id="entryRegisterMode" class="btn secondary small" onclick="setEntryMode('register')">CADASTRAR PILOTO</button>
-    </div>
-    <label id="entryNameLabel" class="entryField" style="display:none">NOME DO PILOTO
-      <input id="entryName" autocomplete="name" placeholder="Seu nome no grid">
-    </label>
-    <label class="entryField">E-MAIL
-      <input id="entryEmail" type="email" autocomplete="email" placeholder="seu@email.com">
-    </label>
-    <label class="entryField">SENHA
-      <input id="entryPassword" type="password" autocomplete="current-password" placeholder="Mínimo de 6 caracteres">
-    </label>
-    <button id="entrySubmit" class="btn entrySubmit" type="button" onclick="submitEntryAuth()">ENTRAR</button>
-    <p id="entryMessage" class="entryMessage" role="status">A administração é exclusiva da conta autorizada da liga.</p>
-  </div>
+<div class="entryGate" id="entryGate">
+<div class="entryCard">
+<div class="rl107LoginBrand"><span class="rl107BrandMark" aria-hidden="true">◩</span><div><strong>ROOKIE <b>LEAGUE</b></strong><small>MOTORSPORT · DRIVER ACCESS</small></div></div>
+<div class="kicker">ROOKIE LEAGUE MOTORSPORT</div>
+<h1 id="entryTitle">Entre no portal</h1>
+<p id="entryDescription">Faça login ou crie sua conta de piloto para acessar campeonatos, resultados e calendário.</p>
+<div class="entryModes">
+<button class="btn small" id="entryLoginMode" onclick="setEntryMode('login')" type="button">ENTRAR</button>
+<button class="btn secondary small" id="entryRegisterMode" onclick="setEntryMode('register')" type="button">CADASTRAR PILOTO</button>
 </div>
-
+<label class="entryField" id="entryNameLabel" style="display:none">NOME DO PILOTO
+      <input autocomplete="name" id="entryName" placeholder="Seu nome no grid"/>
+</label>
+<label class="entryField">E-MAIL
+      <input autocomplete="email" id="entryEmail" placeholder="seu@email.com" type="email"/>
+</label>
+<label class="entryField">SENHA
+      <input autocomplete="current-password" id="entryPassword" placeholder="Mínimo de 6 caracteres" type="password"/>
+</label>
+<button class="btn entrySubmit" id="entrySubmit" onclick="submitEntryAuth()" type="button">ENTRAR</button>
+<p class="entryMessage" id="entryMessage" role="status">A administração é exclusiva da conta autorizada da liga.</p>
+</div>
+</div>
+<div class="rl107Transition" id="rl107Transition" aria-hidden="true"><div class="rl107TransitionInner"><div class="rl107TransitionMark">◩</div><div class="rl107TransitionName">ROOKIE <b>LEAGUE</b></div><div class="rl107TransitionSub">MOTORSPORT · RACE CENTER</div><div class="rl107TransitionLine"></div></div></div>
 <header><div class="shell nav">
-<div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<button class="menuToggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav">☰ MENU</button><nav id="mainNav" hidden><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="rookievoice">🏁 Race Chat</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="trophies">🏆 Sala de Troféus</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="telemetry">📈 Telemetria</button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><button type="button" class="rlSoundToggle" id="rlSoundToggle" aria-pressed="false" title="Ativar ou desativar sons de navegação"><span class="rlSoundLed" aria-hidden="true"></span><span id="rlSoundLabel">SOM OFF</span></button><span class="rl77-utility" aria-label="Plataforma oficial"><i aria-hidden="true"></i> RACING EXPERIENCE</span><span class="status">PORTAL OFICIAL • V80</span>
+<div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br/><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
+<button aria-controls="mainNav" aria-expanded="false" class="menuToggle" id="menuToggle" type="button">☰ MENU</button><nav hidden="" id="mainNav"><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="rookievoice">🏁 Race Chat</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="trophies" id="rl112TrophyNav" hidden>🏆 Sala de Troféus</button><button data-page="admin" hidden="" id="adminNav">⚙ Administração <span class="adminNoticeBadge redDotBadge" hidden="" id="adminRegistrationBadge">0</span></button><button data-page="telemetry">📈 Telemetria</button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span class="redDotBadge" hidden="" id="pilotAccountBadge"></span></button></nav><button aria-pressed="false" class="rlSoundToggle" id="rlSoundToggle" title="Ativar ou desativar sons de navegação" type="button"><span aria-hidden="true" class="rlSoundLed"></span><span id="rlSoundLabel">SOM OFF</span></button><span aria-label="Plataforma oficial" class="rl77-utility"><i aria-hidden="true"></i> RACING EXPERIENCE</span><span class="status">RACING EXPERIENCE • V107</span>
 </div></header>
 <main class="shell">
-<section id="home" class="page active">
-<div class="hero"><div class="heroMain"><div class="rl77-track" aria-hidden="true"><svg viewBox="0 0 330 310"><path class="rl77-track-shadow" d="M63 260 L44 215 Q35 183 73 166 L122 147 Q151 133 140 103 L126 75 Q118 55 140 41 Q167 22 193 47 L232 84 Q248 101 268 95 Q304 86 307 121 Q311 149 273 164 L240 175 Q211 188 217 214 L226 242 Q235 280 197 286 L142 290 Q95 296 63 260Z"/><path d="M63 260 L44 215 Q35 183 73 166 L122 147 Q151 133 140 103 L126 75 Q118 55 140 41 Q167 22 193 47 L232 84 Q248 101 268 95 Q304 86 307 121 Q311 149 273 164 L240 175 Q211 188 217 214 L226 242 Q235 280 197 286 L142 290 Q95 296 63 260Z"/></svg></div><div class="kicker">● PORTAL OFICIAL • ROOKIE LEAGUE MOTORSPORT</div><h1>A CORRIDA<br>COMEÇA <span>AQUI.</span></h1><p>Campeonatos, resultados, pilotos e conquistas. Acompanhe a história da Rookie League Motorsport.</p><div class="actions"><button class="btn" onclick="showPage('championships')">VER CAMPEONATOS ↗</button><button class="btn secondary" onclick="showPage('hall')">HALL DA FAMA</button><a class="btn secondary" href="https://acstuff.ru/s/q:race/online/join?httpPort=9601&ip=172.233.26.106" target="_blank" rel="noopener noreferrer">JUNTAR AO SERVIDOR ↗</a></div><div class="rl77-hero-foot"><b>RL / 77</b><span>PRECISÃO • COMPETIÇÃO • COMUNIDADE</span></div></div>
-<div class="heroAside nextRaceAside" id="homeNextRace"><div class="asideTop"><span>AGENDA DA LIGA</span><span>RL MOTORSPORT</span></div><div><div class="nextRaceKicker">PRÓXIMA CORRIDA</div><div class="bigNum nextRaceDate" id="homeNextRaceDate">--/--</div><h3 id="homeNextRaceName">Nenhuma corrida agendada</h3><p id="homeNextRaceInfo">Cadastre uma etapa com data para ela aparecer aqui.</p></div><button class="btn secondary small" onclick="showPage('calendar')">VER CALENDÁRIO →</button></div></div>
-<div class="rl86CommandBar" aria-label="Acesso rápido"><div class="rl86CommandTitle"><span class="rl86Pulse"></span><div><strong>CENTRAL DE CORRIDA</strong><small>ACESSO RÁPIDO À LIGA</small></div></div><button type="button" onclick="showPage('racecenter')">🏁 RACE CENTER <span>↗</span></button><button type="button" onclick="showPage('telemetry')">📈 TELEMETRIA <span>↗</span></button><button type="button" onclick="showPage('results')">🏆 RESULTADOS <span>↗</span></button><button type="button" onclick="showPage('account')">♙ MINHA CONTA <span>↗</span></button></div>
-<div class="rl86HomeOverview"><section class="rl86UpcomingPanel"><div class="rl86PanelHeading"><div><span class="rl86Eyebrow">RACE WEEK</span><h2>Próximos eventos</h2></div><button class="textLink" type="button" onclick="showPage('calendar')">AGENDA COMPLETA →</button></div><div id="rl86UpcomingEvents" class="rl86UpcomingEvents"><p class="hint">Carregando agenda…</p></div></section><section class="rl86CountdownPanel"><span class="rl86Eyebrow">LIGHTS OUT</span><h2>Contagem regressiva</h2><div class="rl86Countdown" id="rl86Countdown"><span>--<small>DIAS</small></span><span>--<small>HORAS</small></span><span>--<small>MIN</small></span><span>--<small>SEG</small></span></div><p id="rl86CountdownInfo">Aguardando próxima etapa</p><button class="btn secondary small" type="button" onclick="showPage('calendar')">VER PRÓXIMA CORRIDA →</button></section></div>
-<div class="rl87HomePulse" aria-label="Painel da temporada"><div><span class="rl87Eyebrow">RACE CONTROL / SEASON HUB</span><strong id="rl87SeasonTitle">TEMPORADA ROOKIE LEAGUE</strong><small id="rl87SeasonSubtitle">Carregando situação da temporada…</small></div><div class="rl87SeasonBar"><span id="rl87SeasonProgress" style="width:0%"></span></div><div class="rl87SeasonPercent" id="rl87SeasonPercent">0%</div></div>
+<section class="page active" id="home"><div class="rl105Intro"><div><span class="rl105Eyebrow">● ROOKIE LEAGUE MOTORSPORT</span><h1>RACE <em>CENTER.</em></h1><p>Próxima corrida, tempo real e acesso rápido à liga. Tudo em um só lugar.</p></div><span class="rl105IntroBadge">TEMPORADA OFICIAL</span></div><div class="rl105RaceHero"><div class="heroAside nextRaceAside" id="homeNextRace"><div class="asideTop"><span>AGENDA DA LIGA</span><span>RL MOTORSPORT</span></div><div><div class="nextRaceKicker">PRÓXIMA CORRIDA</div><div class="bigNum nextRaceDate" id="homeNextRaceDate">--/--</div><h3 id="homeNextRaceName">Nenhuma corrida agendada</h3><p id="homeNextRaceInfo">Cadastre uma etapa com data para ela aparecer aqui.</p></div><button class="btn secondary small" onclick="showPage('calendar')">VER CALENDÁRIO →</button></div><section class="rl86CountdownPanel"><span class="rl86Eyebrow">LIGHTS OUT</span><h2>Contagem regressiva</h2><div class="rl86Countdown" id="rl86Countdown"><span>--<small>DIAS</small></span><span>--<small>HORAS</small></span><span>--<small>MIN</small></span><span>--<small>SEG</small></span></div><p id="rl86CountdownInfo">Aguardando próxima etapa</p><button class="btn secondary small" onclick="showPage('calendar')" type="button">VER PRÓXIMA CORRIDA →</button></section></div><div aria-label="Acesso rápido" class="rl105Quick"><button onclick="showPage('championships')" type="button">🏆 <span>Campeonatos</span></button><button onclick="showPage('calendar')" type="button">📅 <span>Calendário</span></button><button onclick="showPage('results')" type="button">🏁 <span>Classificação</span></button><button onclick="showPage('account')" type="button">👤 <span>Minha conta</span></button></div><section aria-label="Live Timing Rookie League" class="rl97Timing rl105Timing" id="rl97HomeTiming"><div class="rl97Top"><div><span class="rl97Eyebrow">ROOKIE LEAGUE · RACE DATA</span><h2><span class="apiLiveDot"></span> LIVE TIMING PRO</h2><p id="apiTimingStatus" role="status">Aguardando dados do servidor…</p></div><div class="rl97TopActions"><span>ATUALIZADO: <b id="apiTimingUpdated">—</b></span><button class="btn secondary small" onclick="refreshLiveTiming(true)" type="button">↻ ATUALIZAR</button><button class="btn secondary small" onclick="showPage('racecenter')" type="button">RACE CENTER ↗</button></div></div><div class="rl97Summary"><div><small>PILOTOS REGISTRADOS</small><strong id="rl97DriverCount">—</strong></div><div><small>SESSÃO</small><strong id="rl97Session">AGUARDANDO</strong></div><div><small>ORIGEM</small><strong>EMPEROR SERVERS</strong></div></div><div class="rl102RaceGrid"><section class="rl102Card"><div class="rl102CardTitle">◈ CIRCUITO <span id="rl102TrackName">Aguardando pista</span></div><div class="rl102Tags" style="margin-top:14px"><span id="rl102OnTrack">0 carros conectados</span><span id="rl102TrackId">—</span></div><p class="rl102Hint" id="rl102MapInfo">Informações do circuito fornecidas pelo servidor.</p></section><section class="rl102Card"><div class="rl102CardTitle">☁ CONDIÇÕES DA PISTA <span>EMPEROR SERVERS</span></div><div class="rl102WeatherGrid"><div><small>AR</small><strong id="rl102Air">—</strong></div><div><small>ASFALTO</small><strong id="rl102Road">—</strong></div><div><small>CLIMA</small><strong id="rl102Condition">—</strong></div><div><small>TEMPO RESTANTE</small><strong id="rl102Remaining">—</strong></div></div><div class="rl102Forecast"><strong>INFORMAÇÕES METEOROLÓGICAS DO SERVIDOR</strong><p id="rl102Forecast">Aguardando condições do servidor…</p><small id="rl102ForecastSource">Fonte: Emperor Servers.</small></div></section></div><div class="rl97TableScroll"><table class="rl97Table"><thead><tr><th>POS</th><th>PILOTO / EQUIPE</th><th>CARRO</th><th>VOLTA</th><th>ÚLTIMA</th><th>MELHOR</th><th>GAP</th><th>PIT</th><th>VMÁX</th></tr></thead><tbody id="apiTimingRows"><tr><td class="empty" colspan="9">Aguardando a primeira consulta…</td></tr></tbody></table></div><div class="rl97Footer"><span>Dados sujeitos à disponibilidade da API do servidor. Atualização automática a cada 30 segundos.</span></div></section><div class="rl105Bottom"><div><strong>MAIS DA ROOKIE LEAGUE</strong><p>Notícias, pilotos, telemetria e conquistas continuam disponíveis no menu.</p></div><button class="btn secondary small" onclick="showPage('news')" type="button">NOTÍCIAS DO PADDOCK ↗</button></div><div aria-hidden="true" id="rl105LegacyHome" style="display:none!important">
+<div class="hero"><div class="heroMain"><div aria-hidden="true" class="rl77-track"><svg viewbox="0 0 330 310"><path class="rl77-track-shadow" d="M63 260 L44 215 Q35 183 73 166 L122 147 Q151 133 140 103 L126 75 Q118 55 140 41 Q167 22 193 47 L232 84 Q248 101 268 95 Q304 86 307 121 Q311 149 273 164 L240 175 Q211 188 217 214 L226 242 Q235 280 197 286 L142 290 Q95 296 63 260Z"></path><path d="M63 260 L44 215 Q35 183 73 166 L122 147 Q151 133 140 103 L126 75 Q118 55 140 41 Q167 22 193 47 L232 84 Q248 101 268 95 Q304 86 307 121 Q311 149 273 164 L240 175 Q211 188 217 214 L226 242 Q235 280 197 286 L142 290 Q95 296 63 260Z"></path></svg></div><div class="kicker">● PORTAL OFICIAL • ROOKIE LEAGUE MOTORSPORT</div><h1>A CORRIDA<br/>COMEÇA <span>AQUI.</span></h1><p>Campeonatos, resultados, pilotos e conquistas. Acompanhe a história da Rookie League Motorsport.</p><div class="actions"><button class="btn" onclick="showPage('championships')">VER CAMPEONATOS ↗</button><button class="btn secondary" onclick="showPage('hall')">HALL DA FAMA</button><a class="btn secondary" href="https://acstuff.ru/s/q:race/online/join?httpPort=9601&amp;ip=172.233.26.106" rel="noopener noreferrer" target="_blank">JUNTAR AO SERVIDOR ↗</a></div><div class="rl77-hero-foot"><b>RL / 77</b><span>PRECISÃO • COMPETIÇÃO • COMUNIDADE</span></div></div>
+</div>
+<div aria-label="Acesso rápido" class="rl86CommandBar"><div class="rl86CommandTitle"><span class="rl86Pulse"></span><div><strong>CENTRAL DE CORRIDA</strong><small>ACESSO RÁPIDO À LIGA</small></div></div><button onclick="showPage('racecenter')" type="button">🏁 RACE CENTER <span>↗</span></button><button onclick="showPage('telemetry')" type="button">📈 TELEMETRIA <span>↗</span></button><button onclick="showPage('results')" type="button">🏆 RESULTADOS <span>↗</span></button><button onclick="showPage('account')" type="button">♙ MINHA CONTA <span>↗</span></button></div>
+<div class="rl86HomeOverview"><section class="rl86UpcomingPanel"><div class="rl86PanelHeading"><div><span class="rl86Eyebrow">RACE WEEK</span><h2>Próximos eventos</h2></div><button class="textLink" onclick="showPage('calendar')" type="button">AGENDA COMPLETA →</button></div><div class="rl86UpcomingEvents" id="rl86UpcomingEvents"><p class="hint">Carregando agenda…</p></div></section></div>
+<div aria-label="Painel da temporada" class="rl87HomePulse"><div><span class="rl87Eyebrow">RACE CONTROL / SEASON HUB</span><strong id="rl87SeasonTitle">TEMPORADA ROOKIE LEAGUE</strong><small id="rl87SeasonSubtitle">Carregando situação da temporada…</small></div><div class="rl87SeasonBar"><span id="rl87SeasonProgress" style="width:0%"></span></div><div class="rl87SeasonPercent" id="rl87SeasonPercent">0%</div></div>
 <div class="metrics"><div class="metric"><div class="label">Campeonatos</div><strong id="metricChamps">05</strong></div><div class="metric"><div class="label">Pilotos cadastrados</div><strong id="metricDrivers">03</strong></div><div class="metric"><div class="label">Etapas lançadas</div><strong id="metricRaces">00</strong></div><div class="metric"><div class="label">Títulos no Hall</div><strong><em id="metricTitles">04</em></strong></div></div>
-<div class="sectionHead"><div><h2>Campeonatos</h2><p>Competições cadastradas na liga.</p></div><button class="textLink" onclick="showPage('championships')">VER TODOS →</button></div><div class="rl87HomeFilters" role="group" aria-label="Filtrar campeonatos da página inicial"><button class="active" type="button" data-rl87-filter="all" onclick="rl87FilterChamps('all')">TODOS</button><button type="button" data-rl87-filter="active" onclick="rl87FilterChamps('active')">EM ANDAMENTO</button><button type="button" data-rl87-filter="done" onclick="rl87FilterChamps('done')">CONCLUÍDOS</button></div><div class="cards" id="homeCards"></div>
-<div class="rl87Insights"><section class="rl87InsightPanel"><div class="rl87PanelTitle"><span class="rl87Eyebrow">PADDOCK NEWS</span><h2>Últimos resultados</h2></div><div id="rl87LatestResults" class="rl87LatestResults"><p class="hint">Consultando etapas…</p></div><button type="button" class="btn secondary small" onclick="showPage('results')">VER CLASSIFICAÇÕES →</button></section><section class="rl87InsightPanel rl87NextStep"><span class="rl87Eyebrow">DRIVER JOURNEY</span><h2>Sua próxima volta começa aqui.</h2><p>Acompanhe sua licença, evolução e conquistas no painel de piloto.</p><div class="rl87NextStepActions"><button type="button" class="btn small" onclick="showPage('account')">MEU PERFIL ↗</button><button type="button" class="btn secondary small" onclick="showPage('telemetry')">ANALISAR VOLTAS ↗</button></div></section></div>
+<div class="sectionHead"><div><h2>Campeonatos</h2><p>Competições cadastradas na liga.</p></div><button class="textLink" onclick="showPage('championships')">VER TODOS →</button></div><div aria-label="Filtrar campeonatos da página inicial" class="rl87HomeFilters" role="group"><button class="active" data-rl87-filter="all" onclick="rl87FilterChamps('all')" type="button">TODOS</button><button data-rl87-filter="active" onclick="rl87FilterChamps('active')" type="button">EM ANDAMENTO</button><button data-rl87-filter="done" onclick="rl87FilterChamps('done')" type="button">CONCLUÍDOS</button></div><div class="cards" id="homeCards"></div>
+<div class="rl87Insights"><section class="rl87InsightPanel"><div class="rl87PanelTitle"><span class="rl87Eyebrow">PADDOCK NEWS</span><h2>Últimos resultados</h2></div><div class="rl87LatestResults" id="rl87LatestResults"><p class="hint">Consultando etapas…</p></div><button class="btn secondary small" onclick="showPage('results')" type="button">VER CLASSIFICAÇÕES →</button></section><section class="rl87InsightPanel rl87NextStep"><span class="rl87Eyebrow">DRIVER JOURNEY</span><h2>Sua próxima volta começa aqui.</h2><p>Acompanhe sua licença, evolução e conquistas no painel de piloto.</p><div class="rl87NextStepActions"><button class="btn small" onclick="showPage('account')" type="button">MEU PERFIL ↗</button><button class="btn secondary small" onclick="showPage('telemetry')" type="button">ANALISAR VOLTAS ↗</button></div></section></div>
 <div class="sectionHead"><div><h2>Hall da Fama</h2><p>Os pilotos que já levantaram a taça.</p></div><button class="textLink" onclick="showPage('hall')">RANKING COMPLETO →</button></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Categoria</th></tr></thead><tbody id="homeHall"></tbody></table></div>
 
-<section class="rl97Timing" id="rl97HomeTiming" aria-label="Live Timing Rookie League"><div class="rl97Top"><div><span class="rl97Eyebrow">ROOKIE LEAGUE · RACE DATA</span><h2><span class="apiLiveDot"></span> LIVE TIMING PRO</h2><p id="apiTimingStatus" role="status">Aguardando dados do servidor…</p></div><div class="rl97TopActions"><span>ATUALIZADO: <b id="apiTimingUpdated">—</b></span><button type="button" onclick="refreshLiveTiming(true)" class="btn secondary small">↻ ATUALIZAR</button><button type="button" class="btn secondary small" onclick="showPage('racecenter')">RACE CENTER ↗</button></div></div><div class="rl97Summary"><div><small>PILOTOS REGISTRADOS</small><strong id="rl97DriverCount">—</strong></div><div><small>SESSÃO</small><strong id="rl97Session">AGUARDANDO</strong></div><div><small>ORIGEM</small><strong>EMPEROR SERVERS</strong></div></div><div class="rl102RaceGrid"><section class="rl102Card"><div class="rl102CardTitle">◈ CIRCUITO / ILUSTRAÇÃO <span id="rl102TrackName">Aguardando pista</span></div><div class="rl102Track" id="rl102Track"><svg viewBox="0 0 440 215" role="img" aria-label="Ilustração genérica, não corresponde ao traçado real"><path d="M 95 166 C 24 152 28 80 95 54 L 276 34 Q 378 18 396 96 Q 407 162 314 177 L 155 181 Q 112 185 95 166 Z" fill="none" stroke="#223c2c" stroke-width="29" stroke-linecap="round" stroke-linejoin="round"/><path id="rl102CircuitPath" d="M 95 166 C 24 152 28 80 95 54 L 276 34 Q 378 18 396 96 Q 407 162 314 177 L 155 181 Q 112 185 95 166 Z" fill="none" stroke="#a6ef17" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><g id="rl102CarDots"></g></svg></div><p class="rl102Hint" id="rl102MapInfo">Ilustração genérica. Aguardando identificação do circuito pelo servidor.</p><div class="rl102Tags"><span id="rl102OnTrack">0 carros conectados</span><span id="rl102TrackId">—</span></div></section><section class="rl102Card"><div class="rl102CardTitle">☁ CONDIÇÕES DA PISTA <span>EMPEROR SERVERS</span></div><div class="rl102WeatherGrid"><div><small>AR</small><strong id="rl102Air">—</strong></div><div><small>ASFALTO</small><strong id="rl102Road">—</strong></div><div><small>CLIMA</small><strong id="rl102Condition">—</strong></div><div><small>TEMPO RESTANTE</small><strong id="rl102Remaining">—</strong></div></div><div class="rl102Forecast"><strong>INFORMAÇÕES METEOROLÓGICAS DO SERVIDOR</strong><p id="rl102Forecast">Aguardando condições do servidor…</p><small id="rl102ForecastSource">Fonte: Emperor Servers.</small></div></section></div><div class="rl97TableScroll"><table class="rl97Table"><thead><tr><th>POS</th><th>PILOTO / EQUIPE</th><th>CARRO</th><th>VOLTA</th><th>ÚLTIMA</th><th>MELHOR</th><th>GAP</th><th>PIT</th><th>VMÁX</th></tr></thead><tbody id="apiTimingRows"><tr><td colspan="9" class="empty">Aguardando a primeira consulta…</td></tr></tbody></table></div><div class="rl97Footer"><span>Dados sujeitos à disponibilidade da API do servidor. Atualização automática a cada 30 segundos.</span></div></section>
-</section>
-<section id="championships" class="page"><div class="subhead"><div class="kicker">COMPETIÇÕES OFICIAIS</div><h1>Campeonatos</h1><p>Visão geral das categorias e temporadas.</p></div><div class="sectionHead"><div><h2>Todos os campeonatos</h2><p>Dados iniciais importados do painel enviado.</p></div><div class="tools champTools"><select id="champCategoryFilter" onchange="renderAll()"><option value="">Todas as categorias</option><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select><select id="champStatusFilter" onchange="renderAll()"><option value="">Todos os status</option><option value="active">Em andamento</option><option value="done">Concluídos</option></select><input id="champSearch" placeholder="Buscar campeonato..." oninput="renderAll()"></div></div><div class="rl89Stats" id="rl89ChampStats" aria-live="polite"></div><div class="rl89ViewBar"><span>EXPLORE O GRID</span><div><button class="btn secondary small" type="button" id="rl89GridBtn" onclick="rl89SetView('grid')">▦ CARDS</button><button class="btn secondary small" type="button" id="rl89ListBtn" onclick="rl89SetView('list')">☷ LISTA</button><button class="btn secondary small" type="button" onclick="rl89ClearFilters()">LIMPAR FILTROS</button></div></div><div class="cards rl89ChampCards" id="allCards"></div></section>
-<section id="fun" class="page"><div class="subhead"><div class="kicker">EVENTOS LIVRES • SEM CAMPEONATO</div><h1>4FUN</h1><p>Encontros, treinos e corridas especiais para diversão. Não contam como etapas de campeonato.</p></div><div class="cards" id="funCards"></div></section>
-<section id="champDetail" class="page"><div class="detailBack"><button class="btn secondary small" onclick="showPage('championships')">← TODOS OS CAMPEONATOS</button></div><div id="champDetailContent"></div></section>
-<section id="dlcCenter" class="page"><div class="subhead"><div class="kicker">DOWNLOADS OFICIAIS</div><h1>Central de DLCs</h1><p id="dlcChampSubtitle">Arquivos disponibilizados para este campeonato.</p></div><div class="detailActions"><button class="btn secondary small" type="button" onclick="showPage('championships')">← VOLTAR AOS CAMPEONATOS</button></div><div id="dlcFilesList" class="panel" style="padding:16px"><p class="empty">Selecione um campeonato para consultar os downloads.</p></div></section>
-<section id="results"  class="page"><div class="subhead"><div class="kicker">CLASSIFICAÇÃO OFICIAL</div><h1>Resultados</h1><p>Resultados por etapa e classificação acumulada.</p></div><div class="sectionHead"><div><h2>Classificação oficial importada</h2><p>Tabela de pilotos e pontuação dos campeonatos recebidos do Emperor Servers.</p></div><div class="tools"><select id="officialResultChamp" onchange="renderOfficialResults()"></select></div></div>
-<div class="rl89StandingsHero"><div><span class="rl89Overline">ROOKIE LEAGUE MOTORSPORT</span><h2>Disputa pelo título</h2><p>Consulte as tabelas oficiais importadas e compare a pontuação dos competidores.</p></div><div id="rl89StandingsSummary" class="rl89StandingsSummary"></div></div><div class="rl89Podium" id="rl89Podium"></div><div class="panel tableWrap officialResultsPanel rl89ResultsTable"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Pontos</th></tr></thead><tbody id="officialStandings"></tbody></table></div>
+</div></section>
+<section class="page" id="championships"><div class="subhead"><div class="kicker">COMPETIÇÕES OFICIAIS</div><h1>Campeonatos</h1><p>Visão geral das categorias e temporadas.</p></div><div class="sectionHead"><div><h2>Todos os campeonatos</h2><p>Dados iniciais importados do painel enviado.</p></div><div class="tools champTools"><select id="champCategoryFilter" onchange="renderAll()"><option value="">Todas as categorias</option><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select><select id="champStatusFilter" onchange="renderAll()"><option value="">Todos os status</option><option value="active">Em andamento</option><option value="done">Concluídos</option></select><input id="champSearch" oninput="renderAll()" placeholder="Buscar campeonato..."/></div></div><div aria-live="polite" class="rl89Stats" id="rl89ChampStats"></div><div class="rl89ViewBar"><span>EXPLORE O GRID</span><div><button class="btn secondary small" id="rl89GridBtn" onclick="rl89SetView('grid')" type="button">▦ CARDS</button><button class="btn secondary small" id="rl89ListBtn" onclick="rl89SetView('list')" type="button">☷ LISTA</button><button class="btn secondary small" onclick="rl89ClearFilters()" type="button">LIMPAR FILTROS</button></div></div><div class="cards rl89ChampCards" id="allCards"></div></section>
+<section class="page" id="fun"><div class="subhead"><div class="kicker">EVENTOS LIVRES • SEM CAMPEONATO</div><h1>4FUN</h1><p>Encontros, treinos e corridas especiais para diversão. Não contam como etapas de campeonato.</p></div><div class="cards" id="funCards"></div></section>
+<section class="page" id="champDetail"><div class="detailBack"><button class="btn secondary small" onclick="showPage('championships')">← TODOS OS CAMPEONATOS</button></div><div id="champDetailContent"></div></section>
+<section class="page" id="dlcCenter"><div class="subhead"><div class="kicker">DOWNLOADS OFICIAIS</div><h1>Central de DLCs</h1><p id="dlcChampSubtitle">Arquivos disponibilizados para este campeonato.</p></div><div class="detailActions"><button class="btn secondary small" onclick="showPage('championships')" type="button">← VOLTAR AOS CAMPEONATOS</button></div><div class="panel" id="dlcFilesList" style="padding:16px"><p class="empty">Selecione um campeonato para consultar os downloads.</p></div></section>
+<section class="page" id="results"><div class="subhead"><div class="kicker">CLASSIFICAÇÃO OFICIAL</div><h1>Resultados</h1><p>Resultados por etapa e classificação acumulada.</p></div><div class="sectionHead"><div><h2>Classificação oficial importada</h2><p>Tabela de pilotos e pontuação dos campeonatos recebidos do Emperor Servers.</p></div><div class="tools"><select id="officialResultChamp" onchange="renderOfficialResults()"></select></div></div>
+<div class="rl89StandingsHero"><div><span class="rl89Overline">ROOKIE LEAGUE MOTORSPORT</span><h2>Disputa pelo título</h2><p>Consulte as tabelas oficiais importadas e compare a pontuação dos competidores.</p></div><div class="rl89StandingsSummary" id="rl89StandingsSummary"></div></div><div class="rl89Podium" id="rl89Podium"></div><div class="panel tableWrap officialResultsPanel rl89ResultsTable"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Pontos</th></tr></thead><tbody id="officialStandings"></tbody></table></div>
 <p class="hint" style="margin-top:9px">Os resultados são exibidos diretamente nesta página. A tabela é uma cópia importada e precisa ser atualizada quando houver novas pontuações no servidor.</p>
-<div class="sectionHead"><div><h2>Resultados registrados no portal</h2><p>Classificação calculada automaticamente a partir das etapas lançadas aqui.</p></div><div class="tools"><select id="resultChamp" onchange="renderAll()"></select></div></div><div class="panel tableWrap rl89ResultsTable"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th><th>Resultados</th></tr></thead><tbody id="standings"></tbody></table></div><div class="sectionHead"><div><h2>Etapas lançadas</h2><p>Histórico de resultados registrados.</p></div></div><div class="panel tableWrap"><table><thead><tr><th>Campeonato / Tipo</th><th>Etapa / Evento</th><th>Data</th><th>Vencedor</th><th>Participantes</th><th id="raceActionHead">Ação</th></tr></thead><tbody id="raceRows"></tbody></table></div></section>
-
-<section id="calendar" class="page">
-  <div class="subhead"><div class="kicker">AGENDA DA TEMPORADA</div><h1>Calendário</h1><p>Veja as próximas corridas, datas e etapas da Rookie League Motorsport.</p></div>
-  <div class="sectionHead">
-    <div><h2 id="calendarMonthTitle">Calendário da temporada</h2><p>As etapas com data cadastrada aparecem automaticamente aqui.</p></div>
-    <div class="tools">
-      <button class="btn secondary small" onclick="changeCalendarMonth(-1)" aria-label="Mês anterior">←</button>
-      <button class="btn secondary small" onclick="calendarGoToday()">HOJE</button>
-      <button class="btn secondary small" onclick="changeCalendarMonth(1)" aria-label="Próximo mês">→</button>
-    </div>
-  </div>
-  <div class="rlCalToolbar">
-    <label>Campeonato <select id="rlCalChampFilter" onchange="renderCalendar()"><option value="all">Todos os campeonatos</option></select></label>
-    <label>Eventos <select id="rlCalTypeFilter" onchange="renderCalendar()"><option value="all">Todos</option><option value="race">Campeonatos</option><option value="fun">4FUN</option></select></label>
-    <label>Visualização <select id="rlCalView" onchange="renderCalendar()"><option value="month">Mês</option><option value="list">Lista</option></select></label>
-    <button type="button" class="btn secondary small" onclick="calendarExportIcs()">↓ EXPORTAR .ICS</button>
-  </div>
-  <div class="rlCalMetrics" id="rlCalMetrics" aria-live="polite"></div>
-  <div class="rlCalLayout">
-    <div class="panel rlCalMain" style="padding:14px">
-      <div class="calendar-grid" id="calendarGrid"></div>
-      <div id="rlCalList" hidden></div>
-    </div>
-    <aside class="panel rlCalSide"><h3 id="rlCalDayTitle">Selecione um dia</h3><div id="rlCalDayEvents" class="rlCalDayEvents"><p class="hint">Clique em uma data para ver as corridas e horários.</p></div></aside>
-  </div>
-  <div class="sectionHead"><div><h2>Agenda de eventos</h2><p>Campeonatos e eventos 4FUN em ordem cronológica.</p></div></div>
-  <div class="panel tableWrap"><table><thead><tr><th>Data</th><th>Campeonato / Tipo</th><th>Etapa / Evento</th><th>Status</th></tr></thead><tbody id="calendarAgenda"></tbody></table></div>
-  <p class="hint" style="margin-top:10px">As etapas dos campeonatos e os eventos 4FUN com data aparecem automaticamente neste calendário.</p>
+<div class="sectionHead"><div><h2>Resultados registrados no portal</h2><p>Classificação calculada automaticamente a partir das etapas lançadas aqui.</p></div><div class="tools"><select id="resultChamp" onchange="renderAll()"></select></div></div><div class="panel tableWrap rl89ResultsTable"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th><th>Resultados</th></tr></thead><tbody id="standings"></tbody></table></div><div class="panel rl112PodiumPanel" style="margin:20px 0;padding:20px"><div class="sectionHead"><div><h2>🏆 Pódio da etapa</h2><p>Premiação animada com os três primeiros colocados de cada corrida registrada.</p></div><select id="rl112PodiumRace" aria-label="Escolher etapa" onchange="rl112RenderPodium()"></select></div><div id="rl112PodiumStage" aria-live="polite"><p class="hint">Selecione uma etapa com resultados para ver o pódio.</p></div></div>
+<div class="sectionHead"><div><h2>Etapas lançadas</h2><p>Histórico de resultados registrados.</p></div></div><div class="panel tableWrap"><table><thead><tr><th>Campeonato / Tipo</th><th>Etapa / Evento</th><th>Data</th><th>Vencedor</th><th>Participantes</th><th id="raceActionHead">Ação</th></tr></thead><tbody id="raceRows"></tbody></table></div></section>
+<section class="page" id="calendar">
+<div class="subhead"><div class="kicker">AGENDA DA TEMPORADA</div><h1>Calendário</h1><p>Veja as próximas corridas, datas e etapas da Rookie League Motorsport.</p></div>
+<div class="sectionHead">
+<div><h2 id="calendarMonthTitle">Calendário da temporada</h2><p>As etapas com data cadastrada aparecem automaticamente aqui.</p></div>
+<div class="tools">
+<button aria-label="Mês anterior" class="btn secondary small" onclick="changeCalendarMonth(-1)">←</button>
+<button class="btn secondary small" onclick="calendarGoToday()">HOJE</button>
+<button aria-label="Próximo mês" class="btn secondary small" onclick="changeCalendarMonth(1)">→</button>
+</div>
+</div>
+<div class="rlCalToolbar">
+<label>Campeonato <select id="rlCalChampFilter" onchange="renderCalendar()"><option value="all">Todos os campeonatos</option></select></label>
+<label>Eventos <select id="rlCalTypeFilter" onchange="renderCalendar()"><option value="all">Todos</option><option value="race">Campeonatos</option><option value="fun">4FUN</option></select></label>
+<label>Visualização <select id="rlCalView" onchange="renderCalendar()"><option value="month">Mês</option><option value="list">Lista</option></select></label>
+<button class="btn secondary small" onclick="calendarExportIcs()" type="button">↓ EXPORTAR .ICS</button>
+</div>
+<div aria-live="polite" class="rlCalMetrics" id="rlCalMetrics"></div>
+<div class="rlCalLayout">
+<div class="panel rlCalMain" style="padding:14px">
+<div class="calendar-grid" id="calendarGrid"></div>
+<div hidden="" id="rlCalList"></div>
+</div>
+<aside class="panel rlCalSide"><h3 id="rlCalDayTitle">Selecione um dia</h3><div class="rlCalDayEvents" id="rlCalDayEvents"><p class="hint">Clique em uma data para ver as corridas e horários.</p></div></aside>
+</div>
+<div class="sectionHead"><div><h2>Agenda de eventos</h2><p>Campeonatos e eventos 4FUN em ordem cronológica.</p></div></div>
+<div class="panel tableWrap"><table><thead><tr><th>Data</th><th>Campeonato / Tipo</th><th>Etapa / Evento</th><th>Status</th></tr></thead><tbody id="calendarAgenda"></tbody></table></div>
+<p class="hint" style="margin-top:10px">As etapas dos campeonatos e os eventos 4FUN com data aparecem automaticamente neste calendário.</p>
 </section>
-
-
-<section id="rookievoice" class="page">
- <div class="subhead"><h1>🏁 Race Chat</h1><p>Chat de voz, transmissão de tela e pilotos online na Rookie League Motorsport.</p></div>
- <div class="rv-hero">
-  <div class="rv-state" id="rvConnectionState">Desconectado</div>
-  <h2 style="margin:10px 0 6px">Entre no Paddock. Fale com sua equipe.</h2>
-  <p style="color:var(--muted);margin:0">Sala Geral disponível para pilotos autenticados. Salas privadas serão liberadas após configurarmos as permissões de campeonato e equipe.</p>
- </div>
- <div class="rv-grid">
-  <div class="rv-panel">
-   <h3 style="margin-top:0">Canais de voz</h3>
-   <b style="color:var(--green)">● Comunidade</b>
-   <div class="rv-room"><div>🌐 Sala Geral<small>Todos os pilotos cadastrados</small></div><button id="rvJoinBtn" type="button">Entrar</button></div>
-   <b style="color:var(--green)">● Campeonatos</b>
-   <div class="rv-room"><div>🏁 Salas dos campeonatos<small>Acesso somente aos inscritos</small></div><button disabled>Em breve</button></div>
-   <b style="color:var(--green)">● Equipes</b>
-   <div class="rv-room"><div>🏎 Salas das equipes<small>Acesso somente aos integrantes</small></div><button disabled>Em breve</button></div>
-   <b style="color:var(--green)">● Organização</b>
-   <div class="rv-room"><div>⚑ Direção de Prova<small>Administradores autorizados</small></div><button disabled>Em breve</button></div>
-  </div>
-  <div class="rv-panel">
-   <h3 style="margin-top:0">Sala Geral</h3>
-   <div class="rv-feature" style="min-height:120px">
-    <b id="rvRoomTitle" style="color:var(--text)">Você ainda não entrou na sala.</b>
-    <div id="rvParticipants" style="margin-top:10px;color:var(--muted)">Nenhum participante conectado.</div>
-   </div>
-   <div class="rv-feature" style="margin-top:12px">
-    <b style="color:var(--green)">🟢 Pilotos online na sala</b>
-    <div id="rvOnlinePilots" class="rv-online-list" style="margin-top:9px">Entre na sala para ver quem está online.</div>
-   </div>
-   <div id="rvMediaGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px"></div>
-   <div class="rv-controls-head"><div><span class="rv-eyebrow">PAINEL DE CONTROLE</span><h3>Controles da sala</h3></div><div class="rv-audio-state"><span class="rv-audio-pulse"></span> Avisos sonoros ligados</div></div>
-   <div class="rv-control-grid">
-    <button class="rv-control-btn" id="rvMicBtn" type="button" disabled><span class="rv-control-icon">🎙</span><span><b>Microfone</b><small>Ativar áudio</small></span></button>
-    <button class="rv-control-btn" id="rvScreenBtn" type="button" disabled><span class="rv-control-icon">▣</span><span><b>Compartilhar tela</b><small>Transmitir ao grupo</small></span></button>
-    <label class="rv-quality-control" for="rvScreenQuality"><span>Qualidade da transmissão</span><select id="rvScreenQuality" disabled><option value="1080p60" selected>1080p · 60 FPS</option><option value="1080p30">1080p · 30 FPS</option><option value="720p30">720p · 30 FPS</option></select></label>
-    <button class="rv-control-btn rv-control-exit" id="rvLeaveBtn" type="button" disabled><span class="rv-control-icon">↗</span><span><b>Sair da sala</b><small>Encerrar conexão</small></span></button>
-   </div>
-   <p class="mutednote" id="rvMessage" style="margin-top:14px">Entre com sua conta de piloto para iniciar.</p>
-  </div>
- </div>
+<section class="page" id="rookievoice">
+<div class="subhead"><h1>🏁 Race Chat</h1><p>Chat de voz, transmissão de tela e pilotos online na Rookie League Motorsport.</p></div>
+<div class="rv-hero">
+<div class="rv-state" id="rvConnectionState">Desconectado</div>
+<h2 style="margin:10px 0 6px">Entre no Paddock. Fale com sua equipe.</h2>
+<p style="color:var(--muted);margin:0">Sala Geral disponível para pilotos autenticados. Salas privadas serão liberadas após configurarmos as permissões de campeonato e equipe.</p>
+</div>
+<div class="rv-grid">
+<div class="rv-panel">
+<h3 style="margin-top:0">Canais de voz</h3>
+<b style="color:var(--green)">● Comunidade</b>
+<div class="rv-room"><div>🌐 Sala Geral<small>Todos os pilotos cadastrados</small></div><button id="rvJoinBtn" type="button">Entrar</button></div>
+<b style="color:var(--green)">● Campeonatos</b>
+<div class="rv-room"><div>🏁 Salas dos campeonatos<small>Acesso somente aos inscritos</small></div><button disabled="">Em breve</button></div>
+<b style="color:var(--green)">● Equipes</b>
+<div class="rv-room"><div>🏎 Salas das equipes<small>Acesso somente aos integrantes</small></div><button disabled="">Em breve</button></div>
+<b style="color:var(--green)">● Organização</b>
+<div class="rv-room"><div>⚑ Direção de Prova<small>Administradores autorizados</small></div><button disabled="">Em breve</button></div>
+</div>
+<div class="rv-panel">
+<h3 style="margin-top:0">Sala Geral</h3>
+<div class="rv-feature" style="min-height:120px">
+<b id="rvRoomTitle" style="color:var(--text)">Você ainda não entrou na sala.</b>
+<div id="rvParticipants" style="margin-top:10px;color:var(--muted)">Nenhum participante conectado.</div>
+</div>
+<div class="rv-feature" style="margin-top:12px">
+<b style="color:var(--green)">🟢 Pilotos online na sala</b>
+<div class="rv-online-list" id="rvOnlinePilots" style="margin-top:9px">Entre na sala para ver quem está online.</div>
+</div>
+<div id="rvMediaGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:12px"></div>
+<div class="rv-controls-head"><div><span class="rv-eyebrow">PAINEL DE CONTROLE</span><h3>Controles da sala</h3></div><div class="rv-audio-state"><span class="rv-audio-pulse"></span> Avisos sonoros ligados</div></div>
+<div class="rv-control-grid">
+<button class="rv-control-btn" disabled="" id="rvMicBtn" type="button"><span class="rv-control-icon">🎙</span><span><b>Microfone</b><small>Ativar áudio</small></span></button>
+<button class="rv-control-btn" disabled="" id="rvScreenBtn" type="button"><span class="rv-control-icon">▣</span><span><b>Compartilhar tela</b><small>Transmitir ao grupo</small></span></button>
+<label class="rv-quality-control" for="rvScreenQuality"><span>Qualidade da transmissão</span><select disabled="" id="rvScreenQuality"><option selected="" value="1080p60">1080p · 60 FPS</option><option value="1080p30">1080p · 30 FPS</option><option value="720p30">720p · 30 FPS</option></select></label>
+<button class="rv-control-btn rv-control-exit" disabled="" id="rvLeaveBtn" type="button"><span class="rv-control-icon">↗</span><span><b>Sair da sala</b><small>Encerrar conexão</small></span></button>
+</div>
+<p class="mutednote" id="rvMessage" style="margin-top:14px">Entre com sua conta de piloto para iniciar.</p>
+</div>
+</div>
 </section>
-<section id="racecenter" class="page"><div class="rl97RaceLink"><div><span class="rl97Eyebrow">LIVE TIMING PRO</span><h2>Classificação ao vivo</h2><p>Dados da Rookie League em tempo real, quando disponíveis pela API.</p></div><button class="btn small" type="button" onclick="rl97OpenLiveTiming()">ABRIR PAINEL AO VIVO ↗</button></div>
- <div class="subhead"><div class="kicker">CENTRO OFICIAL DE COMPETIÇÃO</div><h1>Race Center</h1><p>O ponto central de cada etapa: programação, pista, participantes, resultados e informações oficiais.</p></div>
- <div class="sectionHead"><div><h2>Etapas e eventos</h2><p>Selecione uma corrida para consultar todos os detalhes disponíveis.</p></div><div class="tools"><select id="raceCenterFilter" onchange="renderRaceCenter()"><option value="">Todos os eventos</option><option value="upcoming">Próximos</option><option value="completed">Com resultados</option><option value="pending">Aguardando resultados</option></select></div></div>
- <div id="raceCenterGrid" class="raceCenterGrid"></div>
- <div id="raceCenterDetail" class="panel raceCenterDetail"><p class="empty">Selecione uma etapa para abrir o Race Center.</p></div>
+<section class="page" id="racecenter"><div class="rl97RaceLink"><div><span class="rl97Eyebrow">LIVE TIMING PRO</span><h2>Classificação ao vivo</h2><p>Dados da Rookie League em tempo real, quando disponíveis pela API.</p></div><button class="btn small" onclick="rl97OpenLiveTiming()" type="button">ABRIR PAINEL AO VIVO ↗</button></div>
+<div class="subhead"><div class="kicker">CENTRO OFICIAL DE COMPETIÇÃO</div><h1>Race Center</h1><p>O ponto central de cada etapa: programação, pista, participantes, resultados e informações oficiais.</p></div>
+<div class="sectionHead"><div><h2>Etapas e eventos</h2><p>Selecione uma corrida para consultar todos os detalhes disponíveis.</p></div><div class="tools"><select id="raceCenterFilter" onchange="renderRaceCenter()"><option value="">Todos os eventos</option><option value="upcoming">Próximos</option><option value="completed">Com resultados</option><option value="pending">Aguardando resultados</option></select></div></div>
+<div class="raceCenterGrid" id="raceCenterGrid"></div>
+<div class="panel raceCenterDetail" id="raceCenterDetail"><p class="empty">Selecione uma etapa para abrir o Race Center.</p></div>
 </section>
-<section id="drivers" class="page"><div class="subhead"><div class="kicker">GRID DE PILOTOS</div><h1>Pilotos</h1><p>Cadastro e histórico dos competidores.</p></div><div class="sectionHead"><div><h2>Pilotos cadastrados</h2><p>Use a administração para adicionar novos pilotos.</p></div><div class="tools"><input id="driverSearch" placeholder="Buscar piloto..." oninput="renderAll()"></div></div><div class="rl90DriverSummary" id="rl90DriverSummary"></div><div class="rl90DriverGrid" id="rl90DriverGrid"></div><div class="panel tableWrap rl90DriverTable"><table><thead><tr><th>Piloto</th><th>Equipe</th><th>Títulos</th><th>Pontos registrados</th></tr></thead><tbody id="driverRows"></tbody></table></div></section>
-<section id="trophies" class="page"><div class="subhead"><div class="kicker">ROOKIE LEAGUE MOTORSPORT · LEGADO</div><h1>🏆 Sala de Troféus</h1><p>Conquistas oficiais dos pilotos, vitórias e a história dos campeões.</p></div><div class="rl91Hero"><div><span class="rl91Eyebrow">HALL OF CHAMPIONS</span><h2>O legado se conquista na pista.</h2><p>Conheça os pilotos que marcaram a história da Rookie League.</p></div><div class="rl92Showcase" aria-hidden="true"><div class="rl92Pedestal"><span class="rl92Cup rl92Silver"></span></div><div class="rl92Pedestal rl92MainPedestal"><span class="rl92Cup rl92Gold"></span></div><div class="rl92Pedestal"><span class="rl92Cup rl92Bronze"></span></div></div></div><div class="rl93Invite"><span>✦ NOVO · TROFÉUS EM 3D</span><strong>Explore as conquistas em 360°</strong><p>Gire o troféu com o mouse ou o dedo, aproxime e observe cada detalhe.</p><button type="button" class="btn" onclick="rl93Open('gold','Troféu de Campeão')">🏆 EXPLORAR TROFÉU 3D</button></div><div class="rl91Stats" id="rl91Stats"></div><div id="rl92Featured" class="rl92Featured"></div><div class="rl91Toolbar"><input id="rl91Search" type="search" placeholder="Buscar piloto ou equipe…" oninput="rl91RenderTrophies()" aria-label="Buscar troféus por piloto ou equipe"><select id="rl91Filter" onchange="rl91RenderTrophies()" aria-label="Filtrar conquistas"><option value="all">Todas as conquistas</option><option value="titles">Campeões</option><option value="wins">Vencedores de etapas</option><option value="podiums">Com pódios</option></select></div><div class="rl92SectionHead"><h3>🏁 GALERIA DE CONQUISTAS</h3><span>Dados oficiais da Rookie League</span></div><div class="rl91Gallery" id="rl91Gallery"></div><p class="hint">Títulos são exibidos apenas quando cadastrados oficialmente. Vitórias e pódios usam os resultados de etapas disponíveis no portal; não representam necessariamente classificações finais de campeonato.</p></section>
-<section id="hall" class="page"><div class="subhead"><div class="kicker">OS GRANDES NOMES DA LIGA</div><h1>Hall da Fama</h1><p>Uma homenagem aos campeões da Rookie League Motorsport.</p></div><div class="metrics"><div class="metric"><div class="label">Pilotos homenageados</div><strong id="hallDrivers">03</strong></div><div class="metric"><div class="label">Títulos registrados</div><strong><em id="hallTitles">04</em></strong></div><div class="metric"><div class="label">Categoria</div><strong>LMP2</strong></div><div class="metric"><div class="label">Liga</div><strong style="font-size:18px">ROOKIE</strong></div></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Temporadas</th></tr></thead><tbody id="hallRows"></tbody></table></div><p class="hint">Empates são mantidos na mesma posição. As temporadas podem ser informadas no cadastro de títulos.</p></section>
-<section id="news" class="page"><div class="subhead"><div class="kicker">ROOKIE LEAGUE · PRESS CENTER</div><h1>Notícias do Paddock</h1><p>Comunicados, resultados e tudo o que acontece dentro e fora das pistas.</p></div>
+<section class="page" id="drivers"><div class="subhead"><div class="kicker">GRID DE PILOTOS</div><h1>Pilotos</h1><p>Cadastro e histórico dos competidores.</p></div><div class="sectionHead"><div><h2>Pilotos cadastrados</h2><p>Use a administração para adicionar novos pilotos.</p></div><div class="tools"><input id="driverSearch" oninput="renderAll()" placeholder="Buscar piloto..."/></div></div><div class="rl90DriverSummary" id="rl90DriverSummary"></div><div class="rl90DriverGrid" id="rl90DriverGrid"></div><div class="panel tableWrap rl90DriverTable"><table><thead><tr><th>Piloto</th><th>Equipe</th><th>Títulos</th><th>Pontos registrados</th></tr></thead><tbody id="driverRows"></tbody></table></div></section>
+<section class="page" id="trophies" hidden><div class="subhead"><div class="kicker">ROOKIE LEAGUE MOTORSPORT · LEGADO</div><h1>🏆 Sala de Troféus</h1><p>Conquistas oficiais dos pilotos, vitórias e a história dos campeões.</p></div><div class="rl91Hero"><div><span class="rl91Eyebrow">HALL OF CHAMPIONS</span><h2>O legado se conquista na pista.</h2><p>Conheça os pilotos que marcaram a história da Rookie League.</p></div><div aria-hidden="true" class="rl92Showcase"><div class="rl92Pedestal"><span class="rl92Cup rl92Silver"></span></div><div class="rl92Pedestal rl92MainPedestal"><span class="rl92Cup rl92Gold"></span></div><div class="rl92Pedestal"><span class="rl92Cup rl92Bronze"></span></div></div></div><div class="rl93Invite"><span>✦ NOVO · TROFÉUS EM 3D</span><strong>Explore as conquistas em 360°</strong><p>Gire o troféu com o mouse ou o dedo, aproxime e observe cada detalhe.</p><button class="btn" onclick="rl93Open('gold','Troféu de Campeão')" type="button">🏆 EXPLORAR TROFÉU 3D</button></div><div class="rl91Stats" id="rl91Stats"></div><div class="rl92Featured" id="rl92Featured"></div><div class="rl91Toolbar"><input aria-label="Buscar troféus por piloto ou equipe" id="rl91Search" oninput="rl91RenderTrophies()" placeholder="Buscar piloto ou equipe…" type="search"/><select aria-label="Filtrar conquistas" id="rl91Filter" onchange="rl91RenderTrophies()"><option value="all">Todas as conquistas</option><option value="titles">Campeões</option><option value="wins">Vencedores de etapas</option><option value="podiums">Com pódios</option></select></div><div class="rl92SectionHead"><h3>🏁 GALERIA DE CONQUISTAS</h3><span>Dados oficiais da Rookie League</span></div><div class="rl91Gallery" id="rl91Gallery"></div><p class="hint">Títulos são exibidos apenas quando cadastrados oficialmente. Vitórias e pódios usam os resultados de etapas disponíveis no portal; não representam necessariamente classificações finais de campeonato.</p></section>
+<section class="page" id="hall"><div class="subhead"><div class="kicker">OS GRANDES NOMES DA LIGA</div><h1>Hall da Fama</h1><p>Uma homenagem aos campeões da Rookie League Motorsport.</p></div><div class="metrics"><div class="metric"><div class="label">Pilotos homenageados</div><strong id="hallDrivers">03</strong></div><div class="metric"><div class="label">Títulos registrados</div><strong><em id="hallTitles">04</em></strong></div><div class="metric"><div class="label">Categoria</div><strong>LMP2</strong></div><div class="metric"><div class="label">Liga</div><strong style="font-size:18px">ROOKIE</strong></div></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Temporadas</th></tr></thead><tbody id="hallRows"></tbody></table></div><p class="hint">Empates são mantidos na mesma posição. As temporadas podem ser informadas no cadastro de títulos.</p></section>
+<section class="page" id="news"><div class="subhead"><div class="kicker">ROOKIE LEAGUE · PRESS CENTER</div><h1>Notícias do Paddock</h1><p>Comunicados, resultados e tudo o que acontece dentro e fora das pistas.</p></div>
 <div class="rl88NewsTop"><div><span class="rl88LiveDot"></span> CENTRAL DE COMUNICAÇÃO</div><span id="rl88NewsCount">NOTÍCIAS OFICIAIS</span></div>
-<div class="rl88NewsToolbar"><div class="rl88NewsFilters" id="rl88NewsFilters"></div><label class="rl88NewsSearch"><span>⌕</span><input id="rl88NewsSearch" type="search" placeholder="Buscar notícias..." oninput="renderNews()" aria-label="Buscar notícias"></label></div>
-<div id="newsWall" class="newsWall"><div class="empty">Carregando notícias...</div></div>
-<div id="rl88NewsReader" class="rl88NewsReader" hidden role="dialog" aria-modal="true" aria-label="Leitura da notícia"><div class="rl88ReaderPanel"><button class="rl88ReaderClose" type="button" onclick="rl88CloseNews()" aria-label="Fechar notícia">✕</button><div id="rl88ReaderBody"></div></div></div>
+<div class="rl88NewsToolbar"><div class="rl88NewsFilters" id="rl88NewsFilters"></div><label class="rl88NewsSearch"><span>⌕</span><input aria-label="Buscar notícias" id="rl88NewsSearch" oninput="renderNews()" placeholder="Buscar notícias..." type="search"/></label></div>
+<div class="newsWall" id="newsWall"><div class="empty">Carregando notícias...</div></div>
+<div aria-label="Leitura da notícia" aria-modal="true" class="rl88NewsReader" hidden="" id="rl88NewsReader" role="dialog"><div class="rl88ReaderPanel"><button aria-label="Fechar notícia" class="rl88ReaderClose" onclick="rl88CloseNews()" type="button">✕</button><div id="rl88ReaderBody"></div></div></div>
 </section>
-
-
-<section id="community" class="page">
- <div class="subhead"><div class="kicker">COMUNIDADE • ROOKIE LEAGUE</div><h1>Mural da comunidade</h1><p>Compartilhe novidades, fotos por link e momentos da sua carreira com os outros pilotos.</p></div>
- <div class="panel" style="margin-top:13px">
-  <h2>Nova publicação</h2><div id="communityLoginHint" class="empty">Entre na sua conta para publicar no mural.</div>
-  <div id="communityComposer" style="display:none;padding:0 17px 17px"><textarea id="communityBody" rows="4" maxlength="2000" placeholder="O que está acontecendo na pista?"></textarea><div class="uploadRow"><label class="uploadButton">📷 Adicionar foto/vídeo<input id="communityFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" hidden></label><span id="communityFileNames" class="hint">1 foto ou vídeo · até 8 MB</span></div><div class="field" style="margin-top:10px"><label>Ou link externo (opcional)</label><input id="communityMedia" type="url" placeholder="https://..."></div><div class="formactions" style="padding:12px 0 0"><button class="btn" onclick="submitCommunityPost()">PUBLICAR</button></div></div>
- </div>
- <div id="communityWall" class="tracklist" style="margin-top:13px"><p class="empty">Carregando publicações...</p></div>
+<section class="page" id="community">
+<div class="subhead"><div class="kicker">COMUNIDADE • ROOKIE LEAGUE</div><h1>Mural da comunidade</h1><p>Compartilhe novidades, fotos por link e momentos da sua carreira com os outros pilotos.</p></div>
+<div class="panel" style="margin-top:13px">
+<h2>Nova publicação</h2><div class="empty" id="communityLoginHint">Entre na sua conta para publicar no mural.</div>
+<div id="communityComposer" style="display:none;padding:0 17px 17px"><textarea id="communityBody" maxlength="2000" placeholder="O que está acontecendo na pista?" rows="4"></textarea><div class="uploadRow"><label class="uploadButton">📷 Adicionar foto/vídeo<input accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" hidden="" id="communityFile" type="file"/></label><span class="hint" id="communityFileNames">1 foto ou vídeo · até 8 MB</span></div><div class="field" style="margin-top:10px"><label>Ou link externo (opcional)</label><input id="communityMedia" placeholder="https://..." type="url"/></div><div class="formactions" style="padding:12px 0 0"><button class="btn" onclick="submitCommunityPost()">PUBLICAR</button></div></div>
+</div>
+<div class="tracklist" id="communityWall" style="margin-top:13px"><p class="empty">Carregando publicações...</p></div>
 </section>
-<section id="garage" class="page">
- <div class="subhead"><div class="kicker">BOXES • ROOKIE LEAGUE</div><h1>Garagem virtual</h1><p>Apresente seus carros, pinturas e máquinas favoritas da liga.</p></div>
- <div class="panel garageComposer" style="margin-top:13px">
-  <h2 style="padding:17px 17px 0">Adicionar carro à garagem</h2>
-  <div id="garageLoginHint" class="empty">Entre na sua conta vinculada a um piloto para cadastrar seus carros.</div>
-  <div id="garageForm" style="display:none">
-   <div class="formgrid">
-    <div class="field"><label>Nome do carro</label><input id="garageName" maxlength="80" placeholder="Ex.: Protótipo #07"></div>
-    <div class="field"><label>Modelo</label><input id="garageModel" maxlength="80" placeholder="Ex.: Oreca 07"></div>
-    <div class="field"><label>Categoria</label><select id="garageCategory"><option value="">Selecione</option><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select></div>
-    <div class="field"><label>Número</label><input id="garageNumber" maxlength="8" placeholder="07"></div>
-    <div class="field"><label>Campeonato/equipe</label><input id="garageChampionship" maxlength="100" placeholder="Opcional"></div>
-    <div class="field"><label>Foto do carro</label><input id="garagePhoto" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
-    <div class="field full"><label>Descrição</label><input id="garageDescription" maxlength="500" placeholder="Conte um pouco sobre a máquina..."></div>
-   </div>
-   <div class="formactions"><button class="btn" onclick="submitGarageCar()">SALVAR NA GARAGEM</button></div>
-  </div>
- </div>
- <div class="sectionHead"><div><h2>Garagens dos pilotos</h2><p>Carros cadastrados pela comunidade.</p></div></div>
- <div id="garageWall" class="garageGrid"><p class="empty">Carregando garagens...</p></div>
+<section class="page" id="garage">
+<div class="subhead"><div class="kicker">BOXES • ROOKIE LEAGUE</div><h1>Garagem virtual</h1><p>Apresente seus carros, pinturas e máquinas favoritas da liga.</p></div>
+<div class="panel garageComposer" style="margin-top:13px">
+<h2 style="padding:17px 17px 0">Adicionar carro à garagem</h2>
+<div class="empty" id="garageLoginHint">Entre na sua conta vinculada a um piloto para cadastrar seus carros.</div>
+<div id="garageForm" style="display:none">
+<div class="formgrid">
+<div class="field"><label>Nome do carro</label><input id="garageName" maxlength="80" placeholder="Ex.: Protótipo #07"/></div>
+<div class="field"><label>Modelo</label><input id="garageModel" maxlength="80" placeholder="Ex.: Oreca 07"/></div>
+<div class="field"><label>Categoria</label><select id="garageCategory"><option value="">Selecione</option><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select></div>
+<div class="field"><label>Número</label><input id="garageNumber" maxlength="8" placeholder="07"/></div>
+<div class="field"><label>Campeonato/equipe</label><input id="garageChampionship" maxlength="100" placeholder="Opcional"/></div>
+<div class="field"><label>Foto do carro</label><input accept="image/jpeg,image/png,image/webp,image/gif" id="garagePhoto" type="file"/></div>
+<div class="field full"><label>Descrição</label><input id="garageDescription" maxlength="500" placeholder="Conte um pouco sobre a máquina..."/></div>
+</div>
+<div class="formactions"><button class="btn" onclick="submitGarageCar()">SALVAR NA GARAGEM</button></div>
+</div>
+</div>
+<div class="sectionHead"><div><h2>Garagens dos pilotos</h2><p>Carros cadastrados pela comunidade.</p></div></div>
+<div class="garageGrid" id="garageWall"><p class="empty">Carregando garagens...</p></div>
 </section>
-<section id="awards" class="page">
- <div class="subhead"><div class="kicker">ROOKIE LEAGUE AWARDS</div><h1>Premiação de fim de temporada</h1><p>Reconhecendo os destaques, campeões e momentos marcantes de cada temporada.</p></div>
- <div id="seasonAwardsWall" class="tracklist" style="margin-top:13px"><p class="empty">Carregando premiações...</p></div>
+<section class="page" id="awards">
+<div class="subhead"><div class="kicker">ROOKIE LEAGUE AWARDS</div><h1>Premiação de fim de temporada</h1><p>Reconhecendo os destaques, campeões e momentos marcantes de cada temporada.</p></div>
+<div class="tracklist" id="seasonAwardsWall" style="margin-top:13px"><p class="empty">Carregando premiações...</p></div>
 </section>
-
-<section id="racecontrol" class="page">
- <div class="subhead"><div class="kicker">FAIR PLAY • COMPETIÇÃO</div><h1>Direção de Prova</h1><p>Envie protestos sobre incidentes e acompanhe as decisões oficiais da organização.</p></div>
- <div class="panel" style="margin-top:13px">
-  <h2>Enviar protesto</h2>
-  <p class="hint">É necessário entrar na sua conta. Descreva o incidente com respeito e, se possível, inclua um link para o vídeo ou replay.</p>
-  <div id="protestLoginHint" class="empty">Faça login como piloto para enviar um protesto.</div>
-  <div id="protestForm" style="display:none">
-   <div class="formgrid">
-    <div class="field"><label>Etapa</label><select id="protestRace"></select></div>
-    <div class="field"><label>Tipo de incidente</label><select id="protestType"><option>Colisão</option><option>Ultrapassagem irregular</option><option>Defesa irregular</option><option>Corte de pista</option><option>Conduta antidesportiva</option><option>Outro</option></select></div>
-    <div class="field full"><label>Piloto envolvido (opcional)</label><select id="protestAgainst"><option value="">Não informar</option></select></div>
-    <div class="field full"><label>Descrição do incidente</label><textarea id="protestDescription" rows="5" maxlength="3000" placeholder="Informe volta, curva, contexto e o que aconteceu..."></textarea></div>
-    <div class="field full"><label>Link de vídeo/replay (opcional)</label><input id="protestEvidence" type="url" placeholder="https://..."></div>
-   </div>
-   <div class="formactions"><button class="btn" onclick="submitProtest()">ENVIAR PROTESTO</button></div>
-  </div>
- </div>
- <div class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Minhas solicitações</h2><p>Consulte o andamento dos protestos enviados pela sua conta.</p></div><button class="btn secondary small" onclick="loadRaceControl()">↻ ATUALIZAR</button></div><div id="myProtests" class="tracklist"><p class="empty">Entre na sua conta para consultar.</p></div></div>
- <div class="panel" style="margin-top:13px"><h2>Decisões publicadas</h2><p class="hint">Decisões oficiais e penalidades divulgadas pela direção de prova.</p><div id="publishedPenalties" class="tracklist"><p class="empty">Carregando decisões...</p></div></div>
+<section class="page" id="racecontrol">
+<div class="subhead"><div class="kicker">FAIR PLAY • COMPETIÇÃO</div><h1>Direção de Prova</h1><p>Envie protestos sobre incidentes e acompanhe as decisões oficiais da organização.</p></div>
+<div class="panel" style="margin-top:13px">
+<h2>Enviar protesto</h2>
+<p class="hint">É necessário entrar na sua conta. Descreva o incidente com respeito e, se possível, inclua um link para o vídeo ou replay.</p>
+<div class="empty" id="protestLoginHint">Faça login como piloto para enviar um protesto.</div>
+<div id="protestForm" style="display:none">
+<div class="formgrid">
+<div class="field"><label>Etapa</label><select id="protestRace"></select></div>
+<div class="field"><label>Tipo de incidente</label><select id="protestType"><option>Colisão</option><option>Ultrapassagem irregular</option><option>Defesa irregular</option><option>Corte de pista</option><option>Conduta antidesportiva</option><option>Outro</option></select></div>
+<div class="field full"><label>Piloto envolvido (opcional)</label><select id="protestAgainst"><option value="">Não informar</option></select></div>
+<div class="field full"><label>Descrição do incidente</label><textarea id="protestDescription" maxlength="3000" placeholder="Informe volta, curva, contexto e o que aconteceu..." rows="5"></textarea></div>
+<div class="field full"><label>Link de vídeo/replay (opcional)</label><input id="protestEvidence" placeholder="https://..." type="url"/></div>
+</div>
+<div class="formactions"><button class="btn" onclick="submitProtest()">ENVIAR PROTESTO</button></div>
+</div>
+</div>
+<div class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Minhas solicitações</h2><p>Consulte o andamento dos protestos enviados pela sua conta.</p></div><button class="btn secondary small" onclick="loadRaceControl()">↻ ATUALIZAR</button></div><div class="tracklist" id="myProtests"><p class="empty">Entre na sua conta para consultar.</p></div></div>
+<div class="panel" style="margin-top:13px"><h2>Decisões publicadas</h2><p class="hint">Decisões oficiais e penalidades divulgadas pela direção de prova.</p><div class="tracklist" id="publishedPenalties"><p class="empty">Carregando decisões...</p></div></div>
 </section>
-
-<section id="admin" class="page"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button type="button" class="active"  onclick="switchAdminTab('pilotForm',this)"data-tab="pilotForm">＋ Cadastrar piloto</button><button type="button"  onclick="switchAdminTab('champForm',this)"data-tab="champForm">＋ Cadastrar campeonato</button><button type="button" onclick="switchAdminTab('newsForm',this)" data-tab="newsForm">▤ Publicar notícia</button><button type="button" onclick="switchAdminTab('communityAdmin',this)" data-tab="communityAdmin">▧ Comunidade</button><button type="button" onclick="switchAdminTab('awardsAdmin',this)" data-tab="awardsAdmin">🏆 Premiações</button><button type="button" onclick="switchAdminTab('raceControlAdmin',this)" data-tab="raceControlAdmin">⚑ Direção de prova</button><button type="button" onclick="switchAdminTab('funForm',this)" data-tab="funForm">★ Cadastrar 4FUN</button><button type="button"  onclick="switchAdminTab('trackForm',this)"data-tab="trackForm">＋ Cadastrar pista</button><button type="button"  onclick="switchAdminTab('raceForm',this)"data-tab="raceForm">＋ Criar etapa</button><button type="button"  onclick="switchAdminTab('resultForm',this)"data-tab="resultForm">＋ Lançar resultado</button><button type="button"  onclick="switchAdminTab('titleForm',this)"data-tab="titleForm">♛ Registrar título</button></div>
-<div id="newsForm" class="panel" style="display:none;margin-top:13px"><h3>Publicar no mural</h3><div class="formgrid"><div class="field"><label>Título</label><input id="newsTitle" maxlength="120" placeholder="Ex.: Inscrições abertas para a nova temporada"></div><div class="field"><label>Categoria</label><select id="newsCategory"><option>Comunicado</option><option>Campeonato</option><option>Resultado</option><option>Evento 4FUN</option><option>Atualização</option></select></div><div class="field full"><label>Notícia</label><textarea id="newsBody" rows="5" maxlength="5000" placeholder="Escreva o comunicado oficial..."></textarea></div></div><div class="formactions"><button class="btn" onclick="publishNews()">PUBLICAR NOTÍCIA</button></div><div id="adminNewsList" class="tracklist"></div></div>
-<div class="formactions" style="margin-top:12px"><a class="btn" href="https://supabase.com/dashboard/project/lxformxabgtgafykvhkw/editor/17649?schema=public" target="_blank" rel="noopener noreferrer">↗ ABRIR SUPABASE — GERENCIAR INSCRIÇÕES</a></div>
-<div id="champForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do campeonato</label><input id="newChampName" placeholder="Ex.: Rookie League GT3"></div><div class="field"><label>Temporada / ano</label><input id="newChampSeason" placeholder="Ex.: Temporada 2026"></div><div class="field"><label>Categoria</label><select id="newChampCategory"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select></div><div class="field full champUrlField"><label>URL para escolha de carro (opcional)</label><input id="newChampCarUrl" type="url" placeholder="https://site.com/escolher-carro"><small>O link aparecerá para os pilotos com inscrição aprovada.</small></div><div class="formactions"><button class="btn" onclick="addChampionship()">CADASTRAR CAMPEONATO</button><span class="hint">Depois de cadastrar, crie as etapas e defina pista, data e horário de cada corrida.</span></div></div></div>
+<section class="page" id="admin"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button class="active" data-tab="pilotForm" onclick="switchAdminTab('pilotForm',this)" type="button">＋ Cadastrar piloto</button><button data-tab="champForm" onclick="switchAdminTab('champForm',this)" type="button">＋ Cadastrar campeonato</button><button data-tab="newsForm" onclick="switchAdminTab('newsForm',this)" type="button">▤ Publicar notícia</button><button data-tab="communityAdmin" onclick="switchAdminTab('communityAdmin',this)" type="button">▧ Comunidade</button><button data-tab="awardsAdmin" onclick="switchAdminTab('awardsAdmin',this)" type="button">🏆 Premiações</button><button data-tab="raceControlAdmin" onclick="switchAdminTab('raceControlAdmin',this)" type="button">⚑ Direção de prova</button><button data-tab="funForm" onclick="switchAdminTab('funForm',this)" type="button">★ Cadastrar 4FUN</button><button data-tab="trackForm" onclick="switchAdminTab('trackForm',this)" type="button">＋ Cadastrar pista</button><button data-tab="raceForm" onclick="switchAdminTab('raceForm',this)" type="button">＋ Criar etapa</button><button data-tab="resultForm" onclick="switchAdminTab('resultForm',this)" type="button">＋ Lançar resultado</button><button data-tab="titleForm" onclick="switchAdminTab('titleForm',this)" type="button">♛ Registrar título</button></div>
+<div class="panel" id="newsForm" style="display:none;margin-top:13px"><h3>Publicar no mural</h3><div class="formgrid"><div class="field"><label>Título</label><input id="newsTitle" maxlength="120" placeholder="Ex.: Inscrições abertas para a nova temporada"/></div><div class="field"><label>Categoria</label><select id="newsCategory"><option>Comunicado</option><option>Campeonato</option><option>Resultado</option><option>Evento 4FUN</option><option>Atualização</option></select></div><div class="field full"><label>Notícia</label><textarea id="newsBody" maxlength="5000" placeholder="Escreva o comunicado oficial..." rows="5"></textarea></div></div><div class="formactions"><button class="btn" onclick="publishNews()">PUBLICAR NOTÍCIA</button></div><div class="tracklist" id="adminNewsList"></div></div>
+<div class="formactions" style="margin-top:12px"><a class="btn" href="https://supabase.com/dashboard/project/lxformxabgtgafykvhkw/editor/17649?schema=public" rel="noopener noreferrer" target="_blank">↗ ABRIR SUPABASE — GERENCIAR INSCRIÇÕES</a></div>
+<div class="panel" id="champForm" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do campeonato</label><input id="newChampName" placeholder="Ex.: Rookie League GT3"/></div><div class="field"><label>Temporada / ano</label><input id="newChampSeason" placeholder="Ex.: Temporada 2026"/></div><div class="field"><label>Categoria</label><select id="newChampCategory"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select></div><div class="field full champUrlField"><label>URL para escolha de carro (opcional)</label><input id="newChampCarUrl" placeholder="https://site.com/escolher-carro" type="url"/><small>O link aparecerá para os pilotos com inscrição aprovada.</small></div><div class="formactions"><button class="btn" onclick="addChampionship()">CADASTRAR CAMPEONATO</button><span class="hint">Depois de cadastrar, crie as etapas e defina pista, data e horário de cada corrida.</span></div></div></div>
 <div class="panel" style="margin-top:13px"><div class="formgrid">
 <div class="field"><label>Campeonato para configurar</label><select id="carUrlChamp" onchange="loadSelectedChampionshipCarUrl()"></select></div>
-<div class="field full champUrlField"><label>Link de escolha de carro</label><input id="carSelectionUrl" type="url" placeholder="https://site.com/escolher-carro"><small>O ADM pode alterar esse endereço a qualquer momento.</small></div>
+<div class="field full champUrlField"><label>Link de escolha de carro</label><input id="carSelectionUrl" placeholder="https://site.com/escolher-carro" type="url"/><small>O ADM pode alterar esse endereço a qualquer momento.</small></div>
 </div><div class="formactions"><button class="btn" onclick="saveChampionshipCarUrl()">SALVAR LINK DE ESCOLHA DE CARRO</button><span class="hint" id="carUrlStatus">Configure o endereço que será aberto pelo botão do piloto.</span></div></div>
-<div id="dlcAdmin" class="panel" style="display:none;margin-top:13px"><h2 style="padding:16px 16px 0">Gerenciar arquivos de DLC</h2><p class="hint" style="padding:0 16px">Somente administradores podem cadastrar, editar ou remover links. Cole um link compartilhável do Google Drive.</p><div class="formgrid"><div class="field"><label>Campeonato</label><select id="dlcChampSelect" onchange="loadDlcAdminList()"></select></div><div class="field"><label>Nome do pacote</label><input id="dlcPackageName" maxlength="120" placeholder="Ex.: Pacote GT3 — Temporada 2026"></div><div class="field"><label>Categoria</label><select id="dlcCategory"><option value="cars">Carros</option><option value="tracks">Pistas</option><option value="complete">Pacote completo</option><option value="other">Outros</option></select></div><div class="field"><label>Nome do arquivo</label><input id="dlcFileName" maxlength="180" placeholder="Ex.: carros_gt3.7z"></div><div class="field"><label>Versão</label><input id="dlcVersion" maxlength="30" value="1.0"></div><div class="field"><label>Tamanho (opcional)</label><input id="dlcFileSize" maxlength="40" placeholder="Ex.: 2,5 GB"></div><div class="field full"><label>Link compartilhável do Google Drive</label><input id="dlcDriveUrl" type="url" placeholder="https://drive.google.com/file/d/.../view"><small class="hint">Configure o compartilhamento do arquivo no Drive para que os pilotos autorizados tenham acesso.</small></div><div class="field full"><label>Descrição (opcional)</label><textarea id="dlcDescription" rows="2" maxlength="500" placeholder="Informações sobre o conteúdo..."></textarea></div></div><div class="formactions"><button class="btn" type="button" onclick="saveDlcFile()">SALVAR ARQUIVO DLC</button><span id="dlcAdminStatus" class="hint"></span></div><div id="dlcAdminList" style="padding:0 16px 16px"></div></div>
-<div id="pilotForm" class="panel" style="margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do piloto</label><input id="pilotName" placeholder="Ex.: Maria Silva"></div><div class="field"><label>Equipe (opcional)</label><input id="pilotTeam" placeholder="Nome da equipe"></div><div class="field"><label>E-mail da conta do piloto</label><input id="pilotEmail" type="email" placeholder="email usado no login"></div><div class="field"><label>Categoria principal</label><select id="pilotClass"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Outra</option></select></div></div><div class="formactions"><button class="btn" onclick="addDriver()">SALVAR PILOTO</button><span class="hint">Não duplique pilotos; confira a lista antes de salvar.</span></div></div>
-<div id="funForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do evento 4FUN</label><input id="funName" placeholder="Ex.: Noite de Drift / Track Day"></div><div class="field"><label>Data</label><input id="funDate" type="date"></div><div class="field"><label>Horário</label><input id="funTime" type="time"></div><div class="field"><label>Pista</label><select id="funTrack"></select></div><div class="field full"><label>Descrição / informações</label><textarea id="funDescription" rows="3" placeholder="Formato livre, carros permitidos, orientações..."></textarea></div><div class="field full"><label>Link para entrar no servidor (opcional)</label><input id="funServerUrl" type="url" placeholder="https://... ou ac://..."></div></div><div class="formactions"><button class="btn" onclick="addFunEvent()">CADASTRAR EVENTO 4FUN</button></div><div id="funAdminList" class="tracklist"></div></div>
-<div id="trackForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome da pista / circuito</label><input id="trackName" placeholder="Ex.: Autódromo de Interlagos"></div><div class="field"><label>País</label><input id="trackCountry" placeholder="Brasil"></div><div class="field"><label>Traçado / configuração (opcional)</label><input id="trackLayout" placeholder="Ex.: GP — 4,3 km"></div></div><div class="formactions"><button class="btn" onclick="addTrack()">CADASTRAR PISTA</button></div><div id="trackList" class="tracklist"></div></div>
-<div id="raceForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Campeonato</label><select id="raceChamp"></select></div><div class="field"><label>Nome / número da etapa</label><input id="raceName" placeholder="Ex.: Etapa 1 — Interlagos"></div><div class="field"><label>Data da corrida</label><input id="raceDate" type="date"></div><div class="field"><label>Horário de início</label><input id="raceTime" type="time"></div><div class="field"><label>Pista</label><select id="raceTrack"></select></div></div><div class="formactions"><button class="btn" onclick="addRace()">CRIAR ETAPA</button></div></div>
-<div id="resultForm" class="panel resultEntryPanel" style="display:none;margin-top:13px">
+<div class="panel" id="dlcAdmin" style="display:none;margin-top:13px"><h2 style="padding:16px 16px 0">Gerenciar arquivos de DLC</h2><p class="hint" style="padding:0 16px">Somente administradores podem cadastrar, editar ou remover links. Cole um link compartilhável do Google Drive.</p><div class="formgrid"><div class="field"><label>Campeonato</label><select id="dlcChampSelect" onchange="loadDlcAdminList()"></select></div><div class="field"><label>Nome do pacote</label><input id="dlcPackageName" maxlength="120" placeholder="Ex.: Pacote GT3 — Temporada 2026"/></div><div class="field"><label>Categoria</label><select id="dlcCategory"><option value="cars">Carros</option><option value="tracks">Pistas</option><option value="complete">Pacote completo</option><option value="other">Outros</option></select></div><div class="field"><label>Nome do arquivo</label><input id="dlcFileName" maxlength="180" placeholder="Ex.: carros_gt3.7z"/></div><div class="field"><label>Versão</label><input id="dlcVersion" maxlength="30" value="1.0"/></div><div class="field"><label>Tamanho (opcional)</label><input id="dlcFileSize" maxlength="40" placeholder="Ex.: 2,5 GB"/></div><div class="field full"><label>Link compartilhável do Google Drive</label><input id="dlcDriveUrl" placeholder="https://drive.google.com/file/d/.../view" type="url"/><small class="hint">Configure o compartilhamento do arquivo no Drive para que os pilotos autorizados tenham acesso.</small></div><div class="field full"><label>Descrição (opcional)</label><textarea id="dlcDescription" maxlength="500" placeholder="Informações sobre o conteúdo..." rows="2"></textarea></div></div><div class="formactions"><button class="btn" onclick="saveDlcFile()" type="button">SALVAR ARQUIVO DLC</button><span class="hint" id="dlcAdminStatus"></span></div><div id="dlcAdminList" style="padding:0 16px 16px"></div></div>
+<div class="panel" id="pilotForm" style="margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do piloto</label><input id="pilotName" placeholder="Ex.: Maria Silva"/></div><div class="field"><label>Equipe (opcional)</label><input id="pilotTeam" placeholder="Nome da equipe"/></div><div class="field"><label>E-mail da conta do piloto</label><input id="pilotEmail" placeholder="email usado no login" type="email"/></div><div class="field"><label>Categoria principal</label><select id="pilotClass"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Outra</option></select></div></div><div class="formactions"><button class="btn" onclick="addDriver()">SALVAR PILOTO</button><span class="hint">Não duplique pilotos; confira a lista antes de salvar.</span></div></div>
+<div class="panel" id="funForm" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do evento 4FUN</label><input id="funName" placeholder="Ex.: Noite de Drift / Track Day"/></div><div class="field"><label>Data</label><input id="funDate" type="date"/></div><div class="field"><label>Horário</label><input id="funTime" type="time"/></div><div class="field"><label>Pista</label><select id="funTrack"></select></div><div class="field full"><label>Descrição / informações</label><textarea id="funDescription" placeholder="Formato livre, carros permitidos, orientações..." rows="3"></textarea></div><div class="field full"><label>Link para entrar no servidor (opcional)</label><input id="funServerUrl" placeholder="https://... ou ac://..." type="url"/></div></div><div class="formactions"><button class="btn" onclick="addFunEvent()">CADASTRAR EVENTO 4FUN</button></div><div class="tracklist" id="funAdminList"></div></div>
+<div class="panel" id="trackForm" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome da pista / circuito</label><input id="trackName" placeholder="Ex.: Autódromo de Interlagos"/></div><div class="field"><label>País</label><input id="trackCountry" placeholder="Brasil"/></div><div class="field"><label>Traçado / configuração (opcional)</label><input id="trackLayout" placeholder="Ex.: GP — 4,3 km"/></div></div><div class="formactions"><button class="btn" onclick="addTrack()">CADASTRAR PISTA</button></div><div class="tracklist" id="trackList"></div></div>
+<div class="panel" id="raceForm" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Campeonato</label><select id="raceChamp"></select></div><div class="field"><label>Nome / número da etapa</label><input id="raceName" placeholder="Ex.: Etapa 1 — Interlagos"/></div><div class="field"><label>Data da corrida</label><input id="raceDate" type="date"/></div><div class="field"><label>Horário de início</label><input id="raceTime" type="time"/></div><div class="field"><label>Pista</label><select id="raceTrack"></select></div></div><div class="formactions"><button class="btn" onclick="addRace()">CRIAR ETAPA</button></div></div>
+<div class="panel resultEntryPanel" id="resultForm" style="display:none;margin-top:13px">
 <div class="resultSetup">
- <div class="field"><label>CAMPEONATO VIGENTE</label><select id="resultChampSelect" onchange="updateResultDriverOptions();updateResultRaceOptions()"></select></div>
- <div class="field"><label>PISTA</label><select id="resultTrackSelect" onchange="updateResultRaceOptions()"></select></div>
- <div class="field"><label>ETAPA / CORRIDA</label><select id="resultRace"></select></div>
+<div class="field"><label>CAMPEONATO VIGENTE</label><select id="resultChampSelect" onchange="updateResultDriverOptions();updateResultRaceOptions()"></select></div>
+<div class="field"><label>PISTA</label><select id="resultTrackSelect" onchange="updateResultRaceOptions()"></select></div>
+<div class="field"><label>ETAPA / CORRIDA</label><select id="resultRace"></select></div>
 </div>
 <div class="resultSlotsHead"><div><h3>Ordem de chegada</h3><p>Selecione os pilotos por posição. A posição é definida automaticamente pelo número da vaga.</p></div><span class="resultSlotsCount">20 VAGAS</span></div>
 <p class="hint" id="resultEligibleNote">Selecione um campeonato para carregar somente os pilotos com inscrição aprovada.</p><div class="resultSlots" id="resultSlots"></div>
 <div class="formactions"><button class="btn" onclick="addResult()">SALVAR RESULTADOS</button><span class="hint">Deixe vazias as posições que não participaram. Os resultados existentes nesta etapa serão preservados; pilotos já lançados não serão duplicados.</span></div>
 </div>
-<div id="titleForm" class="panel" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Piloto campeão</label><select id="titleDriver"></select></div><div class="field"><label>Campeonato</label><select id="titleChamp"></select></div><div class="field"><label>Temporada / ano</label><input id="titleSeason" placeholder="Ex.: Temporada 2026"></div></div><div class="formactions"><button class="btn" onclick="addTitle()">REGISTRAR TÍTULO</button></div></div>
-
-
-<div id="communityAdmin" class="panel" style="display:none;margin-top:13px"><h2>Moderação da comunidade</h2><p class="hint">Remova publicações inadequadas do mural.</p><div id="communityModeration"></div></div>
-<div id="awardsAdmin" class="panel" style="display:none;margin-top:13px"><h2>Organizar premiação</h2><div class="formgrid">
-<div class="field"><label>Temporada</label><input id="awardSeason" maxlength="40" placeholder="Ex.: Temporada 2026"></div>
+<div class="panel" id="titleForm" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Piloto campeão</label><select id="titleDriver"></select></div><div class="field"><label>Campeonato</label><select id="titleChamp"></select></div><div class="field"><label>Temporada / ano</label><input id="titleSeason" placeholder="Ex.: Temporada 2026"/></div></div><div class="formactions"><button class="btn" onclick="addTitle()">REGISTRAR TÍTULO</button></div></div>
+<div class="panel" id="communityAdmin" style="display:none;margin-top:13px"><h2>Moderação da comunidade</h2><p class="hint">Remova publicações inadequadas do mural.</p><div id="communityModeration"></div></div>
+<div class="panel" id="awardsAdmin" style="display:none;margin-top:13px"><h2>Organizar premiação</h2><div class="formgrid">
+<div class="field"><label>Temporada</label><input id="awardSeason" maxlength="40" placeholder="Ex.: Temporada 2026"/></div>
 <div class="field"><label>Categoria</label><select id="awardCategory"><option>Campeão da temporada</option><option>Melhor piloto</option><option>Piloto revelação</option><option>Melhor equipe</option><option>Fair Play</option><option>Maior evolução</option><option>Melhor estreante</option><option>Prêmio especial</option></select></div>
 <div class="field"><label>Vencedor</label><select id="awardDriver"></select></div>
-<div class="field"><label>Descrição (opcional)</label><input id="awardDescription" maxlength="300" placeholder="Motivo ou destaque"></div>
+<div class="field"><label>Descrição (opcional)</label><input id="awardDescription" maxlength="300" placeholder="Motivo ou destaque"/></div>
 </div><div class="formactions"><button class="btn" onclick="publishSeasonAward()">PUBLICAR PREMIAÇÃO</button></div><h3>Premiações cadastradas</h3><div id="adminAwards"></div></div>
-
-<div id="raceControlAdmin" class="panel" style="display:none;margin-top:13px">
- <div class="sectionHead"><div><h2>Protestos recebidos</h2><p>Analise os relatos, registre a decisão e publique penalidades.</p></div><button class="btn secondary small" onclick="loadRaceControl()">↻ ATUALIZAR</button></div>
- <div id="adminProtests" class="tracklist"><p class="empty">Carregando protestos...</p></div>
- <hr style="border-color:var(--line);margin:20px 0">
- <h2>Registrar penalidade / decisão</h2>
- <div class="formgrid">
-  <div class="field"><label>Etapa</label><select id="penaltyRace"></select></div>
-  <div class="field"><label>Piloto penalizado</label><select id="penaltyDriver"></select></div>
-  <div class="field"><label>Tipo de decisão</label><select id="penaltyType"><option>Advertência</option><option>Penalidade de tempo</option><option>Perda de posição</option><option>Desclassificação</option><option>Perda de pontos</option><option>Sem penalidade</option><option>Outra decisão</option></select></div>
-  <div class="field"><label>Penalidade em segundos (se aplicável)</label><input id="penaltySeconds" type="number" min="0" step="1" placeholder="Ex.: 10"></div>
-  <div class="field"><label>Desconto de pontos (se aplicável)</label><input id="penaltyPoints" type="number" min="0" step="1" placeholder="Ex.: 5"></div>
-  <div class="field full"><label>Fundamentação / decisão</label><textarea id="penaltyReason" rows="4" maxlength="3000" placeholder="Descreva a análise e a decisão da direção de prova..."></textarea></div>
- </div>
- <div class="formactions"><button class="btn" onclick="publishPenalty()">PUBLICAR DECISÃO</button></div>
- <h2 style="margin-top:22px">Histórico de decisões</h2><div id="adminPenalties" class="tracklist"></div>
+<div class="panel" id="raceControlAdmin" style="display:none;margin-top:13px">
+<div class="sectionHead"><div><h2>Protestos recebidos</h2><p>Analise os relatos, registre a decisão e publique penalidades.</p></div><button class="btn secondary small" onclick="loadRaceControl()">↻ ATUALIZAR</button></div>
+<div class="tracklist" id="adminProtests"><p class="empty">Carregando protestos...</p></div>
+<hr style="border-color:var(--line);margin:20px 0"/>
+<h2>Registrar penalidade / decisão</h2>
+<div class="formgrid">
+<div class="field"><label>Etapa</label><select id="penaltyRace"></select></div>
+<div class="field"><label>Piloto penalizado</label><select id="penaltyDriver"></select></div>
+<div class="field"><label>Tipo de decisão</label><select id="penaltyType"><option>Advertência</option><option>Penalidade de tempo</option><option>Perda de posição</option><option>Desclassificação</option><option>Perda de pontos</option><option>Sem penalidade</option><option>Outra decisão</option></select></div>
+<div class="field"><label>Penalidade em segundos (se aplicável)</label><input id="penaltySeconds" min="0" placeholder="Ex.: 10" step="1" type="number"/></div>
+<div class="field"><label>Desconto de pontos (se aplicável)</label><input id="penaltyPoints" min="0" placeholder="Ex.: 5" step="1" type="number"/></div>
+<div class="field full"><label>Fundamentação / decisão</label><textarea id="penaltyReason" maxlength="3000" placeholder="Descreva a análise e a decisão da direção de prova..." rows="4"></textarea></div>
 </div>
-
-<div id="registrationAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Inscrições dos campeonatos <span id="registrationPendingBadge" class="adminNoticeBadge" hidden>0</span></h2><p>Analise as solicitações dos pilotos e aprove ou recuse a participação.</p></div><button class="btn secondary small" onclick="loadRegistrationRequests()">↻ ATUALIZAR</button></div><div id="registrationPendingNotice" class="registrationNotice" hidden></div><div id="registrationRequestRows"><p class="hint">Carregando inscrições…</p></div>
-<div id="profileChangeAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Alterações de perfil dos pilotos <span id="profileChangeBadge" class="adminNoticeBadge" hidden>0</span></h2><p>Revise e aprove as alterações solicitadas.</p></div><button class="btn secondary small" onclick="loadProfileChangeRequests()">↻ ATUALIZAR</button></div><div id="profileChangeRows"><p class="hint">Carregando…</p></div></div><div id="licenseAdmin" class="panel" style="margin-top:13px">
- <div class="sectionHead"><div><h2>Carteiras e Safety Rating</h2><p>O Safety Rating é calculado no Supabase pelas posições finais e pontos acumulados em cada campeonato.</p></div><button class="btn secondary small" onclick="loadLicenseAdmin()">↻ ATUALIZAR</button></div>
- <p class="hint">Após lançar resultados oficiais, atualize para visualizar o SR. A avaliação manual foi desativada para evitar cálculos duplicados.</p>
- <div id="licenseAdminStatus" class="hint">O piloto precisa ter e-mail cadastrado e vinculado à conta para consultar sua carteira.</div>
- <div class="tableWrap" style="margin-top:12px"><table><thead><tr><th>Piloto</th><th>Carteira</th><th>SR</th><th>Participação no campeonato</th><th>Próxima classe</th></tr></thead><tbody id="licenseAdminRows"></tbody></table></div>
+<div class="formactions"><button class="btn" onclick="publishPenalty()">PUBLICAR DECISÃO</button></div>
+<h2 style="margin-top:22px">Histórico de decisões</h2><div class="tracklist" id="adminPenalties"></div>
 </div>
-</div>\n<div class="sectionHead"><div><h2>Gerenciar dados</h2><p>Faça backup, restaure dados ou limpe registros.</p></div><div class="actions"><button class="btn secondary small" onclick="exportData()">↓ EXPORTAR BACKUP</button><label class="btn secondary small" style="cursor:pointer">↑ IMPORTAR BACKUP<input id="importFile" type="file" accept=".json,application/json" onchange="importData(event)" hidden></label></div></div><div class="panel quick"><div class="rowline"><div><b>Dados do portal</b><small id="dataSummary">Carregando…</small></div><button class="btn danger small" onclick="resetData()">RESTAURAR DADOS INICIAIS</button></div><div class="hint">A restauração apaga os dados adicionados neste navegador. Exporte um backup antes. A importação substitui os dados atuais pelo conteúdo do arquivo selecionado.</div></div>
+<div class="panel rl112VisibilityAdmin" id="rl112VisibilityAdmin" style="margin-top:13px;padding:20px" hidden>
+<h2>🏆 Publicação da Sala de Troféus</h2><p class="hint">Enquanto estiver oculta, nenhum piloto verá a aba no menu. O conteúdo fica preservado para o lançamento futuro.</p>
+<label class="rl112Switch"><input type="checkbox" id="rl112TrophySwitch" onchange="rl112SaveVisibility(this.checked)"><span>Exibir Sala de Troféus para os pilotos</span></label>
+<p class="hint" id="rl112VisibilityStatus">Aguardando configuração do servidor...</p></div>
+<div class="panel" id="registrationAdmin" style="margin-top:13px"><div class="sectionHead"><div><h2>Inscrições dos campeonatos <span class="adminNoticeBadge" hidden="" id="registrationPendingBadge">0</span></h2><p>Analise as solicitações dos pilotos e aprove ou recuse a participação.</p></div><button class="btn secondary small" onclick="loadRegistrationRequests()">↻ ATUALIZAR</button></div><div class="registrationNotice" hidden="" id="registrationPendingNotice"></div><div id="registrationRequestRows"><p class="hint">Carregando inscrições…</p></div>
+<div class="panel" id="profileChangeAdmin" style="margin-top:13px"><div class="sectionHead"><div><h2>Alterações de perfil dos pilotos <span class="adminNoticeBadge" hidden="" id="profileChangeBadge">0</span></h2><p>Revise e aprove as alterações solicitadas.</p></div><button class="btn secondary small" onclick="loadProfileChangeRequests()">↻ ATUALIZAR</button></div><div id="profileChangeRows"><p class="hint">Carregando…</p></div></div><div class="panel" id="licenseAdmin" style="margin-top:13px">
+<div class="sectionHead"><div><h2>Carteiras e Safety Rating</h2><p>O Safety Rating é calculado no Supabase pelas posições finais e pontos acumulados em cada campeonato.</p></div><button class="btn secondary small" onclick="loadLicenseAdmin()">↻ ATUALIZAR</button></div>
+<p class="hint">Após lançar resultados oficiais, atualize para visualizar o SR. A avaliação manual foi desativada para evitar cálculos duplicados.</p>
+<div class="hint" id="licenseAdminStatus">O piloto precisa ter e-mail cadastrado e vinculado à conta para consultar sua carteira.</div>
+<div class="tableWrap" style="margin-top:12px"><table><thead><tr><th>Piloto</th><th>Carteira</th><th>SR</th><th>Participação no campeonato</th><th>Próxima classe</th></tr></thead><tbody id="licenseAdminRows"></tbody></table></div>
+</div>
+</div>\n<div class="sectionHead"><div><h2>Gerenciar dados</h2><p>Faça backup, restaure dados ou limpe registros.</p></div><div class="actions"><button class="btn secondary small" onclick="exportData()">↓ EXPORTAR BACKUP</button><label class="btn secondary small" style="cursor:pointer">↑ IMPORTAR BACKUP<input accept=".json,application/json" hidden="" id="importFile" onchange="importData(event)" type="file"/></label></div></div><div class="panel quick"><div class="rowline"><div><b>Dados do portal</b><small id="dataSummary">Carregando…</small></div><button class="btn danger small" onclick="resetData()">RESTAURAR DADOS INICIAIS</button></div><div class="hint">A restauração apaga os dados adicionados neste navegador. Exporte um backup antes. A importação substitui os dados atuais pelo conteúdo do arquivo selecionado.</div></div>
 </section>
-<section id="account" class="page"><div class="subhead"><div class="kicker">ÁREA DO COMPETIDOR</div><h1>Conta do piloto</h1><p>Entre com sua conta segura para acessar seu perfil e as ferramentas autorizadas.</p></div>
+<section class="page" id="account"><div class="subhead"><div class="kicker">ÁREA DO COMPETIDOR</div><h1>Conta do piloto</h1><p>Entre com sua conta segura para acessar seu perfil e as ferramentas autorizadas.</p></div>
 <div class="rl84AccountIntro"><div class="rl84AccountIcon">🏁</div><div><div class="kicker">DRIVER HUB · ROOKIE LEAGUE</div><h2>Seu espaço no grid.</h2><p>Perfil, licença, conquistas e evolução da sua carreira em um só lugar.</p></div><span class="rl84AccountTag">ÁREA DO PILOTO</span></div>
 <div class="panel authbox"><div class="rl84AuthHeading"><span>🔐 ACESSO À CONTA</span><small>Autenticação segura</small></div><div class="authswitch"><button class="btn small" id="loginMode" onclick="setAuthMode('login')">ENTRAR</button><button class="btn secondary small" id="registerMode" onclick="setAuthMode('register')">CRIAR CADASTRO</button></div>
-<div class="field" id="authNameField"><label>Nome completo do piloto</label><input id="authName" placeholder="Digite seu nome completo"></div>
-<div class="field" style="margin-top:12px"><label>E-mail</label><input id="authEmail" type="email" placeholder="voce@email.com"></div>
-<div class="field" style="margin-top:12px"><label>Senha</label><input id="authPassword" type="password" placeholder="Mínimo de 6 caracteres"></div>
-<div class="formactions"><button class="btn" id="authSubmit" onclick="submitAuth()">ENTRAR</button><button class="btn secondary" onclick="logoutPilot()" id="logoutBtn" style="display:none">SAIR</button></div>
+<div class="field" id="authNameField"><label>Nome completo do piloto</label><input id="authName" placeholder="Digite seu nome completo"/></div>
+<div class="field" style="margin-top:12px"><label>E-mail</label><input id="authEmail" placeholder="voce@email.com" type="email"/></div>
+<div class="field" style="margin-top:12px"><label>Senha</label><input id="authPassword" placeholder="Mínimo de 6 caracteres" type="password"/></div>
+<div class="formactions"><button class="btn" id="authSubmit" onclick="submitAuth()">ENTRAR</button><button class="btn secondary" id="logoutBtn" onclick="logoutPilot()" style="display:none">SAIR</button></div>
 <p class="mutednote" id="cloudStatus">Conectando ao banco de dados seguro…</p>
-<div id="pilotProfile" aria-live="polite"></div></div></section>
-
-<section id="telemetry" class="page">
- <div class="subhead"><div class="kicker">ROOKIE LEAGUE MOTORSPORT · DADOS DE PISTA</div><h1>Telemetria</h1><p>Dados ao vivo, histórico de sessões e análise detalhada das voltas do Assetto Corsa.</p></div>
- <div class="telemetryHero"><div class="kicker">ANÁLISE DE DESEMPENHO</div><h2 style="margin:8px 0">Cada volta conta.</h2><p style="color:var(--muted);margin:0">Selecione uma sessão e uma volta para visualizar os dados gravados pelo Rookie League Telemetry Agent.</p></div>
- <div class="telemetryTabs" role="group" aria-label="Seções da telemetria">
-  <button class="btn small active" type="button" data-telemetry-tab="live" onclick="switchTelemetryTab('live')">AO VIVO</button>
-  <button class="btn secondary small" type="button" data-telemetry-tab="analysis" onclick="switchTelemetryTab('analysis')">ANÁLISE DE VOLTAS</button>
-  <button class="btn secondary small" type="button" data-telemetry-tab="compare" onclick="switchTelemetryTab('compare')">COMPARAR VOLTAS</button>
-  <button class="btn secondary small" type="button" data-telemetry-tab="track" onclick="switchTelemetryTab('track')">MAPA DA PISTA</button>
- </div>
- <div id="telemetryTabLive" class="telemetryTabPanel">
- <div class="sectionHead"><div><h2>Ao vivo</h2><p>Última leitura recebida do simulador.</p></div><span id="telemetryLiveState" class="pill">AGUARDANDO DADOS</span></div>
- <div class="panel quick"><div class="telemetryLiveGrid">
-  <div class="telemetryLiveValue"><small>Velocidade</small><b id="tlSpeed">— km/h</b></div><div class="telemetryLiveValue"><small>RPM</small><b id="tlRpm">—</b></div><div class="telemetryLiveValue"><small>Marcha</small><b id="tlGear">—</b></div><div class="telemetryLiveValue"><small>Acelerador</small><b id="tlThrottle">—%</b></div><div class="telemetryLiveValue"><small>Freio</small><b id="tlBrake">—%</b></div>
- </div><div class="telemetryStatus" id="telemetryLiveUpdated">Os dados serão atualizados automaticamente enquanto houver uma sessão ativa.</div></div>
- </div>
- <div id="telemetryTabAnalysis" class="telemetryTabPanel" hidden>
- <div class="sectionHead"><div><h2>Histórico de sessões</h2><p>Escolha uma sessão e uma volta gravada.</p></div><button class="btn secondary small" type="button" onclick="loadTelemetrySessions(true)">ATUALIZAR</button></div>
- <div class="panel"><div class="telemetryControls"><div><label for="telemetrySessionSelect">Sessão</label><select id="telemetrySessionSelect"><option value="">Carregando sessões…</option></select></div><div><label for="telemetryLapSelect">Volta</label><select id="telemetryLapSelect" disabled><option value="">Selecione uma sessão</option></select></div><button class="btn" id="telemetryLoadLap" type="button" onclick="loadTelemetryLap()" disabled>ANALISAR VOLTA</button></div><div id="telemetryHistoryStatus" class="telemetryStatus">Entre na sua conta para consultar seu histórico.</div></div>
- <div class="telemetryGrid"><div class="metric"><div class="label">Voltas na sessão</div><strong id="telemetryLapCount">—</strong></div><div class="metric"><div class="label">Melhor volta</div><strong id="telemetryBestLap">—</strong></div><div class="metric"><div class="label">Amostras</div><strong id="telemetrySampleCount">—</strong></div><div class="metric"><div class="label">Pista</div><strong id="telemetryTrack" style="font-size:16px">—</strong></div></div>
- <div class="sectionHead"><div><h2>Gráficos da volta</h2><p>Valores registrados ao longo das amostras disponíveis.</p></div></div>
- <div class="panel telemetryChart"><h3>Velocidade (km/h)</h3><canvas id="telemetrySpeedChart" width="1000" height="240"></canvas></div>
- <div class="twoCol"><div class="panel telemetryChart"><h3>RPM</h3><canvas id="telemetryRpmChart" width="700" height="240"></canvas></div><div class="panel telemetryChart"><h3>Acelerador (%)</h3><canvas id="telemetryThrottleChart" width="700" height="240"></canvas></div></div>
- <div class="panel telemetryChart"><h3>Freio (%)</h3><canvas id="telemetryBrakeChart" width="1000" height="240"></canvas></div>
- </div>
- <div id="telemetryTabCompare" class="telemetryTabPanel" hidden>
-  <div class="sectionHead"><div><h2>Comparador de voltas</h2><p>Compare duas voltas gravadas da sua conta, com análise de velocidade, aceleração e frenagem.</p></div><span class="pill">DADOS PRIVADOS</span></div>
-  <div class="panel"><div class="rl78Controls">
-   <label>Volta A<select id="rl78LapA"><option value="">Carregando…</option></select></label>
-   <label>Volta B<select id="rl78LapB"><option value="">Carregando…</option></select></label>
-   <button class="btn" type="button" onclick="rl78CompareLaps()">COMPARAR</button>
-  </div><p id="rl78CompareStatus" class="rl78Hint">Selecione duas voltas da mesma pista e do mesmo carro.</p></div>
-  <div class="rl78Tools"><div class="rl78Tool"><small>Volta A</small><strong id="rl78TimeA">—</strong></div><div class="rl78Tool"><small>Volta B</small><strong id="rl78TimeB">—</strong></div><div class="rl78Tool"><small>Diferença B − A</small><strong id="rl78TimeDelta">—</strong></div></div>
-  <div class="panel telemetryChart"><h3>Velocidade comparada (km/h)</h3><canvas class="rl78Canvas" id="rl78SpeedCompare" width="1000" height="270"></canvas><p class="rl78Hint">Verde: volta A · Azul: volta B. Eixo horizontal: progresso relativo da volta, não distância GPS.</p></div>
-  <div class="twoCol"><div class="panel telemetryChart"><h3>Acelerador comparado (%)</h3><canvas class="rl78Canvas" id="rl78ThrottleCompare" width="700" height="250"></canvas></div><div class="panel telemetryChart"><h3>Freio comparado (%)</h3><canvas class="rl78Canvas" id="rl78BrakeCompare" width="700" height="250"></canvas></div></div>
-
-  <div class="panel rl81Panel" id="rl81Panel">
-   <div class="sectionHead"><div><h2>Replay comparativo na pista</h2><p>Dois carros no mesmo mapa · freada, aceleração, marcha e zoom</p></div><span class="pill">V81 · DUAL REPLAY</span></div>
-   <div class="rl81Legend"><span>● Piloto A — verde</span><span>● Piloto B — azul</span><span>Vermelho: frenagem · Traçado: coordenadas da telemetria</span></div>
-   <div class="rl82Orientation"><strong>ORIENTAÇÃO DA PISTA</strong><button class="btn secondary small" type="button" onclick="rl82Rotate(-1)">↶ 90°</button><button class="btn secondary small" type="button" onclick="rl82Rotate(1)">↷ 90°</button><button class="btn secondary small" type="button" onclick="rl82Flip()">⇋ ESPELHAR</button><button class="btn secondary small" type="button" onclick="rl82ResetOrientation()">RESTAURAR</button><small id="rl82OrientationLabel">Rotação: 90°</small></div><p class="rl82TrackNote">A orientação das coordenadas do simulador pode diferir do mapa oficial. Ajuste a rotação ou o espelhamento para alinhar o traçado.</p><div class="rl81MapWrap" id="rl81MapWrap"><canvas id="rl81Map" width="1100" height="570" aria-label="Mapa de comparação com dois carros"></canvas><div class="rl81Overlay" id="rl81MapBadge">Aguardando duas voltas com GPS</div></div>
-   <div class="rl81Toolbar"><button class="btn small" type="button" id="rl81Play" onclick="rl81Toggle()">▶ REPRODUZIR</button><button class="btn secondary small" type="button" onclick="rl81Seek(0)">↺ INÍCIO</button><input id="rl81Seek" type="range" min="0" max="1000" value="0" oninput="rl81Seek(Number(this.value)/1000)" aria-label="Progresso da comparação"><select id="rl81Speed" aria-label="Velocidade do replay"><option value="0.25">0,25×</option><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select><button class="btn secondary small" type="button" onclick="rl81Zoom(1.3)">＋ ZOOM</button><button class="btn secondary small" type="button" onclick="rl81Zoom(1/1.3)">－ ZOOM</button><button class="btn secondary small" type="button" onclick="rl81ResetView()">CENTRALIZAR</button><label><input type="checkbox" id="rl81Follow" onchange="rl81Render()"> Seguir carros</label></div>
-   <div class="rl81Drivers"><div class="rl81Driver"><div class="rl82Identity"><img class="rl82Portrait" id="rl82PhotoA" alt="Foto do piloto A" hidden><div class="rl82IdentityText"><div class="rl82PilotName" id="rl82PilotNameA">Piloto A</div><div class="rl82PilotDetails" id="rl82PilotDetailsA">Equipe — · Carro —</div></div></div><small id="rl81NameA">PILOTO A · SUA VOLTA</small><b id="rl81MetricsA">—</b><div id="rl81ExtraA">Marcha — · RPM — · Tempo —</div><small>Acelerador <span id="rl81ThrottleA">—</span></small><div class="bar"><i id="rl81ThrottleBarA"></i></div><small>Freio <span id="rl81BrakeA">—</span></small><div class="bar"><i id="rl81BrakeBarA" style="background:#ff665e"></i></div></div><div class="rl81Driver b"><div class="rl82Identity"><img class="rl82Portrait" id="rl82PhotoB" alt="Foto do piloto B" hidden><div class="rl82IdentityText"><div class="rl82PilotName" id="rl82PilotNameB">Piloto B</div><div class="rl82PilotDetails" id="rl82PilotDetailsB">Equipe — · Carro —</div></div></div><small id="rl81NameB">PILOTO B · OUTRA VOLTA</small><b id="rl81MetricsB">—</b><div id="rl81ExtraB">Marcha — · RPM — · Tempo —</div><small>Acelerador <span id="rl81ThrottleB">—</span></small><div class="bar"><i id="rl81ThrottleBarB"></i></div><small>Freio <span id="rl81BrakeB">—</span></small><div class="bar"><i id="rl81BrakeBarB" style="background:#ff665e"></i></div></div></div>
-   <p class="rl81Status" id="rl81Status">Selecione duas voltas e clique em COMPARAR, ou use COMPARAR COM PILOTO. O replay sincroniza pelo percentual da volta, não pelo mesmo instante real.</p>
-  </div>
-  <div class="panel"><h3>Comparação oficial entre pilotos inscritos</h3><p class="rl78Hint">Selecione um campeonato em que sua inscrição foi aprovada. Cada piloto precisa autorizar o compartilhamento. Apenas voltas da mesma pista e carro podem ser comparadas.</p>
-   <div class="rl78Controls"><label>Campeonato<select id="rl80Champ" onchange="rl80LoadOfficial()"><option value="">Selecione</option></select></label><label>Piloto<select id="rl80Driver" onchange="rl80LoadOfficialLaps()"><option value="">Selecione</option></select></label><label>Volta do piloto<select id="rl80RemoteLap"><option value="">Selecione</option></select></label></div>
-   <div class="rl80Actions"><label class="rl80Consent"><input type="checkbox" id="rl80Consent" onchange="rl80SaveConsent()"> Autorizar compartilhar minhas voltas com inscritos deste campeonato</label><button type="button" class="btn" onclick="rl80CompareOfficial()">COMPARAR COM PILOTO</button></div><p id="rl80OfficialStatus" class="rl78Hint">A comparação exige a Edge Function telemetry-compare instalada.</p>
-  </div>
- </div>
- <div id="telemetryTabTrack" class="telemetryTabPanel" hidden>
-  <div class="sectionHead"><div><h2>Mapa da pista</h2><p>Traçado obtido das coordenadas registradas pelo simulador.</p></div></div>
-  <div class="panel rl80ReplayPanel"><div class="rl80ReplayHead"><strong>REPLAY DA VOLTA</strong><span id="rl80ReplayClock">00:00.000</span></div><div class="rl82Orientation"><strong>ORIENTAÇÃO DA PISTA</strong><button class="btn secondary small" type="button" onclick="rl82Rotate(-1)">↶ 90°</button><button class="btn secondary small" type="button" onclick="rl82Rotate(1)">↷ 90°</button><button class="btn secondary small" type="button" onclick="rl82Flip()">⇋ ESPELHAR</button><button class="btn secondary small" type="button" onclick="rl82ResetOrientation()">RESTAURAR</button><small>O ajuste também vale para o comparador</small></div><canvas class="rl78Canvas" id="rl78TrackMap" width="1000" height="450"></canvas>
-   <div class="rl80ReplayControls"><button type="button" class="btn small" id="rl80Play" onclick="rl80ToggleReplay()">▶ REPRODUZIR</button><button type="button" class="btn secondary small" onclick="rl80Seek(0)">↺ INÍCIO</button><input type="range" id="rl80Seek" min="0" max="1000" value="0" oninput="rl80Seek(Number(this.value)/1000)" aria-label="Progresso do replay"><select id="rl80Speed" aria-label="Velocidade de reprodução"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></div>
-   <div class="rl80ReplayMetrics"><div><small>VELOCIDADE</small><strong id="rl80SpeedVal">—</strong></div><div><small>MARCHA</small><strong id="rl80GearVal">—</strong></div><div><small>RPM</small><strong id="rl80RpmVal">—</strong></div><div><small>ACELERADOR</small><strong id="rl80ThrottleVal">—</strong><div class="rl80Bar"><i id="rl80ThrottleBar"></i></div></div><div><small>FREIO</small><strong id="rl80BrakeVal">—</strong><div class="rl80Bar brake"><i id="rl80BrakeBar"></i></div></div></div>
-   <div class="rl80Legend"><span>● Aceleração</span><span>● Frenagem</span><span>● Trecho neutro</span><span>● Carro em movimento</span></div><p id="rl78TrackStatus" class="rl78Hint">Abra uma volta em Análise de Voltas para desenhar o traçado. A disponibilidade depende das coordenadas gravadas pelo agente.</p></div>
-  <div class="rl78Tools"><div class="rl78Tool"><small>Pista</small><strong id="rl78TrackName" style="font-size:16px">—</strong></div><div class="rl78Tool"><small>Amostras de posição</small><strong id="rl78TrackPoints">—</strong></div><div class="rl78Tool"><small>Volta analisada</small><strong id="rl78TrackLap">—</strong></div></div>
- </div>
+<div aria-live="polite" id="pilotProfile"></div></div></section>
+<section class="page" id="telemetry">
+<div class="subhead"><div class="kicker">ROOKIE LEAGUE MOTORSPORT · DADOS DE PISTA</div><h1>Telemetria</h1><p>Dados ao vivo, histórico de sessões e análise detalhada das voltas do Assetto Corsa.</p></div>
+<div class="telemetryHero"><div class="kicker">ANÁLISE DE DESEMPENHO</div><h2 style="margin:8px 0">Cada volta conta.</h2><p style="color:var(--muted);margin:0">Selecione uma sessão e uma volta para visualizar os dados gravados pelo Rookie League Telemetry Agent.</p></div>
+<div aria-label="Seções da telemetria" class="telemetryTabs" role="group">
+<button class="btn small active" data-telemetry-tab="live" onclick="switchTelemetryTab('live')" type="button">AO VIVO</button>
+<button class="btn secondary small" data-telemetry-tab="analysis" onclick="switchTelemetryTab('analysis')" type="button">ANÁLISE DE VOLTAS</button>
+<button class="btn secondary small" data-telemetry-tab="compare" onclick="switchTelemetryTab('compare')" type="button">COMPARAR VOLTAS</button>
+<button class="btn secondary small" data-telemetry-tab="track" onclick="switchTelemetryTab('track')" type="button">MAPA DA PISTA</button>
+</div>
+<div class="telemetryTabPanel" id="telemetryTabLive">
+<div class="sectionHead"><div><h2>Ao vivo</h2><p>Última leitura recebida do simulador.</p></div><span class="pill" id="telemetryLiveState">AGUARDANDO DADOS</span></div>
+<div class="panel quick"><div class="telemetryLiveGrid">
+<div class="telemetryLiveValue"><small>Velocidade</small><b id="tlSpeed">— km/h</b></div><div class="telemetryLiveValue"><small>RPM</small><b id="tlRpm">—</b></div><div class="telemetryLiveValue"><small>Marcha</small><b id="tlGear">—</b></div><div class="telemetryLiveValue"><small>Acelerador</small><b id="tlThrottle">—%</b></div><div class="telemetryLiveValue"><small>Freio</small><b id="tlBrake">—%</b></div>
+</div><div class="telemetryStatus" id="telemetryLiveUpdated">Os dados serão atualizados automaticamente enquanto houver uma sessão ativa.</div></div>
+</div>
+<div class="telemetryTabPanel" hidden="" id="telemetryTabAnalysis">
+<div class="sectionHead"><div><h2>Histórico de sessões</h2><p>Escolha uma sessão e uma volta gravada.</p></div><button class="btn secondary small" onclick="loadTelemetrySessions(true)" type="button">ATUALIZAR</button></div>
+<div class="panel"><div class="telemetryControls"><div><label for="telemetrySessionSelect">Sessão</label><select id="telemetrySessionSelect"><option value="">Carregando sessões…</option></select></div><div><label for="telemetryLapSelect">Volta</label><select disabled="" id="telemetryLapSelect"><option value="">Selecione uma sessão</option></select></div><button class="btn" disabled="" id="telemetryLoadLap" onclick="loadTelemetryLap()" type="button">ANALISAR VOLTA</button></div><div class="telemetryStatus" id="telemetryHistoryStatus">Entre na sua conta para consultar seu histórico.</div></div>
+<div class="telemetryGrid"><div class="metric"><div class="label">Voltas na sessão</div><strong id="telemetryLapCount">—</strong></div><div class="metric"><div class="label">Melhor volta</div><strong id="telemetryBestLap">—</strong></div><div class="metric"><div class="label">Amostras</div><strong id="telemetrySampleCount">—</strong></div><div class="metric"><div class="label">Pista</div><strong id="telemetryTrack" style="font-size:16px">—</strong></div></div>
+<div class="sectionHead"><div><h2>Gráficos da volta</h2><p>Valores registrados ao longo das amostras disponíveis.</p></div></div>
+<div class="panel telemetryChart"><h3>Velocidade (km/h)</h3><canvas height="240" id="telemetrySpeedChart" width="1000"></canvas></div>
+<div class="twoCol"><div class="panel telemetryChart"><h3>RPM</h3><canvas height="240" id="telemetryRpmChart" width="700"></canvas></div><div class="panel telemetryChart"><h3>Acelerador (%)</h3><canvas height="240" id="telemetryThrottleChart" width="700"></canvas></div></div>
+<div class="panel telemetryChart"><h3>Freio (%)</h3><canvas height="240" id="telemetryBrakeChart" width="1000"></canvas></div>
+</div>
+<div class="telemetryTabPanel" hidden="" id="telemetryTabCompare">
+<div class="sectionHead"><div><h2>Comparador de voltas</h2><p>Compare duas voltas gravadas da sua conta, com análise de velocidade, aceleração e frenagem.</p></div><span class="pill">DADOS PRIVADOS</span></div>
+<div class="panel"><div class="rl78Controls">
+<label>Volta A<select id="rl78LapA"><option value="">Carregando…</option></select></label>
+<label>Volta B<select id="rl78LapB"><option value="">Carregando…</option></select></label>
+<button class="btn" onclick="rl78CompareLaps()" type="button">COMPARAR</button>
+</div><p class="rl78Hint" id="rl78CompareStatus">Selecione duas voltas da mesma pista e do mesmo carro.</p></div>
+<div class="rl78Tools"><div class="rl78Tool"><small>Volta A</small><strong id="rl78TimeA">—</strong></div><div class="rl78Tool"><small>Volta B</small><strong id="rl78TimeB">—</strong></div><div class="rl78Tool"><small>Diferença B − A</small><strong id="rl78TimeDelta">—</strong></div></div>
+<div class="panel telemetryChart"><h3>Velocidade comparada (km/h)</h3><canvas class="rl78Canvas" height="270" id="rl78SpeedCompare" width="1000"></canvas><p class="rl78Hint">Verde: volta A · Azul: volta B. Eixo horizontal: progresso relativo da volta, não distância GPS.</p></div>
+<div class="twoCol"><div class="panel telemetryChart"><h3>Acelerador comparado (%)</h3><canvas class="rl78Canvas" height="250" id="rl78ThrottleCompare" width="700"></canvas></div><div class="panel telemetryChart"><h3>Freio comparado (%)</h3><canvas class="rl78Canvas" height="250" id="rl78BrakeCompare" width="700"></canvas></div></div>
+<div class="panel rl81Panel" id="rl81Panel">
+<div class="sectionHead"><div><h2>Replay comparativo na pista</h2><p>Dois carros no mesmo mapa · freada, aceleração, marcha e zoom</p></div><span class="pill">V81 · DUAL REPLAY</span></div>
+<div class="rl81Legend"><span>● Piloto A — verde</span><span>● Piloto B — azul</span><span>Vermelho: frenagem · Traçado: coordenadas da telemetria</span></div>
+<div class="rl82Orientation"><strong>ORIENTAÇÃO DA PISTA</strong><button class="btn secondary small" onclick="rl82Rotate(-1)" type="button">↶ 90°</button><button class="btn secondary small" onclick="rl82Rotate(1)" type="button">↷ 90°</button><button class="btn secondary small" onclick="rl82Flip()" type="button">⇋ ESPELHAR</button><button class="btn secondary small" onclick="rl82ResetOrientation()" type="button">RESTAURAR</button><small id="rl82OrientationLabel">Rotação: 90°</small></div><p class="rl82TrackNote">A orientação das coordenadas do simulador pode diferir do mapa oficial. Ajuste a rotação ou o espelhamento para alinhar o traçado.</p><div class="rl81MapWrap" id="rl81MapWrap"><canvas aria-label="Mapa de comparação com dois carros" height="570" id="rl81Map" width="1100"></canvas><div class="rl81Overlay" id="rl81MapBadge">Aguardando duas voltas com GPS</div></div>
+<div class="rl81Toolbar"><button class="btn small" id="rl81Play" onclick="rl81Toggle()" type="button">▶ REPRODUZIR</button><button class="btn secondary small" onclick="rl81Seek(0)" type="button">↺ INÍCIO</button><input aria-label="Progresso da comparação" id="rl81Seek" max="1000" min="0" oninput="rl81Seek(Number(this.value)/1000)" type="range" value="0"/><select aria-label="Velocidade do replay" id="rl81Speed"><option value="0.25">0,25×</option><option value="0.5">0,5×</option><option selected="" value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select><button class="btn secondary small" onclick="rl81Zoom(1.3)" type="button">＋ ZOOM</button><button class="btn secondary small" onclick="rl81Zoom(1/1.3)" type="button">－ ZOOM</button><button class="btn secondary small" onclick="rl81ResetView()" type="button">CENTRALIZAR</button><label><input id="rl81Follow" onchange="rl81Render()" type="checkbox"/> Seguir carros</label></div>
+<div class="rl81Drivers"><div class="rl81Driver"><div class="rl82Identity"><img alt="Foto do piloto A" class="rl82Portrait" hidden="" id="rl82PhotoA"/><div class="rl82IdentityText"><div class="rl82PilotName" id="rl82PilotNameA">Piloto A</div><div class="rl82PilotDetails" id="rl82PilotDetailsA">Equipe — · Carro —</div></div></div><small id="rl81NameA">PILOTO A · SUA VOLTA</small><b id="rl81MetricsA">—</b><div id="rl81ExtraA">Marcha — · RPM — · Tempo —</div><small>Acelerador <span id="rl81ThrottleA">—</span></small><div class="bar"><i id="rl81ThrottleBarA"></i></div><small>Freio <span id="rl81BrakeA">—</span></small><div class="bar"><i id="rl81BrakeBarA" style="background:#ff665e"></i></div></div><div class="rl81Driver b"><div class="rl82Identity"><img alt="Foto do piloto B" class="rl82Portrait" hidden="" id="rl82PhotoB"/><div class="rl82IdentityText"><div class="rl82PilotName" id="rl82PilotNameB">Piloto B</div><div class="rl82PilotDetails" id="rl82PilotDetailsB">Equipe — · Carro —</div></div></div><small id="rl81NameB">PILOTO B · OUTRA VOLTA</small><b id="rl81MetricsB">—</b><div id="rl81ExtraB">Marcha — · RPM — · Tempo —</div><small>Acelerador <span id="rl81ThrottleB">—</span></small><div class="bar"><i id="rl81ThrottleBarB"></i></div><small>Freio <span id="rl81BrakeB">—</span></small><div class="bar"><i id="rl81BrakeBarB" style="background:#ff665e"></i></div></div></div>
+<p class="rl81Status" id="rl81Status">Selecione duas voltas e clique em COMPARAR, ou use COMPARAR COM PILOTO. O replay sincroniza pelo percentual da volta, não pelo mesmo instante real.</p>
+</div>
+<div class="panel"><h3>Comparação oficial entre pilotos inscritos</h3><p class="rl78Hint">Selecione um campeonato em que sua inscrição foi aprovada. Cada piloto precisa autorizar o compartilhamento. Apenas voltas da mesma pista e carro podem ser comparadas.</p>
+<div class="rl78Controls"><label>Campeonato<select id="rl80Champ" onchange="rl80LoadOfficial()"><option value="">Selecione</option></select></label><label>Piloto<select id="rl80Driver" onchange="rl80LoadOfficialLaps()"><option value="">Selecione</option></select></label><label>Volta do piloto<select id="rl80RemoteLap"><option value="">Selecione</option></select></label></div>
+<div class="rl80Actions"><label class="rl80Consent"><input id="rl80Consent" onchange="rl80SaveConsent()" type="checkbox"/> Autorizar compartilhar minhas voltas com inscritos deste campeonato</label><button class="btn" onclick="rl80CompareOfficial()" type="button">COMPARAR COM PILOTO</button></div><p class="rl78Hint" id="rl80OfficialStatus">A comparação exige a Edge Function telemetry-compare instalada.</p>
+</div>
+</div>
+<div class="telemetryTabPanel" hidden="" id="telemetryTabTrack">
+<div class="sectionHead"><div><h2>Mapa da pista</h2><p>Traçado obtido das coordenadas registradas pelo simulador.</p></div></div>
+<div class="panel rl80ReplayPanel"><div class="rl80ReplayHead"><strong>REPLAY DA VOLTA</strong><span id="rl80ReplayClock">00:00.000</span></div><div class="rl82Orientation"><strong>ORIENTAÇÃO DA PISTA</strong><button class="btn secondary small" onclick="rl82Rotate(-1)" type="button">↶ 90°</button><button class="btn secondary small" onclick="rl82Rotate(1)" type="button">↷ 90°</button><button class="btn secondary small" onclick="rl82Flip()" type="button">⇋ ESPELHAR</button><button class="btn secondary small" onclick="rl82ResetOrientation()" type="button">RESTAURAR</button><small>O ajuste também vale para o comparador</small></div><canvas class="rl78Canvas" height="450" id="rl78TrackMap" width="1000"></canvas>
+<div class="rl80ReplayControls"><button class="btn small" id="rl80Play" onclick="rl80ToggleReplay()" type="button">▶ REPRODUZIR</button><button class="btn secondary small" onclick="rl80Seek(0)" type="button">↺ INÍCIO</button><input aria-label="Progresso do replay" id="rl80Seek" max="1000" min="0" oninput="rl80Seek(Number(this.value)/1000)" type="range" value="0"/><select aria-label="Velocidade de reprodução" id="rl80Speed"><option value="0.5">0,5×</option><option selected="" value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></div>
+<div class="rl80ReplayMetrics"><div><small>VELOCIDADE</small><strong id="rl80SpeedVal">—</strong></div><div><small>MARCHA</small><strong id="rl80GearVal">—</strong></div><div><small>RPM</small><strong id="rl80RpmVal">—</strong></div><div><small>ACELERADOR</small><strong id="rl80ThrottleVal">—</strong><div class="rl80Bar"><i id="rl80ThrottleBar"></i></div></div><div><small>FREIO</small><strong id="rl80BrakeVal">—</strong><div class="rl80Bar brake"><i id="rl80BrakeBar"></i></div></div></div>
+<div class="rl80Legend"><span>● Aceleração</span><span>● Frenagem</span><span>● Trecho neutro</span><span>● Carro em movimento</span></div><p class="rl78Hint" id="rl78TrackStatus">Abra uma volta em Análise de Voltas para desenhar o traçado. A disponibilidade depende das coordenadas gravadas pelo agente.</p></div>
+<div class="rl78Tools"><div class="rl78Tool"><small>Pista</small><strong id="rl78TrackName" style="font-size:16px">—</strong></div><div class="rl78Tool"><small>Amostras de posição</small><strong id="rl78TrackPoints">—</strong></div><div class="rl78Tool"><small>Volta analisada</small><strong id="rl78TrackLap">—</strong></div></div>
+</div>
 </section>
 <footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • V81 • ACESSO DE PILOTOS</span></footer>
 </main>
@@ -1162,7 +1290,17 @@ function switchTelemetryTab(tab){
   if(button){button.classList.toggle('active',key===tab);button.classList.toggle('secondary',key!==tab);button.setAttribute('aria-selected',key===tab?'true':'false');}
  });
 }
-function showPage(id){if(id==='dlcCenter'&&!cloudUser){alert('Entre na sua conta para acessar os downloads.');showPage('account');return}if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>{const active=p.id===id;p.classList.toggle('active',active);p.hidden=!active;});document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');if(id==='garage')loadGarage();if(id==='dlcCenter')loadPilotDlcFiles();if(id==='account'&&cloudUser){const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;markPilotProfileNotificationsSeen()}renderAll()}
+let rl107TransitionTimer=null;
+function rl107AnimatePage(){
+ const overlay=document.getElementById('rl107Transition');
+ if(!overlay||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ clearTimeout(rl107TransitionTimer);
+ overlay.classList.remove('is-playing');
+ void overlay.offsetWidth;
+ overlay.classList.add('is-playing');
+ rl107TransitionTimer=setTimeout(()=>overlay.classList.remove('is-playing'),1280);
+}
+function showPage(id){if(id==='trophies'&&!rl112TrophiesPublic){return showPage('home')}if(document.querySelector('.page.active')?.id!==id&&document.getElementById(id))rl107AnimatePage();if(id==='dlcCenter'&&!cloudUser){alert('Entre na sua conta para acessar os downloads.');showPage('account');return}if(id==='admin'&&!cloudIsAdmin){alert('A administração exige login de administrador.');showPage('account');return}document.querySelectorAll('.page').forEach(p=>{const active=p.id===id;p.classList.toggle('active',active);p.hidden=!active;});document.querySelectorAll('nav [data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});if(id==='account'&&!loggedPilotId)setAuthMode('login');if(id==='garage')loadGarage();if(id==='dlcCenter')loadPilotDlcFiles();if(id==='account'&&cloudUser){const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;markPilotProfileNotificationsSeen()}renderAll()}
 document.querySelectorAll('.page').forEach(p=>{p.hidden=!p.classList.contains('active')});
 
 let rookieVoiceRoom=null, rookieVoiceSdk=null, rookieVoiceMicOn=false, rookieVoiceScreenOn=false;
@@ -1360,6 +1498,11 @@ rvEl('rvMicBtn')?.addEventListener('click',rookieVoiceToggleMic);
 rvEl('rvScreenBtn')?.addEventListener('click',rookieVoiceToggleScreen);
 rvEl('rvLeaveBtn')?.addEventListener('click',rookieVoiceLeave);
 
+// Menu lateral esquerdo: sem overlay, fecha com Esc ou ao selecionar uma aba.
+(function(){
+ const close=()=>{const bar=document.querySelector('.nav'),menu=document.getElementById('mainNav'),toggle=document.getElementById('menuToggle');bar?.classList.remove('menu-open');if(menu)menu.hidden=true;if(toggle){toggle.setAttribute('aria-expanded','false');toggle.textContent='☰ MENU';}};
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+})();
 document.getElementById('menuToggle')?.addEventListener('click',function(){
  const bar=document.querySelector('.nav');
  const opened=bar.classList.toggle('menu-open');
@@ -1513,7 +1656,7 @@ async function saveChampionshipCarUrl(){
 }
 function pilotChampActionMarkup(champId,complete){
  const safeId=String(champId).replace(/'/g,"\\\\'");
- const initial=(!cloudUser&&!complete)?`<button class="btn" onclick="requestChampionshipRegistration('${safeId}')">INSCREVER-SE</button>`:'';
+ const initial=!cloudUser?'<span class="hint">Entre na sua conta para consultar sua inscrição.</span>':'<span class="hint">Consultando sua inscrição…</span>';
  return `<div class="pilotChampAction" data-pilot-champ-action="${esc(champId)}" data-champ-complete="${complete?'true':'false'}">${initial}</div>`;
 }
 async function refreshPilotChampionshipActions(){
@@ -1527,7 +1670,7 @@ async function refreshPilotChampionshipActions(){
    const champ=db.championships.find(c=>String(c.id)===champId);if(!champ)return;
    const status=registrations.get(champId);
    if(status==='approved'){
-    box.innerHTML=`<button class="btn" type="button" onclick="openDlcCenter('${esc(champId)}')">BAIXAR DLCs ↓</button>`+(champ.carSelectionUrl?` <a class="btn secondary" href="${esc(champ.carSelectionUrl)}" target="_blank" rel="noopener noreferrer">ESCOLHER MEU CARRO ↗</a>`:'');
+    box.innerHTML=`<span class="rosterStatus">✓ INSCRIÇÃO APROVADA</span> <button class="btn" type="button" onclick="openDlcCenter('${esc(champId)}')">BAIXAR DLCs ↓</button>`+(champ.carSelectionUrl?` <a class="btn secondary" href="${esc(champ.carSelectionUrl)}" target="_blank" rel="noopener noreferrer">ESCOLHER MEU CARRO ↗</a>`:' <span class="hint">Escolha de carro: aguardando link do administrador.</span>');
    }else if(status==='pending'){
     box.innerHTML='<button class="btn secondary" type="button" disabled>INSCRIÇÃO EM ANÁLISE</button>';
    }else if(status==='rejected'){
@@ -1536,7 +1679,7 @@ async function refreshPilotChampionshipActions(){
     box.innerHTML=box.getAttribute('data-champ-complete')==='true'?'':`<button class="btn" type="button" onclick="requestChampionshipRegistration('${champId.replace(/'/g,"\\\\'")}')">INSCREVER-SE</button>`;
    }
   });
- }catch(e){console.error('Não foi possível consultar as inscrições do piloto:',e);}
+ }catch(e){console.error('Não foi possível consultar as inscrições do piloto:',e);document.querySelectorAll('[data-pilot-champ-action]').forEach(box=>{box.innerHTML='<span class="hint">Não foi possível verificar sua inscrição. Atualize a página ou entre novamente.</span>'})}
 }
 
 async function openDlcDownload(url){
@@ -1634,7 +1777,7 @@ const officialServerResults = {
  'Mine campeonato da rookie league': {url:'https://rookieleague.emperorservers.com/championship/69803ffe-0618-42f8-8eab-408baa043680',drivers:[['Samuel Ricardo',141],['ADAO DUQUE',113],['Ze Carlos Senna',94],['Kass',68],['Mario',58],['Elias Taxi',48],['iKingThiago',41],['FERNANDO PIQUET',25],['William_Cruz',10],['Neil',6]]}
 };
 let activeChampionshipDetailId=null;
-function openChampionship(id){showPage('champDetail');renderChampionshipDetail(id)}
+function openChampionship(id){showPage('champDetail');renderChampionshipDetail(id);refreshPilotChampionshipActions()}
 function renderChampionshipDetail(id){
  activeChampionshipDetailId=String(id);
  const c=db.championships.find(x=>x.id===id),root=document.getElementById('champDetailContent');if(!c||!root)return;
@@ -1648,6 +1791,7 @@ function renderChampionshipDetail(id){
  <div class="panel detailPanel"><div class="detailSectionHead"><div class="kicker">CLASSIFICAÇÃO</div><h2>Ranking de pilotos</h2></div>${table.length?rl90ChampPodium(table):''}<div class="tableWrap"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th></tr></thead><tbody>${table.map((x,i)=>`<tr><td>${i+1}</td><td class="driver">${rl90PilotLine(x.name)}</td><td>${x.starts}</td><td class="count">${x.points}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">A classificação será exibida após os resultados.</td></tr>'}</tbody></table></div></div></div>
 <div class="detailActions"><button class="btn" onclick="document.getElementById('resultChamp').value='${id}';showPage('results')">CONSULTAR RESULTADOS</button><button class="btn secondary" onclick="showPage('calendar')">CALENDÁRIO GERAL</button></div>`;
  loadChampionshipRoster(id);
+ if(cloudUser)refreshPilotChampionshipActions();
 }
 async function loadChampionshipRoster(champId){
  const box=document.getElementById('championshipRoster');if(!box)return;
@@ -1780,7 +1924,7 @@ function rl102UpdateRaceInfo(data){
  document.getElementById('rl102OnTrack').textContent=connected.length+' carro(s) conectado(s)';
  const dots=document.getElementById('rl102CarDots');if(dots)dots.replaceChildren();
  const mapInfo=document.getElementById('rl102MapInfo');
- if(mapInfo)mapInfo.textContent='Circuito identificado pelo servidor: '+name+'. O endpoint de classificação não fornece o traçado real; o desenho acima é apenas ilustrativo, sem localização de carros.';
+ if(mapInfo)mapInfo.textContent='Circuito identificado pelo servidor: '+name+'.';
  const temp=value=>value===null||value===undefined||value===''||!Number.isFinite(Number(value))?'—':Number(value).toFixed(0)+' °C';
  document.getElementById('rl102Air').textContent=temp(data?.AmbientTemp);
  document.getElementById('rl102Road').textContent=temp(data?.RoadTemp);
@@ -2333,7 +2477,7 @@ async function submitAuth(){
 async function refreshCloudRole(){
  cloudIsAdmin=false;if(!cloudUser)return;
  const {data,error}=await supabaseClient.from('profiles').select('is_admin').eq('id',cloudUser.id).maybeSingle();
- if(error)throw error;cloudIsAdmin=!!data?.is_admin;cloudReady=true;
+ if(error)throw error;cloudIsAdmin=!!data?.is_admin;cloudReady=true;rl112ApplyVisibility();
 }
 async function loadCloudData(){
  const specs={
@@ -2360,7 +2504,7 @@ async function loadCloudData(){
  localStorage.setItem('rlm_portal_v2',JSON.stringify(db));renderAll();
 rl94LoadAwards().catch(e=>console.warn("Falha ao carregar troféus",e));
 }
-async function afterCloudLogin(){
+async function afterCloudLogin(){await rl112LoadVisibility();
  document.getElementById('cloudStatus').textContent=cloudIsAdmin?'Conectado ao Supabase • Administrador autenticado.':'Conectado ao Supabase • Conta de piloto.';
  const adminTools=document.getElementById('adminCloudTools');if(adminTools)adminTools.style.display=cloudIsAdmin?'block':'none';
  document.getElementById('adminNav').hidden=!cloudIsAdmin;
@@ -3169,5 +3313,58 @@ function rl93Reset(){rl93.yaw=.45;rl93.pitch=.12;rl93.zoom=1;rl93.spin=true;cons
 function rl93ToggleSpin(){rl93.spin=!rl93.spin;document.getElementById('rl93Spin').textContent=rl93.spin?'⏸ Pausar giro':'▶ Giro automático'}
 (function(){const init=()=>{const c=document.getElementById('rl93Canvas'),modal=document.getElementById('rl93Modal');if(!c||!modal)return;c.addEventListener('pointerdown',e=>{c.setPointerCapture(e.pointerId);rl93.pointers.set(e.pointerId,[e.clientX,e.clientY]);rl93.drag=true;rl93.spin=false;document.getElementById('rl93Spin').textContent='▶ Giro automático';rl93.lastX=e.clientX;rl93.lastY=e.clientY});c.addEventListener('pointermove',e=>{if(!rl93.pointers.has(e.pointerId))return;rl93.pointers.set(e.pointerId,[e.clientX,e.clientY]);if(rl93.pointers.size===2){const p=[...rl93.pointers.values()],dist=Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]);if(rl93.pinch)rl93.zoom=Math.max(.55,Math.min(2.2,rl93.zoom*dist/rl93.pinch));rl93.pinch=dist}else{rl93.pinch=0;rl93.yaw+=(e.clientX-rl93.lastX)*.009;rl93.pitch=Math.max(-.65,Math.min(.65,rl93.pitch+(e.clientY-rl93.lastY)*.006))}rl93.lastX=e.clientX;rl93.lastY=e.clientY});const end=e=>{rl93.pointers.delete(e.pointerId);rl93.pinch=0;if(!rl93.pointers.size)rl93.drag=false};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);c.addEventListener('wheel',e=>{e.preventDefault();rl93.zoom=Math.max(.55,Math.min(2.2,rl93.zoom*(e.deltaY>0?.91:1.09)))},{passive:false});modal.addEventListener('click',e=>{if(e.target===modal)rl93Close()});document.addEventListener('keydown',e=>{if(!modal.hidden&&e.key==='Escape')rl93Close()})};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();
 
-</script><div id="rl93Modal" class="rl93Modal" hidden role="dialog" aria-modal="true" aria-labelledby="rl93Title"><div class="rl93Panel"><header><div><span class="rl93Kicker">ROOKIE LEAGUE · TROPHY VIEWER</span><h2 id="rl93Title">Troféu 3D</h2></div><button class="rl93Close" type="button" aria-label="Fechar visualizador" onclick="rl93Close()">✕</button></header><div class="rl93CanvasWrap"><canvas id="rl93Canvas" aria-label="Modelo tridimensional interativo de troféu"></canvas><div id="rl94Plaque" class="rl94Plaque" aria-live="polite"></div><div class="rl93Help">↔ Arraste para girar · Roda do mouse para zoom · Toque com dois dedos para zoom</div></div><footer><div class="rl93Controls"><button type="button" onclick="rl93Reset()">⟲ Centralizar</button><button type="button" id="rl93Spin" onclick="rl93ToggleSpin()">⏸ Pausar giro</button></div></footer></div></div>
-</body></html>
+</script><div aria-labelledby="rl93Title" aria-modal="true" class="rl93Modal" hidden="" id="rl93Modal" role="dialog"><div class="rl93Panel"><header><div><span class="rl93Kicker">ROOKIE LEAGUE · TROPHY VIEWER</span><h2 id="rl93Title">Troféu 3D</h2></div><button aria-label="Fechar visualizador" class="rl93Close" onclick="rl93Close()" type="button">✕</button></header><div class="rl93CanvasWrap"><canvas aria-label="Modelo tridimensional interativo de troféu" id="rl93Canvas"></canvas><div aria-live="polite" class="rl94Plaque" id="rl94Plaque"></div><div class="rl93Help">↔ Arraste para girar · Roda do mouse para zoom · Toque com dois dedos para zoom</div></div><footer><div class="rl93Controls"><button onclick="rl93Reset()" type="button">⟲ Centralizar</button><button id="rl93Spin" onclick="rl93ToggleSpin()" type="button">⏸ Pausar giro</button></div></footer></div></div>
+<nav class="rl106-mobile-dock" aria-label="Navegação rápida" id="rl106Dock"><button type="button" data-rl106-page="home" class="active"><span class="rl106-icon" aria-hidden="true">⌂</span>Início</button><button type="button" data-rl106-page="championships"><span class="rl106-icon" aria-hidden="true">🏆</span>Campeonatos</button><button type="button" data-rl106-page="calendar"><span class="rl106-icon" aria-hidden="true">▦</span>Calendário</button><button type="button" data-rl106-page="racecenter"><span class="rl106-icon" aria-hidden="true">◉</span>Ao vivo</button><button type="button" data-rl106-page="account"><span class="rl106-icon" aria-hidden="true">♙</span>Conta</button></nav>
+<script id="rl106-dock-script">(function(){
+const dock=document.getElementById('rl106Dock');if(!dock)return;
+function sync(){const current=document.querySelector('.page.active')?.id||'home';dock.querySelectorAll('button[data-rl106-page]').forEach(b=>{const active=b.dataset.rl106Page===current;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
+dock.addEventListener('click',e=>{const b=e.target.closest('button[data-rl106-page]');if(!b)return;const page=b.dataset.rl106Page;if(typeof showPage==='function'){showPage(page);sync()}});
+const main=document.getElementById('mainNav');if(main){const observer=new MutationObserver(sync);observer.observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']});}
+sync();
+})();</script>
+<script id="rl112Features">
+// V112: Configuração global armazenada no Supabase. Padrão seguro: sala oculta.
+let rl112TrophiesPublic=false;
+function rl112ApplyVisibility(){
+ const nav=document.getElementById('rl112TrophyNav');if(nav)nav.hidden=!rl112TrophiesPublic;
+ const adminPanel=document.getElementById('rl112VisibilityAdmin');if(adminPanel)adminPanel.hidden=!cloudIsAdmin;
+ const toggle=document.getElementById('rl112TrophySwitch');if(toggle)toggle.checked=rl112TrophiesPublic;
+ if(!rl112TrophiesPublic&&document.querySelector('.page.active')?.id==='trophies')showPage('home');
+}
+async function rl112LoadVisibility(){
+ try{const {data,error}=await supabaseClient.from('portal_settings').select('value').eq('key','trophy_room_visible').maybeSingle();
+ if(error)throw error;rl112TrophiesPublic=data?.value===true;rl112ApplyVisibility();
+ const status=document.getElementById('rl112VisibilityStatus');if(status)status.textContent=rl112TrophiesPublic?'Publicado para os pilotos.':'Oculto para os pilotos.';
+ }catch(err){rl112TrophiesPublic=false;rl112ApplyVisibility();const status=document.getElementById('rl112VisibilityStatus');if(status)status.textContent='Configuração indisponível. Sala oculta por segurança. Execute o SQL incluído no pacote. '+(err.message||err);}
+}
+async function rl112SaveVisibility(visible){
+ if(!cloudUser||!cloudIsAdmin){rl112ApplyVisibility();return alert('Somente administradores podem alterar esta opção.');}
+ const status=document.getElementById('rl112VisibilityStatus');if(status)status.textContent='Salvando configuração...';
+ const {error}=await supabaseClient.from('portal_settings').upsert({key:'trophy_room_visible',value:!!visible},{onConflict:'key'});
+ if(error){if(status)status.textContent='Falha ao salvar: '+error.message;await rl112LoadVisibility();return;}
+ await rl112LoadVisibility();
+}
+// Pódio por etapa, alimentado somente pelos resultados oficiais registrados no portal.
+function rl112RenderPodiumOptions(){
+ const select=document.getElementById('rl112PodiumRace');if(!select)return;
+ const available=(db.races||[]).filter(r=>(db.results||[]).some(x=>String(x.raceId)===String(r.id)&&Number(x.position)>=1&&Number(x.position)<=3));
+ const current=select.value;select.innerHTML=available.length?available.map(r=>'<option value="'+esc(r.id)+'">'+esc(r.name||'Etapa')+' — '+esc(champName(r.champId))+'</option>').join(''):'<option value="">Nenhuma etapa com pódio registrado</option>';
+ if(available.some(r=>String(r.id)===current))select.value=current;
+ rl112RenderPodium();
+}
+function rl112RenderPodium(){
+ const stage=document.getElementById('rl112PodiumStage'),raceId=document.getElementById('rl112PodiumRace')?.value;if(!stage)return;
+ const entries=(db.results||[]).filter(r=>String(r.raceId)===String(raceId)&&[1,2,3].includes(Number(r.position)));
+ if(!entries.length){stage.innerHTML='<p class="hint">Ainda não há pódio registrado para esta etapa.</p>';return;}
+ const byPosition=new Map(entries.map(r=>[Number(r.position),r]));
+ stage.innerHTML='<div class="rl112PodiumStage">'+[2,1,3].map((pos,i)=>{const result=byPosition.get(pos);const name=result?driverName(result.driverId):'A definir';return '<div class="rl112PodiumSlot" style="--delay:'+(.12*i)+'s"><div class="rl112Pilot"><div class="rl112Head"></div><div class="rl112Body">RL</div><span class="rl112Cup" aria-hidden="true">'+(pos===1?'🏆':'🏅')+'</span></div><div class="rl112PilotName">'+esc(name)+'</div><div class="rl112Step pos'+pos+'">'+pos+'º</div></div>'}).join('')+'</div>';
+}
+// Inicialização desacoplada para não interferir na autenticação e nos demais módulos.
+window.addEventListener('load',()=>{
+ rl112ApplyVisibility();rl112LoadVisibility();rl112RenderPodiumOptions();
+ const observer=new MutationObserver(()=>{rl112ApplyVisibility();});
+ const adminNav=document.getElementById('adminNav');if(adminNav)observer.observe(adminNav,{attributes:true,attributeFilter:['hidden']});
+ // Atualiza o pódio após o carregamento assíncrono de resultados.
+ let signature='';setInterval(()=>{const next=(db.races||[]).map(r=>r.id).join('|')+'#'+(db.results||[]).map(r=>r.id+':'+r.position).join('|');if(next!==signature){signature=next;rl112RenderPodiumOptions()}},2500);
+});
+</script></body></html>
