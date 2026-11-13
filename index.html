@@ -365,8 +365,6 @@ input[type=file]{max-width:0}
 
 
 .telemetryTabs{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 18px}.telemetryTabPanel[hidden]{display:none!important}.telemetryTabPanel{min-width:0}.telemetryTabs button.active{background:var(--accent);color:#111;border-color:var(--accent)}
-
-.telemetryTrackPanel{padding:17px;margin:0 0 16px}.telemetryTrackCanvas{display:block;width:100%;height:460px;background:#09130e;border:1px solid #314b38;border-radius:12px;cursor:crosshair}.telemetryTrackLegend{display:flex;flex-wrap:wrap;gap:15px;margin:12px 0;color:var(--muted);font-size:12px}.telemetryTrackLegend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}.telemetryTrackDetail{padding:10px 0;color:#d4e4d3;font-size:13px}.telemetryCompareSelectors{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}.telemetryCompareSelectors label{display:block;font-size:11px;color:var(--muted);font-weight:800;margin-bottom:5px}.telemetryCompareSelectors select{width:100%;background:#0c140f;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:11px}.telemetryCompareConsent{display:flex;gap:10px;align-items:start;padding:13px;margin:13px 0;background:#0e1c13;border:1px solid #304c37;border-radius:9px;font-size:13px}.telemetryCompareConsent input{accent-color:#a6ff00;width:18px;height:18px;margin-top:1px;flex:none}@media(max-width:750px){.telemetryTrackCanvas{height:340px}.telemetryCompareSelectors{grid-template-columns:1fr}}
 </style></head>
 <body>
 
@@ -472,7 +470,7 @@ input[type=file]{max-width:0}
    <div class="rv-control-grid">
     <button class="rv-control-btn" id="rvMicBtn" type="button" disabled><span class="rv-control-icon">🎙</span><span><b>Microfone</b><small>Ativar áudio</small></span></button>
     <button class="rv-control-btn" id="rvScreenBtn" type="button" disabled><span class="rv-control-icon">▣</span><span><b>Compartilhar tela</b><small>Transmitir ao grupo</small></span></button>
-    <label class="rv-quality-control" for="rvScreenQuality"><span>Qualidade da transmissão</span><select id="rvScreenQuality" disabled><option value="720p30" selected>720p · 30 FPS (economia de banda)</option></select></label>
+    <label class="rv-quality-control" for="rvScreenQuality"><span>Qualidade da transmissão</span><select id="rvScreenQuality" disabled><option value="1080p60" selected>1080p · 60 FPS</option><option value="1080p30">1080p · 30 FPS</option><option value="720p30">720p · 30 FPS</option></select></label>
     <button class="rv-control-btn rv-control-exit" id="rvLeaveBtn" type="button" disabled><span class="rv-control-icon">↗</span><span><b>Sair da sala</b><small>Encerrar conexão</small></span></button>
    </div>
    <p class="mutednote" id="rvMessage" style="margin-top:14px">Entre com sua conta de piloto para iniciar.</p>
@@ -525,7 +523,6 @@ input[type=file]{max-width:0}
 </section>
 
 <section id="racecontrol" class="page">
- <div id="raceControlFlagsMount" style="margin-bottom:18px"></div>
  <div class="subhead"><div class="kicker">FAIR PLAY • COMPETIÇÃO</div><h1>Direção de Prova</h1><p>Envie protestos sobre incidentes e acompanhe as decisões oficiais da organização.</p></div>
  <div class="panel" style="margin-top:13px">
   <h2>Enviar protesto</h2>
@@ -599,14 +596,8 @@ input[type=file]{max-width:0}
 
 <div id="registrationAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Inscrições dos campeonatos <span id="registrationPendingBadge" class="adminNoticeBadge" hidden>0</span></h2><p>Analise as solicitações dos pilotos e aprove ou recuse a participação.</p></div><button class="btn secondary small" onclick="loadRegistrationRequests()">↻ ATUALIZAR</button></div><div id="registrationPendingNotice" class="registrationNotice" hidden></div><div id="registrationRequestRows"><p class="hint">Carregando inscrições…</p></div>
 <div id="profileChangeAdmin" class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Alterações de perfil dos pilotos <span id="profileChangeBadge" class="adminNoticeBadge" hidden>0</span></h2><p>Revise e aprove as alterações solicitadas.</p></div><button class="btn secondary small" onclick="loadProfileChangeRequests()">↻ ATUALIZAR</button></div><div id="profileChangeRows"><p class="hint">Carregando…</p></div></div><div id="licenseAdmin" class="panel" style="margin-top:13px">
- <div class="sectionHead"><div><h2>Carteiras e Safety Rating</h2><p>Avalie cada piloto após a corrida. A nota atualiza o SR automaticamente.</p></div><button class="btn secondary small" onclick="loadLicenseAdmin()">↻ ATUALIZAR</button></div>
- <div class="formgrid">
-  <div class="field"><label>Piloto</label><select id="licenseDriver"></select></div>
-  <div class="field"><label>Campeonato</label><select id="licenseChamp" onchange="updateLicenseRaceOptions()"></select></div>
-  <div class="field"><label>Etapa / corrida</label><select id="licenseRace"></select></div>
-  <div class="field"><label>Avaliação pós-corrida</label><select id="licenseScore"><option value="5">5 — Excelente (+0,20 SR)</option><option value="4">4 — Boa (+0,10 SR)</option><option value="3" selected>3 — Neutra (sem alteração)</option><option value="2">2 — Ruim (−0,10 SR)</option><option value="1">1 — Muito ruim (−0,20 SR)</option></select></div>
- </div>
- <div class="formactions"><button class="btn" onclick="submitLicenseEvaluation()">SALVAR AVALIAÇÃO</button></div>
+ <div class="sectionHead"><div><h2>Carteiras e Safety Rating</h2><p>O Safety Rating é calculado no Supabase pelas posições finais e pontos acumulados em cada campeonato.</p></div><button class="btn secondary small" onclick="loadLicenseAdmin()">↻ ATUALIZAR</button></div>
+ <p class="hint">Após lançar resultados oficiais, atualize para visualizar o SR. A avaliação manual foi desativada para evitar cálculos duplicados.</p>
  <div id="licenseAdminStatus" class="hint">O piloto precisa ter e-mail cadastrado e vinculado à conta para consultar sua carteira.</div>
  <div class="tableWrap" style="margin-top:12px"><table><thead><tr><th>Piloto</th><th>Carteira</th><th>SR</th><th>Participação no campeonato</th><th>Próxima classe</th></tr></thead><tbody id="licenseAdminRows"></tbody></table></div>
 </div>
@@ -639,64 +630,24 @@ input[type=file]{max-width:0}
  <div class="sectionHead"><div><h2>Histórico de sessões</h2><p>Escolha uma sessão e uma volta gravada.</p></div><button class="btn secondary small" type="button" onclick="loadTelemetrySessions(true)">ATUALIZAR</button></div>
  <div class="panel"><div class="telemetryControls"><div><label for="telemetrySessionSelect">Sessão</label><select id="telemetrySessionSelect"><option value="">Carregando sessões…</option></select></div><div><label for="telemetryLapSelect">Volta</label><select id="telemetryLapSelect" disabled><option value="">Selecione uma sessão</option></select></div><button class="btn" id="telemetryLoadLap" type="button" onclick="loadTelemetryLap()" disabled>ANALISAR VOLTA</button></div><div id="telemetryHistoryStatus" class="telemetryStatus">Entre na sua conta para consultar seu histórico.</div></div>
  <div class="telemetryGrid"><div class="metric"><div class="label">Voltas na sessão</div><strong id="telemetryLapCount">—</strong></div><div class="metric"><div class="label">Melhor volta</div><strong id="telemetryBestLap">—</strong></div><div class="metric"><div class="label">Amostras</div><strong id="telemetrySampleCount">—</strong></div><div class="metric"><div class="label">Pista</div><strong id="telemetryTrack" style="font-size:16px">—</strong></div></div>
- <div class="panel telemetryTrackPanel" id="telemetryReplayPanel">
-  <div class="sectionHead" style="margin-top:0"><div><h2>Replay de telemetria · volta animada</h2><p>Reproduza o carro percorrendo a pista com velocidade, freio, acelerador e marcha sincronizados.</p></div><span class="pill">REPLAY</span></div>
-  <canvas id="telemetryReplayCanvas" class="telemetryTrackCanvas" style="height:420px" role="img" aria-label="Replay animado da volta no mapa da pista"></canvas>
-  <div class="telemetryTrackLegend" style="justify-content:space-between"><strong id="telemetryReplayTime">0:00.000 / 0:00.000</strong><span>Velocidade: <b id="telemetryReplaySpeed">—</b></span><span>Marcha: <b id="telemetryReplayGear">—</b></span><span>Freio: <b id="telemetryReplayBrake">—</b></span><span>Acelerador: <b id="telemetryReplayThrottle">—</b></span><span>Posição: <b id="telemetryReplayPosition">—</b></span></div>
-  <div style="display:flex;align-items:end;gap:12px;flex-wrap:wrap;margin-top:12px"><div style="flex:1;min-width:220px"><label for="telemetryReplaySecond">Segundo carro · outra volta da mesma sessão</label><select id="telemetryReplaySecond"><option value="">Sem segundo carro</option></select></div><button id="telemetryReplayRefresh" type="button" class="btn secondary">ATUALIZAR VOLTAS</button><span style="font-size:13px">🟢 Volta principal &nbsp; 🟡 Segunda volta</span></div>
-  <div class="telemetryStatus">Diferença de distância no mesmo instante: <strong id="telemetryReplayGap">—</strong></div>
-  <input id="telemetryReplaySeek" type="range" min="0" max="1000" value="0" disabled style="width:100%;margin:18px 0 8px;accent-color:#a6ff00" aria-label="Avançar ou retroceder na volta">
-  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><button id="telemetryReplayPlay" class="btn" type="button" disabled>▶ Reproduzir</button><button id="telemetryReplayReset" class="btn secondary" type="button">↺ Reiniciar</button><label for="telemetryReplayRate" style="font-size:13px">Velocidade</label><select id="telemetryReplayRate" style="padding:9px;background:#0c140f;color:#fff;border:1px solid #365040;border-radius:8px"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select></div>
-  <p class="telemetryStatus" id="telemetryReplayStatus" role="status">Carregue uma volta na aba Análise de Voltas para iniciar.</p>
- </div>
- <div class="panel telemetryTrackPanel">
-  <div class="sectionHead" style="margin-top:0"><div><h2>Mapa da pista · traçado real</h2><p id="telemetryTrackInfo">Desenho pelas coordenadas do simulador.</p></div></div>
-  <canvas id="telemetryTrackCanvas" class="telemetryTrackCanvas" role="img" aria-label="Traçado da pista com cores de velocidade e marcadores de freio"></canvas>
-  <div class="telemetryTrackLegend"><span><i style="background:#ff5757"></i>Baixa velocidade e frenagem</span><span><i style="background:#ffc857"></i>Velocidade média</span><span><i style="background:#a6ff00"></i>Alta velocidade</span><span>● Largada</span></div>
-  <div class="telemetryTrackDetail" id="telemetryTrackMetrics">Selecione uma volta.</div>
-  <div class="telemetryTrackDetail" id="telemetryTrackPoint">Passe o mouse sobre a pista.</div>
-  <p class="telemetryStatus" id="telemetrySectorSummary">Setores por amostras quando disponíveis.</p>
- </div>
  <div class="sectionHead"><div><h2>Gráficos da volta</h2><p>Valores registrados ao longo das amostras disponíveis.</p></div></div>
  <div class="panel telemetryChart"><h3>Velocidade (km/h)</h3><canvas id="telemetrySpeedChart" width="1000" height="240"></canvas></div>
  <div class="twoCol"><div class="panel telemetryChart"><h3>RPM</h3><canvas id="telemetryRpmChart" width="700" height="240"></canvas></div><div class="panel telemetryChart"><h3>Acelerador (%)</h3><canvas id="telemetryThrottleChart" width="700" height="240"></canvas></div></div>
  <div class="panel telemetryChart"><h3>Freio (%)</h3><canvas id="telemetryBrakeChart" width="1000" height="240"></canvas></div>
  </div>
  <div id="telemetryTabCompare" class="telemetryTabPanel" hidden>
-  <div class="sectionHead"><div><h2>Comparação entre pilotos do campeonato</h2><p>Inscritos aprovados, compartilhamento voluntário e voltas compatíveis.</p></div><span class="pill">ACESSO CONTROLADO</span></div>
-  <div class="panel quick">
-   <div class="telemetryCompareSelectors">
-    <div><label for="telemetryCompareChamp">Campeonato</label><select id="telemetryCompareChamp"><option>Carregando campeonatos…</option></select></div>
-    <div><label for="telemetryCompareReference">Escolha a pista</label><select id="telemetryCompareReference"><option>Selecione uma pista</option></select></div>
-    <button class="btn" id="telemetryCompareRun" type="button">COMPARAR PILOTOS</button>
+  <div class="sectionHead"><div><h2>Comparação por campeonato</h2><p>Somente pilotos com inscrição aprovada no mesmo campeonato.</p></div><span class="pill">ACESSO CONTROLADO</span></div>
+  <div class="panel">
+   <h3>Comparação entre pilotos</h3>
+   <p class="telemetryStatus">A estrutura desta área está preparada. A comparação só será liberada depois da camada segura no Supabase, que verificará a inscrição aprovada, o campeonato, a pista/configuração e a compatibilidade do carro antes de compartilhar qualquer dado.</p>
+   <div class="telemetryGrid">
+    <div class="metric"><div class="label">Elegibilidade</div><strong style="font-size:16px">Inscrição aprovada</strong></div>
+    <div class="metric"><div class="label">Pista</div><strong style="font-size:16px">Mesma configuração</strong></div>
+    <div class="metric"><div class="label">Veículo</div><strong style="font-size:16px">Categoria compatível</strong></div>
+    <div class="metric"><div class="label">Voltas</div><strong style="font-size:16px">Válidas e completas</strong></div>
    </div>
-   <label class="telemetryCompareConsent"><input id="telemetryCompareShare" type="checkbox"><span><b>Compartilhar minhas análises neste campeonato</b><br>Opcional. Pilotos aprovados poderão comparar tempos e setores. Você pode desativar. Seus arquivos JSONL permanecem privados.</span></label>
-   <div class="telemetryStatus" id="telemetryShareStatus">Suas análises não estão compartilhadas.</div>
-   <div class="telemetryStatus" id="telemetryCompareStatus" role="status">Entre na sua conta e selecione esta aba.</div>
+   <p class="telemetryStatus">Os arquivos brutos continuarão privados. O portal receberá apenas os dados de análise autorizados para aquele campeonato.</p>
   </div>
-  <div class="panel" id="telemetryCompareResults" style="margin-top:14px"><p class="empty">As análises autorizadas aparecerão aqui.</p></div>
-  <div class="panel quick" style="margin-top:14px">
-   <div class="sectionHead"><div><h2>Telemetria visual · pilotos do campeonato</h2><p>Dados derivados das voltas autorizadas: velocidade, frenagem, aceleração e delta estimado.</p></div></div>
-   <div class="field"><label for="telemetryChampionshipMetric">Comparar</label><select id="telemetryChampionshipMetric" style="max-width:320px"><option value="speed_kmh">Velocidade</option><option value="brake">Freio</option><option value="throttle">Acelerador</option><option value="delta">Delta de tempo</option></select></div>
-   <canvas id="telemetryChampionshipChart" class="telemetryTrackCanvas" style="height:330px;margin-top:12px" role="img" aria-label="Gráficos comparativos de pilotos autorizados"></canvas>
-   <div id="telemetryChampionshipLegend" class="telemetryTrackLegend">Clique em COMPARAR PILOTOS para carregar.</div>
-   <div id="telemetryChampionshipSectors" style="margin-top:15px"></div>
-   <p class="telemetryStatus">Curvas agregadas em 40 trechos da pista; mini-setores e delta são estimativas, não cronometragem oficial. Os arquivos brutos continuam privados.</p>
-  </div>
-  <div class="panel quick" style="margin-top:14px">
-   <div class="sectionHead"><div><h2>Telemetria visual · comparação de voltas</h2><p>Velocidade, freio, acelerador e delta por posição na pista. Os gráficos detalhados usam suas próprias voltas gravadas.</p></div></div>
-   <div class="telemetryCompareSelectors" style="grid-template-columns:1fr 1fr auto">
-    <div><label for="telemetryVisualLaps">Suas voltas (Ctrl para selecionar várias)</label><select id="telemetryVisualLaps" multiple size="3" style="min-height:85px"><option>Carregue as voltas</option></select></div>
-    <div><label for="telemetryVisualMode">Dado para comparar</label><select id="telemetryVisualMode"><option value="speed_kmh">Velocidade (km/h)</option><option value="brake">Freio</option><option value="throttle">Acelerador</option><option value="delta">Delta de tempo</option></select></div>
-    <button class="btn" id="telemetryVisualLoad" type="button">CARREGAR TELEMETRIA</button>
-   </div>
-   <div class="telemetryStatus" id="telemetryVisualStatus" role="status">Selecione Mugello ou outra pista e carregue as voltas.</div>
-   <canvas id="telemetryCompareVisualCanvas" class="telemetryTrackCanvas" style="height:380px;margin-top:12px" role="img" aria-label="Comparação gráfica das voltas selecionadas"></canvas>
-   <div id="telemetryVisualLegend" class="telemetryTrackLegend"></div>
-   <div id="telemetryDrivingInsights" style="margin-top:16px">Carregue suas voltas para ver o diagnóstico de pilotagem.</div>
-   <p class="telemetryStatus">A comparação gráfica entre pilotos diferentes exigirá dados derivados autorizados no servidor; os arquivos privados dos outros pilotos não são acessados.</p>
-  </div>
-  <div class="panel quick" style="margin-top:14px"><h3>Volta por volta · piloto selecionado</h3><div class="field"><label for="telemetryComparePilot">Piloto</label><select id="telemetryComparePilot" style="max-width:360px"><option>Realize uma comparação primeiro</option></select></div><div id="telemetryComparePilotLaps" style="margin-top:12px"></div></div>
  </div>
 </section>
 <footer><span>© ROOKIE LEAGUE MOTORSPORT</span><span>RACE HARD · RESPECT ALL · REPEAT</span><span>PORTAL OFICIAL • V80 • ACESSO DE PILOTOS</span></footer>
@@ -928,13 +879,13 @@ async function rookieVoiceToggleScreen(){
  if(!rookieVoiceRoom)return;
  try{
   rookieVoiceScreenOn=!rookieVoiceScreenOn;
-  const quality=rvEl('rvScreenQuality')?.value||'720p30';
+  const quality=rvEl('rvScreenQuality')?.value||'1080p60';
   const presets={
    '1080p60':{width:1920,height:1080,frameRate:60,bitrate:8000000,fps:60},
    '1080p30':{width:1920,height:1080,frameRate:30,bitrate:5000000,fps:30},
    '720p30':{width:1280,height:720,frameRate:30,bitrate:2500000,fps:30}
   };
-  const preset=presets[quality]||presets['720p30'];
+  const preset=presets[quality]||presets['1080p60'];
   await rookieVoiceRoom.localParticipant.setScreenShareEnabled(
    rookieVoiceScreenOn,
    {audio:true,resolution:{width:preset.width,height:preset.height,frameRate:preset.fps},contentHint:'motion'},
@@ -1754,49 +1705,19 @@ async function loadLicenseAdmin(){
   const {data,error}=await supabaseClient.from('driver_licenses').select('driver_id,license_class,safety_rating');
   if(error)throw error;
   body.innerHTML=db.drivers.map(d=>{const l=(data||[]).find(x=>String(x.driver_id)===String(d.id)),champ=db.championships[0],p=champ?completionFor(d.id,champ.id):{pct:0,completed:0,total:0};return `<tr><td>${esc(d.name)}<div class="mutednote">${esc(d.email||'E-mail não vinculado')}</div></td><td>${esc(l?.license_class||'R')}</td><td>${Number(l?.safety_rating??2.5).toFixed(2)}</td><td>${p.completed}/${p.total} (${p.pct}%) — ${esc(champ?.name||'Sem campeonato')}</td><td>${esc(nextLicenseClass(l?.license_class||'R'))}</td></tr>`}).join('');
-  document.getElementById('licenseAdminStatus').textContent='Carteiras carregadas. A promoção ocorre quando o piloto atinge 80% de participação e SR mínimo de 3,00.';
+  document.getElementById('licenseAdminStatus').textContent='SR atualizado automaticamente pelo Supabase ao registrar ou corrigir resultados. Promoções de classe seguem regras próprias.';
  }catch(e){body.innerHTML=`<tr><td colspan="5">Erro ao carregar carteiras: ${esc(e.message||e)}. Execute o SQL de configuração no Supabase.</td></tr>`}
 }
-async function submitLicenseEvaluation(){
- if(!cloudIsAdmin)return alert('Apenas o administrador pode avaliar pilotos.');
- const driverId=document.getElementById('licenseDriver').value,champId=document.getElementById('licenseChamp').value,raceId=document.getElementById('licenseRace').value,score=Number(document.getElementById('licenseScore').value);
- if(!driverId||!champId||!raceId)return alert('Selecione piloto, campeonato e etapa.');
- const driver=db.drivers.find(d=>String(d.id)===String(driverId)),race=db.races.find(r=>String(r.id)===String(raceId));
- if(!driver||!driver.email)return alert('Cadastre o e-mail de login deste piloto no cadastro de pilotos antes de avaliar.');
- if(!race||String(race.champId)!==String(champId))return alert('A etapa não pertence ao campeonato selecionado.');
- try{
-  const license=await ensureDriverLicense(driverId),newSR=Math.max(0,Math.min(4.99,Math.round((Number(license.safety_rating)+srDelta(score))*100)/100));
-  const {error:evalError}=await supabaseClient.from('license_evaluations').insert({driver_id:String(driverId),championship_id:String(champId),race_id:String(raceId),score,sr_change:srDelta(score),admin_user_id:cloudUser.id});
-  if(evalError)throw evalError;
-  const {error:updateError}=await supabaseClient.from('driver_licenses').update({safety_rating:newSR,updated_at:new Date().toISOString()}).eq('driver_id',String(driverId));
-  if(updateError)throw updateError;
-  let promotionMsg='Sem promoção nesta avaliação.';
-  const p=completionFor(driverId,champId);
-  if(p.total>0&&(p.completed/p.total)>=0.80&&newSR>=3.00){
-   const {data:already,error:checkErr}=await supabaseClient.from('license_promotions').select('id').eq('driver_id',String(driverId)).eq('championship_id',String(champId)).maybeSingle();
-   if(checkErr)throw checkErr;
-   if(!already&&license.license_class!=='A'){
-    const promoted=nextLicenseClass(license.license_class);
-    const {error:promErr}=await supabaseClient.from('license_promotions').insert({driver_id:String(driverId),championship_id:String(champId),from_class:license.license_class,to_class:promoted,completion_pct:p.pct,safety_rating:newSR});
-    if(promErr)throw promErr;
-    const {error:classErr}=await supabaseClient.from('driver_licenses').update({license_class:promoted,updated_at:new Date().toISOString()}).eq('driver_id',String(driverId));
-    if(classErr)throw classErr;
-    promotionMsg=` Promoção concedida: ${license.license_class} → ${promoted}.`;
-   }
-  }
-  alert(`Avaliação salva! SR: ${Number(license.safety_rating).toFixed(2)} → ${newSR.toFixed(2)}.${promotionMsg}`);
-  await loadLicenseAdmin();await renderProfile();
- }catch(e){alert('Não foi possível salvar a avaliação: '+(e.message||e)+'. Confira se executou o SQL de configuração no Supabase.')}
-}
+async function submitLicenseEvaluation(){alert('Avaliações manuais desativadas: o Safety Rating é calculado a partir dos resultados oficiais.');}
 
 function switchPilotProfileTab(tab,button){const map={overview:'pilotProfileOverview',notices:'pilotProfileNotices',career:'pilotProfileCareer'};Object.entries(map).forEach(([key,id])=>{const el=document.getElementById(id);if(el)el.style.display=key===tab?'':'none'});['overview','notices','career'].forEach(key=>document.getElementById('pilotProfileTab'+(key==='overview'?'Overview':key==='notices'?'Notices':'Career'))?.classList.toggle('active',key===tab));if(tab==='notices')markPilotProfileNotificationsSeen();}
 async function markPilotProfileNotificationsSeen(){try{if(!cloudUser)return;const [{data:changes},{data:evals}]=await Promise.all([supabaseClient.from('driver_profile_change_requests').select('id').eq('user_id',cloudUser.id).in('status',['approved','rejected']),supabaseClient.from('drivers').select('id').ilike('email',(cloudUser.email||'').toLowerCase()).maybeSingle().then(async r=>{if(!r.data)return {data:[]};return await supabaseClient.from('license_evaluations').select('id').eq('driver_id',String(r.data.id))})]);const key='rookie_profile_seen_'+cloudUser.id;localStorage.setItem(key,JSON.stringify([...(changes||[]).map(x=>'profile:'+x.id),...(evals||[]).map(x=>'eval:'+x.id)]));const badge=document.getElementById('pilotAccountBadge');if(badge)badge.hidden=true;}catch(e){console.warn('Não foi possível marcar notificações como lidas.',e)}}
-function buildPilotCareerMarkup(results,evals,titles){
+function buildPilotCareerMarkup(results,evals,titles,srHistory=[],srBaseline=null){
  const ordered=results.map(x=>{const race=db.races.find(r=>String(r.id)===String(x.raceId));const champ=race?db.championships.find(c=>String(c.id)===String(race.champId)):null;const track=race?db.tracks.find(t=>String(t.id)===String(race.trackId)):null;return {...x,race,champ,track}}).sort((a,b)=>(a.race?.date||'').localeCompare(b.race?.date||''));
  const byChamp={};ordered.forEach(x=>{const key=String(x.race?.champId||'sem-campeonato');const c=byChamp[key]??={name:x.champ?.name||'Campeonato',season:x.champ?.season||'',races:[],points:0,wins:0,podiums:0};c.races.push(x);c.points+=Number(x.points||0);if(Number(x.position)===1)c.wins++;if(Number(x.position)>0&&Number(x.position)<=3)c.podiums++});
  const timeline=[...ordered].reverse().map(x=>`<div class="careerTimelineItem"><span class="careerTimelineDot"></span><div class="careerTimelineBody"><div class="careerTimelineTop"><strong>${esc(x.race?.name||'Etapa')}</strong><span>${x.race?.date?new Date(x.race.date+'T12:00:00').toLocaleDateString('pt-BR'):'Data não informada'}</span></div><p>${esc(x.champ?.name||'Campeonato')} · ${esc(x.track?.name||'Pista não informada')}</p><small>${Number(x.position)===1?'🥇 1º lugar':Number(x.position)===2?'🥈 2º lugar':Number(x.position)===3?'🥉 3º lugar':`${Number(x.position)||'—'}º lugar`} · ${Number(x.points||0)} pontos</small></div></div>`).join('')||'<p class="empty">Os resultados aparecerão aqui quando forem lançados.</p>';
  const seasons=Object.values(byChamp).map(c=>`<div class="careerSeasonCard"><div><strong>${esc(c.name)}</strong><small>${esc(c.season||'Temporada')}</small></div><div class="careerSeasonStats"><span>${c.races.length} etapas</span><span>${c.wins} vitórias</span><span>${c.podiums} pódios</span><b>${c.points} pts</b></div></div>`).join('')||'<p class="empty">Nenhum campeonato com resultados registrado.</p>';
- let sr=2.5;const srVals=[sr,...[...(evals||[])].reverse().map(e=>(sr+=Number(e.sr_change||0)))];const lo=Math.min(0,...srVals),hi=Math.max(5,...srVals),rg=Math.max(.1,hi-lo);const pts=srVals.map((v,i)=>`${srVals.length===1?50:i/(srVals.length-1)*300},${90-(v-lo)/rg*75}`).join(' ');
+ let sr=Number(srBaseline??window.__rookieCareerSR??2.5);const orderedHistory=[...srHistory].sort((a,b)=>{const ra=db.races.find(r=>String(r.id)===String(a.race_id));const rb=db.races.find(r=>String(r.id)===String(b.race_id));return String(ra?.date||'').localeCompare(String(rb?.date||''))||String(a.race_id).localeCompare(String(b.race_id))});const srVals=[sr,...orderedHistory.map(e=>(sr=Math.max(0,Math.min(4.99,Math.round((sr+Number(e.delta||0))*100)/100))))];const lo=Math.min(0,...srVals),hi=Math.max(5,...srVals),rg=Math.max(.1,hi-lo);const pts=srVals.map((v,i)=>`${srVals.length===1?50:i/(srVals.length-1)*300},${90-(v-lo)/rg*75}`).join(' ');
  const wins=results.some(x=>Number(x.position)===1),podiums=results.some(x=>Number(x.position)>0&&Number(x.position)<=3);
  const winsCount=results.filter(x=>Number(x.position)===1).length;
  const podiumCount=results.filter(x=>Number(x.position)>0&&Number(x.position)<=3).length;
@@ -1813,13 +1734,13 @@ function buildPilotCareerMarkup(results,evals,titles){
   ['🔥','Vencedor múltiplo','Conquiste 5 vitórias.',winsCount>=5],
   ['🏆','Pódio de respeito','Conquiste 10 pódios.',podiumCount>=10],
   ['👑','Campeão','Conquiste seu primeiro título oficial.',titles.length>=1],
-  ['📈','Em evolução','Receba sua primeira avaliação de Safety Rating.',(evals||[]).length>=1],
+  ['📈','Em evolução','Registre sua primeira evolução por resultado oficial.',srHistory.length>=1],
   ['💚','Safety Rating 3.00','Alcance Safety Rating igual ou superior a 3,00.',currentSR>=3],
   ['🚀','Licença C ou superior','Alcance a licença C, B ou A.',['C','B','A'].includes(currentLicense)]
  ];
  const unlocked=badgeDefinitions.filter(b=>b[3]).length;
  const badgeWall=badgeDefinitions.map(b=>`<div class="badgeMedal ${b[3]?'earned':'locked'}"><span class="badgeMedalIcon">${b[0]}</span><div><strong>${b[1]} ${b[3]?'✓':''}</strong><small>${b[2]}</small></div></div>`).join('');
- return `<div class="license-card careerCard"><div class="kicker">ROOKIE LEAGUE MOTORSPORT</div><h3>Minha carreira</h3><p class="hint">Sua trajetória oficial dentro da liga.</p><div class="careerCareerStats"><div><small>Etapas</small><strong>${results.length}</strong></div><div><small>Vitórias</small><strong>${results.filter(x=>Number(x.position)===1).length}</strong></div><div><small>Pódios</small><strong>${results.filter(x=>Number(x.position)>0&&Number(x.position)<=3).length}</strong></div><div><small>Pontos</small><strong>${results.reduce((a,x)=>a+Number(x.points||0),0)}</strong></div></div><h4>Histórico de Safety Rating</h4><div class="careerChart"><svg viewBox="0 0 320 105" role="img" aria-label="Histórico estimado do Safety Rating"><line x1="10" y1="90" x2="310" y2="90" stroke="currentColor" opacity=".2"/><line x1="10" y1="15" x2="310" y2="15" stroke="currentColor" opacity=".2"/><polyline points="${pts}" fill="none" stroke="#a6ff00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="careerChartLabels"><span>Início estimado: 2,50</span><span>Atual: ${sr.toFixed(2)}</span></div><small class="hint">Estimativa calculada a partir das avaliações salvas.</small></div><h4>Campeonatos disputados</h4><div class="careerSeasonList">${seasons}</div><h4>Medalhas e conquistas</h4><div class="badgeWallSummary"><span><b>${unlocked}</b> de ${badgeDefinitions.length} medalhas desbloqueadas</span><span class="hint">Atualização automática</span></div><div class="badgeWall">${badgeWall}</div><h4>Linha do tempo</h4><div class="careerTimeline">${timeline}</div></div>`;
+ return `<div class="license-card careerCard"><div class="kicker">ROOKIE LEAGUE MOTORSPORT</div><h3>Minha carreira</h3><p class="hint">Sua trajetória oficial dentro da liga.</p><div class="careerCareerStats"><div><small>Etapas</small><strong>${results.length}</strong></div><div><small>Vitórias</small><strong>${results.filter(x=>Number(x.position)===1).length}</strong></div><div><small>Pódios</small><strong>${results.filter(x=>Number(x.position)>0&&Number(x.position)<=3).length}</strong></div><div><small>Pontos</small><strong>${results.reduce((a,x)=>a+Number(x.points||0),0)}</strong></div></div><h4>Histórico de Safety Rating</h4><div class="careerChart"><svg viewBox="0 0 320 105" role="img" aria-label="Histórico estimado do Safety Rating"><line x1="10" y1="90" x2="310" y2="90" stroke="currentColor" opacity=".2"/><line x1="10" y1="15" x2="310" y2="15" stroke="currentColor" opacity=".2"/><polyline points="${pts}" fill="none" stroke="#a6ff00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="careerChartLabels"><span>Base: ${Number(srBaseline??window.__rookieCareerSR??2.5).toFixed(2)}</span><span>Atual: ${Number(window.__rookieCareerSR??sr).toFixed(2)}</span></div><small class="hint">Evolução calculada pelos resultados oficiais das etapas.</small></div><h4>Campeonatos disputados</h4><div class="careerSeasonList">${seasons}</div><h4>Medalhas e conquistas</h4><div class="badgeWallSummary"><span><b>${unlocked}</b> de ${badgeDefinitions.length} medalhas desbloqueadas</span><span class="hint">Atualização automática</span></div><div class="badgeWall">${badgeWall}</div><h4>Linha do tempo</h4><div class="careerTimeline">${timeline}</div></div>`;
 }
 async function renderProfile(){
  const box=document.getElementById('pilotProfile');if(!box)return;if(!cloudUser){box.innerHTML='';return}
@@ -1829,11 +1750,13 @@ async function renderProfile(){
   const d=drivers?.[0];if(!d){box.innerHTML='<div class="license-card"><h3>Perfil do piloto</h3><p>Seu login ainda não está vinculado a um piloto. Peça ao administrador para cadastrar seu e-mail.</p></div>';return}
   const license=await ensureDriverLicense(d.id);
   const {data:evals,error:ee}=await supabaseClient.from('license_evaluations').select('id,score,sr_change,created_at,race_id,championship_id').eq('driver_id',String(d.id)).order('created_at',{ascending:false}).limit(50);if(ee)throw ee;
+  const {data:srHistory}=await supabaseClient.from('rookie_sr_history').select('race_id,championship_id,position,points,cumulative_points,delta,updated_at').eq('driver_id',String(d.id));
+  const {data:srBaseline}=await supabaseClient.from('rookie_sr_baselines').select('starting_sr').eq('driver_id',String(d.id)).maybeSingle();
   const {data:pending,error:pe}=await supabaseClient.from('driver_profile_change_requests').select('id').eq('driver_id',String(d.id)).eq('status','pending').limit(1);if(pe)throw pe;
   const {data:decided,error:de}=await supabaseClient.from('driver_profile_change_requests').select('id,status,reviewed_at').eq('driver_id',String(d.id)).in('status',['approved','rejected']).order('reviewed_at',{ascending:false});if(de)throw de;const seenKey='rookie_profile_seen_'+cloudUser.id;let seenIds=[];try{seenIds=JSON.parse(localStorage.getItem(seenKey)||'[]')}catch(e){}const unread=[...(decided||[]).map(x=>'profile:'+x.id),...(evals||[]).map(x=>'eval:'+x.id)].filter(x=>!seenIds.includes(String(x)));const pilotDot=document.getElementById('pilotAccountBadge');if(pilotDot)pilotDot.hidden=unread.length===0;
   const rs=db.results.filter(x=>String(x.driverId)===String(d.id)),wins=rs.filter(x=>Number(x.position)===1).length,podiums=rs.filter(x=>Number(x.position)<=3).length,titles=db.titles.filter(x=>String(x.driverId)===String(d.id)).length;
   const photo=d.profile_photo_url||'';
-  const evolutionNotices=[...(evals||[]).map(x=>({key:'eval:'+x.id,date:x.created_at,title:'Avaliação de corrida registrada',body:`Nota ${x.score}/5 • Safety Rating ${Number(x.sr_change)>0?'+':''}${Number(x.sr_change).toFixed(2)}`,kind:'🏁'})),...(decided||[]).map(x=>({key:'profile:'+x.id,date:x.reviewed_at||x.created_at,title:x.status==='approved'?'Alteração do perfil aprovada':'Alteração do perfil recusada',body:x.status==='approved'?'O administrador aprovou as alterações do seu perfil.':'O administrador recusou as alterações solicitadas.',kind:x.status==='approved'?'✓':'!'})),...db.titles.filter(x=>String(x.driverId)===String(d.id)).map((x,i)=>({key:'title:'+x.id,date:x.created_at||null,title:'Título registrado',body:esc(x.season||champName(x.champId)),kind:'🏆'}))].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+  const evolutionNotices=[...(srHistory||[]).map(x=>({key:'sr:'+x.race_id,date:x.updated_at,title:'Resultado computado no Safety Rating',body:`${Number(x.position)}º lugar • SR ${Number(x.delta)>0?'+':''}${Number(x.delta).toFixed(2)}`,kind:'🏁'})),...(decided||[]).map(x=>({key:'profile:'+x.id,date:x.reviewed_at||x.created_at,title:x.status==='approved'?'Alteração do perfil aprovada':'Alteração do perfil recusada',body:x.status==='approved'?'O administrador aprovou as alterações do seu perfil.':'O administrador recusou as alterações solicitadas.',kind:x.status==='approved'?'✓':'!'})),...db.titles.filter(x=>String(x.driverId)===String(d.id)).map((x,i)=>({key:'title:'+x.id,date:x.created_at||null,title:'Título registrado',body:esc(x.season||champName(x.champId)),kind:'🏆'}))].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
   const notificationRows=evolutionNotices.map(n=>`<div class="profileNoticeItem"><div class="profileNoticeIcon">${n.kind}</div><div class="profileNoticeText"><strong>${esc(n.title)}</strong><p>${esc(n.body)}</p><small>${n.date?new Date(n.date).toLocaleString('pt-BR'):'Data não informada'}</small></div></div>`).join('')||'<p class="empty">Ainda não há notificações de evolução.</p>';
   box.innerHTML=`<div class="pilotProfileTabs"><button class="btn small active" id="pilotProfileTabOverview" onclick="switchPilotProfileTab('overview',this)">MEU PERFIL</button><button class="btn small secondary" id="pilotProfileTabCareer" onclick="switchPilotProfileTab('career',this)">MINHA CARREIRA</button><button class="btn small secondary" id="pilotProfileTabNotices" onclick="switchPilotProfileTab('notices',this)">NOTIFICAÇÕES${unread.length?` • ${unread.length}`:''}</button></div><div id="pilotProfileOverview"><div class="license-card"><div style="display:flex;align-items:center;gap:15px;margin-bottom:16px">${photo?`<img class="profileAvatar" src="${esc(photo)}" alt="Foto">`:'<div class="profileAvatar" style="display:grid;place-items:center;font-size:28px">🏎</div>'}<div><div class="kicker">ROOKIE LEAGUE • DRIVER PROFILE</div><h2>${esc(d.name)}</h2><p class="hint">${esc(d.team||'Equipe não definida')} ${d.car_number?' • #'+esc(d.car_number):''}</p></div></div>
   <div class="license-grid"><div class="license-stat"><small>Licença</small><strong>${esc(license.license_class||'R')}</strong></div><div class="license-stat"><small>Safety Rating</small><strong>${Number(license.safety_rating??2.5).toFixed(2)}</strong></div><div class="license-stat"><small>Próxima classe</small><strong>${esc(nextLicenseClass(license.license_class||'R'))}</strong></div></div>
@@ -1841,7 +1764,7 @@ async function renderProfile(){
   ${pending?.length?'<div class="profilePending">Sua alteração está aguardando aprovação do administrador.</div>':''}
   <h3 style="margin-top:18px">Solicitar alteração do perfil</h3><p class="hint">Equipe, número e foto só serão atualizados após aprovação do administrador.</p>
   <div class="profileEditGrid"><div class="field"><label>Equipe</label><input id="profileTeamRequest" maxlength="80" value="${esc(d.team||'')}" placeholder="Nome da equipe"></div><div class="field"><label>Número do carro</label><input id="profileCarRequest" maxlength="8" value="${esc(d.car_number||'')}" placeholder="Ex.: 27"></div><div class="field" style="grid-column:1/-1"><label>Foto do piloto</label><input id="profilePhotoRequest" type="file" accept="image/png,image/jpeg,image/webp"><input id="profileCurrentPhoto" type="hidden" value="${esc(photo)}"><small class="hint">Selecione uma imagem JPG, PNG ou WEBP de até 5 MB. A foto só muda após aprovação.</small></div></div><div class="formactions"><button class="btn" onclick="submitDriverProfileChange('${String(d.id)}')">ENVIAR PARA APROVAÇÃO</button></div>
-  <h3 style="margin-top:18px">Últimas avaliações</h3><div class="tableWrap"><table><thead><tr><th>Data</th><th>Nota</th><th>Variação SR</th></tr></thead><tbody>${(evals||[]).map(x=>`<tr><td>${new Date(x.created_at).toLocaleDateString('pt-BR')}</td><td>${x.score}/5</td><td>${Number(x.sr_change)>0?'+':''}${Number(x.sr_change).toFixed(2)}</td></tr>`).join('')||'<tr><td colspan="3">Nenhuma avaliação registrada.</td></tr>'}</tbody></table></div></div></div><div id="pilotProfileNotices" class="license-card" style="display:none"><h3>Notificações da sua evolução</h3><p class="hint">Acompanhe avaliações, evolução do Safety Rating, decisões sobre seu perfil e títulos conquistados.</p><div class="profileNoticeList">${notificationRows}</div></div><div id="pilotProfileCareer" style="display:none">${(window.__rookieCareerLicense=license.license_class||'R',window.__rookieCareerSR=Number(license.safety_rating??2.5),buildPilotCareerMarkup(rs,evals||[],db.titles.filter(x=>String(x.driverId)===String(d.id))))}</div>`;
+  <h3 style="margin-top:18px">Evolução por resultados</h3><div class="tableWrap"><table><thead><tr><th>Etapa</th><th>Chegada</th><th>Variação SR</th></tr></thead><tbody>${(srHistory||[]).map(x=>`<tr><td>${esc(db.races.find(r=>String(r.id)===String(x.race_id))?.name||'Etapa')}</td><td>${Number(x.position)}º lugar</td><td>${Number(x.delta)>0?'+':''}${Number(x.delta).toFixed(2)}</td></tr>`).join('')||'<tr><td colspan="3">Nenhuma evolução registrada.</td></tr>'}</tbody></table></div></div></div><div id="pilotProfileNotices" class="license-card" style="display:none"><h3>Notificações da sua evolução</h3><p class="hint">Acompanhe avaliações, evolução do Safety Rating, decisões sobre seu perfil e títulos conquistados.</p><div class="profileNoticeList">${notificationRows}</div></div><div id="pilotProfileCareer" style="display:none">${(window.__rookieCareerLicense=license.license_class||'R',window.__rookieCareerSR=Number(license.safety_rating??2.5),buildPilotCareerMarkup(rs,evals||[],db.titles.filter(x=>String(x.driverId)===String(d.id)),srHistory||[],srBaseline?.starting_sr))}</div>`;
  }catch(e){box.innerHTML=`<div class="license-card"><h3>Perfil do piloto</h3><p>Falha ao carregar: ${esc(e.message||e)}. Confira se executou o SQL da atualização.</p></div>`}
 }
 async function submitDriverProfileChange(driverId){
@@ -2201,8 +2124,6 @@ async function loadTelemetryLap(){
   telemetryDrawChart('telemetryRpmChart',values('rpm'),'RPM');
   telemetryDrawChart('telemetryThrottleChart',values('throttle').map(v=>v<=1?v*100:v),'Acelerador','%');
   telemetryDrawChart('telemetryBrakeChart',values('brake').map(v=>v<=1?v*100:v),'Freio','%');
-  if(typeof window.telemetryRenderTrack==='function')window.telemetryRenderTrack(samples,lap);
-  if(typeof window.telemetryLoadReplay==='function')window.telemetryLoadReplay(samples,lap);
   document.getElementById('telemetrySampleCount').textContent=samples.length.toLocaleString('pt-BR');
   document.getElementById('telemetryLapCount').textContent=telemetryLapsCache.length;
   telemetrySetStatus('Volta '+lap.lap_number+' carregada · '+samples.length.toLocaleString('pt-BR')+' amostras · tempo '+telemetryFmtMs(lap.lap_time_ms)+'.');
@@ -2228,4 +2149,4 @@ showPage=function(id){telemetryOriginalShowPage(id);if(id==='telemetry'){loadTel
 supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user&&document.getElementById('telemetry')?.classList.contains('active')){loadTelemetrySessions();refreshTelemetryLive()}});
 
 startLiveTimingPolling();
-</script><script src="telemetry-visuals.js" defer></script><script src="telemetry-compare-visual.js" defer></script><script src="telemetry-replay.js" defer></script><script src="race-chat-flags.js" defer></script></body></html>
+</script></body></html>
