@@ -799,6 +799,18 @@ body.rl88ReaderOpen{overflow:hidden}
 @keyframes rl107LoginIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.rl107Transition{display:none!important}.entryCard{animation:none!important}}
 @media(max-width:520px){.entryGate{padding:14px}.entryCard{padding:23px 19px}.rl107LoginBrand strong{font-size:18px}.rl107BrandMark{width:52px;height:52px}}
+
+/* V113 — palco tridimensional de premiação */
+.rl113Scene{height:390px;min-height:300px;width:100%;position:relative;background:radial-gradient(ellipse at 50% 90%,#24543d 0%,#0d1716 72%);border-radius:16px;overflow:hidden}
+.rl113Scene canvas{display:block;width:100%;height:100%}
+.rl113Status{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:16px}
+.rl113Names{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;text-align:center;margin-top:10px}
+.rl113Names>div{display:flex;flex-direction:column;gap:3px;min-width:0}
+.rl113Names strong{font-size:clamp(11px,2.5vw,16px);overflow-wrap:anywhere}
+.rl113Names small{color:#92c8a7;font-weight:700;font-size:10px}
+@media(max-width:500px){.rl113Scene{height:300px}}
+
+.rl117Remember{display:flex;align-items:center;gap:10px;margin:14px 0 3px;color:#c8d8cc;font-size:12px;cursor:pointer}.rl117Remember input{accent-color:#b6ff49;width:18px;height:18px;flex:none}.rl117Remember span{line-height:1.4}
 </style><style id="rl102Style">
 .rl102RaceGrid{display:grid;grid-template-columns:1fr 1.5fr;gap:12px;padding:14px;background:#09130d}.rl102Card{border:1px solid #36553b;border-radius:13px;padding:16px;background:linear-gradient(135deg,#15291b,#0a140e)}.rl102CardTitle{font-size:12px;letter-spacing:.1em;color:#b7ff27;font-weight:800;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.rl102CardTitle span{color:#d4e7d1;font-size:11px;letter-spacing:0}.rl102Track svg{display:block;width:100%;max-height:230px}.rl102Track{padding:10px 0}.rl102Hint{color:#9aac9d;font-size:11px;line-height:1.5}.rl102Tags{display:flex;flex-wrap:wrap;gap:8px}.rl102Tags span{border:1px solid #3d633e;padding:5px 9px;border-radius:30px;font-size:11px}.rl102WeatherGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.rl102WeatherGrid>div{border:1px solid #304a36;border-radius:9px;padding:12px}.rl102WeatherGrid small{display:block;color:#9eaf9e;font-size:10px;letter-spacing:.09em}.rl102WeatherGrid strong{display:block;color:#f0f7ed;font-size:20px;margin-top:5px}.rl102Forecast{margin-top:16px;border-top:1px solid #38513b;padding-top:12px}.rl102Forecast strong{font-size:12px;color:#b7ff27}.rl102Forecast p{font-size:13px;margin:8px 0;color:#e5f3e4}.rl102Forecast small{font-size:10px;color:#92a795}.rl102CarLabel{font-size:10px;fill:white;paint-order:stroke;stroke:#07100a;stroke-width:3px}.rl102CarDot{fill:#b7ff27;stroke:#07140a;stroke-width:2px}@media(max-width:760px){.rl102RaceGrid{grid-template-columns:1fr}.rl102Card{padding:12px}.rl102WeatherGrid strong{font-size:17px}}
 </style><style id="rl80ReplayStyle">
@@ -919,6 +931,43 @@ body>header #menuToggle{position:relative;z-index:1004}
 @keyframes rl112Lift{0%{opacity:0;transform:translate(-50%,28px) rotate(-15deg)}45%{opacity:1}100%{opacity:1;transform:translate(-50%,-23px) rotate(0deg)}}
 @media(prefers-reduced-motion:reduce){.rl112PodiumSlot,.rl112Cup{animation:none;opacity:1}.rl112Cup{transform:translate(-50%,-23px)}}
 @media(max-width:500px){.rl112PodiumStage{gap:5px;padding:12px 2px 0}.rl112Pilot{transform:scale(.85);transform-origin:bottom}.rl112Step.pos1{height:100px}.rl112Step.pos2{height:74px}.rl112Step.pos3{height:55px}}
+
+/* V115 — Driver Access premium + celebração após autenticação */
+.entryGate{background:radial-gradient(ellipse at 74% 18%,#b4ff1820,transparent 42%),linear-gradient(118deg,#050907 0%,#0c1711 52%,#030705 100%)!important;isolation:isolate}
+.entryGate::after{content:"";position:absolute;inset:-30%;z-index:-1;pointer-events:none;background:repeating-linear-gradient(110deg,transparent 0 95px,#b7ff1110 96px 97px);transform:skew(-12deg);animation:rl115Track 20s linear infinite}
+.entryCard{width:min(100%,510px)!important;border:1px solid #c3ff5555!important;border-radius:28px!important;background:linear-gradient(140deg,#18271feF,#09120df5 75%)!important;box-shadow:0 30px 110px #000b,0 0 0 1px #ffffff09,inset 0 1px #ffffff15!important;backdrop-filter:blur(18px);overflow:hidden}
+.entryCard::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,#b6ff49,#e5ffb6,#b6ff49,transparent)}
+.entryCard .kicker{display:inline-block;background:#b6ff4914;border:1px solid #b6ff4935;border-radius:99px;padding:7px 11px;font-size:9px!important}
+.entryCard h1{font-size:clamp(31px,6vw,43px)!important;line-height:1.08!important;letter-spacing:-.055em!important}
+.entryCard .entryModes{margin:24px 0 18px}
+.entryCard .entryField{display:block;margin:13px 0;color:#b9cbbd;font-size:10px;font-weight:850}
+.entryCard .entryField input{display:block;width:100%;margin-top:8px;border:1px solid #ffffff25!important;background:#050d09!important;min-height:54px!important;border-radius:13px!important;color:#fff;padding:12px 16px}
+.entryCard .entryField input:focus{border-color:#b6ff49!important;box-shadow:0 0 0 4px #b6ff491b!important}
+.entryCard .entrySubmit{width:100%;min-height:56px!important;margin-top:12px;background:linear-gradient(100deg,#a4ed3b,#d1ff7a)!important;color:#112008!important;border:none!important;box-shadow:0 9px 30px #a6ff0024;transition:transform .18s,box-shadow .18s!important}
+.entryCard .entrySubmit:hover{transform:translateY(-2px);box-shadow:0 14px 40px #a6ff0036}
+.rl115LoginTag{font-size:10px;letter-spacing:.18em;color:#8ca996;margin:18px 0 0;text-align:center}
+.rl115Welcome{position:fixed;inset:0;z-index:2147483647;display:flex;justify-content:center;align-items:center;visibility:hidden;opacity:0;pointer-events:none;background:radial-gradient(ellipse at center,#203d26 0%,#07110b 55%,#020603 100%);transition:opacity .22s ease,visibility .22s}
+.rl115Welcome.is-playing{visibility:visible;opacity:1;pointer-events:auto}
+.rl115Welcome::before,.rl115Welcome::after{content:"";position:absolute;inset:0;pointer-events:none}
+.rl115Welcome::before{background:repeating-linear-gradient(115deg,transparent 0 110px,#caff1811 111px 112px);animation:rl115Track 4s linear infinite}
+.rl115Welcome::after{background:linear-gradient(100deg,transparent 30%,#baff1622 48%,transparent 65%);transform:translateX(-130%)}
+.rl115Welcome.is-playing::after{animation:rl115Sweep 1.5s .15s ease-out forwards}
+.rl115WelcomeContent{position:relative;text-align:center;padding:30px;max-width:95vw;animation:rl115WelcomeIn .7s both}
+.rl115WelcomeLogo{margin:0 auto 24px;width:102px;height:102px;display:grid;place-items:center;border-radius:27px;border:2px solid #b6ff49;background:linear-gradient(145deg,#2d4a24,#0a170e);box-shadow:0 0 65px #b6ff493b;font-size:58px;font-weight:900;color:#c8ff6e;transform:skew(-7deg)}
+.rl115WelcomeKicker{font-size:11px;letter-spacing:.35em;color:#b6ff49;font-weight:850}
+.rl115WelcomeTitle{font-size:clamp(34px,7vw,67px);font-weight:1000;letter-spacing:-.045em;color:white;line-height:1.05;margin:14px 0}
+.rl115WelcomeTitle span{color:#b6ff49}
+.rl115WelcomeSub{color:#c2d4c5;font-size:clamp(12px,2.5vw,16px);letter-spacing:.14em}
+.rl115WelcomeBar{height:3px;width:min(310px,80vw);margin:30px auto 0;background:#ffffff20;border-radius:4px;overflow:hidden}
+.rl115WelcomeBar i{display:block;width:100%;height:100%;background:#b6ff49;transform:translateX(-100%)}
+.rl115Welcome.is-playing .rl115WelcomeBar i{animation:rl115Progress 2.8s ease-in-out infinite}
+@keyframes rl115Progress{to{transform:translateX(0)}}
+@keyframes rl115Track{to{background-position:350px 0}}
+@keyframes rl115Sweep{to{transform:translateX(130%)}}
+@keyframes rl115WelcomeIn{from{opacity:0;transform:scale(.9) translateY(25px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@media(prefers-reduced-motion:reduce){.entryGate::after,.rl115Welcome::before,.rl115Welcome::after,.rl115WelcomeContent,.rl115WelcomeBar i{animation:none!important}.rl115Welcome{transition:none!important}}
+@media(max-width:520px){.entryCard{border-radius:20px!important}.rl115WelcomeLogo{width:78px;height:78px;font-size:43px}.rl115WelcomeContent{padding:18px}}
+
 </style></head>
 <body>
 <div class="entryGate" id="entryGate">
@@ -940,10 +989,13 @@ body>header #menuToggle{position:relative;z-index:1004}
 <label class="entryField">SENHA
       <input autocomplete="current-password" id="entryPassword" placeholder="Mínimo de 6 caracteres" type="password"/>
 </label>
+<label class="rl117Remember"><input type="checkbox" id="rl117Remember" checked/> <span>Manter conectado neste dispositivo</span></label>
 <button class="btn entrySubmit" id="entrySubmit" onclick="submitEntryAuth()" type="button">ENTRAR</button>
+<div class="rl115LoginTag">● SECURE DRIVER ACCESS · ROOKIE LEAGUE</div>
 <p class="entryMessage" id="entryMessage" role="status">A administração é exclusiva da conta autorizada da liga.</p>
 </div>
 </div>
+<div class="rl115Welcome" id="rl115Welcome" aria-hidden="true" role="status" aria-live="polite"><div class="rl115WelcomeContent"><div class="rl115WelcomeLogo" aria-hidden="true">◩</div><div class="rl115WelcomeKicker">AUTENTICAÇÃO CONCLUÍDA</div><div class="rl115WelcomeTitle">BEM-VINDO AO <span>GRID</span></div><div class="rl115WelcomeSub">ROOKIE LEAGUE MOTORSPORT · RACE CENTER</div><div class="rl115WelcomeBar"><i></i></div></div></div>
 <div class="rl107Transition" id="rl107Transition" aria-hidden="true"><div class="rl107TransitionInner"><div class="rl107TransitionMark">◩</div><div class="rl107TransitionName">ROOKIE <b>LEAGUE</b></div><div class="rl107TransitionSub">MOTORSPORT · RACE CENTER</div><div class="rl107TransitionLine"></div></div></div>
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br/><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
@@ -969,7 +1021,7 @@ body>header #menuToggle{position:relative;z-index:1004}
 <section class="page" id="results"><div class="subhead"><div class="kicker">CLASSIFICAÇÃO OFICIAL</div><h1>Resultados</h1><p>Resultados por etapa e classificação acumulada.</p></div><div class="sectionHead"><div><h2>Classificação oficial importada</h2><p>Tabela de pilotos e pontuação dos campeonatos recebidos do Emperor Servers.</p></div><div class="tools"><select id="officialResultChamp" onchange="renderOfficialResults()"></select></div></div>
 <div class="rl89StandingsHero"><div><span class="rl89Overline">ROOKIE LEAGUE MOTORSPORT</span><h2>Disputa pelo título</h2><p>Consulte as tabelas oficiais importadas e compare a pontuação dos competidores.</p></div><div class="rl89StandingsSummary" id="rl89StandingsSummary"></div></div><div class="rl89Podium" id="rl89Podium"></div><div class="panel tableWrap officialResultsPanel rl89ResultsTable"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Pontos</th></tr></thead><tbody id="officialStandings"></tbody></table></div>
 <p class="hint" style="margin-top:9px">Os resultados são exibidos diretamente nesta página. A tabela é uma cópia importada e precisa ser atualizada quando houver novas pontuações no servidor.</p>
-<div class="sectionHead"><div><h2>Resultados registrados no portal</h2><p>Classificação calculada automaticamente a partir das etapas lançadas aqui.</p></div><div class="tools"><select id="resultChamp" onchange="renderAll()"></select></div></div><div class="panel tableWrap rl89ResultsTable"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th><th>Resultados</th></tr></thead><tbody id="standings"></tbody></table></div><div class="panel rl112PodiumPanel" style="margin:20px 0;padding:20px"><div class="sectionHead"><div><h2>🏆 Pódio da etapa</h2><p>Premiação animada com os três primeiros colocados de cada corrida registrada.</p></div><select id="rl112PodiumRace" aria-label="Escolher etapa" onchange="rl112RenderPodium()"></select></div><div id="rl112PodiumStage" aria-live="polite"><p class="hint">Selecione uma etapa com resultados para ver o pódio.</p></div></div>
+<div class="sectionHead"><div><h2>Resultados registrados no portal</h2><p>Classificação calculada automaticamente a partir das etapas lançadas aqui.</p></div><div class="tools"><select id="resultChamp" onchange="renderAll()"></select></div></div><div class="panel tableWrap rl89ResultsTable"><table><thead><tr><th>Pos.</th><th>Piloto</th><th>Etapas</th><th>Pontos</th><th>Resultados</th></tr></thead><tbody id="standings"></tbody></table></div><div class="panel rl112PodiumPanel" style="margin:20px 0;padding:20px"><div class="sectionHead"><div><h2>🏆 Pódio da etapa</h2><p>Cerimônia 3D com avatares estilizados levantando troféus, conforme os resultados da etapa.</p></div><select id="rl112PodiumRace" aria-label="Escolher etapa" onchange="rl112RenderPodium()"></select></div><div id="rl112PodiumStage" aria-live="polite"><p class="hint">Selecione uma etapa com resultados para ver o pódio.</p></div></div>
 <div class="sectionHead"><div><h2>Etapas lançadas</h2><p>Histórico de resultados registrados.</p></div></div><div class="panel tableWrap"><table><thead><tr><th>Campeonato / Tipo</th><th>Etapa / Evento</th><th>Data</th><th>Vencedor</th><th>Participantes</th><th id="raceActionHead">Ação</th></tr></thead><tbody id="raceRows"></tbody></table></div></section>
 <section class="page" id="calendar">
 <div class="subhead"><div class="kicker">AGENDA DA TEMPORADA</div><h1>Calendário</h1><p>Veja as próximas corridas, datas e etapas da Rookie League Motorsport.</p></div>
@@ -2455,6 +2507,39 @@ function setEntryMode(mode){
   document.getElementById('entryPassword').autocomplete=mode==='login'?'current-password':'new-password';
   document.getElementById('entryMessage').textContent='A área de Administração é exclusiva do administrador autorizado da liga.';
 }
+
+// V117 — preferência local: manter a sessão Supabase neste dispositivo.
+// Nunca armazenamos senha ou token manualmente; o Supabase gerencia a sessão.
+const rl117PreferenceKey='rl117_keep_signed_in';
+function rl117KeepSignedIn(){try{return localStorage.getItem(rl117PreferenceKey)!=='0'}catch(_){return true}}
+function rl117SavePreference(){const input=document.getElementById('rl117Remember');if(input)try{localStorage.setItem(rl117PreferenceKey,input.checked?'1':'0')}catch(_){}}
+(function rl117InitRemember(){const input=document.getElementById('rl117Remember');if(input)input.checked=rl117KeepSignedIn()})();
+// V115 — executar somente após login interativo bem-sucedido, nunca em falha ou restauração de sessão.
+// V118: a tela de boas-vindas permanece até o portal terminar de preparar a sessão.
+let rl118WelcomeStarted=0;
+let rl118WelcomePending=false;
+function rl115PlayWelcome(){
+ const el=document.getElementById('rl115Welcome');if(!el)return;
+ rl118WelcomeStarted=Date.now();rl118WelcomePending=true;
+ el.classList.remove('is-playing');void el.offsetWidth;
+ el.classList.add('is-playing');el.setAttribute('aria-hidden','false');
+ const sub=el.querySelector('.rl115WelcomeSub');if(sub)sub.textContent='CONECTANDO AO RACE CENTER...';
+}
+async function rl118FinishWelcome(){
+ if(!rl118WelcomePending)return;
+ // Uma breve duração mínima evita piscar quando o Supabase responde instantaneamente.
+ const remaining=Math.max(0,1100-(Date.now()-rl118WelcomeStarted));
+ if(remaining)await new Promise(resolve=>setTimeout(resolve,remaining));
+ const el=document.getElementById('rl115Welcome');
+ if(el){el.classList.remove('is-playing');el.setAttribute('aria-hidden','true');}
+ rl118WelcomePending=false;
+}
+function rl118WelcomeError(){
+ const el=document.getElementById('rl115Welcome');
+ if(el){el.classList.remove('is-playing');el.setAttribute('aria-hidden','true');}
+ rl118WelcomePending=false;
+}
+
 async function submitEntryAuth(){
  const name=document.getElementById('entryName').value.trim(),email=document.getElementById('entryEmail').value.trim(),pass=document.getElementById('entryPassword').value;
  if(!email||pass.length<6||(authMode==='register'&&!name)){document.getElementById('entryMessage').textContent='Informe os dados. A senha deve ter pelo menos 6 caracteres.';return}
@@ -2465,14 +2550,14 @@ async function submitEntryAuth(){
   else result=await supabaseClient.auth.signInWithPassword({email,password:pass});
   if(result.error)throw result.error;
   if(authMode==='register'&&!result.data.session){document.getElementById('entryMessage').textContent='Cadastro de piloto criado! Seu perfil de piloto e carteira R (SR 2,50) já foram provisionados. Confirme seu e-mail pelo link enviado e depois entre.';return}
-  cloudUser=result.data.user;await refreshCloudRole();await loadCloudData();await await afterCloudLogin();await loadGarage();
- }catch(e){document.getElementById('entryMessage').textContent='Não foi possível autenticar: '+(e.message||e)}
+  rl117SavePreference();cloudUser=result.data.user;rl115PlayWelcome();await refreshCloudRole();await loadCloudData();await afterCloudLogin();await loadGarage();await rl118FinishWelcome();
+ }catch(e){rl118WelcomeError();document.getElementById('entryMessage').textContent='Não foi possível autenticar: '+(e.message||e)}
  finally{btn.disabled=false;btn.textContent=authMode==='register'?'CRIAR CONTA':'ENTRAR'}
 }
 async function submitAuth(){
  const name=document.getElementById('authName').value.trim(),email=document.getElementById('authEmail').value.trim(),pass=document.getElementById('authPassword').value;
  if(!email||pass.length<6||(authMode==='register'&&!name))return alert('Informe os dados solicitados. A senha deve ter pelo menos 6 caracteres.');
- try{let result;if(authMode==='register')result=await supabaseClient.auth.signUp({email,password:pass,options:{data:{name,display_name:name}}});else result=await supabaseClient.auth.signInWithPassword({email,password:pass});if(result.error)throw result.error;cloudUser=result.data.user;if(authMode==='register'&&!result.data.session){alert('Cadastro de piloto criado! Seu perfil e carteira R (SR 2,50) já foram provisionados. Confirme seu e-mail antes de entrar.');return}await refreshCloudRole();await loadCloudData();await await afterCloudLogin()}catch(e){alert('Não foi possível autenticar: '+(e.message||e))}
+ try{let result;if(authMode==='register')result=await supabaseClient.auth.signUp({email,password:pass,options:{data:{name,display_name:name}}});else result=await supabaseClient.auth.signInWithPassword({email,password:pass});if(result.error)throw result.error;cloudUser=result.data.user;if(authMode==='register'&&!result.data.session){alert('Cadastro de piloto criado! Seu perfil e carteira R (SR 2,50) já foram provisionados. Confirme seu e-mail antes de entrar.');return}rl115PlayWelcome();await refreshCloudRole();await loadCloudData();await afterCloudLogin();await rl118FinishWelcome()}catch(e){rl118WelcomeError();alert('Não foi possível autenticar: '+(e.message||e))}
 }
 async function refreshCloudRole(){
  cloudIsAdmin=false;if(!cloudUser)return;
@@ -2689,9 +2774,18 @@ async function migrateLocalDataToCloud(){if(!cloudIsAdmin)return alert('Entre co
 async function initializeCloud(){
  try{
   const {data,error}=await supabaseClient.auth.getSession();if(error)throw error;
-  if(data.session){cloudUser=data.session.user;await refreshCloudRole();await loadCloudData();await await afterCloudLogin()}
+  if(data.session&&rl117KeepSignedIn()){
+   // A tela de boas-vindas cobre o painel antes de revelar os dados restaurados.
+   rl115PlayWelcome();cloudUser=data.session.user;
+   await refreshCloudRole();await loadCloudData();await afterCloudLogin();await loadGarage();await rl118FinishWelcome();
+  }else if(data.session){
+   await supabaseClient.auth.signOut();
+   document.getElementById('entryGate').classList.remove('hidden');setEntryMode('login');
+   document.getElementById('cloudStatus').textContent='Login automático desativado. Entre com sua conta.';
+  }
   else{document.getElementById('cloudStatus').textContent='Supabase pronto. Faça login ou crie sua conta de piloto.';document.getElementById('entryGate').classList.remove('hidden');setEntryMode('login')}
  }catch(e){
+  rl118WelcomeError();
   document.getElementById('cloudStatus').textContent='Falha ao conectar ao Supabase: '+e.message;
   document.getElementById('entryGate').classList.remove('hidden');
   document.getElementById('entryMessage').textContent='Erro de conexão: '+e.message;
@@ -3352,12 +3446,116 @@ function rl112RenderPodiumOptions(){
  if(available.some(r=>String(r.id)===current))select.value=current;
  rl112RenderPodium();
 }
+let rl113SceneCleanup=null;
+async function rl113BuildScene(stage, winners){
+ if(rl113SceneCleanup){rl113SceneCleanup();rl113SceneCleanup=null;}
+ const mount=document.createElement('div');mount.className='rl113Scene';mount.setAttribute('aria-label','Pódio 3D com pilotos de macacão e capacete de corrida levantando troféus');
+ stage.replaceChildren(mount);
+ const labels=document.createElement('div');labels.className='rl113Names';
+ [2,1,3].forEach(p=>{const item=document.createElement('div');item.innerHTML='<strong>'+esc(winners[p]?.name||'A definir')+'</strong><small>'+p+'º LUGAR</small>';labels.appendChild(item)});
+ stage.appendChild(labels);
+ const status=document.createElement('p');status.className='hint rl113Status';status.textContent='Carregando personagens 3D…';mount.appendChild(status);
+ let THREE;
+ try{THREE=await import('https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js')}catch(e){status.textContent='Não foi possível carregar o 3D. Verifique a conexão com a internet.';return;}
+ if(!mount.isConnected)return;
+ let renderer;
+ try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'low-power'});}catch(e){status.textContent='Este dispositivo não disponibiliza WebGL para exibir o pódio 3D.';return;}
+ status.remove();renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));renderer.outputColorSpace=THREE.SRGBColorSpace;mount.appendChild(renderer.domElement);
+ const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(38,1,.1,100);
+ camera.position.set(0,4.0,13.8);camera.lookAt(0,2.0,0);
+ scene.add(new THREE.HemisphereLight(0xffffff,0x263e36,2.5));
+ const light=new THREE.DirectionalLight(0xffffff,3.3);light.position.set(-3,8,8);scene.add(light);
+ const green=new THREE.PointLight(0x3bdc8b,35,16);green.position.set(3,3,-2);scene.add(green);
+ const mat=(color,metalness=0,roughness=.45)=>new THREE.MeshStandardMaterial({color,metalness,roughness});
+ const suit=[mat(0x172c27,.12,.72),mat(0x263440,.12,.72),mat(0x363c43,.12,.72)];
+ const accents=[mat(0x37d58c),mat(0xe8e9ed),mat(0xe9a44c)];
+ const helmetShell=[mat(0x172e27,.48,.22),mat(0xe5e8e9,.42,.23),mat(0x343d47,.45,.24)];
+ const visor=mat(0x071b27,.68,.1),rubber=mat(0x0c1217,.05,.92),gold=mat(0xf2c45a,.82,.18),silver=mat(0xcbd5db,.78,.22),bronze=mat(0xc98d62,.72,.24);
+ const white=mat(0xe7f0ed),floorMat=mat(0x10231e,.18,.65),podiumMat=mat(0x273b35,.28,.5);
+ function mesh(parent,geometry,material,x=0,y=0,z=0){const o=new THREE.Mesh(geometry,material);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
+ function box(parent,w,h,d,m,x=0,y=0,z=0){return mesh(parent,new THREE.BoxGeometry(w,h,d),m,x,y,z)}
+ function ball(parent,r,m,x=0,y=0,z=0,sx=1,sy=1,sz=1){const o=mesh(parent,new THREE.SphereGeometry(r,32,24),m,x,y,z);o.scale.set(sx,sy,sz);return o}
+ function cylinder(parent,rt,rb,h,m,x=0,y=0,z=0){return mesh(parent,new THREE.CylinderGeometry(rt,rb,h,32),m,x,y,z)}
+ function limb(parent,start,end,r1,r2,m){const v1=new THREE.Vector3(...start),v2=new THREE.Vector3(...end),delta=v2.clone().sub(v1);const o=mesh(parent,new THREE.CylinderGeometry(r1,r2,delta.length(),16),m,...v1.clone().add(v2).multiplyScalar(.5).toArray());o.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());return o}
+ box(scene,13,.16,5.5,floorMat,0,-.16,0);
+ const places=[{p:2,x:-2.65,h:.77,m:silver},{p:1,x:0,h:1.24,m:gold},{p:3,x:2.65,h:.53,m:bronze}];
+ const actors=[];
+ places.forEach((place,i)=>{
+  const p=place.p;
+  box(scene,2.40,place.h,2.12,podiumMat,place.x,place.h/2,0);
+  box(scene,2.42,.10,2.15,place.m,place.x,place.h,0);
+  box(scene,1.16,.37,.035,place.m,place.x,place.h*.55,1.073);
+  const actor=new THREE.Group();actor.position.set(place.x,place.h+.10,0);scene.add(actor);
+  // Botas e pernas separadas, com joelhos e detalhes do macacão.
+  for(const side of [-1,1]){
+   const x=side*.235;
+   limb(actor,[x,1.02,0],[x*1.12,.45,.02],.175,.14,suit[i]);
+   ball(actor,.15,suit[i],x*1.12,.44,.02,1,1.1,1);
+   limb(actor,[x*1.12,.44,.02],[x*1.14,.15,.02],.14,.125,suit[i]);
+   box(actor,.31,.18,.47,rubber,x*1.14,.10,.14);
+   box(actor,.065,.47,.03,accents[i],x*1.1,.70,.16);
+  }
+  // Tronco com ombros, cintura, costuras e faixa central.
+  const torso=cylinder(actor,.48,.38,1.02,suit[i],0,1.47,0);torso.scale.z=.60;
+  ball(actor,.48,suit[i],0,1.91,0,1.18,.33,.69);
+  cylinder(actor,.38,.38,.18,rubber,0,1.01,0).scale.z=.72;
+  box(actor,.12,.75,.027,accents[i],0,1.48,.295);
+  box(actor,.44,.13,.03,white,0,1.80,.305);
+  box(actor,.37,.11,.035,accents[i],0,1.32,.297);
+  // Pescoço, capacete de competição com visor curvo e faixas.
+  cylinder(actor,.18,.19,.21,rubber,0,2.04,0);
+  ball(actor,.365,helmetShell[i],0,2.37,0,1,.96,1.12);
+  ball(actor,.32,visor,0,2.39,.255,1,.38,.46);
+  box(actor,.58,.045,.06,accents[i],0,2.60,.23);
+  box(actor,.48,.095,.12,rubber,0,2.17,.32);
+  box(actor,.15,.045,.08,white,0,2.22,.38);
+  const arms=[];
+  for(const sign of [-1,1]){
+   const shoulder=new THREE.Group();shoulder.position.set(sign*.53,1.84,0);actor.add(shoulder);
+   ball(shoulder,.195,suit[i],0,-.07,0);
+   limb(shoulder,[0,-.08,0],[sign*.06,-.54,.025],.16,.135,suit[i]);
+   const elbow=new THREE.Group();elbow.position.set(sign*.06,-.54,.025);shoulder.add(elbow);
+   ball(elbow,.14,rubber,0,0,0);
+   limb(elbow,[0,0,0],[sign*.06,-.48,.11],.13,.105,suit[i]);
+   ball(elbow,.13,accents[i],sign*.06,-.50,.11,1,.85,.85);
+   arms.push({pivot:shoulder,elbow,sign});
+  }
+  // Troféu com taça côncava, alças, haste e base, acompanhando o movimento.
+  const cupGroup=new THREE.Group();actor.add(cupGroup);cupGroup.position.set(0,1.48,.55);
+  const profile=[new THREE.Vector2(.17,0),new THREE.Vector2(.27,.08),new THREE.Vector2(.33,.23),new THREE.Vector2(.37,.41),new THREE.Vector2(.40,.57),new THREE.Vector2(.35,.64),new THREE.Vector2(.28,.64),new THREE.Vector2(.27,.54),new THREE.Vector2(.24,.37),new THREE.Vector2(.17,.23),new THREE.Vector2(.09,.14)];
+  mesh(cupGroup,new THREE.LatheGeometry(profile,40),place.m,0,.24,0);
+  cylinder(cupGroup,.095,.095,.30,place.m,0,.06,0);
+  cylinder(cupGroup,.26,.26,.10,rubber,0,-.14,0);
+  cylinder(cupGroup,.21,.21,.045,place.m,0,-.19,0);
+  for(const sign of [-1,1]){
+   const handle=mesh(cupGroup,new THREE.TorusGeometry(.205,.045,10,24,Math.PI*1.20),place.m,sign*.34,.62,0);
+   handle.rotation.z=sign===1?-Math.PI*.43:Math.PI*.43;
+  }
+  actors.push({actor,arms,cupGroup,i});
+ });
+ let frame=0,disposed=false;
+ const resize=()=>{const w=Math.max(200,mount.clientWidth),h=Math.max(260,mount.clientHeight);renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()};
+ const observer=new ResizeObserver(resize);observer.observe(mount);resize();
+ const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+ const start=performance.now();
+ function animate(now){if(disposed)return;frame=requestAnimationFrame(animate);
+ const t=reduced?1:Math.min(1,(now-start)/2600),ease=1-Math.pow(1-t,3);
+ actors.forEach(({actor,arms,cupGroup,i})=>{const stagger=reduced?1:Math.max(0,Math.min(1,(t-i*.10)*1.5));const lift=1-Math.pow(1-stagger,3);
+  arms[0].pivot.rotation.z=-2.50*lift;arms[1].pivot.rotation.z=2.50*lift;arms.forEach(a=>a.elbow.rotation.z=-a.sign*.22*lift);
+  cupGroup.position.y=1.48+1.77*lift;cupGroup.rotation.z=.06*Math.sin(now/430)*(reduced?0:lift);
+  actor.position.y=places[i].h+.10+(reduced?0:Math.sin(now/350+i)*.025*lift);
+ });
+ renderer.render(scene,camera)}
+ animate(performance.now());
+ rl113SceneCleanup=()=>{disposed=true;cancelAnimationFrame(frame);observer.disconnect();renderer.dispose();scene.traverse(o=>{o.geometry?.dispose?.()});renderer.domElement.remove()};
+}
 function rl112RenderPodium(){
  const stage=document.getElementById('rl112PodiumStage'),raceId=document.getElementById('rl112PodiumRace')?.value;if(!stage)return;
+ if(rl113SceneCleanup){rl113SceneCleanup();rl113SceneCleanup=null;}
  const entries=(db.results||[]).filter(r=>String(r.raceId)===String(raceId)&&[1,2,3].includes(Number(r.position)));
  if(!entries.length){stage.innerHTML='<p class="hint">Ainda não há pódio registrado para esta etapa.</p>';return;}
- const byPosition=new Map(entries.map(r=>[Number(r.position),r]));
- stage.innerHTML='<div class="rl112PodiumStage">'+[2,1,3].map((pos,i)=>{const result=byPosition.get(pos);const name=result?driverName(result.driverId):'A definir';return '<div class="rl112PodiumSlot" style="--delay:'+(.12*i)+'s"><div class="rl112Pilot"><div class="rl112Head"></div><div class="rl112Body">RL</div><span class="rl112Cup" aria-hidden="true">'+(pos===1?'🏆':'🏅')+'</span></div><div class="rl112PilotName">'+esc(name)+'</div><div class="rl112Step pos'+pos+'">'+pos+'º</div></div>'}).join('')+'</div>';
+ const winners={};entries.forEach(r=>{winners[Number(r.position)]={name:driverName(r.driverId)}});
+ rl113BuildScene(stage,winners);
 }
 // Inicialização desacoplada para não interferir na autenticação e nos demais módulos.
 window.addEventListener('load',()=>{
