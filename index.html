@@ -822,7 +822,7 @@ body.rl88ReaderOpen{overflow:hidden}
 <div class="rl87Insights"><section class="rl87InsightPanel"><div class="rl87PanelTitle"><span class="rl87Eyebrow">PADDOCK NEWS</span><h2>Últimos resultados</h2></div><div id="rl87LatestResults" class="rl87LatestResults"><p class="hint">Consultando etapas…</p></div><button type="button" class="btn secondary small" onclick="showPage('results')">VER CLASSIFICAÇÕES →</button></section><section class="rl87InsightPanel rl87NextStep"><span class="rl87Eyebrow">DRIVER JOURNEY</span><h2>Sua próxima volta começa aqui.</h2><p>Acompanhe sua licença, evolução e conquistas no painel de piloto.</p><div class="rl87NextStepActions"><button type="button" class="btn small" onclick="showPage('account')">MEU PERFIL ↗</button><button type="button" class="btn secondary small" onclick="showPage('telemetry')">ANALISAR VOLTAS ↗</button></div></section></div>
 <div class="sectionHead"><div><h2>Hall da Fama</h2><p>Os pilotos que já levantaram a taça.</p></div><button class="textLink" onclick="showPage('hall')">RANKING COMPLETO →</button></div><div class="panel tableWrap"><table><thead><tr><th>Posição</th><th>Piloto</th><th>Títulos</th><th>Categoria</th></tr></thead><tbody id="homeHall"></tbody></table></div>
 
-<section class="rl97Timing" id="rl97HomeTiming" aria-label="Live Timing Rookie League"><div class="rl97Top"><div><span class="rl97Eyebrow">ROOKIE LEAGUE · RACE DATA</span><h2><span class="apiLiveDot"></span> LIVE TIMING PRO</h2><p id="apiTimingStatus" role="status">Aguardando dados do servidor…</p></div><div class="rl97TopActions"><span>ATUALIZADO: <b id="apiTimingUpdated">—</b></span><button type="button" onclick="refreshLiveTiming(true)" class="btn secondary small">↻ ATUALIZAR</button><button type="button" class="btn secondary small" onclick="showPage('racecenter')">RACE CENTER ↗</button></div></div><div class="rl97Summary"><div><small>PILOTOS NA TABELA</small><strong id="rl97DriverCount">—</strong></div><div><small>SESSÃO</small><strong id="rl97Session">AGUARDANDO</strong></div><div><small>ORIGEM</small><strong>EMPEROR SERVERS</strong></div></div><div class="rl97TableScroll"><table class="rl97Table"><thead><tr><th>POS</th><th>PILOTO / EQUIPE</th><th>CARRO</th><th>VOLTA</th><th>ÚLTIMA</th><th>MELHOR</th><th>GAP</th><th>PIT</th><th>VMÁX</th></tr></thead><tbody id="apiTimingRows"><tr><td colspan="9" class="empty">Aguardando a primeira consulta…</td></tr></tbody></table></div><div class="rl97Footer"><span>Dados sujeitos à disponibilidade da API do servidor. Atualização automática a cada 30 segundos.</span><a href="https://rookieleague.emperorservers.com/live-timing" target="_blank" rel="noopener noreferrer">VER TIMING ORIGINAL ↗</a></div></section>
+<section class="rl97Timing" id="rl97HomeTiming" aria-label="Live Timing Rookie League"><div class="rl97Top"><div><span class="rl97Eyebrow">ROOKIE LEAGUE · RACE DATA</span><h2><span class="apiLiveDot"></span> LIVE TIMING PRO</h2><p id="apiTimingStatus" role="status">Aguardando dados do servidor…</p></div><div class="rl97TopActions"><span>ATUALIZADO: <b id="apiTimingUpdated">—</b></span><button type="button" onclick="refreshLiveTiming(true)" class="btn secondary small">↻ ATUALIZAR</button><button type="button" class="btn secondary small" onclick="showPage('racecenter')">RACE CENTER ↗</button></div></div><div class="rl97Summary"><div><small>PILOTOS REGISTRADOS</small><strong id="rl97DriverCount">—</strong></div><div><small>SESSÃO</small><strong id="rl97Session">AGUARDANDO</strong></div><div><small>ORIGEM</small><strong>EMPEROR SERVERS</strong></div></div><div class="rl97TableScroll"><table class="rl97Table"><thead><tr><th>POS</th><th>PILOTO / EQUIPE</th><th>CARRO</th><th>VOLTA</th><th>ÚLTIMA</th><th>MELHOR</th><th>GAP</th><th>PIT</th><th>VMÁX</th></tr></thead><tbody id="apiTimingRows"><tr><td colspan="9" class="empty">Aguardando a primeira consulta…</td></tr></tbody></table></div><div class="rl97Footer"><span>Dados sujeitos à disponibilidade da API do servidor. Atualização automática a cada 30 segundos.</span><a href="https://rookieleague.emperorservers.com/live-timing" target="_blank" rel="noopener noreferrer">VER TIMING ORIGINAL ↗</a></div></section>
 <div class="sectionHead liveHead"><div><h2><span class="liveDot"></span> LIVE TIMING — AO VIVO</h2><p>Acompanhe tempos, voltas, posições e pilotos na pista em tempo real.</p></div></div>
 <div class="liveTimingPanel liveTimingCompact" id="liveTimingPanel">
   <div class="liveTimingBar"><span><i></i> TRANSMISSÃO DE DADOS DO SERVIDOR</span><span>ROOKIE LEAGUE MOTORSPORT</span><button class="liveExpandBtn" type="button" onclick="toggleLiveTiming()">EXPANDIR ↗</button></div>
@@ -1742,8 +1742,8 @@ function rl99Time(t){
  if(t===null||t===undefined||t===''||Number(t)<=0)return '—';
  if(typeof t==='string'&&!/^\d+(\.\d+)?$/.test(t))return t;
  const n=Number(t);
- // Emperor Servers/ACSM exposes TimeSpan ticks: 10,000,000 ticks per second.
- const sec=n>1e9?n/1e10:n>1e5?n/1000:n;
+ // Emperor Servers leaderboard uses 1,000,000,000 units per second (119305000000 = 1:59.305).
+ const sec=n>1e9?n/1e9:n>1e5?n/1000:n;
  if(!Number.isFinite(sec)||sec>86400)return '—';
  return `${Math.floor(sec/60)}:${(sec%60).toFixed(3).padStart(6,'0')}`;
 }
@@ -1752,16 +1752,21 @@ function rl99Escape(v){return esc(String(v??'—'))}
 function renderLiveTimingRows(payload){
  const rows=rl99Drivers(payload),target=document.getElementById('apiTimingRows');if(!target)return;
  const connected=rows.filter(d=>d._rlOnline!==false);
- document.getElementById('rl97DriverCount').textContent=String(connected.length);
+ document.getElementById('rl97DriverCount').textContent=String(rows.length)+' ('+connected.length+' na pista)';
  if(!rows.length){target.innerHTML='<tr><td colspan="9" class="empty">Nenhum piloto na sessão. Aguardando dados reais.</td></tr>';return}
- rows.sort((a,b)=>Number(b._rlOnline!==false)-Number(a._rlOnline!==false)||Number(b.TotalNumLaps||0)-Number(a.TotalNumLaps||0)||Number(rl99CarData(a).BestLap||Infinity)-Number(rl99CarData(b).BestLap||Infinity));
+ // Treino/classificação: ordenar pela melhor volta válida, mesmo pilotos desconectados.
+ // Corrida: ordenar por voltas completas e, em empate, posição/tempo disponíveis.
+ const raceSession=Number(payload?.Type)===3||/race|corrida/i.test(String(payload?.Name||''));
+ const bestTicks=d=>{const n=Number(rl99CarData(d).BestLap??d.BestLap);return Number.isFinite(n)&&n>0?n:Infinity};
+ rows.sort((a,b)=>raceSession?(Number(b.TotalNumLaps||0)-Number(a.TotalNumLaps||0)||bestTicks(a)-bestTicks(b)):(bestTicks(a)-bestTicks(b)||Number(b.TotalNumLaps||0)-Number(a.TotalNumLaps||0))); 
+ const leaderBest=bestTicks(rows[0]);
  target.innerHTML=rows.map((d,i)=>{
   const c=d.CarInfo||{},car=rl99CarData(d),name=c.DriverName||d.DriverName||d.name||'Piloto',team=c.TeamName||d.TeamName||'—';
   const online=d._rlOnline!==false;
   const photo=typeof rl90PilotByName==='function'&&typeof rl90PhotoMarkup==='function'?rl90PhotoMarkup(rl90PilotByName(name)||{name},'rl98Avatar'):'';
   const best=rl99Time(car.BestLap??d.BestLap),last=rl99Time(car.LastLap??d.LastLap);
   const speed=Number(car.TopSpeedBestLap);const speedText=Number.isFinite(speed)&&speed>0?speed.toFixed(1)+' km/h':'—';
-  return `<tr class="${online?'':'rl99Offline'}"><td class="rank">${online?i+1:'—'}</td><td class="driver"><div class="rl98Driver">${photo}<div><strong>${rl99Escape(name)}</strong><small>${rl99Escape(team)} · ${online?'🟢 Na sessão':'⚪ Desconectado'}</small></div></div></td><td>${rl99Escape(c.CarName||c.CarModel||d.CarName||'—')}</td><td>${rl99Escape(d.TotalNumLaps??d.Laps??'—')}</td><td>${rl99Escape(last)}</td><td class="count">${rl99Escape(best)}</td><td>${rl99Escape(d.Gap??'—')}</td><td>${rl99Escape(d.NumPits??'—')}</td><td>${rl99Escape(speedText)}</td></tr>`;
+  return `<tr class="${online?'':'rl99Offline'}"><td class="rank">${Number.isFinite(bestTicks(d))||raceSession?i+1:'—'}</td><td class="driver"><div class="rl98Driver">${photo}<div><strong>${rl99Escape(name)}</strong><small>${rl99Escape(team)} · ${online?'🟢 Na sessão':'⚪ Desconectado'}</small></div></div></td><td>${rl99Escape(c.CarName||c.CarModel||d.CarName||'—')}</td><td>${rl99Escape(d.TotalNumLaps??d.Laps??'—')}</td><td>${rl99Escape(last)}</td><td class="count">${rl99Escape(best)}</td><td>${rl99Escape(!raceSession&&Number.isFinite(bestTicks(d))&&Number.isFinite(leaderBest)?(i===0?'LÍDER':'+'+rl99Time(bestTicks(d)-leaderBest)):(d.Gap??'—'))}</td><td>${rl99Escape(d.NumPits??'—')}</td><td>${rl99Escape(speedText)}</td></tr>`;
  }).join('');
 }
 
@@ -1773,7 +1778,7 @@ async function refreshLiveTiming(manual=false){
    if(!response.ok)throw new Error(response.status===429?'Limite de requisições atingido.':'HTTP '+response.status);
    const data=await response.json();
    renderLiveTimingRows(data);
-   status.textContent='Conectado via Supabase · Emperor Servers';document.getElementById('rl97Session').textContent=String(data?.Track?.Name||data?.Track?.TrackName||data?.SessionName||data?.Track?.Name||data?.Track?.Name||data?.Track?.Name||data?.Name||'SESSÃO').slice(0,50);
+   status.textContent='Conectado via Supabase · Emperor Servers';document.getElementById('rl97Session').textContent=String(data?.Name||data?.SessionName||'SESSÃO').slice(0,50);
    dot?.classList.add('connected');
    document.getElementById('apiTimingUpdated').textContent=new Date().toLocaleTimeString('pt-BR');
  }catch(error){
