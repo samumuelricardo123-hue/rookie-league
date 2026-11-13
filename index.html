@@ -365,6 +365,37 @@ input[type=file]{max-width:0}
 
 
 .telemetryTabs{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 18px}.telemetryTabPanel[hidden]{display:none!important}.telemetryTabPanel{min-width:0}.telemetryTabs button.active{background:var(--accent);color:#111;border-color:var(--accent)}
+
+/* ROOKIE LEAGUE | Visual Racing UI — progressive enhancement */
+:root{--rl-glow:rgba(166,255,0,.13);--rl-ease:cubic-bezier(.2,.8,.2,1)}
+body{background:radial-gradient(ellipse 80% 38% at 50% -10%,#1a3220 0%,transparent 75%),linear-gradient(180deg,#080e0b,#070b09 65%);background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.13;background-image:linear-gradient(90deg,transparent 98%,#9db7a2 100%),linear-gradient(0deg,transparent 98%,#9db7a2 100%);background-size:44px 44px;mask-image:linear-gradient(to bottom,#000,transparent 78%)}
+header{box-shadow:0 9px 30px #0005;border-bottom-color:#4c6e35}
+.logo{letter-spacing:1.4px;text-shadow:0 0 24px #a6ff0015}
+.status{box-shadow:0 0 18px #a6ff0028}
+.heroMain{background:radial-gradient(ellipse at 80% 20%,#a6ff0014,transparent 45%),linear-gradient(120deg,#17251a,#0a130e);box-shadow:inset 0 1px #ffffff0d,0 20px 60px #0005}
+.heroMain::before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,var(--green),transparent 70%)}
+.hero h1{letter-spacing:-.045em;text-wrap:balance}
+.hero h1 span{text-shadow:0 0 40px #a6ff0038}
+.heroAside{box-shadow:inset 0 1px #ffffff12,0 18px 44px #0004}
+.metric,.panel,.champ,.heroAside,.license-card{transition:border-color .25s var(--rl-ease),box-shadow .25s var(--rl-ease),transform .25s var(--rl-ease)}
+.metric:hover,.panel:hover{border-color:#54734a;box-shadow:0 16px 42px #0006,0 0 20px #a6ff000a}
+.metric strong{font-variant-numeric:tabular-nums}
+.metric{position:relative;overflow:hidden}
+.metric::before{content:"";position:absolute;top:0;left:0;width:50px;height:2px;background:var(--green);opacity:.65}
+.btn,.menuToggle,.tabs button,nav button{transition:transform .18s var(--rl-ease),background .18s,border-color .18s,box-shadow .18s,color .18s}
+.btn:active,.menuToggle:active,.tabs button:active{transform:scale(.97)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+nav button:hover{background:#a6ff001a}
+nav button.active{box-shadow:inset 3px 0 var(--green)}
+.page.active{animation:rlPageIn .34s var(--rl-ease) both}
+@keyframes rlPageIn{from{opacity:.45;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rlSoundToggle{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;border:1px solid #3b563b;border-radius:8px;background:#152019;color:#c9d9c8;padding:9px 11px;font-size:11px;font-weight:900;cursor:pointer}
+.rlSoundToggle:hover,.rlSoundToggle[aria-pressed="true"]{color:var(--green);border-color:#78ac42;background:#a6ff0010}
+.rlSoundToggle .rlSoundLed{width:6px;height:6px;border-radius:50%;background:#6b786b}
+.rlSoundToggle[aria-pressed="true"] .rlSoundLed{background:var(--green);box-shadow:0 0 9px var(--green)}
+@media(max-width:760px){.rlSoundToggle{padding:9px;font-size:10px}.status{display:none}.hero h1{letter-spacing:-.035em}}
+@media(prefers-reduced-motion:reduce){.page.active{animation:none!important}.metric,.panel,.champ,.heroAside,.btn{transition:none!important}html{scroll-behavior:auto!important}}
 </style></head>
 <body>
 
@@ -393,7 +424,7 @@ input[type=file]{max-width:0}
 
 <header><div class="shell nav">
 <div class="logo"><span class="flag">◩</span> ROOKIE <b>LEAGUE</b><br><small style="font-size:10px;letter-spacing:4px;color:#a9b7ac;margin-left:34px">MOTORSPORT</small></div>
-<button class="menuToggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav">☰ MENU</button><nav id="mainNav" hidden><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="rookievoice">🏁 Race Chat</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="telemetry">📈 Telemetria</button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><span class="status">PORTAL OFICIAL • V75</span>
+<button class="menuToggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav">☰ MENU</button><nav id="mainNav" hidden><button class="active" data-page="home">⌂ Início</button><button data-page="championships">▤ Campeonatos</button><button data-page="fun">★ 4FUN</button><button data-page="results">▥ Resultados</button><button data-page="calendar">▦ Calendário</button><button data-page="news">▤ Notícias</button><button data-page="community">▧ Comunidade</button><button data-page="garage">🏎 Garagem</button><button data-page="racecenter">🏁 Race Center</button><button data-page="rookievoice">🏁 Race Chat</button><button data-page="awards">🏆 Premiações</button><button data-page="racecontrol">⚑ Direção de Prova</button><button data-page="drivers">♙ Pilotos</button><button data-page="hall">♛ Hall da Fama</button><button data-page="admin" id="adminNav" hidden>⚙ Administração <span id="adminRegistrationBadge" class="adminNoticeBadge redDotBadge" hidden>0</span></button><button data-page="telemetry">📈 Telemetria</button><button data-page="account" id="accountNav">♙ Entrar / Cadastro <span id="pilotAccountBadge" class="redDotBadge" hidden></span></button></nav><button type="button" class="rlSoundToggle" id="rlSoundToggle" aria-pressed="false" title="Ativar ou desativar sons de navegação"><span class="rlSoundLed" aria-hidden="true"></span><span id="rlSoundLabel">SOM OFF</span></button><span class="status">PORTAL OFICIAL • V76</span>
 </div></header>
 <main class="shell">
 <section id="home" class="page active">
@@ -2149,4 +2180,38 @@ showPage=function(id){telemetryOriginalShowPage(id);if(id==='telemetry'){loadTel
 supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user&&document.getElementById('telemetry')?.classList.contains('active')){loadTelemetrySessions();refreshTelemetryLive()}});
 
 startLiveTimingPolling();
+
+/* Sons sintetizados localmente: sem downloads, sem autoplay e independentes do Race Chat. */
+(function rookieNavigationSounds(){
+ const key='rl_navigation_sounds_v1';
+ let enabled=false,ctx=null,last=0;
+ try{enabled=localStorage.getItem(key)==='on'}catch(_e){}
+ const toggle=document.getElementById('rlSoundToggle');
+ const label=document.getElementById('rlSoundLabel');
+ function update(){if(toggle)toggle.setAttribute('aria-pressed',String(enabled));if(label)label.textContent=enabled?'SOM ON':'SOM OFF'}
+ function tone(kind){
+  if(!enabled)return;
+  const now=performance.now();if(now-last<75)return;last=now;
+  try{
+   const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+   if(!ctx)ctx=new AC();if(ctx.state==='suspended')ctx.resume().catch(()=>{});
+   const t=ctx.currentTime,osc=ctx.createOscillator(),gain=ctx.createGain();
+   osc.type='sine';osc.frequency.setValueAtTime(kind==='page'?580:kind==='confirm'?770:430,t);
+   osc.frequency.exponentialRampToValueAtTime(kind==='page'?820:kind==='confirm'?1020:550,t+.085);
+   gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(.035,t+.008);
+   gain.gain.exponentialRampToValueAtTime(.0001,t+.12);
+   osc.connect(gain);gain.connect(ctx.destination);osc.start(t);osc.stop(t+.13);
+  }catch(_e){}
+ }
+ update();
+ toggle?.addEventListener('click',function(){enabled=!enabled;try{localStorage.setItem(key,enabled?'on':'off')}catch(_e){}update();if(enabled)tone('confirm')});
+ document.addEventListener('click',function(event){
+  if(event.target.closest('#rlSoundToggle'))return;
+  const el=event.target.closest('button,a[href],.tabs [data-tab]');if(!el||el.disabled)return;
+  if(el.closest('#rookievoice')||el.closest('#racecenter')||el.closest('#racecontrol'))return;
+  if(el.matches('button[type="submit"]')||el.closest('form')&&el.matches('button'))return;
+  if(el.matches('[data-page]')||el.hasAttribute('data-tab')||el.hasAttribute('onclick')&&/showPage\(/.test(el.getAttribute('onclick')||''))tone('page');
+  else if(el.classList.contains('btn')||el.classList.contains('menuToggle'))tone('click');
+ },{passive:true});
+})();
 </script></body></html>
