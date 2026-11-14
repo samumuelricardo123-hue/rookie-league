@@ -968,7 +968,19 @@ body>header #menuToggle{position:relative;z-index:1004}
 @media(prefers-reduced-motion:reduce){.entryGate::after,.rl115Welcome::before,.rl115Welcome::after,.rl115WelcomeContent,.rl115WelcomeBar i{animation:none!important}.rl115Welcome{transition:none!important}}
 @media(max-width:520px){.entryCard{border-radius:20px!important}.rl115WelcomeLogo{width:78px;height:78px;font-size:43px}.rl115WelcomeContent{padding:18px}}
 
-</style></head>
+</style><style>
+.rl119-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:15px 0}
+.rl119-flag{border:1px solid rgba(255,255,255,.25);border-radius:12px;padding:18px 12px;color:#fff;font-weight:900;cursor:pointer;font-size:15px;text-align:center;transition:transform .15s,opacity .15s}
+.rl119-flag span{display:block;font-size:12px;font-weight:500;margin-top:7px}
+.rl119-flag:hover:not(:disabled){transform:translateY(-2px)}
+.rl119-flag:disabled{opacity:.45;cursor:not-allowed}
+.rl119-flag.green{background:#146c43}.rl119-flag.yellow{background:#a7810b;color:#fff}
+.rl119-flag.vsc{background:#7c6410}.rl119-flag.red{background:#a51f2b}
+.rl119-current{border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:15px;font-weight:800;margin-top:12px}
+.rl119-current[data-mode="GREEN"]{border-color:#2bce80}.rl119-current[data-mode="YELLOW"],.rl119-current[data-mode="VSC"]{border-color:#f2c83c}.rl119-current[data-mode="RED"]{border-color:#f44}
+@media(max-width:540px){.rl119-grid{grid-template-columns:1fr}}
+</style>
+</head>
 <body>
 <div class="entryGate" id="entryGate">
 <div class="entryCard">
@@ -1141,6 +1153,19 @@ body>header #menuToggle{position:relative;z-index:1004}
 <div class="tracklist" id="seasonAwardsWall" style="margin-top:13px"><p class="empty">Carregando premiações...</p></div>
 </section>
 <section class="page" id="racecontrol">
+<div class="panel rl119-panel" style="margin-top:13px" id="rl119FlagsPanel">
+<div class="sectionHead"><div><h2>🏁 Rookie Flags — Race Control</h2><p>Estado oficial das bandeiras, sincronizado com o Rookie Flags.</p></div><button class="btn secondary small" type="button" onclick="rl119LoadFlags()">↻ ATUALIZAR</button></div>
+<div class="rl119-current" id="rl119Current" aria-live="polite">Consultando estado das bandeiras...</div>
+<div id="rl119AdminControls" hidden>
+<p class="hint">Comandos exclusivos da Direção de Prova. Confirme antes de alterar a bandeira oficial.</p>
+<div class="rl119-grid">
+<button type="button" class="rl119-flag green" data-rl119-mode="GREEN" onclick="rl119SendFlag('GREEN')">🟢 GREEN FLAG<span>Pista liberada</span></button>
+<button type="button" class="rl119-flag yellow" data-rl119-mode="YELLOW" onclick="rl119SendFlag('YELLOW')">🟡 YELLOW FLAG<span>Bandeira amarela</span></button>
+<button type="button" class="rl119-flag vsc" data-rl119-mode="VSC" onclick="rl119SendFlag('VSC')">🟡 VSC<span>Virtual Safety Car</span></button>
+<button type="button" class="rl119-flag red" data-rl119-mode="RED" onclick="rl119SendFlag('RED')">🔴 RED FLAG<span>Corrida interrompida</span></button>
+</div><p class="hint" id="rl119FlagNotice">A função segura atual aceita GREEN, VSC e RED. Para comandar YELLOW manualmente, é necessária a atualização do serviço no Supabase.</p>
+</div><p class="mutednote" id="rl119FlagFeedback" role="status"></p>
+</div>
 <div class="subhead"><div class="kicker">FAIR PLAY • COMPETIÇÃO</div><h1>Direção de Prova</h1><p>Envie protestos sobre incidentes e acompanhe as decisões oficiais da organização.</p></div>
 <div class="panel" style="margin-top:13px">
 <h2>Enviar protesto</h2>
@@ -3565,4 +3590,62 @@ window.addEventListener('load',()=>{
  // Atualiza o pódio após o carregamento assíncrono de resultados.
  let signature='';setInterval(()=>{const next=(db.races||[]).map(r=>r.id).join('|')+'#'+(db.results||[]).map(r=>r.id+':'+r.position).join('|');if(next!==signature){signature=next;rl112RenderPodiumOptions()}},2500);
 });
-</script></body></html>
+</script><script>
+/* V119 — Rookie Flags: interface da função Edge já existente. */
+const rl119FlagEndpoint=SUPABASE_URL+'/functions/v1/race-control-flags';
+let rl119FlagVersion=null,rl119FlagBusy=false;
+async function rl119LoadFlags(){
+ const status=document.getElementById('rl119Current'), controls=document.getElementById('rl119AdminControls');
+ if(controls)controls.hidden=!cloudIsAdmin;
+ const yellow=document.querySelector('[data-rl119-mode="YELLOW"]');
+ if(yellow){yellow.disabled=true;yellow.title='A função segura instalada não aceita YELLOW como comando manual';}
+ try{
+  const response=await fetch(rl119FlagEndpoint,{headers:{'apikey':SUPABASE_PUBLISHABLE_KEY},cache:'no-store'});
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok||data.error)throw Error(data.error||'HTTP '+response.status);
+  rl119FlagVersion=Number.isSafeInteger(Number(data.version))?Number(data.version):null;
+  if(status){
+   status.dataset.mode=String(data.mode||'OFFLINE').toUpperCase();
+   status.textContent='BANDEIRA ATUAL: '+String(data.mode||'OFFLINE').toUpperCase()+
+    (data.phase&&data.phase!==data.mode?' • '+data.phase:'')+
+    (data.message?' — '+data.message:'');
+  }
+ }catch(error){if(status){status.removeAttribute('data-mode');status.textContent='Rookie Flags indisponível: '+error.message;}}
+}
+async function rl119SendFlag(mode){
+ if(!cloudIsAdmin)return alert('Apenas administradores podem enviar bandeiras.');
+ if(mode==='YELLOW')return alert('O comando YELLOW ainda não é aceito pela função segura instalada no Supabase.');
+ if(!['GREEN','VSC','RED'].includes(mode)||rl119FlagBusy)return;
+ if(!confirm('Enviar '+mode+' ao Rookie Flags agora?'))return;
+ const feedback=document.getElementById('rl119FlagFeedback');
+ rl119FlagBusy=true;
+ document.querySelectorAll('[data-rl119-mode]').forEach(b=>b.disabled=true);
+ try{
+  const {data:{session},error}=await supabaseClient.auth.getSession();
+  if(error||!session)throw Error('Faça login como administrador.');
+  await rl119LoadFlags();
+  if(rl119FlagVersion===null)throw Error('Não foi possível ler a versão atual da bandeira.');
+  const response=await fetch(rl119FlagEndpoint,{
+   method:'POST',
+   headers:{'Content-Type':'application/json','apikey':SUPABASE_PUBLISHABLE_KEY,'Authorization':'Bearer '+session.access_token},
+   body:JSON.stringify({mode,expected_version:rl119FlagVersion})
+  });
+  const data=await response.json().catch(()=>({}));
+  if(!response.ok||data.error)throw Error(data.error||'HTTP '+response.status);
+  if(feedback)feedback.textContent='Comando '+mode+' enviado com sucesso.';
+  await rl119LoadFlags();
+ }catch(error){if(feedback)feedback.textContent='Falha ao enviar bandeira: '+error.message;}
+ finally{rl119FlagBusy=false;document.querySelectorAll('[data-rl119-mode]').forEach(b=>b.disabled=b.dataset.rl119Mode==='YELLOW');}
+}
+document.addEventListener('click',event=>{
+ const nav=event.target.closest('[data-page="racecontrol"]');
+ if(nav)setTimeout(rl119LoadFlags,100);
+});
+document.addEventListener('DOMContentLoaded',()=>{
+ const obs=new MutationObserver(()=>{const panel=document.getElementById('racecontrol');if(panel?.classList.contains('active'))rl119LoadFlags();});
+ const admin=document.getElementById('adminNav');
+ if(admin)obs.observe(admin,{attributes:true,attributeFilter:['hidden']});
+ setInterval(()=>{if(document.getElementById('racecontrol')?.classList.contains('active')&&!rl119FlagBusy)rl119LoadFlags()},12000);
+});
+</script>
+</body></html>
