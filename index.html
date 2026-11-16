@@ -2989,6 +2989,8 @@ initializeCloud();
   if(!window.rookieTelemetry || window.__rookieTelemetryCloudBound) return;
   window.__rookieTelemetryCloudBound=true;
   let telemetrySessionId=null, telemetryDriver=null, lastLiveSent=0, activeSourceMode='singleplayer';
+  let liveInFlight=false, sessionStartInFlight=false, liveErrorCount=0;
+  const LIVE_INTERVAL_MS=3000; // V131: no máximo uma atualização por piloto a cada 3 s
   // Amostras agrupadas por volta (o agente usa completedLaps como índice da volta em andamento).
   const samplesByLap=new Map();
   const panel=document.createElement('div');
@@ -3019,8 +3021,10 @@ initializeCloud();
   const onMessage=async(msg)=>{
     try{
       if(msg?.type==='status'){
-        if(msg.status==='gravando' && !telemetrySessionId){
+        if(msg.status==='gravando' && !telemetrySessionId && !sessionStartInFlight){
+          sessionStartInFlight=true;
           setStatus('Assetto Corsa conectado. Criando sessão cloud…');
+          try {
           const driver=await getDriver();
           activeSourceMode=document.getElementById('rookieTelemetrySourceMode')?.value||'singleplayer';
           const created=await invoke({
@@ -3031,6 +3035,7 @@ initializeCloud();
           });
           telemetrySessionId=created.session_id;
           setStatus('Conectado ao Supabase · sessão '+telemetrySessionId.slice(0,8));
+          } finally { sessionStartInFlight=false; }
         } else if(msg.status==='aguardando') {
           setStatus('Aguardando Assetto Corsa…');
         } else if(msg.status==='conectado') {
@@ -3044,11 +3049,15 @@ initializeCloud();
         const sampleLap=Number(d.lap);
         if(Number.isInteger(sampleLap) && sampleLap>=0){
           if(!samplesByLap.has(sampleLap)) samplesByLap.set(sampleLap,[]);
-          samplesByLap.get(sampleLap).push(msg);
+          const buffer=samplesByLap.get(sampleLap);
+          // Limite defensivo de memória: preserva amostras para análise, sem crescer indefinidamente.
+          if(buffer.length<30000) buffer.push(msg);
         }
         const now=Date.now();
-        if(now-lastLiveSent>=750){
+        if(!liveInFlight && now-lastLiveSent>=LIVE_INTERVAL_MS*Math.min(8,Math.pow(2,liveErrorCount))){
           lastLiveSent=now;
+          liveInFlight=true;
+          try {
           await invoke({
             action:'live_update',driver_id:String((await getDriver()).id),session_id:telemetrySessionId,
             current_lap:sampleLap||0,current_lap_time_ms:Number(d.lap_time_ms)||null,
@@ -3057,6 +3066,11 @@ initializeCloud();
             position_x:Number(d.position_x)||0,position_y:Number(d.position_y)||0,position_z:Number(d.position_z)||0,
             payload:{track:d.track,car:d.car,fuel_l:d.fuel_l,sector:d.sector,normalized_position:d.normalized_position}
           });
+          liveErrorCount=0;
+          } catch(e) {
+            liveErrorCount=Math.min(3,liveErrorCount+1);
+            console.warn('[Rookie Telemetry V131] live_update:',e);
+          } finally { liveInFlight=false; }
         }
       }
       if(msg?.type==='lap' && telemetrySessionId){
@@ -3170,7 +3184,10 @@ async function loadTelemetryLap(){
   telemetrySetStatus('Volta '+lap.lap_number+' carregada · '+samples.length.toLocaleString('pt-BR')+' amostras · tempo '+telemetryFmtMs(lap.lap_time_ms)+'.');
  }catch(e){console.error('[Telemetria] arquivo da volta',e);telemetrySetStatus('Erro ao abrir o arquivo desta volta: '+(e.message||e))}
 }
+let telemetryLiveReadInFlight=false;
 async function refreshTelemetryLive(){
+ if(telemetryLiveReadInFlight || document.hidden || !cloudUser) return;
+ telemetryLiveReadInFlight=true;
  if(!cloudUser)return;try{
   const {data,error}=await supabaseClient.from('telemetry_live').select('speed_kmh,rpm,gear,throttle,brake,updated_at').eq('user_id',cloudUser.id).maybeSingle();
   if(error)throw error;
@@ -3181,7 +3198,7 @@ async function refreshTelemetryLive(){
   document.getElementById('tlThrottle').textContent=active?Math.round((Number(data.throttle)||0)*100)+'%':'—%';
   document.getElementById('tlBrake').textContent=active?Math.round((Number(data.brake)||0)*100)+'%':'—%';
   document.getElementById('telemetryLiveUpdated').textContent=active?'Última atualização: '+new Date(data.updated_at).toLocaleTimeString('pt-BR'):'Nenhum dado ao vivo neste momento.';
- }catch(e){console.warn('[Telemetria] live',e)}
+ }catch(e){console.warn('[Telemetria] live',e)}finally{telemetryLiveReadInFlight=false}
 }
 
 // V78: apenas consultas de telemetria pertencente ao usuário autenticado.
@@ -3353,7 +3370,7 @@ function rl81Render(){
 document.getElementById('telemetrySessionSelect')?.addEventListener('change',loadTelemetryLaps);
 document.getElementById('telemetryLapSelect')?.addEventListener('change',()=>{const l=telemetryLapsCache.find(x=>x.id===document.getElementById('telemetryLapSelect').value);document.getElementById('telemetryLoadLap').disabled=!l?.sample_file_path});
 const telemetryOriginalShowPage=showPage;
-showPage=function(id){telemetryOriginalShowPage(id);if(id==='telemetry'){loadTelemetrySessions();rl80LoadChampionships();refreshTelemetryLive();if(telemetryRefreshTimer)clearInterval(telemetryRefreshTimer);telemetryRefreshTimer=setInterval(refreshTelemetryLive,3000)}else{rl80Pause();rl81Pause();if(telemetryRefreshTimer){clearInterval(telemetryRefreshTimer);telemetryRefreshTimer=null}}};
+showPage=function(id){telemetryOriginalShowPage(id);if(id==='telemetry'){loadTelemetrySessions();rl80LoadChampionships();refreshTelemetryLive();if(telemetryRefreshTimer)clearInterval(telemetryRefreshTimer);telemetryRefreshTimer=setInterval(refreshTelemetryLive,6000)}else{rl80Pause();rl81Pause();if(telemetryRefreshTimer){clearInterval(telemetryRefreshTimer);telemetryRefreshTimer=null}}};
 supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user&&document.getElementById('telemetry')?.classList.contains('active')){loadTelemetrySessions();refreshTelemetryLive()}});
 
 startLiveTimingPolling();
