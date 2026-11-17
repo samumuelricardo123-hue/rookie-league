@@ -76,3 +76,36 @@ create policy "Pilots can update own download click"
 on public.app_update_downloads for update to authenticated
 using (user_id = auth.uid())
 with check (user_id = auth.uid());
+
+
+-- Confirmação da versão realmente aberta no aplicativo Windows.
+create table if not exists public.app_installations (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  pilot_email text,
+  pilot_name text,
+  installed_version text not null,
+  channel text not null default 'PILOTO',
+  platform text not null default 'win32',
+  last_seen_at timestamptz not null default now()
+);
+
+create index if not exists app_installations_last_seen_idx
+  on public.app_installations (last_seen_at desc);
+
+alter table public.app_installations enable row level security;
+
+drop policy if exists "Pilots can register own app installation" on public.app_installations;
+create policy "Pilots can register own app installation"
+on public.app_installations for insert to authenticated
+with check (user_id = auth.uid());
+
+drop policy if exists "Pilots can update own app installation" on public.app_installations;
+create policy "Pilots can update own app installation"
+on public.app_installations for update to authenticated
+using (user_id = auth.uid())
+with check (user_id = auth.uid());
+
+drop policy if exists "Admins can read app installations" on public.app_installations;
+create policy "Admins can read app installations"
+on public.app_installations for select to authenticated
+using (exists (select 1 from public.profiles p where p.id = auth.uid() and p.is_admin = true));
