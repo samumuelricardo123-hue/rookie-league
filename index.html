@@ -3755,7 +3755,7 @@ const hall=document.getElementById('hall');const observer=new MutationObserver((
 </script><script id="rookieAppUpdatesV1">
 (()=> {
 const $=id=>document.getElementById(id);
-let updateShown=false, updateBusy=false;
+let updateShown=false, updateBusy=false, dismissedUpdateId=null, adminPanelDismissed=false;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function styles(){
  if($('rlAppUpdateStyles'))return;
@@ -3781,7 +3781,7 @@ function createUI(){
  <label for="rlUpdateNotes">Novidades (opcional)</label><textarea id="rlUpdateNotes" placeholder="O que mudou nesta versão?"></textarea>
  <button id="rlUpdatePublish">PUBLICAR ATUALIZAÇÃO</button><button class="secondary" id="rlUpdateStats">VER QUEM BAIXOU</button><button class="secondary" id="rlUpdateClose">FECHAR</button>
  <div id="rlUpdateStatus"></div><div id="rlUpdateDownloadStats" style="font-size:12px;margin-top:10px;max-height:180px;overflow:auto"></div>`;document.body.appendChild(p);
- $('rlUpdateClose').onclick=()=>p.style.display='none';
+ $('rlUpdateClose').onclick=()=>{adminPanelDismissed=true;p.style.display='none';};
  $('rlUpdatePublish').onclick=publish;
  $('rlUpdateStats').onclick=showDownloadStats;
  }
@@ -3819,12 +3819,13 @@ async function showLatest(force=false){
   const {data,error}=await supabaseClient.from('app_updates').select('id,version,download_url,notes,created_at').eq('is_active',true).order('created_at',{ascending:false}).limit(1).maybeSingle();
   if(error)throw error;
   if(!data)return;
+  if(dismissedUpdateId===data.id)return;
   const {data:seen,error:seenErr}=await supabaseClient.from('app_update_downloads').select('id').eq('update_id',data.id).eq('user_id',cloudUser.id).limit(1);
   if(seenErr)throw seenErr;
   if(seen?.length&&!force)return;
   const n=$('rlAppUpdateNotice');
   n.innerHTML=`<h3>🏁 Atualização do Rookie League disponível!</h3><p><b>Versão ${esc(data.version)}</b></p><p>${esc(data.notes||'Nova versão do aplicativo Windows disponível para instalação.')}</p><div class="rlUpdateActions"><a id="rlUpdateDownloadLink" href="${esc(data.download_url)}" target="_blank" rel="noopener noreferrer">BAIXAR E INSTALAR</a><button id="rlUpdateLater">DEPOIS</button></div><p style="font-size:11px;color:#92a497">Ao clicar, o portal registra que você iniciou o download.</p>`;
-  n.style.display='block';$('rlUpdateLater').onclick=()=>n.style.display='none';
+  n.style.display='block';$('rlUpdateLater').onclick=()=>{dismissedUpdateId=data.id;n.style.display='none';};
   $('rlUpdateDownloadLink').onclick=async()=>{
    try{
     const {error:logErr}=await supabaseClient.from('app_update_downloads').upsert({update_id:data.id,user_id:cloudUser.id,pilot_email:cloudUser.email||null,pilot_name:cloudUser.user_metadata?.full_name||cloudUser.user_metadata?.name||cloudUser.email||'Piloto',download_clicked_at:new Date().toISOString()},{onConflict:'update_id,user_id'});
@@ -3837,7 +3838,7 @@ function init(){
  createUI();
  const check=()=>{
   if(cloudReady&&cloudUser){
-   if(cloudIsAdmin){$('rlAdminUpdatePanel').style.display='block';}
+   if(cloudIsAdmin){if(!adminPanelDismissed)$('rlAdminUpdatePanel').style.display='block';}
    else showLatest();
   }else{
    $('rlAdminUpdatePanel').style.display='none';
