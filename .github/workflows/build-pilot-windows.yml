@@ -1,0 +1,38 @@
+name: Build Rookie League Pilot for Windows
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'windows-app-pilotos/**'
+      - '.github/workflows/build-pilot-windows.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build-pilot:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: windows-app-pilotos/package-lock.json
+      - name: Install dependencies
+        working-directory: windows-app-pilotos
+        run: npm ci
+      - name: Build Windows installer
+        working-directory: windows-app-pilotos
+        run: npm run make
+      - name: Upload pilot installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: Rookie-League-Piloto-V134-Windows
+          path: |
+            windows-app-pilotos/out/make/squirrel.windows/x64/**
+          if-no-files-found: error
+          retention-days: 30
