@@ -7,6 +7,11 @@ contextBridge.exposeInMainWorld('rookieNotifications', {
   })
 });
 
+// Informações da instalação para confirmação de versão no portal.
+contextBridge.exposeInMainWorld('rookieApp', {
+  getInfo: () => ipcRenderer.invoke('rookie:app:get-info')
+});
+
 // API somente de leitura para o portal: status e eventos da telemetria.
 contextBridge.exposeInMainWorld('rookieTelemetry', {
   getStatus: () => ipcRenderer.invoke('rookie:telemetry:get-status'),
