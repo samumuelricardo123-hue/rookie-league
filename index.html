@@ -3752,4 +3752,89 @@ window.rl126ResetCamera=()=>{camera?.position.set(0,2.6,6);yaw=0;selected=0;info
 window.rl126MoveStart=d=>moveDirection=d;window.rl126MoveStop=()=>moveDirection='';
 window.addEventListener('keydown',e=>{if(mode!=='walk'||!document.getElementById('hall')?.classList.contains('active')||/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||''))return;if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase())){keys.add(e.key.toLowerCase());e.preventDefault()}});window.addEventListener('keyup',e=>keys.delete(e.key.toLowerCase()));window.addEventListener('blur',()=>{keys.clear();moveDirection=''});
 const hall=document.getElementById('hall');const observer=new MutationObserver(()=>{if(hall.classList.contains('active')){init();if(root)build()}});observer.observe(hall,{attributes:true,attributeFilter:['class']});if(hall.classList.contains('active'))init();
-</script></body></html>
+</script><script id="rookieAppUpdatesV1">
+(()=> {
+const $=id=>document.getElementById(id);
+let updateShown=false, updateBusy=false;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function styles(){
+ if($('rlAppUpdateStyles'))return;
+ const st=document.createElement('style');st.id='rlAppUpdateStyles';st.textContent=`
+ #rlAppUpdateNotice{position:fixed;z-index:99990;right:18px;bottom:18px;width:min(440px,calc(100vw - 36px));background:#101b14;border:1px solid #a6ff00;border-radius:16px;padding:19px;color:#f2f7f1;box-shadow:0 18px 55px #000b;display:none}
+ #rlAppUpdateNotice h3{margin:0 0 8px;color:#a6ff00;font-size:19px}#rlAppUpdateNotice p{margin:6px 0;color:#c5d2c8}
+ #rlAppUpdateNotice .rlUpdateActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}#rlAppUpdateNotice button,#rlAppUpdateNotice a{border:0;border-radius:8px;padding:10px 13px;font-weight:900;cursor:pointer;text-decoration:none}
+ #rlAppUpdateNotice a{background:#a6ff00;color:#10170b}#rlAppUpdateNotice button{background:#26352b;color:#e9f3eb}
+ #rlAdminUpdatePanel{position:fixed;z-index:99991;left:18px;bottom:18px;width:min(420px,calc(100vw - 36px));background:#101b14;border:1px solid #405b37;border-radius:15px;padding:18px;color:#f2f7f1;box-shadow:0 18px 55px #000b;display:none}
+ #rlAdminUpdatePanel h3{margin:0 0 12px;color:#a6ff00}#rlAdminUpdatePanel label{display:block;margin:9px 0 4px;font-size:12px;color:#bdcbbb}
+ #rlAdminUpdatePanel input,#rlAdminUpdatePanel textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #435547;background:#09110c;color:white}
+ #rlAdminUpdatePanel textarea{min-height:60px;resize:vertical}#rlAdminUpdatePanel button{margin:10px 6px 0 0;padding:10px 12px;border:0;border-radius:8px;font-weight:900;cursor:pointer;background:#a6ff00;color:#10170b}
+ #rlAdminUpdatePanel .secondary{background:#26352b;color:#e9f3eb}#rlAdminUpdateStatus{font-size:12px;color:#c5d2c8;white-space:pre-wrap;margin-top:8px}
+ `;document.head.appendChild(st);
+}
+function createUI(){
+ styles();
+ if(!$('rlAppUpdateNotice')){const n=document.createElement('section');n.id='rlAppUpdateNotice';n.setAttribute('role','dialog');n.setAttribute('aria-live','polite');document.body.appendChild(n);}
+ if(!$('rlAdminUpdatePanel')){const p=document.createElement('section');p.id='rlAdminUpdatePanel';p.innerHTML=`
+ <h3>🚀 Publicar atualização do app Windows</h3>
+ <label for="rlUpdateVersion">Versão</label><input id="rlUpdateVersion" placeholder="Ex.: 1.0.5">
+ <label for="rlUpdateUrl">Link direto do instalador (.exe)</label><input id="rlUpdateUrl" type="url" placeholder="https://...">
+ <label for="rlUpdateNotes">Novidades (opcional)</label><textarea id="rlUpdateNotes" placeholder="O que mudou nesta versão?"></textarea>
+ <button id="rlUpdatePublish">PUBLICAR ATUALIZAÇÃO</button><button class="secondary" id="rlUpdateClose">FECHAR</button>
+ <div id="rlUpdateStatus"></div>`;document.body.appendChild(p);
+ $('rlUpdateClose').onclick=()=>p.style.display='none';
+ $('rlUpdatePublish').onclick=publish;
+ }
+}
+async function publish(){
+ if(updateBusy)return;updateBusy=true;
+ const status=$('rlUpdateStatus'),version=$('rlUpdateVersion').value.trim(),url=$('rlUpdateUrl').value.trim(),notes=$('rlUpdateNotes').value.trim();
+ try{
+  if(!cloudUser||!cloudIsAdmin)throw Error('Somente administradores podem publicar.');
+  if(!version||!/^https:\/\//i.test(url))throw Error('Informe a versão e um link HTTPS válido.');
+  const {data:old,error:oldErr}=await supabaseClient.from('app_updates').update({is_active:false}).eq('is_active',true).select('id');
+  if(oldErr)throw oldErr;
+  const {data,error}=await supabaseClient.from('app_updates').insert({version,download_url:url,notes,is_active:true,published_by:cloudUser.id}).select().single();
+  if(error)throw error;
+  status.textContent='Atualização '+version+' publicada. Ela já aparecerá para os pilotos.';
+  $('rlUpdateVersion').value='';$('rlUpdateUrl').value='';$('rlUpdateNotes').value='';
+  await showLatest(true);
+ }catch(e){status.textContent='Falha ao publicar: '+(e.message||e);}
+ finally{updateBusy=false;}
+}
+async function showLatest(force=false){
+ if(!cloudUser||!cloudReady)return;
+ try{
+  const {data,error}=await supabaseClient.from('app_updates').select('id,version,download_url,notes,created_at').eq('is_active',true).order('created_at',{ascending:false}).limit(1).maybeSingle();
+  if(error)throw error;
+  if(!data)return;
+  const {data:seen,error:seenErr}=await supabaseClient.from('app_update_downloads').select('id').eq('update_id',data.id).eq('user_id',cloudUser.id).limit(1);
+  if(seenErr)throw seenErr;
+  if(seen?.length&&!force)return;
+  const n=$('rlAppUpdateNotice');
+  n.innerHTML=`<h3>🏁 Atualização do Rookie League disponível!</h3><p><b>Versão ${esc(data.version)}</b></p><p>${esc(data.notes||'Nova versão do aplicativo Windows disponível para instalação.')}</p><div class="rlUpdateActions"><a id="rlUpdateDownloadLink" href="${esc(data.download_url)}" target="_blank" rel="noopener noreferrer">BAIXAR E INSTALAR</a><button id="rlUpdateLater">DEPOIS</button></div><p style="font-size:11px;color:#92a497">Ao clicar, o portal registra que você iniciou o download.</p>`;
+  n.style.display='block';$('rlUpdateLater').onclick=()=>n.style.display='none';
+  $('rlUpdateDownloadLink').onclick=async()=>{
+   try{
+    const {error:logErr}=await supabaseClient.from('app_update_downloads').upsert({update_id:data.id,user_id:cloudUser.id,pilot_email:cloudUser.email||null,pilot_name:cloudUser.user_metadata?.full_name||cloudUser.user_metadata?.name||cloudUser.email||'Piloto',download_clicked_at:new Date().toISOString()},{onConflict:'update_id,user_id'});
+    if(logErr)console.warn('[App Update] Não foi possível registrar o clique:',logErr.message);
+   }catch(e){console.warn('[App Update]',e.message);}
+  };
+ }catch(e){console.warn('[App Update] Consulta indisponível:',e.message);}
+}
+function init(){
+ createUI();
+ const check=()=>{
+  if(cloudReady&&cloudUser){
+   if(cloudIsAdmin){$('rlAdminUpdatePanel').style.display='block';}
+   else showLatest();
+  }else{
+   $('rlAdminUpdatePanel').style.display='none';
+   $('rlAppUpdateNotice').style.display='none';
+  }
+ };
+ check();setInterval(check,2500);
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+</body></html>
