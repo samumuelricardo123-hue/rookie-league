@@ -1,0 +1,38 @@
+{
+  "name": "rookie-league-piloto",
+  "version": "1.0.0",
+  "description": "Aplicativo de piloto Rookie League Motorsport — telemetria e recebimento de bandeiras",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "make": "electron-forge make"
+  },
+  "keywords": [],
+  "author": "Rookie League Motorsport",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@electron-forge/cli": "^8.0.1",
+    "@electron-forge/maker-squirrel": "^8.0.1",
+    "electron": "^45.2.3"
+  },
+  "productName": "Rookie League Piloto",
+  "config": {
+    "forge": {
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "rookie_league_piloto",
+            "setupExe": "RookieLeaguePilotoSetup.exe",
+            "DesktopShortcut": true
+          }
+        }
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/samumuelricardo123-hue/rookie-league.git"
+  }
+}
