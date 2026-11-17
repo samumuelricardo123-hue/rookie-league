@@ -509,6 +509,12 @@ ipcMain.on('rookie:notification', (event, data) => {
   } catch (error) { console.error('Falha na notificação:', error); }
 });
 
+ipcMain.handle('rookie:app:get-info', event => {
+  const senderUrl = event.senderFrame?.url;
+  if (!senderUrl || new URL(senderUrl).origin !== PORTAL_ORIGIN) return { available: false };
+  return { available: true, version: app.getVersion(), channel: 'ADM', platform: process.platform };
+});
+
 ipcMain.handle('rookie:telemetry:get-status', event => {
   const senderUrl = event.senderFrame?.url;
   if (!senderUrl || new URL(senderUrl).origin !== PORTAL_ORIGIN) return { status: 'indisponivel' };
