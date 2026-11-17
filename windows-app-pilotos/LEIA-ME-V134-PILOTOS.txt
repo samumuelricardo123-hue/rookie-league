@@ -1,0 +1,18 @@
+# Rookie League Piloto — V134
+
+Edição para pilotos, sem painel ADM, sem login administrativo e sem comandos de alteração de bandeiras.
+
+- Abre o portal oficial Rookie League.
+- Mantém a ponte local de bandeiras em 127.0.0.1:8766/api/state, somente leitura, para o plugin do Assetto Corsa receber as bandeiras oficiais.
+- Mantém o agente de telemetria V132: gravação local e envio para a nuvem somente em treino livre; qualificatório, corrida e hotlap não publicam telemetria na nuvem.
+- O painel ADM, autenticação administrativa, envio manual de bandeiras e VSC automático foram removidos.
+- Produto separado: Rookie League Piloto.
+
+Para compilar no Windows com Node.js 22:
+```powershell
+npm ci
+npm run make
+```
+O instalador será gerado em out/make/make/squirrel.windows/x64/ (confira o caminho indicado pelo Electron Forge ao terminar).
+
+Este pacote é o projeto-fonte, não um instalador .exe. A atualização automática desta edição requer uma Release/canal próprio e não deve consumir a Release da edição ADM.
