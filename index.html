@@ -1195,7 +1195,7 @@ body>header #menuToggle{position:relative;z-index:1004}
 <div class="panel" style="margin-top:13px"><div class="sectionHead"><div><h2>Minhas solicitações</h2><p>Consulte o andamento dos protestos enviados pela sua conta.</p></div><button class="btn secondary small" onclick="loadRaceControl()">↻ ATUALIZAR</button></div><div class="tracklist" id="myProtests"><p class="empty">Entre na sua conta para consultar.</p></div></div>
 <div class="panel" style="margin-top:13px"><h2>Decisões publicadas</h2><p class="hint">Decisões oficiais e penalidades divulgadas pela direção de prova.</p><div class="tracklist" id="publishedPenalties"><p class="empty">Carregando decisões...</p></div></div>
 </section>
-<section class="page" id="admin"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button class="active" data-tab="pilotForm" onclick="switchAdminTab('pilotForm',this)" type="button">＋ Cadastrar piloto</button><button data-tab="champForm" onclick="switchAdminTab('champForm',this)" type="button">＋ Cadastrar campeonato</button><button data-tab="newsForm" onclick="switchAdminTab('newsForm',this)" type="button">▤ Publicar notícia</button><button data-tab="communityAdmin" onclick="switchAdminTab('communityAdmin',this)" type="button">▧ Comunidade</button><button data-tab="awardsAdmin" onclick="switchAdminTab('awardsAdmin',this)" type="button">🏆 Premiações</button><button data-tab="raceControlAdmin" onclick="switchAdminTab('raceControlAdmin',this)" type="button">⚑ Direção de prova</button><button data-tab="funForm" onclick="switchAdminTab('funForm',this)" type="button">★ Cadastrar 4FUN</button><button data-tab="trackForm" onclick="switchAdminTab('trackForm',this)" type="button">＋ Cadastrar pista</button><button data-tab="raceForm" onclick="switchAdminTab('raceForm',this)" type="button">＋ Criar etapa</button><button data-tab="resultForm" onclick="switchAdminTab('resultForm',this)" type="button">＋ Lançar resultado</button><button data-tab="titleForm" onclick="switchAdminTab('titleForm',this)" type="button">♛ Registrar título</button></div>
+<section class="page" id="admin"><div class="subhead"><div class="kicker">ÁREA DE GESTÃO</div><h1>Administração</h1><p>Cadastre pilotos, etapas e resultados. Os dados ficam salvos neste navegador.</p></div><div class="tabs"><button class="active" data-tab="pilotForm" onclick="switchAdminTab('pilotForm',this)" type="button">＋ Cadastrar piloto</button><button data-tab="champForm" onclick="switchAdminTab('champForm',this)" type="button">＋ Cadastrar campeonato</button><button data-tab="newsForm" onclick="switchAdminTab('newsForm',this)" type="button">▤ Publicar notícia</button><button data-tab="communityAdmin" onclick="switchAdminTab('communityAdmin',this)" type="button">▧ Comunidade</button><button data-tab="awardsAdmin" onclick="switchAdminTab('awardsAdmin',this)" type="button">🏆 Premiações</button><button data-tab="raceControlAdmin" onclick="switchAdminTab('raceControlAdmin',this)" type="button">⚑ Direção de prova</button><button data-tab="funForm" onclick="switchAdminTab('funForm',this)" type="button">★ Cadastrar 4FUN</button><button data-tab="trackForm" onclick="switchAdminTab('trackForm',this)" type="button">＋ Cadastrar pista</button><button data-tab="raceForm" onclick="switchAdminTab('raceForm',this)" type="button">＋ Criar etapa</button><button data-tab="resultForm" onclick="switchAdminTab('resultForm',this)" type="button">＋ Lançar resultado</button><button data-tab="titleForm" onclick="switchAdminTab('titleForm',this)" type="button">♛ Registrar título</button><button data-tab="rlAdminUpdatePanel" onclick="switchAdminTab('rlAdminUpdatePanel',this)" type="button">🚀 Atualização do app Windows</button></div>
 <div class="panel" id="newsForm" style="display:none;margin-top:13px"><h3>Publicar no mural</h3><div class="formgrid"><div class="field"><label>Título</label><input id="newsTitle" maxlength="120" placeholder="Ex.: Inscrições abertas para a nova temporada"/></div><div class="field"><label>Categoria</label><select id="newsCategory"><option>Comunicado</option><option>Campeonato</option><option>Resultado</option><option>Evento 4FUN</option><option>Atualização</option></select></div><div class="field full"><label>Notícia</label><textarea id="newsBody" maxlength="5000" placeholder="Escreva o comunicado oficial..." rows="5"></textarea></div></div><div class="formactions"><button class="btn" onclick="publishNews()">PUBLICAR NOTÍCIA</button></div><div class="tracklist" id="adminNewsList"></div></div>
 <div class="formactions" style="margin-top:12px"><a class="btn" href="https://supabase.com/dashboard/project/lxformxabgtgafykvhkw/editor/17649?schema=public" rel="noopener noreferrer" target="_blank">↗ ABRIR SUPABASE — GERENCIAR INSCRIÇÕES</a></div>
 <div class="panel" id="champForm" style="display:none;margin-top:13px"><div class="formgrid"><div class="field"><label>Nome do campeonato</label><input id="newChampName" placeholder="Ex.: Rookie League GT3"/></div><div class="field"><label>Temporada / ano</label><input id="newChampSeason" placeholder="Ex.: Temporada 2026"/></div><div class="field"><label>Categoria</label><select id="newChampCategory"><option>LMP2</option><option>GT3</option><option>F2</option><option>Porsche Cup</option><option>Multicategoria</option><option>Outra</option></select></div><div class="field full champUrlField"><label>URL para escolha de carro (opcional)</label><input id="newChampCarUrl" placeholder="https://site.com/escolher-carro" type="url"/><small>O link aparecerá para os pilotos com inscrição aprovada.</small></div><div class="formactions"><button class="btn" onclick="addChampionship()">CADASTRAR CAMPEONATO</button><span class="hint">Depois de cadastrar, crie as etapas e defina pista, data e horário de cada corrida.</span></div></div></div>
@@ -1354,7 +1354,7 @@ let authMode='login',loggedPilotId=null;
 function save(){localStorage.setItem('rlm_portal_v2',JSON.stringify(db));renderAll();if(cloudReady&&cloudIsAdmin)syncChangedDataToCloud().catch(e=>console.error('Falha ao sincronizar:',e))}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function switchAdminTab(targetId,button){
- const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','trophyAdmin','newsForm','communityAdmin','awardsAdmin','raceControlAdmin'];
+ const allowed=['pilotForm','champForm','funForm','trackForm','raceForm','resultForm','titleForm','trophyAdmin','newsForm','communityAdmin','awardsAdmin','raceControlAdmin','rlAdminUpdatePanel'];
  if(!allowed.includes(targetId))return;
  const admin=document.getElementById('admin');
  if(!admin)return;
@@ -3765,7 +3765,7 @@ function styles(){
  #rlAppUpdateNotice h3{margin:0 0 8px;color:#a6ff00;font-size:19px}#rlAppUpdateNotice p{margin:6px 0;color:#c5d2c8}
  #rlAppUpdateNotice .rlUpdateActions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}#rlAppUpdateNotice button,#rlAppUpdateNotice a{border:0;border-radius:8px;padding:10px 13px;font-weight:900;cursor:pointer;text-decoration:none}
  #rlAppUpdateNotice a{background:#a6ff00;color:#10170b}#rlAppUpdateNotice button{background:#26352b;color:#e9f3eb}
- #rlAdminUpdatePanel{position:fixed;z-index:99991;left:18px;bottom:18px;width:min(420px,calc(100vw - 36px));background:#101b14;border:1px solid #405b37;border-radius:15px;padding:18px;color:#f2f7f1;box-shadow:0 18px 55px #000b;display:none}
+ #rlAdminUpdatePanel{position:relative;width:100%;margin-top:13px;background:#101b14;border:1px solid #405b37;border-radius:15px;padding:18px;color:#f2f7f1;box-shadow:0 10px 30px #0005;display:none}
  #rlAdminUpdatePanel h3{margin:0 0 12px;color:#a6ff00}#rlAdminUpdatePanel label{display:block;margin:9px 0 4px;font-size:12px;color:#bdcbbb}
  #rlAdminUpdatePanel input,#rlAdminUpdatePanel textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #435547;background:#09110c;color:white}
  #rlAdminUpdatePanel textarea{min-height:60px;resize:vertical}#rlAdminUpdatePanel button{margin:10px 6px 0 0;padding:10px 12px;border:0;border-radius:8px;font-weight:900;cursor:pointer;background:#a6ff00;color:#10170b}
@@ -3775,14 +3775,14 @@ function styles(){
 function createUI(){
  styles();
  if(!$('rlAppUpdateNotice')){const n=document.createElement('section');n.id='rlAppUpdateNotice';n.setAttribute('role','dialog');n.setAttribute('aria-live','polite');document.body.appendChild(n);}
- if(!$('rlAdminUpdatePanel')){const p=document.createElement('section');p.id='rlAdminUpdatePanel';p.innerHTML=`
+ if(!$('rlAdminUpdatePanel')){const p=document.createElement('section');p.id='rlAdminUpdatePanel';p.className='panel';p.innerHTML=`
  <h3>🚀 Publicar atualização do app Windows</h3>
  <label for="rlUpdateVersion">Versão</label><input id="rlUpdateVersion" placeholder="Ex.: 1.0.5">
  <label for="rlUpdateUrl">Link direto do instalador (.exe)</label><input id="rlUpdateUrl" type="url" placeholder="https://...">
  <label for="rlUpdateNotes">Novidades (opcional)</label><textarea id="rlUpdateNotes" placeholder="O que mudou nesta versão?"></textarea>
  <button id="rlUpdatePublish">PUBLICAR ATUALIZAÇÃO</button><button class="secondary" id="rlUpdateStats">VER QUEM BAIXOU</button><button class="secondary" id="rlUpdateClose">FECHAR</button>
- <div id="rlUpdateStatus"></div><div id="rlUpdateDownloadStats" style="font-size:12px;margin-top:10px;max-height:180px;overflow:auto"></div>`;document.body.appendChild(p);
- $('rlUpdateClose').onclick=()=>{adminPanelDismissed=true;p.style.display='none';};
+ <div id="rlUpdateStatus"></div><div id="rlUpdateDownloadStats" style="font-size:12px;margin-top:10px;max-height:180px;overflow:auto"></div>`;document.getElementById('admin').appendChild(p);
+ $('rlUpdateClose').onclick=()=>{p.style.display='none';};
  $('rlUpdatePublish').onclick=publish;
  $('rlUpdateStats').onclick=showDownloadStats;
  }
@@ -3854,8 +3854,7 @@ function init(){
  const check=()=>{
   if(cloudReady&&cloudUser){
    reportInstalledVersion();
-   if(cloudIsAdmin){if(!adminPanelDismissed)$('rlAdminUpdatePanel').style.display='block';}
-   else showLatest();
+   if(!cloudIsAdmin){$('rlAdminUpdatePanel').style.display='none';showLatest();}
   }else{
    $('rlAdminUpdatePanel').style.display='none';
    $('rlAppUpdateNotice').style.display='none';
