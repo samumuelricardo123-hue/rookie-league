@@ -3756,6 +3756,7 @@ const hall=document.getElementById('hall');const observer=new MutationObserver((
 (()=> {
 const $=id=>document.getElementById(id);
 let updateShown=false, updateBusy=false, dismissedUpdateId=null, adminPanelDismissed=false;
+let lastInstallReportAt=0;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function styles(){
  if($('rlAppUpdateStyles'))return;
@@ -3839,7 +3840,8 @@ async function showLatest(force=false){
 }
 async function reportInstalledVersion(){
  try{
-  if(!cloudUser||!cloudReady||!window.rookieApp?.getInfo)return;
+  if(!cloudUser||!cloudReady||!window.rookieApp?.getInfo||Date.now()-lastInstallReportAt<300000)return;
+  lastInstallReportAt=Date.now();
   const info=await window.rookieApp.getInfo();
   if(!info?.available||!info.version)return;
   const metadata=cloudUser.user_metadata||{};
