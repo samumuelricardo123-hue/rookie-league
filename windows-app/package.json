@@ -1,0 +1,38 @@
+{
+  "name": "electron-desktop",
+  "version": "1.0.4",
+  "description": "Aplicativo desktop do portal Rookie League Motorsport",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "make": "electron-forge make"
+  },
+  "keywords": [],
+  "author": "Rookie League Motorsport",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@electron-forge/cli": "^8.0.1",
+    "@electron-forge/maker-squirrel": "^8.0.1",
+    "electron": "^45.2.3"
+  },
+  "productName": "Rookie League",
+  "config": {
+    "forge": {
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "rookie_league",
+            "setupExe": "RookieLeagueSetup.exe",
+            "DesktopShortcut": true
+          }
+        }
+      ]
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/samumuelricardo123-hue/rookie-league.git"
+  }
+}
