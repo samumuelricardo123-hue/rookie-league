@@ -3,7 +3,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Rookie League Motorsport — Racing Experience V106</title>
+<title>Rookie League Motorsport — Racing Experience V107 alpha</title>
 <style>
 :root{--bg:#080d0b;--panel:#111916;--panel2:#17211c;--line:#29372f;--green:#a6ff00;--green2:#65c900;--text:#f2f7f1;--muted:#9aa99e;--red:#ff5757;--gold:#ffc857}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1d351f 0,transparent 48%),var(--bg);color:var(--text);font:15px/1.5 Inter,Segoe UI,Arial,sans-serif}
@@ -2990,13 +2990,14 @@ initializeCloud();
   window.__rookieTelemetryCloudBound=true;
   let telemetrySessionId=null, telemetryDriver=null, lastLiveSent=0, activeSourceMode='singleplayer';
   let liveInFlight=false, sessionStartInFlight=false, liveErrorCount=0;
+  let activeSessionMode='unknown', pendingTrack=null, pendingCar=null, pendingLocalFile=null;
   const LIVE_INTERVAL_MS=3000; // V131: no máximo uma atualização por piloto a cada 3 s
   // Amostras agrupadas por volta (o agente usa completedLaps como índice da volta em andamento).
   const samplesByLap=new Map();
   const panel=document.createElement('div');
   panel.id='rookieTelemetryCloudStatus';
   panel.style.cssText='position:fixed;right:14px;bottom:14px;z-index:99999;background:#101915;color:#d7e7dc;border:1px solid #31523e;border-radius:10px;padding:9px 12px;font:12px Arial;box-shadow:0 4px 18px #0008;max-width:300px';
-  panel.innerHTML='<b>ROOKIE TELEMETRY</b><div id="rookieTelemetryCloudText">Agente aguardando o Assetto Corsa</div><label style="display:block;margin-top:7px">Tipo de sessão: <select id="rookieTelemetrySourceMode" style="background:#17251d;color:#fff;border:1px solid #46624f;border-radius:5px;padding:3px"><option value="singleplayer">Solo</option><option value="multiplayer">Multiplayer / servidor</option></select></label>';
+  panel.innerHTML='<b>ROOKIE TELEMETRY · TREINO LIVRE</b><div id="rookieTelemetryCloudText">Agente aguardando o Assetto Corsa</div><label style="display:block;margin-top:7px">Tipo de sessão: <select id="rookieTelemetrySourceMode" style="background:#17251d;color:#fff;border:1px solid #46624f;border-radius:5px;padding:3px"><option value="singleplayer">Solo</option><option value="multiplayer">Multiplayer / servidor</option></select></label>';
   document.body.appendChild(panel);
   const statusText=()=>document.getElementById('rookieTelemetryCloudText');
   const setStatus=(s)=>{if(statusText())statusText().textContent=s};
@@ -3014,38 +3015,57 @@ initializeCloud();
     if(!data) throw new Error('Sua conta não está vinculada a um piloto aprovado na tabela drivers.');
     telemetryDriver=data; return data;
   };
+  // Assetto Corsa: 0=Practice, 1=Qualifying, 2=Race, 3=Hotlap.
+  // Fail closed: qualquer modo desconhecido nao envia telemetria para a nuvem.
   const sessionMode=(n)=>{
     const map={0:'practice',1:'qualifying',2:'race',3:'hotlap'};
     return map[Number(n)]||'unknown';
   };
+  const modeLabel=(mode)=>({practice:'TREINO LIVRE',qualifying:'QUALIFICAÇÃO',race:'CORRIDA',hotlap:'HOTLAP'}[mode]||'SESSÃO NÃO IDENTIFICADA');
+  const ensurePracticeCloudSession=async()=>{
+    if(telemetrySessionId)return true;
+    if(sessionStartInFlight)return false;
+    sessionStartInFlight=true;
+    try{
+      const driver=await getDriver();
+      activeSourceMode=document.getElementById('rookieTelemetrySourceMode')?.value||'singleplayer';
+      const created=await invoke({
+        action:'session_start',driver_id:String(driver.id),session_mode:'practice',source_mode:activeSourceMode,
+        track_name:pendingTrack,car_name:pendingCar,
+        metadata:{source:'assetto_corsa_shared_memory',local_file:pendingLocalFile,telemetry_policy:'practice_only'}
+      });
+      telemetrySessionId=created.session_id;
+      setStatus('Treino livre · telemetria enviada ao portal · sessão '+telemetrySessionId.slice(0,8));
+      return true;
+    }finally{sessionStartInFlight=false;}
+  };
   const onMessage=async(msg)=>{
     try{
       if(msg?.type==='status'){
-        if(msg.status==='gravando' && !telemetrySessionId && !sessionStartInFlight){
-          sessionStartInFlight=true;
-          setStatus('Assetto Corsa conectado. Criando sessão cloud…');
-          try {
-          const driver=await getDriver();
-          activeSourceMode=document.getElementById('rookieTelemetrySourceMode')?.value||'singleplayer';
-          const created=await invoke({
-            action:'session_start',driver_id:String(driver.id),
-            session_mode:'unknown',source_mode:activeSourceMode,
-            track_name:msg.track||null,car_name:msg.car||null,
-            metadata:{source:'assetto_corsa_shared_memory',local_file:msg.file||null}
-          });
-          telemetrySessionId=created.session_id;
-          setStatus('Conectado ao Supabase · sessão '+telemetrySessionId.slice(0,8));
-          } finally { sessionStartInFlight=false; }
+        if(msg.status==='gravando'){
+          pendingTrack=msg.track||pendingTrack;pendingCar=msg.car||pendingCar;pendingLocalFile=msg.file||pendingLocalFile;
+          setStatus('Assetto Corsa conectado · identificando sessão para liberar telemetria somente no treino livre…');
         } else if(msg.status==='aguardando') {
           setStatus('Aguardando Assetto Corsa…');
         } else if(msg.status==='conectado') {
           setStatus('Assetto Corsa detectado');
+        } else if(msg.status==='fora_da_pista') {
+          setStatus('Fora da pista · aguardando atividade do simulador');
         }
         return;
       }
-      if(msg?.type==='sample' && telemetrySessionId){
+      if(msg?.type==='sample'){
         const d=msg.data||{};
-        // Guarda TODAS as amostras antes de limitar a frequência do Live Timing.
+        pendingTrack=d.track||pendingTrack;pendingCar=d.car||pendingCar;
+        const detectedMode=sessionMode(d.session_type);
+        activeSessionMode=detectedMode;
+        if(detectedMode!=='practice'){
+          samplesByLap.clear();
+          setStatus(modeLabel(detectedMode)+' · telemetria cloud DESATIVADA · Rookie Flags continua ativo');
+          return;
+        }
+        if(!await ensurePracticeCloudSession())return;
+        // Somente treino livre: amostras detalhadas seguem para o armazenamento privado.
         const sampleLap=Number(d.lap);
         if(Number.isInteger(sampleLap) && sampleLap>=0){
           if(!samplesByLap.has(sampleLap)) samplesByLap.set(sampleLap,[]);
@@ -3074,6 +3094,12 @@ initializeCloud();
         }
       }
       if(msg?.type==='lap' && telemetrySessionId){
+        const lapMode=msg.session_type===undefined?activeSessionMode:sessionMode(msg.session_type);
+        if(lapMode!=='practice'||activeSessionMode!=='practice'){
+          samplesByLap.clear();
+          setStatus(modeLabel(lapMode)+' · volta não enviada ao portal · Rookie Flags continua ativo');
+          return;
+        }
         const completedLap=Number(msg.lap);
         const completedIndex=completedLap-1;
         const lapSamples=samplesByLap.get(completedIndex)||[];
