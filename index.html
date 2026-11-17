@@ -3794,7 +3794,10 @@ async function showDownloadStats(){
   if(uErr)throw uErr;if(!updates?.length){box.textContent='Nenhuma atualização publicada.';return;}
   const {data,error}=await supabaseClient.from('app_update_downloads').select('pilot_name,pilot_email,download_clicked_at').eq('update_id',updates[0].id).order('download_clicked_at',{ascending:false});
   if(error)throw error;
-  box.innerHTML='<b>Versão '+esc(updates[0].version)+' · '+(data?.length||0)+' cliques registrados</b><br>'+(data?.length?data.map(x=>'• '+esc(x.pilot_name||x.pilot_email||'Piloto')+' — '+esc(x.pilot_email||'')+' — '+new Date(x.download_clicked_at).toLocaleString('pt-BR')).join('<br>'):'Ainda não há downloads registrados.');
+  const {data:installs,error:iErr}=await supabaseClient.from('app_installations').select('pilot_name,pilot_email,installed_version,channel,last_seen_at').order('last_seen_at',{ascending:false});
+  if(iErr)throw iErr;
+  const installRows=installs||[];
+  box.innerHTML='<b>Versão '+esc(updates[0].version)+' · '+(data?.length||0)+' cliques registrados · '+installRows.filter(x=>x.installed_version===updates[0].version).length+' instalações confirmadas</b><br><br><b>Instalações detectadas</b><br>'+(installRows.length?installRows.map(x=>'• '+esc(x.pilot_name||x.pilot_email||'Piloto')+' — '+esc(x.pilot_email||'')+' — v'+esc(x.installed_version)+' ('+esc(x.channel||'Windows')+') — abriu em '+new Date(x.last_seen_at).toLocaleString('pt-BR')).join('<br>'):'Nenhuma instalação reportada ainda.')+'<br><br><b>Cliques no download</b><br>'+(data?.length?data.map(x=>'• '+esc(x.pilot_name||x.pilot_email||'Piloto')+' — '+esc(x.pilot_email||'')+' — '+new Date(x.download_clicked_at).toLocaleString('pt-BR')).join('<br>'):'Ainda não há cliques registrados.');
  }catch(e){box.textContent='Falha ao consultar: '+(e.message||e);}
 }
 async function publish(){
@@ -3834,10 +3837,21 @@ async function showLatest(force=false){
   };
  }catch(e){console.warn('[App Update] Consulta indisponível:',e.message);}
 }
+async function reportInstalledVersion(){
+ try{
+  if(!cloudUser||!cloudReady||!window.rookieApp?.getInfo)return;
+  const info=await window.rookieApp.getInfo();
+  if(!info?.available||!info.version)return;
+  const metadata=cloudUser.user_metadata||{};
+  const {error}=await supabaseClient.from('app_installations').upsert({user_id:cloudUser.id,pilot_email:cloudUser.email||null,pilot_name:metadata.full_name||metadata.name||cloudUser.email||'Piloto',installed_version:info.version,channel:info.channel||'WINDOWS',platform:info.platform||'win32',last_seen_at:new Date().toISOString()},{onConflict:'user_id'});
+  if(error)console.warn('[App Update] Não foi possível confirmar a versão instalada:',error.message);
+ }catch(e){console.warn('[App Update] Confirmação da instalação indisponível:',e.message);}
+}
 function init(){
  createUI();
  const check=()=>{
   if(cloudReady&&cloudUser){
+   reportInstalledVersion();
    if(cloudIsAdmin){if(!adminPanelDismissed)$('rlAdminUpdatePanel').style.display='block';}
    else showLatest();
   }else{
