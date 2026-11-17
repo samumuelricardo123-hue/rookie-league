@@ -3779,11 +3779,23 @@ function createUI(){
  <label for="rlUpdateVersion">Versão</label><input id="rlUpdateVersion" placeholder="Ex.: 1.0.5">
  <label for="rlUpdateUrl">Link direto do instalador (.exe)</label><input id="rlUpdateUrl" type="url" placeholder="https://...">
  <label for="rlUpdateNotes">Novidades (opcional)</label><textarea id="rlUpdateNotes" placeholder="O que mudou nesta versão?"></textarea>
- <button id="rlUpdatePublish">PUBLICAR ATUALIZAÇÃO</button><button class="secondary" id="rlUpdateClose">FECHAR</button>
- <div id="rlUpdateStatus"></div>`;document.body.appendChild(p);
+ <button id="rlUpdatePublish">PUBLICAR ATUALIZAÇÃO</button><button class="secondary" id="rlUpdateStats">VER QUEM BAIXOU</button><button class="secondary" id="rlUpdateClose">FECHAR</button>
+ <div id="rlUpdateStatus"></div><div id="rlUpdateDownloadStats" style="font-size:12px;margin-top:10px;max-height:180px;overflow:auto"></div>`;document.body.appendChild(p);
  $('rlUpdateClose').onclick=()=>p.style.display='none';
  $('rlUpdatePublish').onclick=publish;
+ $('rlUpdateStats').onclick=showDownloadStats;
  }
+}
+async function showDownloadStats(){
+ const box=$('rlUpdateDownloadStats');box.textContent='Carregando pilotos...';
+ try{
+  if(!cloudUser||!cloudIsAdmin)throw Error('Acesso restrito ao ADM.');
+  const {data:updates,error:uErr}=await supabaseClient.from('app_updates').select('id,version').order('created_at',{ascending:false}).limit(1);
+  if(uErr)throw uErr;if(!updates?.length){box.textContent='Nenhuma atualização publicada.';return;}
+  const {data,error}=await supabaseClient.from('app_update_downloads').select('pilot_name,pilot_email,download_clicked_at').eq('update_id',updates[0].id).order('download_clicked_at',{ascending:false});
+  if(error)throw error;
+  box.innerHTML='<b>Versão '+esc(updates[0].version)+' · '+(data?.length||0)+' cliques registrados</b><br>'+(data?.length?data.map(x=>'• '+esc(x.pilot_name||x.pilot_email||'Piloto')+' — '+esc(x.pilot_email||'')+' — '+new Date(x.download_clicked_at).toLocaleString('pt-BR')).join('<br>'):'Ainda não há downloads registrados.');
+ }catch(e){box.textContent='Falha ao consultar: '+(e.message||e);}
 }
 async function publish(){
  if(updateBusy)return;updateBusy=true;
