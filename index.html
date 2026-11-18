@@ -1987,7 +1987,9 @@ function rl99SplitValues(driver){
   if(item===null||item===undefined)return;
   const raw=typeof item==='object'?(item.SplitTime??item.Time??item.Value??item.Split):item;
   const split=Number(item?.SplitIndex);
-  const slot=Number.isFinite(split)?(split>=1&&split<=3?split-1:split):(index<3?index:-1);
+  // A API usa SplitIndex baseado em zero: 0=S1, 1=S2, 2=S3.
+  // Não converter para base 1: isso desloca os setores e descarta o S3.
+  const slot=Number.isInteger(split)&&split>=0&&split<=2?split:(index<3?index:-1);
   if(slot>=0&&slot<3&&raw!==null&&raw!==undefined&&Number(raw)>0)values[slot]=Number(raw);
  });
  return values;
