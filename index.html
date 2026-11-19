@@ -3988,7 +3988,7 @@ async function rlslOpenPublicPilot(){
  const root=document.querySelector('#rlslPublicView .rlsl-public-card');
  try{
   const {data:d,error}=await supabaseClient.from('drivers').select('id,name,team,car_number,profile_photo_url').eq('id',id).maybeSingle();if(error)throw error;if(!d)throw Error('Piloto não encontrado ou perfil público indisponível.');
-  const {data:l,error:le}=await supabaseClient.from('driver_licenses').select('license_class,license_number,valid_until').eq('driver_id',id).maybeSingle();if(le)throw le;
+  const {data:l,error:le}=await supabaseClient.from('driver_licenses').select('license_class,valid_until').eq('driver_id',id).maybeSingle();if(le)throw le;
   const license=l||{},cls=license.license_class||'R';
   const results=(Array.isArray(db?.results)?db.results:[]).filter(x=>String(x.driverId)===String(id));
   const wins=results.filter(x=>Number(x.position)===1).length,podiums=results.filter(x=>Number(x.position)>0&&Number(x.position)<=3).length,points=results.reduce((a,x)=>a+Number(x.points||0),0),best=results.map(x=>Number(x.position)).filter(x=>x>0);
